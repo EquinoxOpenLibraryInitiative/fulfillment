@@ -1,0 +1,312 @@
+[% USE CGI; %]
+[% WRAPPER "base.tt2" %]
+<script>
+    [%- IF CGI.param('context') == 'scv' %]
+    xulG = parent.xulG;
+    [%- END %]
+    [%- IF CGI.param('id') != 'new' %]
+    sub_id = [% CGI.param('id') %];
+    [%- ELSE %]
+    sub_id = -1;
+    [%- END %]
+    var cap_editor;
+    var cap_importer;
+</script>
+<script src="[% ctx.media_prefix %]/js/ui/default/serial/common.js">
+</script>
+<script src="[% ctx.media_prefix %]/js/ui/default/serial/subscription.js">
+</script>
+<script src="[% ctx.media_prefix %]/js/ui/default/serial/subscription/distribution.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/serial/subscription/caption_and_pattern.js">
+</script>
+<script src="[% ctx.media_prefix %]/js/ui/default/serial/subscription/issuance.js">
+</script>
+[% IF CGI.param('context') == 'scv' -%]
+<!-- links in the frame have no style at all, let's give them one -->
+<style type="text/css">
+    a { color: #1155CC; text-decoration: underline }
+    a:hover { text-decoration: none }
+</style>
+[%- END %]
+
+<div dojoType="dijit.layout.ContentPane" layout="top" class="oils-header-panel">
+    <div>[% l('Subscription Details') %]</div>
+    <div>
+        <span dojoType="dijit.form.Button" onClick="clone_dialog.show();">
+            [% l('Clone Subscription') %]
+        </span>
+        <span dojoType="dijit.form.Button" onClick="open_batch_receive();">
+            [% l('Batch Item Receive') %]
+        </span>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.TabContainer" jsId="tab_container"
+    class="oils-serial-tab-container">
+
+    <!-- Subscription Summary -->
+    [%- IF CGI.param('context') == 'scv' -%]
+    <div dojoType="dijit.layout.ContentPane" title="[% l('View/Edit') %]" selected="true">
+        <div dojoType="dijit.layout.ContentPane" layout="top"
+            class="oils-header-panel lesser">
+            <div>[% l('Subscriptions') %]</div>
+            <div style="margin-right: 16px;">
+                <span dojoType="dijit.form.Button"
+                    onClick="open_notes('sub', ssub_grid);">[% l('View/Edit Notes') %]</span>
+            </div>
+        </div>
+
+        <script type="dojo/connect" event="onShow">
+            if(ssub_grid.store && !ssub_grid._fresh) { // onShow fires twice on initial page load; we only want to run the second time (and subsequent times)
+                ssub_grid.resetStore();
+                if (sub_id) {
+                    ssub_grid.loadAll(
+                        {"order_by": {"ssub": "start_date DESC"}},
+                        {"id": sub_id}
+                    );
+                }
+                ssub_grid._fresh = true;
+            }
+        </script>
+        <table jsId="ssub_grid"
+            dojoType="openils.widget.AutoGrid"
+            query="{id: '*'}"
+            fieldOrder="['id','owning_lib','start_date','end_date']"
+            suppressFields="['record_entry']"
+            fmClass="ssub"
+            showPaginator="true"
+            onPostSubmit="attempt_reload_opac"
+            showSequenceFields="true"
+            editOnEnter="true">
+        </table>
+    </div>
+    [%- ELSE -%]
+    <div dojoType="dijit.layout.ContentPane" title="[% l('Summary') %]" selected="true">
+        <script type="dojo/connect" event="onShow">
+            load_sub_grid(sub_id);
+        </script>
+        <table jsId="sub_grid"
+            dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector="20px">
+            <thead>
+                <tr>
+                    <th field="id">[% l('ID') %]</th>
+                    <th field="owning_lib" formatter="format_org_unit">
+                        [% l('Owning Library') %]
+                    </th>
+                    <th field="start_date" formatter="format_date">
+                        [% l('Start Date') %]
+                    </th>
+                    <th field="end_date" formatter="format_date">
+                        [% l('End Date') %]
+                    </th>
+                    <th field="record_entry" width="20em"
+                        formatter="format_bib">
+                        [% l('Bibliographic Record') %]
+                    </th>
+                    <th field="expected_date_offset">[% l('Expected Date Offset') %]</th>
+                    <th field="num_dist">[% l('Number of Distributions') %]</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    [%- END -%]
+
+    <!-- Distributions -->
+    <div dojoType="dijit.layout.ContentPane" jsId="distributions_tab"
+        title="[% l('Distributions') %]" layoutAlign="client">
+        <script type="dojo/connect" event="onShow">
+            if (!dist_grid._fresh) {
+                dist_grid.resetStore();
+                dist_grid.loadAll(
+                    {"order_by": {"sdist": "holding_lib"}},
+                    {"subscription": sub_id}
+                );
+                dist_grid._fresh = true;
+            }
+
+            if (!dist_grid.overrideEditWidgets.subscription) {
+                dist_grid.overrideEditWidgets.subscription =
+                    new dijit.form.TextBox({
+                        "disabled": true, "value": sub_id
+                    });
+
+                [%- IF CGI.param('context') == 'scv' %]
+                // attach the holding_lib selector to the record_entry selector
+                dist_grid.overrideWidgetArgs.holding_lib = {'dijitArgs' : {'onChange' : function(value) { populate_sre_selector(dist_grid, value); } }};
+
+                [%- END %]
+                var _display_grouping_store = new dojo.data.ItemFileReadStore({
+                    "data": {
+                        "identifier": "display_grouping",
+                        "label": "label",
+                        "items": [
+                            {"display_grouping": "chron",
+                                "label": "[% l('Chronology') %]"},
+                            {"display_grouping": "enum",
+                                "label": "[% l('Enumeration') %]"}
+                        ]
+                    }
+                });
+
+                var settings = fieldmapper.aou.fetchOrgSettingBatch(
+                    openils.User.user.ws_ou(),
+                    ["serial.default_display_grouping"]
+                );
+                var default_display_grouping = "chron";
+
+                if (settings && settings["serial.default_display_grouping"]) {
+                    default_display_grouping =
+                        settings["serial.default_display_grouping"].value;
+                }
+
+                dist_grid.overrideEditWidgets.display_grouping =
+                    new dijit.form.FilteringSelect({
+                        "store": _display_grouping_store,
+                        "searchAttr": "label",
+                        "name": "display_grouping"
+                    });
+                    dist_grid.overrideEditWidgets.display_grouping.shove = {
+                        "create": default_display_grouping
+                    };
+
+                var _summary_method_store = new dojo.data.ItemFileReadStore({
+                    "data": {
+                        "identifier": "summary_method",
+                        "label": "label",
+                        "items": [
+                            {"summary_method": "add_to_sre",
+                                "label": "[% l('Add to record entry') %]"},
+                            {"summary_method": "merge_with_sre",
+                                "label": "[% l('Merge with record entry') %]"},
+                            {"summary_method": "use_sre_only",
+                                "label": "[% l('Use record entry only') %]"},
+                            {"summary_method": "use_sdist_only",
+                                "label": "[% l('Do not use record entry') %]"}
+                        ]
+                    }
+                });
+
+                dist_grid.overrideEditWidgets.summary_method =
+                    new dijit.form.FilteringSelect({
+                        "store": _summary_method_store,
+                        "searchAttr": "label",
+                        "name": "summary_method"
+                    });
+                    // TODO: add setting for default selection?
+                    dist_grid.overrideEditWidgets.summary_method.shove = {
+                        "create": "add_to_sre"
+                    };
+
+            }
+        </script>
+        [% INCLUDE "serial/subscription/distribution.tt2" %]
+    </div>
+
+    <!-- Caption/Pattern -->
+    <div dojoType="dijit.layout.ContentPane"
+        title="[% l('Captions and Patterns') %]" layoutAlign="client">
+        <script type="dojo/connect" event="onShow">
+            if (!cap_editor) {
+                cap_editor = new SCAPEditor(sub_id);
+                cap_importer = new SCAPImporter(sub);
+            }
+        </script>
+        [% INCLUDE "serial/subscription/caption_and_pattern.tt2" %]
+    </div>
+
+    <!-- Issuances -->
+    <div dojoType="dijit.layout.ContentPane" jsId="issuances_tab"
+        title="[% l('Issuances') %]" layoutAlign="client">
+        <script type="dojo/connect" event="onShow">
+            if (!iss_grid._fresh) {
+                iss_grid.resetStore();
+                iss_grid.loadAll(
+                    {"order_by": {"siss": "date_published"}},
+                    {"subscription": sub_id}
+                );
+                iss_grid._fresh = true;
+            }
+
+            if (!iss_grid.overrideEditWidgets.subscription) {
+                iss_grid.overrideEditWidgets.subscription =
+                    new dijit.form.TextBox({
+                        "disabled": true, "value": sub_id
+                    });
+
+                iss_grid.overrideEditWidgets.creator =
+                    new dijit.form.TextBox({"disabled": true});
+                iss_grid.overrideEditWidgets.creator.shove = {
+                    "create": openils.User.user.id()
+                };
+
+                iss_grid.overrideEditWidgets.editor =
+                    new dijit.form.TextBox({
+                        "disabled": true, "value": openils.User.user.id()
+                    });
+
+                iss_grid.overrideEditWidgets.holding_type =
+                    new dijit.form.TextBox({"disabled": true});
+                iss_grid.overrideEditWidgets.holding_type.shove = {"create":""};
+
+                iss_grid.overrideEditWidgets.holding_type =
+                    new dijit.form.TextBox;
+            }
+            fresh_scap_selector(iss_grid);
+        </script>
+        [% INCLUDE "serial/subscription/issuance.tt2" %]
+    </div>
+</div>
+<div class="hidden">
+    <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+    <div dojoType="dijit.Dialog" jsId="clone_dialog" title="[% l('Clone Subscription') %]"
+        style="width: 460px;" execute="clone_subscription(arguments[0]);">
+        <div style="margin-bottom: 0.5em;">
+            [% l('This feature will clone a subscription and all of its subscription ' _
+            'notes, distributions, distribution notes, captions and patterns, ' _
+            'streams, and routing list users.') %]</div>
+        <div style="margin-bottom: 0.5em;">
+            [% l('Holdings-related objects, like issuances, items, units, and ' _
+            'summaries will <em>not</em> be cloned.') %]
+        </div>
+        <div style="margin-bottom: 0.5em;">
+            [% l('To what bibliographic record should the new subscription be attached?') %]
+        </div>
+        <table width="100%">
+            <tr>
+                <td style="padding-right: 0.5em; vertical-align: top;">
+                    <input dojoType="dijit.form.RadioButton"
+                        id="use_ident_no" name="use_ident" value="no"
+                        checked="checked" />
+                </td>
+                <td>
+                    <label for="use_ident_no">
+                        [% l('Same record as the existing subscription') %]
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-right: 0.5em; vertical-align: top;">
+                    <input dojoType="dijit.form.RadioButton"
+                        onChange="toggle_clone_ident_field(this);"
+                        id="use_ident_yes" name="use_ident" value="yes" />
+                </td>
+                <td>
+                    <label for="use_ident_yes">
+                        [% l('Record specified by this unique identifier:') %]
+                    </label>
+                    <input dojoType="dijit.form.TextBox" name="ident"
+                        jsId="clone_ident" disabled="true"
+                        style="margin-left: 0.5em; width: 10em;" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <span dojoType="dijit.form.Button" type="submit">
+                        [% l('Clone!') %]
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+[% END %]

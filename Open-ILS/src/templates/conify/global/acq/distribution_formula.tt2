@@ -1,0 +1,106 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Distribution Formulas') %]
+
+<div id='formula-list-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+            <div>[% l('Distribution Formulas') %]</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>[% l('New Formula') %]</button>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+                <button dojoType='dijit.form.Button' onClick='cloneSelectedFormula()'>[% l('Clone Selected') %]</button>
+            </div>
+        </div>
+        <table  jsId="fListGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'owner', 'item_count']"
+                suppressFields="['skip_count']"
+                query="{id: '*'}"
+                defaultCellWidth='12'
+                fmClass='acqdf'
+                autoHeight='true'
+                editOnEnter='true'>
+            <thead>
+                <tr>
+                    <th field='name' get='getFormulaName' formatter='formatName'></th>
+                    <th field='item_count' get='getItemCount'></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<div id='formula-entry-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+        <div><a href='javascript:void(0);' id="formula_head"></a></div>
+        <div>
+        </div>
+    </div>
+    <br/>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>[% l('New Entry') %]</button>
+        <span style='padding-right:20px;'></span>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>[% l('Apply Changes') %]</button>
+    </div>
+    <br/>
+    <table class='oils-generic-table'>
+        <thead>
+            <tr>
+                <th></th>
+                <th>[% l('Owning Library') %]</th>
+                <th>[% l('Copy Location') %]</th>
+                <th>[% l('Fund') %]</th>
+                <th>[% l('Circ Modifier') %]</th>
+                <th>[% l('Collection Code') %]</th>
+                <th>[% l('Item Count') %]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id='formula-entry-tbody'>
+            <tr id='formula-entry-tempate'>
+                <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
+                <td><div name='owning_lib'></div></td>
+                <td><div name='location'></div></td>
+                <td><div name='fund'></div></td>
+                <td><div name='circ_modifier'></div></td>
+                <td><div name='collection_code'></div></td>
+                <td><div name='item_count'></div></td>
+                <td>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                <td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>[% l('New Entry') %]</button>
+        <span style='padding-right:20px;'></span>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>[% l('Apply Changes') %]</button>
+    </div>
+</div>
+
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'></script>
+
+<script type="text/javascript"> 
+    var formulaId = '[% ctx.page_args.0 %]';
+
+    function getFormulaName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return id + ':' + name;
+    }
+
+    function formatName(value) {
+        if(value) {
+            var vals = value.split(/:/);
+            return '<a href="'+location.href+ '/'+vals[0]+'">'+vals[1]+'</a>';
+        }
+    }
+</script>
+
+[% END %]
+

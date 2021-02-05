@@ -1,0 +1,21 @@
+/*
+.holdings-copy-row {
+}
+*/
+
+/* colors are based on "Evergreen Green", tinted and desaturated */
+
+.holdings-callNum-row {
+    background-color: #c9efe4;
+}
+
+.holdings-org-row {
+    color: rgba(0, 0, 0, .8);
+    background-color: #e1efeb;
+}
+
+/* Add additional classes for more deeply nested org unit hierarchies */
+/* e.g.
+.holdings-org-row-0 {}
+.holdings-org-row-1 {}
+*/

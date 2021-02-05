@@ -1,0 +1,64 @@
+<!--
+Template for printing hold request slips. Fields include:
+
+* call_number.label
+* call number.prefix.label
+* call_number.suffix.label
+* hold.behind_desk
+* copy.barcode
+* title
+* patron.alias
+* patron.family_name
+* patron.first_given_name
+* patron.second_given_name
+* patron.card.barcode
+* hold.request_time
+* hold.phone_notify
+* hold.sms_notify
+* hold.email_notify
+* hold_notes (array of slip-printable notes)
+
+-->
+<div>
+  <div ng-switch on="hold.behind_desk">
+    <div ng-switch-when="t">
+      [% l('This item needs to be routed to the [_1]Private Holds Shelf[_2].',
+        '<strong>','</strong>') %]
+    </div>
+    <div ng-switch-when="f">
+      [% l('This item needs to be routed to the [_1]Public Holds Shelf[_2].',
+        '<strong>','</strong>') %]
+    </div>
+  </div>
+  <br/>
+
+  [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
+  [% l('Title: [_1]', '{{title}}') %]</div>
+  <br/>
+  <div>[% l('Call Number: [_1] [_2] [_3]', '{{call_number.prefix}}', '{{call_number.label}}', '{{call_number.suffix}}') %]</div>
+
+  <br/>
+  <br/>
+
+  <div>[% l('Hold for patron: [_1], [_2] [_3]',
+    '{{patron.family_name}}',
+    '{{patron.first_given_name}}',
+    '{{patron.second_given_name}}') %]</div>
+  <div>[% l('Barcode: [_1]', '{{patron.card.barcode}}') %]</div>
+  <div ng-if="hold.phone_notify">[% l('Notify by phone: [_1]', '{{hold.phone_notify}}') %]</div>
+  <div ng-if="hold.sms_notify">[% l('Notify by text: [_1]', '{{hold.sms_notify}}') %]</div>
+  <div ng-if="hold.email_notify == 't'">[% l('Notify by email: [_1]', '{{patron.email}}') %]</div>
+    <div ng-if="hold_notes">
+      <ul>Notes:
+        <li ng-repeat="note in hold_notes | filter: {slip : 't'}"><strong>{{note.title}}</strong> - {{note.body}}</li>
+      </ul>
+    </div>
+  <br/>
+
+  <div>[% l('Request Date: [_1]', 
+    '{{hold.request_time | date:$root.egDateAndTimeFormat}}') %]</div>
+  <div>[% l('Slip Date: [_1]', '{{today | date:$root.egDateAndTimeFormat}}') %]</div>
+  <div>[% l('Printed by [_1] at [_2]', 
+    '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
+
+</div>

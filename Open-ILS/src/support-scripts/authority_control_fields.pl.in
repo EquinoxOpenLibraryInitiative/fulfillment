@@ -1,0 +1,641 @@
+#!/usr/bin/perl
+# Copyright (C) 2010-2011 Laurentian University
+# Author: Dan Scott <dscott@laurentian.ca>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# ---------------------------------------------------------------
+
+use strict;
+use warnings;
+use DBI;
+use Getopt::Long;
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
+use OpenSRF::System;
+use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::EX qw/:try/;
+use Encode;
+use Unicode::Normalize;
+use OpenILS::Application::AppUtils;
+use Data::Dumper;
+use Pod::Usage qw/ pod2usage /;
+
+MARC::Charset->assume_unicode(1);
+
+my ($start_id, $end_id, $refresh);
+my ($days_back);
+my $bootstrap = '@sysconfdir@/opensrf_core.xml';
+my @records;
+my $idstatement;
+
+my %options;
+my $result = GetOptions(
+    \%options,
+    'configuration=s' => \$bootstrap,
+    'record=i' => \@records,
+    'refresh' => \$refresh,
+    'all', 'help',
+    'start_id=i' => \$start_id,
+    'end_id=i' => \$end_id,
+    'days_back=i' => \$days_back,
+);
+
+if (!$result or $options{help}) {
+    pod2usage(0);
+}
+
+if ($start_id && $days_back) {
+    print "Can't use both start ID and days back!\n";
+    exit;
+}
+
+OpenSRF::System->bootstrap_client(config_file => $bootstrap);
+Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+
+# must be loaded and initialized after the IDL is parsed
+use OpenILS::Utils::CStoreEditor;
+OpenILS::Utils::CStoreEditor::init();
+my $e = OpenILS::Utils::CStoreEditor->new;
+my $undeleted;
+
+# Grab DB information from local settings
+my $sc = OpenSRF::Utils::SettingsClient->new;
+my $db_driver = $sc->config_value( reporter => setup => database => 'driver' );
+my $db_host = $sc->config_value( reporter => setup => database => 'host' );
+my $db_port = $sc->config_value( reporter => setup => database => 'port' );
+my $db_name = $sc->config_value( reporter => setup => database => 'db' );
+if (!$db_name) {
+    $db_name = $sc->config_value( reporter => setup => database => 'name' );
+    print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $db_name;
+}
+my $db_user = $sc->config_value( reporter => setup => database => 'user' );
+my $db_pw = $sc->config_value( reporter => setup => database => 'pw' );
+die "Unable to retrieve database connection information from the settings server" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
+my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
+my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1}) or die "database connection error";
+
+if ($options{all}) {
+    @records=();
+
+    # SQL Used to gather a list of ID's
+    $idstatement = $dbh->prepare("SELECT DISTINCT(id) AS id FROM biblio.record_entry
+         WHERE deleted IS FALSE ORDER BY ID DESC");
+
+    # Load the list of ID's into the records array
+    $idstatement->execute();
+    while (my $ref = $idstatement->fetchrow_hashref()) {
+        my $id_ref = $ref->{"id"};   # the column name in our sql query is "id"
+        push(@records, $id_ref);
+    }
+}
+
+if ($start_id and $end_id) {
+    @records = ($start_id .. $end_id);
+}
+
+if (defined $days_back) {
+    @records=();
+
+    # SQL Used to gather a list of ID's
+    $idstatement = $dbh->prepare("SELECT DISTINCT(id) AS id FROM biblio.record_entry
+         WHERE deleted IS FALSE AND date(edit_date) >= date((NOW() - '$days_back day'::interval))
+	 ORDER BY ID DESC");
+
+    # Load the list of ID's into the records array
+    $idstatement->execute();
+    while (my $ref = $idstatement->fetchrow_hashref()) {
+        my $id_ref = $ref->{"id"};   # the column name in our sql query is "id"
+        push(@records, $id_ref);
+    }
+}
+
+# print Dumper($undeleted, \@records);
+
+# Hash of controlled fields & subfields in bibliographic records, and their
+# corresponding controlling fields & subfields in the authority record
+#
+# So, if the bib 650$a can be controlled by an auth 150$a, that maps to:
+# 650 => { a => { 150 => 'a'}}
+my %controllees = (
+    100 => { a => { 100 => 'a' },
+             b => { 100 => 'b' },
+             c => { 100 => 'c' },
+             d => { 100 => 'd' },
+             f => { 100 => 'f' },
+             g => { 100 => 'g' },
+             j => { 100 => 'j' },
+             k => { 100 => 'k' },
+             l => { 100 => 'l' },
+             n => { 100 => 'n' },
+             p => { 100 => 'p' },
+             q => { 100 => 'q' },
+             t => { 100 => 't' },
+             u => { 100 => 'u' },
+    },
+    110 => { a => { 110 => 'a' },
+             b => { 110 => 'b' },
+             c => { 110 => 'c' },
+             d => { 110 => 'd' },
+             f => { 110 => 'f' },
+             g => { 110 => 'g' },
+             k => { 110 => 'k' },
+             l => { 110 => 'l' },
+             n => { 110 => 'n' },
+             p => { 110 => 'p' },
+             t => { 110 => 't' },
+             u => { 110 => 'u' },
+    },
+    111 => { a => { 111 => 'a' },
+             c => { 111 => 'c' },
+             d => { 111 => 'd' },
+             e => { 111 => 'e' },
+             f => { 111 => 'f' },
+             g => { 111 => 'g' },
+             j => { 111 => 'j' },
+             k => { 111 => 'k' },
+             l => { 111 => 'l' },
+             n => { 111 => 'n' },
+             p => { 111 => 'p' },
+             q => { 111 => 'q' },
+             t => { 111 => 't' },
+             u => { 111 => 'u' },
+    },
+    130 => { a => { 130 => 'a' },
+             d => { 130 => 'd' },
+             f => { 130 => 'f' },
+             g => { 130 => 'g' },
+             h => { 130 => 'h' },
+             k => { 130 => 'k' },
+             l => { 130 => 'l' },
+             m => { 130 => 'm' },
+             n => { 130 => 'n' },
+             o => { 130 => 'o' },
+             p => { 130 => 'p' },
+             r => { 130 => 'r' },
+             s => { 130 => 's' },
+             t => { 130 => 't' },
+    },
+    600 => { a => { 100 => 'a' },
+             b => { 100 => 'b' },
+             c => { 100 => 'c' },
+             d => { 100 => 'd' },
+             f => { 100 => 'f' },
+             g => { 100 => 'g' },
+             h => { 100 => 'h' },
+             j => { 100 => 'j' },
+             k => { 100 => 'k' },
+             l => { 100 => 'l' },
+             m => { 100 => 'm' },
+             n => { 100 => 'n' },
+             o => { 100 => 'o' },
+             p => { 100 => 'p' },
+             q => { 100 => 'q' },
+             r => { 100 => 'r' },
+             s => { 100 => 's' },
+             t => { 100 => 't' },
+             v => { 100 => 'v' },
+             x => { 100 => 'x' },
+             y => { 100 => 'y' },
+             z => { 100 => 'z' },
+    },
+    610 => { a => { 110 => 'a' },
+             b => { 110 => 'b' },
+             c => { 110 => 'c' },
+             d => { 110 => 'd' },
+             f => { 110 => 'f' },
+             g => { 110 => 'g' },
+             h => { 110 => 'h' },
+             k => { 110 => 'k' },
+             l => { 110 => 'l' },
+             m => { 110 => 'm' },
+             n => { 110 => 'n' },
+             o => { 110 => 'o' },
+             p => { 110 => 'p' },
+             r => { 110 => 'r' },
+             s => { 110 => 's' },
+             t => { 110 => 't' },
+             v => { 110 => 'v' },
+             x => { 110 => 'x' },
+             y => { 110 => 'y' },
+             z => { 110 => 'z' },
+    },
+    611 => { a => { 111 => 'a' },
+             c => { 111 => 'c' },
+             d => { 111 => 'd' },
+             e => { 111 => 'e' },
+             f => { 111 => 'f' },
+             g => { 111 => 'g' },
+             h => { 111 => 'h' },
+             j => { 111 => 'j' },
+             k => { 111 => 'k' },
+             l => { 111 => 'l' },
+             n => { 111 => 'n' },
+             p => { 111 => 'p' },
+             q => { 111 => 'q' },
+             s => { 111 => 's' },
+             t => { 111 => 't' },
+             v => { 111 => 'v' },
+             x => { 111 => 'x' },
+             y => { 111 => 'y' },
+             z => { 111 => 'z' },
+    },
+    630 => { a => { 130 => 'a' },
+             d => { 130 => 'd' },
+             f => { 130 => 'f' },
+             g => { 130 => 'g' },
+             h => { 130 => 'h' },
+             k => { 130 => 'k' },
+             l => { 130 => 'l' },
+             m => { 130 => 'm' },
+             n => { 130 => 'n' },
+             o => { 130 => 'o' },
+             p => { 130 => 'p' },
+             r => { 130 => 'r' },
+             s => { 130 => 's' },
+             t => { 130 => 't' },
+             v => { 130 => 'v' },
+             x => { 130 => 'x' },
+             y => { 130 => 'y' },
+             z => { 130 => 'z' },
+    },
+    648 => { a => { 148 => 'a' },
+             v => { 148 => 'v' },
+             x => { 148 => 'x' },
+             y => { 148 => 'y' },
+             z => { 148 => 'z' },
+    },
+    650 => { a => { 150 => 'a' },
+             b => { 150 => 'b' },
+             v => { 150 => 'v' },
+             x => { 150 => 'x' },
+             y => { 150 => 'y' },
+             z => { 150 => 'z' },
+    },
+    651 => { a => { 151 => 'a' },
+             v => { 151 => 'v' },
+             x => { 151 => 'x' },
+             y => { 151 => 'y' },
+             z => { 151 => 'z' },
+    },
+    655 => { a => { 155 => 'a' },
+             v => { 155 => 'v' },
+             x => { 155 => 'x' },
+             y => { 155 => 'y' },
+             z => { 155 => 'z' },
+    },
+    700 => { a => { 100 => 'a' },
+             b => { 100 => 'b' },
+             c => { 100 => 'c' },
+             d => { 100 => 'd' },
+             f => { 100 => 'f' },
+             g => { 100 => 'g' },
+             j => { 100 => 'j' },
+             k => { 100 => 'k' },
+             l => { 100 => 'l' },
+             n => { 100 => 'n' },
+             p => { 100 => 'p' },
+             q => { 100 => 'q' },
+             t => { 100 => 't' },
+             u => { 100 => 'u' },
+    },
+    710 => { a => { 110 => 'a' },
+             b => { 110 => 'b' },
+             c => { 110 => 'c' },
+             d => { 110 => 'd' },
+             f => { 110 => 'f' },
+             g => { 110 => 'g' },
+             k => { 110 => 'k' },
+             l => { 110 => 'l' },
+             n => { 110 => 'n' },
+             p => { 110 => 'p' },
+             t => { 110 => 't' },
+             u => { 110 => 'u' },
+    },
+    711 => { a => { 111 => 'a' },
+             c => { 111 => 'c' },
+             d => { 111 => 'd' },
+             e => { 111 => 'e' },
+             f => { 111 => 'f' },
+             g => { 111 => 'g' },
+             j => { 111 => 'j' },
+             k => { 111 => 'k' },
+             l => { 111 => 'l' },
+             n => { 111 => 'n' },
+             p => { 111 => 'p' },
+             q => { 111 => 'q' },
+             t => { 111 => 't' },
+             u => { 111 => 'u' },
+    },
+    730 => { a => { 130 => 'a' },
+             d => { 130 => 'd' },
+             f => { 130 => 'f' },
+             g => { 130 => 'g' },
+             h => { 130 => 'h' },
+             k => { 130 => 'k' },
+             l => { 130 => 'l' },
+             m => { 130 => 'm' },
+             n => { 130 => 'n' },
+             o => { 130 => 'o' },
+             p => { 130 => 'p' },
+             r => { 130 => 'r' },
+             s => { 130 => 's' },
+             t => { 130 => 't' },
+    },
+    751 => { a => { 151 => 'a' },
+             v => { 151 => 'v' },
+             x => { 151 => 'x' },
+             y => { 151 => 'y' },
+             z => { 151 => 'z' },
+    },
+    800 => { a => { 100 => 'a' },
+             b => { 100 => 'b' },
+             c => { 100 => 'c' },
+             d => { 100 => 'd' },
+             e => { 100 => 'e' },
+             f => { 100 => 'f' },
+             g => { 100 => 'g' },
+             j => { 100 => 'j' },
+             k => { 100 => 'k' },
+             l => { 100 => 'l' },
+             n => { 100 => 'n' },
+             p => { 100 => 'p' },
+             q => { 100 => 'q' },
+             t => { 100 => 't' },
+             u => { 100 => 'u' },
+             4 => { 100 => '4' },
+    },    
+    830 => { a => { 130 => 'a' },
+             d => { 130 => 'd' },
+             f => { 130 => 'f' },
+             g => { 130 => 'g' },
+             h => { 130 => 'h' },
+             k => { 130 => 'k' },
+             l => { 130 => 'l' },
+             m => { 130 => 'm' },
+             n => { 130 => 'n' },
+             o => { 130 => 'o' },
+             p => { 130 => 'p' },
+             r => { 130 => 'r' },
+             s => { 130 => 's' },
+             t => { 130 => 't' },
+    },
+);
+
+my $rec_count = @records;
+my $i = 0;
+foreach my $rec_id (@records) {
+    $i++;
+    #print "record: $rec_id $i of $rec_count\n";
+
+    # State variable; was the record changed?
+    my $changed = 0;
+
+    # get the record
+    my $record = $e->retrieve_biblio_record_entry($rec_id);
+    next unless $record;
+    # print Dumper($record);
+
+    try {
+        my $marc = MARC::Record->new_from_xml($record->marc());
+
+        # get the list of controlled fields
+        my @c_fields = keys %controllees;
+
+        foreach my $c_tag (@c_fields) {
+            my @c_subfields = keys %{$controllees{"$c_tag"}};
+            # print "Field: $field subfields: ";
+            # foreach (@subfields) { print "$_ "; }
+
+            # Get the MARCXML from the record and check for controlled fields/subfields
+            my @bib_fields = ($marc->field($c_tag));
+            foreach my $bib_field (@bib_fields) {
+                # print $_->as_formatted(); 
+
+                if ($refresh and defined(scalar($bib_field->subfield('0')))) {
+                    $bib_field->delete_subfield(code => '0');
+                    $changed = 1;
+                }
+                    
+                my %match_subfields;
+                my $match_tag;
+                my @searches;
+                foreach my $c_subfield (@c_subfields) {
+                    my @sf_values = $bib_field->subfield($c_subfield);
+                    if (@sf_values) {
+                        # Give me the first element of the list of authority controlling tags for this subfield
+                        # XXX Will we need to support more than one controlling tag per subfield? Probably. That
+                        # will suck. Oh well, leave that up to Ole to implement.
+                        $match_subfields{$c_subfield} = (keys %{$controllees{$c_tag}{$c_subfield}})[0];
+                        $match_tag = $match_subfields{$c_subfield};
+                        push @searches, map {{term => $_, subfield => $c_subfield}} @sf_values;
+                    }
+                }
+                # print Dumper(\%match_subfields);
+                next if !$match_tag;
+
+                my @tags = ($match_tag);
+
+                # print "Controlling tag: $c_tag and match tag $match_tag\n";
+                # print Dumper(\@tags, \@searches);
+
+                # Now we've built up a complete set of matching controlled
+                # subfields for this particular field; let's check to see if
+                # we have a matching authority record
+                my $session = OpenSRF::AppSession->create("open-ils.search");
+                my $validates = $session->request("open-ils.search.authority.validate.tag.id_list", 
+                    "tags", \@tags, "searches", \@searches
+                )->gather();
+                $session->disconnect();
+
+                # print Dumper($validates);
+
+                # Protect against failed (error condition) search request
+                if (!$validates) {
+                    print STDERR "Search for matching authority failed; record # $rec_id\n";
+                    next if (!$changed);
+                }
+
+                # Only add linking if one or more was found, but we may have changed
+                # the record already if in --refresh mode.
+                if (scalar(@$validates) > 0) {
+
+                    # Iterate through the returned authority record IDs to delete any
+                    # matching $0 subfields already in the bib record
+                    foreach my $auth_zero (@$validates) {
+                        $bib_field->delete_subfield(code => '0', match => qr/\)$auth_zero$/);
+                    }
+    
+                    # Okay, we have a matching authority control; time to
+                    # add the magical subfield 0. Use the first returned auth
+                    # record as a match.
+                    my $auth_id = @$validates[0];
+                    my $auth_rec = $e->retrieve_authority_record_entry($auth_id);
+                    my $auth_marc = MARC::Record->new_from_xml($auth_rec->marc());
+                    my $cni = $auth_marc->field('003')->data();
+                    
+                    $bib_field->add_subfields('0' => "($cni)$auth_id");
+                    $changed = 1;
+                }
+            }
+        }
+        if ($changed) {
+            my $editor = OpenILS::Utils::CStoreEditor->new(xact=>1);
+            # print $marc->as_formatted();
+            my $xml = $marc->as_xml_record();
+            $xml =~ s/\n//sgo;
+            $xml =~ s/^<\?xml.+\?\s*>//go;
+            $xml =~ s/>\s+</></go;
+            $xml =~ s/\p{Cc}//go;
+            $xml = OpenILS::Application::AppUtils->entityize($xml);
+
+            $record->marc($xml);
+            $editor->update_biblio_record_entry($record);
+            $editor->commit();
+        }
+    } otherwise {
+        my $err = shift;
+        print STDERR "\nRecord # $rec_id : $err\n";
+        import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire process
+    }
+}
+
+__END__
+
+=head1 NAME
+
+authority_control_fields.pl - Controls fields in bibliographic records with authorities in Evergreen
+
+=head1 SYNOPSIS
+
+C<authority_control_fields.pl> [B<--configuration>=I<opensrf_core.conf>] [B<--refresh>]
+[[B<--record>=I<record>[ B<--record>=I<record>]]] | [B<--all>] | [B<--start_id>=I<start-ID> B<--end_id>=I<end-ID>] |
+[B<--days_back>=I<number-of-days>]
+
+=head1 DESCRIPTION
+
+For a given set of records:
+
+=over
+
+=item * Iterate through the list of fields that are controlled fields
+
+=item * Iterate through the list of subfields that are controlled for
+that given field
+
+=item * Search for a matching authority record for that combination of
+field + subfield(s)
+
+=over
+
+=item * If we find a match, then add a $0 subfield to that field identifying
+the controlling authority record
+
+=item * If we do not find a match, then insert a row into an "uncontrolled"
+table identifying the record ID, field, and subfield(s) that were not controlled
+
+=back
+
+=item * Iterate through the list of floating subdivisions
+
+=over
+
+=item * If we find a match, then add a $0 subfield to that field identifying
+the controlling authority record
+
+=item * If we do not find a match, then insert a row into an "uncontrolled"
+table identifying the record ID, field, and subfield(s) that were not controlled
+
+=back
+
+=item * If we changed the record, update it in the database
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item * B<-c> I<config-file>, B<--configuration>=I<config-file>
+
+Specifies the OpenSRF configuration file used to connect to the OpenSRF router.
+Defaults to F<@sysconfdir@/opensrf_core.xml>
+
+=item * B<-r> I<record-ID>, B<--record>=I<record-ID>
+
+Specifies the bibliographic record ID (found in the C<biblio.record_entry.id>
+column) of the record to process. This option may be specified more than once
+to process multiple records in a single run.
+
+=item * B<-a>, B<--all>
+
+Specifies that all bibliographic records should be processed. For large
+databases, this may take an extraordinarily long amount of time.
+
+=item * B<-r>, B<--refresh>
+
+Specifies that all authority links should be removed from the target
+bibliographic record(s).  This will effectively rewrite all authority
+linking anew.
+
+=item * B<-s> I<start-ID>, B<--start_id>=I<start-ID>
+
+Specifies the starting ID of the range of bibliographic records to process.
+This option is ignored unless it is accompanied by the B<-e> or B<--end_id>
+option.
+
+=item * B<-e> I<end-ID>, B<--end_id>=I<end-ID>
+
+Specifies the ending ID of the range of bibliographic records to process.
+This option is ignored unless it is accompanied by the B<-s> or B<--start_id>
+option.
+
+=item * B<--days_back>=I<number-of-days>
+
+Specifies that only bibliographic records that have been created in the
+past few days should be processed.  You must specify how many days back
+to include.  This option is incompatible with the B<-s> and B<--start_id>
+options.
+
+=back
+
+=head1 EXAMPLES
+
+    authority_control_fields.pl --start_id 1 --end_id 50000
+
+Processes the bibliographic records with IDs between 1 and 50,000 using the
+default OpenSRF configuration file for connection information.
+
+=head1 AUTHOR
+
+Dan Scott <dscott@laurentian.ca>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010-2011 by Dan Scott
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=cut
+

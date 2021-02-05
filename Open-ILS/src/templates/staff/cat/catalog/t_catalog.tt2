@@ -1,0 +1,172 @@
+
+<div ng-show="record_id" class="row col-md-12">
+    <eg-record-summary record-id="record_id" no-marc-link="true" record="summary_pane_record"></eg-record-summary>
+</div>
+
+<div ng-show="record_id" class="row col-md-12 pad-vert">
+  <div class="col-md-6">
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailStart')">
+       [% l('Start') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailPrev')">
+       [% l('Previous') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailNext')">
+       [% l('Next') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailEnd')">
+       [% l('End') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailBackToResults', true)">
+       [% l('Back To Results') %] ( {{ search_result_index }} / {{ search_result_hit_count }} )
+    </button>
+  </div>
+  <div class="col-md-6">
+    <div class="pull-right">
+    <button type="button" class="btn btn-default" ng-click="selectedHoldingsVolCopyAdd()">
+        [% l('Add Holdings') %]
+    </button>
+    <div class="btn-group" uib-dropdown dropdown-append-to-body>
+        <button id="serials-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+            [% l('Serials') %] <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu role="menu" aria-labelledby="serials-button">
+             <li role="menuitem">
+                <a ng-click="quickReceive()">[% l('Quick Receive') %]</a>
+            </li>
+             <li role="menuitem">
+                <a target="_self" href="./serials/{{record_id}}">[% l('Manage Subscriptions') %]</a>
+            </li>
+             <li role="menuitem">
+                <a target="_self" href="./serials/{{record_id}}/manage-mfhds">[% l('Manage MFHDs') %]</a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn-group" uib-dropdown dropdown-append-to-body>
+        <button id="mark-for-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+            [% l('Mark for:') %] <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu role="menu" aria-labelledby="mark-for-button">
+             <li role="menuitem">
+                    <a ng-click="markConjoined()" href="">
+                        [% l('Conjoined Items') %]
+                    <span class="target-record-aside" ng-if="current_conjoined_target">[% l('(Currently [_1])', '{{current_conjoined_target}}') %]</span>
+                </a>
+            </li>
+           <li role="menuitem">
+                <a ng-click="markOverlay()" href="">
+                    [% l('Overlay Target') %]
+                    <span class="target-record-aside" ng-if="current_overlay_target">[% l('(Currently [_1])', '{{current_overlay_target}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                <a ng-click="mark_hold_transfer_dest()" href="">
+                   [% l('Title Hold Transfer') %]
+                <span class="target-record-aside" ng-if="current_hold_transfer_dest">[% l('(Currently [_1])', '{{current_hold_transfer_dest}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                <a ng-click="markHoldingsTransfer()" href="">
+                    [% l('Holdings Transfer') %]
+                    <span class="target-record-aside" ng-if="current_transfer_target">[% l('(Currently [_1])', '{{current_transfer_target}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                <a ng-click="clearRecordMarks()" href="">[% l('Reset Record Marks') %]</a>
+            </li>
+        </ul>
+    </div>
+        <div class="btn-group" uib-dropdown dropdown-append-to-body>
+        <button id="other-actions-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+            [% l('Other Actions:') %] <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu role="menu" aria-labelledby="other-actions-button">
+             <li role="menuitem">
+                    <a ng-click="add_to_record_bucket()" href="">
+                        [% l('Add To Bucket') %]
+                    </a>
+            </li>
+             <li role="menuitem" ng-class="{disabled : !carousels_available}">
+                    <a ng-click="add_to_carousel()" href="">
+                        [% l('Add To Carousel') %]
+                    </a>
+            </li>
+            <li role="menuitem">
+                   <a ng-click="view_place_orders()" href="">
+                        [% l('View/Place Orders') %]
+                   </a>
+            </li>
+        </ul>
+        </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : record_tab == 'catalog'}">
+    <a ng-click="set_record_tab('catalog')" >
+        [% l('OPAC View') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'marc_edit'}">
+    <a ng-click="record_id && set_record_tab('marc_edit')" >
+        [% l('MARC Edit') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'marc_html'}">
+    <a ng-click="record_id && set_record_tab('marc_html')" >
+        [% l('MARC View') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'holds'}">
+    <a ng-click="record_id && set_record_tab('holds')" >
+        [% l('View Holds') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'monoparts'}">
+    <a ng-click="record_id && set_record_tab('monoparts')" >
+        [% l('Monograph Parts') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'holdings'}">
+    <a ng-click="record_id && set_record_tab('holdings')" >
+        [% l('Holdings View') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'conjoined'}">
+    <a ng-click="record_id && set_record_tab('conjoined')" >
+        [% l('Conjoined Items') %]
+    </a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div ng-disabled="record_tab == default_tab" class="btn btn-default btn-xs pull-right" ng-click="set_default_record_tab()">
+    [% l('Set default view') %]
+  </div>
+  <div class="tab-pane active">
+    <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
+    <div ng-show="record_tab == 'catalog'">
+      <eg-embed-frame save-space="300" frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
+    </div>
+    <div ng-show="record_tab == 'marc_edit'">
+      <eg-marc-edit-record fast-add="true" on-save="refresh_record_callback" dirty-flag="stop_unload" record-id="record_id"/>
+    </div>
+    <!-- ng-if the remaining tabs so they can be instantiated on demand -->
+    <div ng-if="record_tab == 'marc_html'">
+      <eg-record-html record-id="record_id"></eg-record-html>
+    </div>
+    <div ng-if="record_tab == 'holds'">
+      [% INCLUDE 'staff/cat/catalog/t_holds.tt2' %]
+    </div>
+    <div ng-if="record_tab == 'monoparts'">
+      <eg-embed-frame save-space="350" url="parts_url"></eg-embed-frame>
+    </div>
+    <div ng-if="record_tab == 'holdings'">
+      [% INCLUDE 'staff/cat/catalog/t_holdings.tt2' %]
+    </div>
+    <div ng-if="record_tab == 'conjoined'">
+      [% INCLUDE 'staff/cat/catalog/t_conjoined_items.tt2' %]
+    </div>
+  </div>
+</div>

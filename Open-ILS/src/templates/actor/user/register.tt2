@@ -1,0 +1,125 @@
+[% ctx.page_title = l('User Editor') %]
+[% WRAPPER base.tt2 %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/actor/user/register.js'></script>
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/register.css" />
+
+<div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
+    <script type="dojo/method" event="onSubmit">
+        /* we don't want to use the form action, but uEditSave and UEditSaveClone from the Save buttons.  We
+            do want to use the Form's validation features, which we do from within UEditSave, etc. */
+        return false;
+    </script>
+    <table>
+        [% INCLUDE actor/user/register_table.tt2 %]
+    </table>
+</div>
+
+<div id='uedit-save-div'>
+    <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave' scrollOnFocus='false'></button>
+    <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone' scrollOnFocus='false'></button>
+    <div id='require-toggle'>
+        <a href='javascript:uEditToggleRequired(1);' id='uedit-show-required'>[% l('Show Only Required Fields') %]</a><br id='uedit-show-required-br'/>
+        <a href='javascript:uEditToggleRequired(2);' id='uedit-show-suggested'>[% l('Show Suggested Fields') %]</a><br id='uedit-show-suggested-br'/>
+        <a href='javascript:uEditToggleRequired(0);' id='uedit-show-all' class='hidden'>[% l('Show All Fields') %]</a>
+    </div>
+
+    <!-- link to requesting user account for pending users -->
+    <div class='hidden' id='uedit-requesting-user-div'>
+        <a href='javascript:;' id='uedit-requesting-user'></a>
+    </div>
+</div>
+
+
+<!-- context help widget -->
+<a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>
+<fieldset id='uedit-help-div' class='hidden'>
+    <legend id='uedit-help-field'></legend>
+    <div id='uedit-help-text'></div>
+</fieldset>
+
+<!-- duplicate patron search results -->
+<div id='uedit-dupe-div' class='hidden'>
+    <div><a href='javascript:void(0);' id='uedit-dupe-names-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-email-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-ident-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-phone-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-address-link'></a></div>
+</div>
+
+<div id='uedit-address-alert' class='hidden'>
+    <div id='uedit-address-alert-header'>[% l('Address Alert') %]</div>
+    <div id='uedit-address-alert-message'></div>
+</div>
+
+<div class='hidden'>
+    <div jsId="progressDialog" dojoType="openils.widget.ProgressDialog"></div>
+    <span id='true' style='color:green;'>&#x2713;</span>
+    <span id='false' style='color:red;'>&#x2717;</span>
+    <div dojoType='dijit.Dialog' jsId='allCardsDialog'>
+        <table class='oils-generic-table' style='margin:10px;'>
+            <thead>
+                <tr>
+                    <th id='uedit-all-cards-barcode'>[% l('Barcode') %]</th>
+                    <th id='uedit-all-cards-active'>[% l('Active') %]</th>
+                    <th id='uedit-all-cards-primary'>[% l('Primary') %]</th>
+                </tr>
+            </thead>
+            <tbody id='uedit-all-cards-tbody'>
+                <tr id='uedit-all-cards-tr-template'>
+                    <td><div name='barcode'></div></td>
+                    <td><div name='active'></div></td>
+                    <td><div name='primary'></div></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan='3' style='text-align:center;'>
+                        <button jsId='allCardsClose' dojoType='dijit.form.Button' onClick='allCardsDialog.hide()' scrollOnFocus='false'>[% l('Close') %]</button>
+                        <span id='uedit-apply-card-changes'><button jsId='allCardsApply' dojoType='dijit.form.Button' onClick='applyCardChanges()' scrollOnFocus='false'>[% l('Apply Changes') %]</button></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- SECONDARY GROUPS DIALOG -->
+<div class='hidden'>
+    <span id='true' style='color:green;'>&#x2713;</span>
+    <span id='false' style='color:red;'>&#x2717;</span>
+    <div dojoType='dijit.Dialog' jsId='secondaryGroupsDialog'>
+        <table class='oils-generic-table' style='margin:10px;'>
+            <thead>
+                <tr>
+                    <th>[% l('Secondary Permission Groups') %]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td colspan="2">
+                    [% l('Assign additional permission groups to users here.<br/>This does not affect circulation policy.') %]
+                  </td>
+                </tr>
+            </tbody>
+            <tbody id='uedit-secondary-groups-tbody'>
+                <tr id='uedit-secondary-groups-tr-template'>
+                    <td><div name='groupname'></div></td>
+                    <td><div name='groupeditbutton'></div></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                   <td style='text-align:center;'>
+                       <button dojoType='dijit.form.Button' onClick='saveSecondaryGroups' scrollOnFocus='false'>[% l('Save') %]</button>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+[% END %]
+

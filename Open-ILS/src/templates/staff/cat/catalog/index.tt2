@@ -1,0 +1,76 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Catalog"); 
+  ctx.page_app = "egCatalogApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/marcrecord.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/patron_search.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/tagtable.js"></script>
+[% INCLUDE 'staff/serials/share/serials_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/sub_selector.js"></script>
+[% INCLUDE 'staff/cat/share/marcedit_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/marcedit.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
+[% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/holdings.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/catalog/app.js"></script>
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_COPIES_VOLUMES =
+      "[% l('Permanently delete selected items and/or call numbers from catalog?') %]";
+    s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
+      "[% l('Will delete {{copies}} items and {{volumes}} call numbers') %]";
+    s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE =
+      "[% l('One or more items could not be deleted. Override?') %]";
+    s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY =
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+    s.CONFIRM_DELETE_PEERS =
+      "[% l('Unlink selected conjoined items?') %]";
+    s.CONFIRM_DELETE_PEERS_MESSAGE =
+      "[% l('Will unlink {{peers}} items') %]";
+    s.CONFIRM_TRANSFER_COPIES_TO_MARKED_VOLUME =                                                                                                                  
+      "[% l('Are you sure you want to transfer selected items to the marked call number?') %]";                                                                                   
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE =                                                                                                           
+      "[% l('One or more items could not be transferred. Override?') %]";                                                                                                    
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =                                                                                                            
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";                
+    s.VOLS_TRANSFERED =                                                                                                            
+      "[% l('Call Number(s) transfered') %]";                
+    s.ITEMS_TRANSFERED =                                                                                                            
+      "[% l('Item(s) transfered') %]";                
+    s.HOLD_TRANSFER_DEST_MARKED =                                                                                                            
+      "[% l('Hold Transfer Destination set') %]";                
+    s.MARK_CONJ_TARGET =                                                                                                            
+      "[% l('Conjoined Item Target set') %]";                
+    s.MARK_HOLDINGS_TARGET = "[% l('Holdings transfer target set') %]";
+    s.MARK_OVERLAY_TARGET =                                                                                                            
+      "[% l('Record Overlay Target set') %]";                
+
+    s.SERIALS_NO_SUBS = "[% l('No subscription selected') %]";
+    s.SERIALS_NO_ITEMS = "[% l('No items expected for the selected subscription') %]";
+
+    s.SERIALS_ISSUANCE_FAIL_SAVE = "[% l('Failed to save issuance') %]";
+    s.SERIALS_ISSUANCE_SUCCESS_SAVE = "[% l('Issuance saved') %]";
+    s.PAGE_TITLE_CATALOG_CONTEXT = "[% l('Catalog') %]";
+    s.PAGE_TITLE_BIB_DETAIL = "[% l('Bib [_1]', '{{record_id}}') %]";
+
+  }])
+</script>
+
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
+

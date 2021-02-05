@@ -1,0 +1,283 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/hold_notify.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "holds";
+    limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
+    offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
+    count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
+%]
+<h3 class="sr-only">[% l('My Holds') %]</h3>
+<div id='myopac_holds_div'>
+
+    <div id="acct_holds_tabs">
+        <div class="align selected">
+            <a href='#'>[% l("Items on Hold") %]</a>
+        </div>
+        [% IF ctx.curbside_pickup_libs.size %]
+        <div class="align">
+            <a href='[% mkurl('holds_curbside',{},['limit','offset']) %]'>[% l("Curbside Pickup") %]</a>
+        </div>
+        [% END %]
+        [% IF ebook_api.enabled == 'true' %]
+        <div class="align">
+            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items on Hold") %]</a>
+        </div>
+        <div class="align">
+            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items Ready for Checkout") %]</a>
+        </div>
+        [% END %]
+        <div class="align">
+            <a href='[% mkurl('hold_history', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("Holds History") %]</a>
+        </div>
+    </div>
+
+    <div class="header_middle">
+        <span id="acct_holds_header" style="float:left;">
+            [%  IF CGI.param("available");
+                    l("Items Ready for Pickup");
+                ELSE;
+                    l("Current Items on Hold");
+                END
+            %]
+        </span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='[% mkurl('holds', {limit => limit,offset => (offset - limit)}) %]'
+                [% IF offset <= 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [% IF offset > 0 || count > limit;
+                curpage = 0;
+                WHILE curpage * limit < count;
+                    IF curpage * limit == offset;
+            %]
+            [% curpage + 1 %]
+                    [%- ELSE %]
+            <a href='[% mkurl('holds', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+                    [%- END;
+                    curpage = curpage + 1;
+                END;
+            END %]
+            <a href='[% mkurl('holds', {limit => limit, offset => (offset + limit)}) %]'
+               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+
+    </div>
+    <div class="clear-both"></div>
+    <div id='holds_main'>
+        <form method="post">
+        <table class="table_no_border_space table_no_cell_pad opac-auto-097"
+            title="[% l('Actions for Items on Hold') %]">
+            <tr>
+                <td>
+                    <select name="action" id="acct_holds_actions" 
+                      title="[% l('Select your action for the selected holds') %]">
+                        <option id='myopac_holds_actions_none' value=''>
+                        -- [% l("Actions for selected holds") %] --
+                        </option>
+                        [%  req_lib = ctx.user.home_ou.id || ctx.user.home_ou;
+                            IF NOT ctx.get_org_setting(req_lib, 'ff.request.force_mediation') %]
+                        <option value='suspend'>[% l("Suspend") %]</option>
+                        <option value='activate'>[% l("Activate") %]</option>
+                        [% END %]
+                        <!-- XXX maybe later <option value='thaw_date'>[% l("Set Active Date") %]</option> -->
+                        <option value='cancel'>[% l("Cancel") %]</option>
+                    </select>
+                </td>
+                <td style="padding-left:9px;">
+                    <input type="submit" value="[% l('Go') %]"
+                        title="[% l('Go') %]" class="opac-button" />
+                </td>
+                <td style="padding-left:5px;">
+                    <a href="#"><img
+                        alt="[% l('Holds Help') %]"
+                        title="[% l('Actions for selected holds') %]"
+                        src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
+                </td>
+                <td style="padding-left:5px;" class='error'>
+                    [%  IF ctx.hold_suspend_post_capture;
+                            l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.');
+                        END;
+                    %]
+                </td>
+                <td align="right">
+                    [% IF CGI.param("available") -%]
+                    <a href="[% mkurl('holds', {}, ['limit','offset','available']) %]">[% l('Show all holds') %]</a> |
+                    <strong>[% l("Show only available holds") %]</strong>
+                    [% ELSE -%]
+                    <strong>[% l("Show all holds") %]</strong> |
+                    <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available holds") %]</a>
+                    [% END -%]
+                </td>
+            </tr>
+        </table>
+        [% IF ctx.holds.size && ctx.holds.size < 1 %]
+        <div class="warning_box">[% l('No holds found.') %]</div>
+        [% ELSE %]
+        <table id="acct_holds_main_header" title="[% l('Items on Hold') %]"
+            class="table_no_border_space table_no_cell_pad">
+            <thead>
+            <tr>
+                <th class="checkbox_column"> 
+                    <input type="checkbox" title="[% l('Select All Holds') %]"
+                      onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                </th>
+                <th>[% sort_head("sort_title", l('Title')) %]</th>
+                <th>[% sort_head("author", l('Author')) %]</th>
+                <th>[% sort_head("format", l('Format')) %]</th>
+                <th>[% l('Pickup Location') %]</th>
+                <th>[% l('Cancel if not filled by') %]</th>
+                <th>[% l('Status') %]</th>
+                <th>[% l('Notify Method') %]</th>
+                <th>[% l('Notes') %]</th>
+            </tr>
+            </thead>
+            <tbody id="holds_temp_parent">
+
+                [%# Copy the ctx.holds into a local array, then add a SORT field
+                    that contains the value to sort on.  Since we need the item attrs,
+                    invoke it and save the result in ATTRS.
+		%]
+		[% 
+                hold_items = ctx.holds;
+
+                sort_field = CGI.param('sort');
+
+                FOR hold IN hold_items;
+                    hold.ATTRS = {marc_xml => hold.marc_xml};
+                    PROCESS get_marc_attrs args=hold.ATTRS;
+
+                    SWITCH sort_field;
+
+                       CASE "sort_title";
+                          hold.SORTING = hold.ATTRS.sort_title;
+
+                       CASE "author";
+                          hold.SORTING = hold.ATTRS.author;
+
+                       CASE "format";
+                          hold.SORTING = hold.ATTRS.format_label;
+                       
+                       CASE;
+                          sort_field = "";
+                    END; # SWITCH
+                END; #FOR hold
+
+                IF (sort_field != "sort_title");
+                   deemphasize_class = "";
+                ELSE;
+                   deemphasize_class = " class=\"sort_deemphasize\"";
+                END;
+
+                # Apply sorting to hold_items
+	        IF (sort_field != "");
+		    hold_items = hold_items.sort("SORTING");
+                    IF (CGI.param("sort_type") == "desc");
+                        hold_items = hold_items.reverse;
+                    END;
+
+                    # Shorten the hold_items list per offset/limit/count 
+                    hi = offset + limit - 1;
+                    hi = hi > hold_items.max ? hold_items.max : hi;
+
+                    hold_items = hold_items.slice(offset, hi);
+                END;
+
+		# hold_items list is now sorted.  Traverse and dump the information.
+               
+                FOR hold IN hold_items;
+                    ahr = hold.hold.hold %]
+                <tr name="acct_holds_temp"
+                    class="acct_holds_temp[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
+                    <td class="checkbox_column">
+                        <input type="checkbox" name="hold_id" value="[% ahr.id %]" 
+                            [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
+                    </td>
+                    <td>
+                        <div>
+                            [% title = hold.ATTRS.title;
+                            IF ahr.hold_type == 'P';
+                    	        title = l('[_1] ([_2])', title, hold.hold.part.label);
+                            END; %]
+
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                                hold.hold.bre_id, {}, 1) %]"
+                                name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                [%- title.substr(0,hold.ATTRS.nonfiling_characters) | html %]</span>
+                                [%- title.substr(hold.ATTRS.nonfiling_characters)   | html %]</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <a href="[% mkurl(ctx.opac_root _ '/results',
+                                {qtype => 'author', query => hold.ATTRS.author.replace('[,\.:;]', '')},
+                                1
+                            ) %]">[% hold.ATTRS.author | html %]</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="format_icon">
+                          [% 
+                            formats = hold.ATTRS.all_formats;
+                            IF ahr.hold_type == 'M';
+                              # only show selected formats for metarecords
+                              formats = [];
+                              FOR ccvm IN hold.metarecord_selected_filters.icons;
+                                NEXT IF ccvm.opac_visible == 'f';
+                                format = {};
+                                format.label = ccvm.search_label || ccvm.value;
+                                format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
+                                formats.push(format);
+                              END;
+                            END;
+                            FOR format IN formats 
+                          %]
+                            <img title="[% format.label | html %]" 
+                              alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
+                            [% END %]
+                        </div>
+                    </td>
+                    <td>
+                        [% ctx.get_aou(ahr.pickup_lib).name | html %]
+                    </td>
+                    <td>
+                        [% IF ahr.expire_time;
+                            date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT);
+                        END %]
+                    </td>
+                    <td>
+                        <div name="acct_holds_status">
+                            [% PROCESS get_hold_status hold=hold; %]
+                        </div>
+                    </td>
+                    <td>
+                        <div name="acct_holds_notify">
+                            [% PROCESS get_hold_notify h=ahr; %]
+                        </div>
+                    </td>
+                    <td class="hold_notes">
+                    [%- FOREACH pubnote IN ahr.notes;
+                        IF pubnote.pub == 't';
+                    %]
+                        <div class="hold_note">
+                            <span class="hold_note_title">[% pubnote.title | html %]</span>
+                            <br />
+                            <span class="hold_note_body">[% pubnote.body | html %]</span>
+                        </div>
+                    [%- END; END; %]
+                    </td>
+                    <td class="opac-auto-161">
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
+                            [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
+                            [% l('Edit') %]
+                        </a>
+                    </td>
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+        [% END %]
+        </form>
+    </div>
+</div>
+[% END %]

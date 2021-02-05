@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html onclick="keepFocusInTextbox(event)">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>JavaScript Shell 1.4</title>
+
+<script type="text/javascript" src="/xul/server/main/JSAN.js" />
+<script type="text/javascript" src="/xul/server/main/constants.js" />
+<script type="text/javascript" src="/xul/server/OpenILS/global_util.js" />
+<script type="text/javascript" src="/xul/server/OpenILS/event_util.js" />
+<script type="text/javascript" src="/xul/server/OpenILS/data.js" />
+<script type="text/javascript" src="/xul/server/util/network.js" />
+<script type="text/javascript" src="/xul/server/util/error.js" />
+<script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
+<script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
+<script>
+    try {
+        dojo.require('fieldmapper.AutoIDL'); 
+        JSAN.addRepository('/xul/server/');
+        JSAN.use('util.error'); var error = new util.error();
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('util.network'); var network = new util.network();
+    } catch(E) { 
+        alert(E); 
+    }
+</script>
+
+<script type="text/javascript" src="shell.js"></script>
+
+<!-- for http://ted.mielczarek.org/code/mozilla/extensiondev/ -->
+<script type="text/javascript" src="chrome://extensiondev/content/rdfhistory.js"></script>
+<script type="text/javascript" src="chrome://extensiondev/content/chromeShellExtras.js"></script>
+
+<style type="text/css">
+body { background: white; color: black; }
+
+#output { white-space: pre; white-space: -moz-pre-wrap; } /* Preserve line breaks, but wrap too if browser supports it */
+h3 { margin-top: 0; margin-bottom: 0em; }
+h3 + div { margin: 0; }
+
+form { margin: 0; padding: 0; }
+#input { width: 100%; border: none; padding: 0; overflow: auto; }
+
+.input { color: blue; background: white; font: inherit; font-weight: bold; margin-top: .5em; /* background: #E6E6FF; */ }
+.normalOutput { color: black; background: white; }
+.print { color: brown; background: white; }
+.error { color: red; background: white; }
+.propList { color: green; background: white; }
+.message { color: green; background: white; }
+.tabcomplete { color: purple; background: white; }
+</style>
+</head>
+
+<body onload="init()">
+
+<div id="output"><h3>JavaScript Shell 1.4</h3><div>Features: autocompletion of property names with Tab, multiline input with Shift+Enter, input history with (Ctrl+) Up/Down, <a accesskey="M" href="javascript:go('scope(Math); mathHelp();');" title="Accesskey: M">Math</a>, <a accesskey="H" href="http://www.squarefree.com/shell/?ignoreReferrerFrom=shell1.4"  title="Accesskey: H">help</a></div><div>Values and functions: ans, print(string), <a accesskey="P" href="javascript:go('props(ans)')" title="Accesskey: P">props(object)</a>, <a accesskey="B" href="javascript:go('blink(ans)')" title="Accesskey: B">blink(node)</a>, <a accesskey="C" href="javascript:go('clear()')" title="Accesskey: C">clear()</a>, load(scriptURL), scope(object)</div></div>
+
+<div><textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea></div>
+
+</body>
+
+</html>

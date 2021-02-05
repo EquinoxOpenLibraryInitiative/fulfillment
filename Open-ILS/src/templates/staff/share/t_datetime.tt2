@@ -1,0 +1,49 @@
+<div>
+  <div>
+    <!-- Date Picker -->
+    <div class="input-group">
+      <input type="text"
+        id="{{id}}"
+        class="form-control"
+        ng-show="!hideDatePicker"
+        uib-datepicker-popup="{{date_format}}"
+        is-open="datePickerIsOpen"
+        datepicker-options="options"
+        ng-model="ngModel"
+        ng-change="ngChange"
+        ng-blur="ngBlur"
+        ng-disabled="ngDisabled"
+        ng-required="ngRequired"
+        focus-me="focusMe"
+        close-text="{{closeText}}"/>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default"
+          ng-click="datePickerIsOpen=!datePickerIsOpen" ng-disabled="ngDisabled"
+          aria-label="Select a date" aria-pressed="{{datePickerIsOpen || false}}">
+          <span class="glyphicon glyphicon-calendar" title="Select a date"></span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <!-- Time Picker
+      let time picker break to a new line since it does not
+      not line up horizontally very well with the date picker -->
+  <div>
+    <span>
+      <div uib-timepicker
+        ng-class="{hidden:!showTimePicker}"
+        ng-hide="hideTimePicker"
+        ng-model="ngModel"
+        ng-disabled="ngDisabled"
+        ng-required="ngRequired"
+        ng-blur="ngBlur"
+        ng-change="ngChange">
+      </div>
+    </span>
+  </div>
+
+  <div>
+    <span ng-show="outOfRange" class="label label-danger">[% l('Input is out of range.') %]</span>
+  </div>
+</div>
+

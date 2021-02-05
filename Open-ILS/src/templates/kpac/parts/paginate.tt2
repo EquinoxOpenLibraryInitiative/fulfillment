@@ -1,0 +1,50 @@
+[%  # paging, weeee
+    page = CGI.param('page');
+    page = page.match('^\d+$') ? page : 0; # verify page is a sane value
+    page_count = ctx.page_size == 0 ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+    ctx.result_start = 1 + ctx.page_size * page;
+    ctx.result_stop = ctx.page_size * (page + 1);
+    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+    result_count = ctx.result_start;
+%]
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <!-- Next -->
+        <td>
+            [%  class = '';
+                href = '#';
+                IF page > 0;
+                    href = mkurl('', {page => page - 1});
+                ELSE; class = class _ ' invisible'; END %]
+            <a class="[% class %]" href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/arrow_last.png[% ctx.cache_key %]" alt="[% l('Last') %]" /></a>
+        </td>
+
+        <!-- page X of Y -->
+        <td width="100%" class="nav_mid_bg">
+            <table cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+		    <td>[% l('Page [_1] of [_2]', '</td><td class="current_page">' _ (page + 1) _ '</td><td>', '</td><td class="total_pages">' _ page_count _ '</td>') %]</td>
+                </tr>
+            </table>
+        </td>
+
+        <!-- Prev -->
+        <td class="to_top_btn">
+            [%  class = '';
+                href = '#';
+                IF (page + 1) < page_count;
+                    href = mkurl('', {page => page + 1});
+                ELSE; class = class _ ' invisible'; END;
+            %]
+            <a class="[% class %]" href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/arrow_next.png[% ctx.cache_key %]" alt="[% l('Next') %]" /></a>
+        </td>
+
+        <!-- Top of page -->
+        [% IF showtop %]
+            <td class="to_top_btn"><a href="[% mkurl('').replace('#.*', '') %]">
+                <img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png[% ctx.cache_key %]" alt="[% l('Top') %]" />
+            </a></td>
+        [% END %]
+    </tr>
+</table>

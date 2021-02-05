@@ -1,0 +1,1130 @@
+Evergreen 2.9 Release Notes
+===========================
+:toc:
+:numbered:
+
+Evergreen 2.9.8
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.7
+
+* When adding a price to the Acquisitions Brief Record price field, it will
+now propogate to the lineitem estimated price field.
+* Declares UTF-8 encoding when printing from the catalog to resolve issues
+where non_ASCII characters printed incorrectly in some browsers.
+* Fixes an issue where the circ module sometimes skipped over booking logic
+even when booking was running on a system.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.9.8 point release of
+Evergreen:
+
+* Bill Erickson
+* Mike Rylander
+* Dan Scott 
+
+Evergreen 2.9.7
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.6
+
+* The claims never checked out counter on the patron record is now
+  incremented correctly when marking a lost loan as
+  claims-never-checked-out.
+* When a transit is canceled, the copy's status is changed only
+  if its status was previously "In Transit".
+* Retrieving records with embedded holdings via SRU and Z39.50 is now
+  faster.
+* The hold status message in the public catalog now uses
+  better grammar.
+* The error message displayed when a patron attempts to place
+  a hold but is prevented from doing so due to policy reasons
+  is now more likely to be useful
+* The public catalog now draws the edition statement only
+  from the 250 field; it no longer tries to check the 534
+  and 775 fields.
+* Embedded schema.org microdata now uses "offeredBy" rather
+  than "seller".
+* The ContentCafe added content plugin now handles the "fake"
+  ISBNs that Baker and Taylor assigns to media items.
+* Attempting to renew a rental or deposit item in the public
+  catalog no longer causes an internal server errorr.
+* Various format icons now have transparent backgrounds (as opposed
+  to white).
+* The staff client will no longer wait indefinitely for Novelist
+  to supply added content, improving its responsiveness.
+* A few additional strings are now marked as translatable.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.9.6 point release of
+Evergreen:
+
+* Thomas Berezansky
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Blake Graham-Henderson
+* Jim Keenan
+* Kathy Lussier
+* Mike Rylander
+* Dan Scott
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Yamil Suarez
+
+Evergreen 2.9.6
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.5
+
+* Fixes a bug where Action Triggers could select an inactive event definition 
+when running.
+* Fixes an issue where previously-checked-out items did not display in
+metarecord searches when the Tag Circulated Items Library Setting is enabled.
+* Fixes an error that occurred when the system attempted to display a translated
+string for the "Has Local Copy" hold placement error message.
+* Fixes an issue where the Show More/Show Fewer Details button didn't work in
+catalogs that default to showing more details.
+* Removes Social Security Number as a stock patron identification type for
+new installations. This fix does not change patron identification types for 
+existing Evergreen systems.
+* Adds two missing link fields (patron profile and patron home library) to
+the fm_idl.xml for the Combined Active and Aged Circulations (combcirc)
+reporter source.
+* Adds a performance improvement for the "Clear Holds Shelf" checkin modifier.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code, testing and documentation patches to the 2.9.6 point release of Evergreen:
+
+* Galen Charlton
+* Codey Kolasinski
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Jason Stephenson
+* Josh Stompro
+
+Evergreen 2.9.5
+---------------
+This release contains several bugixes improving on Evergreen 2.9.4
+
+* Emails sent using the Action Trigger SendEmail reactor now always MIME-encode
+the From, To, Subject, Bcc, Cc, Reply-To, and Sender headers. As a consequence,
+non-ASCII character in those fields are more likely to be displayed correctly
+in email clients. 
+* Fixes the responsive view of the My Account Items Out screen so that _Title_
+and _Author_ are now in separate columns.
+* Fixes an incorrect link for the MVF field definition and adds a new link to
+BRE in fm_IDL.xml.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.5 point release of Evergreen:
+
+* Blake Henderson
+* Pasi Kallinen
+* Dan Scott
+* Dan Wells
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Calvin College
+* Laurentian University
+* MOBIUS
+* Pohjois-Karjalan Tietotekniikkakeskus Oy
+
+Evergreen 2.9.4
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.3
+
+* Fixes a bug where phrase searching in the catalog failed when the phrase
+started or ended with punctuation.
+* Fixes a bug where changing the sort order in the public catalog to
+"relevance" could fail.
+* Fixes a bug that prevented users from recreating a monograph part that
+had previously been deleted.
+* Silences unnecessary warnings emitted for libraries using extending grace
+periods.
+* Removes support for Debian Squeeze now that its long-term support period
+has ended.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.4 point release of Evergreen:
+
+* Jason Boyer
+* Steve Callender
+* Galen Charlton
+* Mike Rylander
+* Yamil Suarez
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Berklee College of Music
+* Equinox Software, Inc.
+* Evergreen Indiana
+
+
+Evergreen 2.9.3
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.2.
+
+Acquisitions
+~~~~~~~~~~~~
+* Adds EDI Cancel Code 85 to the acquisitions cancel reason table.
+* Fixes an issue where the "Expand All" button in selection lists was not
+working.
+* Fixes an issue where deletable reasons from the acquisitions Cancel Reasons
+table could not be deleted.
+
+Cataloging
+~~~~~~~~~~
+* Improves sorting in holdings maintenance so that copies sort first by parts
+then by barcode.
+
+Circulation
+~~~~~~~~~~~
+* Fixes an issue where the wrong last billing type and last billing note were
+displaying for some transactions.
+* Now calculates credit payments as integers to avoid rounding errors with
+large sets of small billings.
+* Fixes an issue in the patron record where staff was unable to retrieve the
+Message Center interface after visiting the Triggered Events page and vice 
+versa.
+* Now displays the short version of a title on the Place Holds screen when
+placing metabib holds to reduce instances where the wrong title/format
+displayed.
+
+OPAC
+~~~~
+* Fixes an issue where detailed search results showed parts for items that 
+didn't have parts.
+* Changes the e-mail address check on password reset requests so that it is no
+longer case sensitive.
+* Fixes a problem where users were unable to navigate through multiple pages of
+their holds history.
+* Removes undefined values from ISBN and ISSN arrays to prevent empty requests
+from being sent to added content providers.
+* Fixes an issue where the kids catalog was not displaying title information
+after hold placement or after adding a title to a list.
+* Corrects the kids catalog holds notification default preferences to allow for
+SMS text messaging options.
+
+
+Miscelleneous
+~~~~~~~~~~~~~
+* Modifies the way SIP2 clients parse dates so that a patron's date of birth is
+returned correctly.
+* Fixes an issue where the Selfcheck fines receipt templated printed all open
+billable transactions, regardless of whether it had bills associated with it.
+* Fixes an issue that prevented Selfcheck's "Print List" for holds view from
+working.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.3 point release of Evergreen:
+
+* Thomas Berezansky
+* Jason Boyer
+* Galen Charlton
+* Bill Erickson
+* Blake Henderson
+* Terran McCanna
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Calvin College
+* Equinox Software, Inc.
+* Evergreen Indiana
+* Georgia Public Library Service
+* King County Library System
+* Lake Agassiz Regional Library
+* Merrimack Valley Library Consortium
+* MOBIUS
+* Northwest Regional Library System
+
+Evergreen 2.9.2
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.1.
+
+Acquisitions / Cataloging
+~~~~~~~~~~~~~~~~~~~~~~~~~
+* Allows the Z39.50 itnerface and the acquisitions MARC Federated Search
+interface to search the UPC index of the local catalog if Z39.50 is configured
+to search that field.
+* Fixes an issue where spaces in a PO name cause the system to improperly
+process EDI response messages.
+
+Circulation
+~~~~~~~~~~~
+* Fixes a problem where the balance owed was miscalculated when a row
+was deleted from money.billing.
+* Fixes an issue where credit card payments made via PayflowPro failed because
+Evergreen does not install the PayflowPro module by default.
+* Changes credit card payment behavior so that the patron's billing address will
+be read when the patron has no mailing address. If all address fields are 
+properly set by the API caller except the country and the
+patron has no addresses, the system will attempt to determine the country from
+library settings. If insufficient address data is provided, the system will
+return an invalid params Event.
+* Modifies the reasons for various void/adjust events to more accurately reflect
+the reason why a fine/fee was removed from a patron's record.
+
+OPAC
+~~~~
+* Fixes an issue where the reset password link was displaying even on systems
+that had disabled the ability to reset passwords.
+* Fixes an issue where the journal type search did not work when entering it as
+the second or third input on the advanced search screen.
+* Fixes an issue where catalog translations were broken by creating separate 
+directories for the catalog and web staff client translations.
+
+Administration
+~~~~~~~~~~~~~~
+* Changes marc_export to only print "waiting for input" when running
+interactively.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.2 point release of Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Blake Henderson
+* Mike Rylander
+* Ben Shum
+* Jason Stephenson
+* Dan Wells
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Calvin College
+* Equinox Software, Inc.
+* King County Library System
+* Merrimack Valley Library Consortium
+* MOBIUS
+
+Evergreen 2.9.1
+----------------
+This release contains several bugfixes improving on Evergreen 2.9.0.
+
+Acquisitions
+~~~~~~~~~~~~
+* Protects the stock acquisitions cancel reasons from deletion since they
+are required to properly handle EDI order responses.
+* Changes the copy location dropdown so that users can view and select copy
+locations owned outside the workstation branch if they have permission to do so. 
+This fix also adds the copy location's owning org unit to the display.
+
+Administration
+~~~~~~~~~~~~~~
+* Allows use of more special characters, including - and +, when
+entering a library's main email address in the Organizational Units
+editor.
+* Fixes an issue where marc_export attempts to call a non-existent field
+on MARC::Record if an error occurs while exporting authority records.
+
+Cataloging
+~~~~~~~~~~
+* Fixes the mapping between copies and the target part when using "Merge
+Selected" in the Monographic Parts interface.
+* Fixes an issue with the horizontal scrollbar bar in the MARC import
+queue inspector so the focus no longer jumps to the top of the screen
+when attempting to use the scrollbar.
+* Hides the staff-client saved searches header from screen readers when
+using the public catalog in non-staff mode.
+
+Circulation
+~~~~~~~~~~~
+* When placing a hold via the staff client and clicking Advanced Hold
+Options, fixes an issue where the barcode field populated with the
+staff member's barcode.
+* Fixes an issue where some holds with a higher proximity were
+preferred over holds with a lower proximity because the list of
+proximities of elgible copies was sorting ASCIIbetically instead of
+numerically.
+* Adds a delete flag for monographic parts, fixes staff client errors that
+were previously caused by deleted parts, and cancels any holds attached to
+those deleted parts.
+* Fixes an internal error that appeared when trying to renew an item on the
+booking resource list through the public catalog. Users will now get a message
+saying they do not have permission to renew the item. 
+
+
+Public Catalog
+~~~~~~~~~~~~~~
+* Fixes an issue where unclosed phrase searches returned zero results and
+tied up the open-ils.storage process.
+* Fixes an issue where phrase searches were ignoring modifiers used in relevance
+ranking, leading to poorly-ranked results.
+* Fixes an issue where parameters weren't properly maintained when
+searching by copy location group.
+
+Reports
+~~~~~~~
+* Adds support for UTF-8 in the Reports interface.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.1 point release of Evergreen:
+
+* Adam Bowling
+* Kate Butler
+* Steven Chan
+* Galen Charlton
+* Blake Henderson
+* Pasi Kallinen
+* Jake Litrell
+* Kathy Lussier
+* Mike Rylander
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Yamil Suarez
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Berklee College of Music
+* Bibliomation
+* British Columbia Libraries Cooperative
+* Calvin College
+* Emerald Data Networks, Inc.
+* Equinox Software, Inc.
+* Georgia Public Library Service
+* Lake Agassiz Regional Library
+* Laurentian University
+* Massachusetts Library Network Cooperative
+* Merrimack Valley Library Consortium
+* MOBIUS
+* Northwest Regional Library System
+* Pohjois-Karjalan Tietotekniikkakeskus Oy
+* Rodgers Memorial Library
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
+2.9.0 Upgrade notes
+-------------------
+
+Remove Script-Based Circulation Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen no longer supports script-based circulation policies.  All
+policies must now be managed within the Local Administration ->
+Circulation Policies, Hold Policies, and related interfaces.
+
+
+Remove open-ils.penalty service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen no longer uses the 'open-ils.penalty' service.  It is safe
+(though not required) to remove the following XML chunks from
+/openils/conf/opensrf.xml after stopping services.
+
+[source,xml]
+----------------------------------------------------------------------------
+
+<!-- first element -->
+
+<open-ils.penalty>
+    <keepalive>3</keepalive>
+    <stateless>1</stateless>
+    <language>perl</language>
+    <implementation>OpenILS::Application::Penalty</implementation>
+    <max_requests>99</max_requests>
+    <unix_config>
+        <max_requests>1000</max_requests>
+        <unix_log>open-ils.penalty_unix.log</unix_log>
+        <unix_sock>open-ils.penalty_unix.sock</unix_sock>
+        <unix_pid>open-ils.penalty_unix.pid</unix_pid>
+        <min_children>1</min_children>
+        <max_children>15</max_children>
+        <min_spare_children>1</min_spare_children>
+        <max_spare_children>5</max_spare_children>
+    </unix_config>
+    <app_settings>
+        <patron_penalty>penalty/patron_penalty.js</patron_penalty>
+        <script_path>LIBDIR/javascript</script_path>
+        <script_path>LOCALSTATEDIR</script_path>
+        <script_path>LOCALSTATEDIR/catalog</script_path>
+   </app_settings>
+</open-ils.penalty>
+
+<!-- second element -->
+
+<appname>open-ils.penalty</appname>
+----------------------------------------------------------------------------
+
+
+Removal of deprecated "JSPAC" interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The deprecated Javascript OPAC interface known as "JSPAC" is no
+longer included in Evergreen as of this release.
+
+With the understanding that local sites may have made use of
+existing parts of the old JSPAC interface -- especially images and
+CSS -- no attempt is made at upgrade time to automatically remove
+the existing files from disk.
+
+When upgrading, you may wish to remove "index.xml" from your Apache
+DirectoryIndex directives.
+
+The following directories, xml, js, and css files were formerly part
+of JSPAC, and you may be able to safely remove them from your system
+after verifying that they and their contents are no longer required:
+
+- web/opac/common/css/
+- web/opac/common/js/dtree.js
+- web/opac/common/xml/
+- web/opac/extras/bbags.js
+- web/opac/extras/bbags.xml
+- web/opac/skin/default/js/
+- web/opac/skin/default/xml/
+- web/opac/theme/
+
+The list of images removed in this change is lengthy, and not
+included here.
+
+
+Removal of legacy selfcheck interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The legacy selfcheck interface is no longer included in Evergreen as
+of this release.
+
+This interface was formerly located at a URL ending in
+extras/selfcheck/selfcheck.xml
+
+No attempt is made at upgrade time to automatically remove this
+interface.
+
+It is recommended that you remove this interface and its associated
+configuration after performing an upgrade:
+
+(paths relative to Evergreen web root)
+
+- opac/extras/selfcheck/selfcheck.css
+- opac/extras/selfcheck/selfcheck.js
+- opac/extras/selfcheck/selfcheck.xml
+- opac/extras/selfcheck/selfcheck_print.css
+
+You can also remove the related Apache configuration block starting
+with:
+
+[source, conf]
+<LocationMatch .*/selfcheck.xml>
+
+
+
+2.9.0 New Features
+------------------
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+Improved reporting of progress during purchase order activation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The progress dialog that is displayed when activating a purchase
+order now displays more information, particularly during the asset
+creation phase. It is now also updated in a more linear fashion;
+making it less likely for it to appear that the activation has
+stalled.
+
+
+
+
+==== "Blanket" Orders
+
+"Blanket" orders allow staff to invoice an encumbered amount multiple times,
+paying off the charge over a period of time.  The work flow supported by this 
+development assumes staff does not need to track the individual contents of 
+the order, only the amounts encumbered and invoiced in bulk.
+
+===== Example
+
+ . Staff creates PO with a Direct Charge of "Popular Fiction 2015" and
+   a charge type of "Blanket Order".
+ . The amount entered for the charge equals the total amount expected
+   to be charged over the duration of the order.
+ . When a shipment of "Popular Fiction" items arrive, staff creates an 
+   invoice from the "Popular Fiction 2015" PO page and enters the amount 
+   billed/paid for the received shipment under the "Popular Fiction 2015" 
+   charge in the invoice.
+ . When the final shipment arrives, staff select the 'Final invoice
+   for Blanket Order' option on the invoice screen to mark the PO as
+   'received' and drop any remaining encumbrances to $0.
+  .. Alternatively, if the PO needs to be finalized without creating
+     a final invoice, staff can use the new 'Finalize Blanket Order'
+     option on the PO page.
+
+===== New Components/Terminology/Concepts
+
+ * Invoice Item Types have a new flag called 'blanket', available under
+   Admin -> Server Administration -> Acq -> Invoice Item Types in the
+   staff client.
+ * Any direct charge using a 'blanket' item type will create a long-lived
+   charge that can be invoiced multiple times.
+ * Such a charge is considered open until its purchase order is "finalized" 
+   (received).
+ * "Finalizing" a PO changes the PO's state to 'received' (assuming there are
+   no pending lineitems on the PO) and fully dis-encumbers all blanket charges
+   on the PO by setting the fund_debit amount to $0 on the original fund_debit
+   for the charge.
+ * Invoicing a 'blanket' charge does the following under the covers:
+  .. Create an invoice_item to track the payment
+  .. Create a new fund_debit to implement the payment whose amount matches the
+     invoiced amount.
+  .. Subtract the invoiced amount from the fund_debit linked to the original
+     'blanket' po_item, thus reducing the amount encumbered on the charge as 
+     a whole by the invoiced amount.
+ * A PO can have multiple blanket charges.  E.g. you could have a blanket
+   order for "Popular Fiction 2015" and a second charge for "Pop Fiction 
+   2015 Taxes" to track / pay taxes over time on a blanket charge.
+ * A PO can have a mix of lineitems, non-blanket charges, and blanket charges.  
+ * A 'blanket' Invoice Item Type cannot also be a 'prorate' type, since it's
+   nonsensical.  Blanket items are encumbered, whereas prorated items are 
+   only paid at invoice time and never encumbered.
+
+
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Examples in Apache configuration for "No Image"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are now commented out examples for custom images to be used when
+"no image" is present in the catalog for cover art. The included examples
+are for small/medium/large jacket image art in the event they are not
+found by the configured Added Content module.
+
+
+
+
+Pre-Expiration A/T Event Definition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new Action Trigger event definition ("30 Day Account Expiration Courtesy 
+Notice") for sending alerts to users before their accounts are expired has 
+been added.  This is intended to give users time to renew their account before 
+they lose access to library services.
+
+
+
+
+Improved caching of web server templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Template Toolkit processors used by Apache are now cached for
+better performance (by virtue of thereby being able to take advantage
+of Template Toolkit's internal caching mechanism). In addition, the
+*compiled* versions of the templates themselves can be cached to
+provide an additional performance boost.
+
+Two Apache virtualhost configuration variables are added to
+control caching of compiled templates:
+
+ * `OILSWebCompiledTemplateCache` - specifies location on the
+   web server filesystem to store compiled templates.
+ * `OILSWebTemplateStatTTL` - specifies number of seconds before
+   checking to see if a newer version of a cached template is
+   available.
+
+As a result of the caching changes, it is now necessary for
+Evergreen administrators to reload Apache to ensure that a change
+to (say) TPAC templates becomes visible.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Display Authority Subject Heading Thesaurus Value 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is now a new column in the *Manage Authorities* search results. Each result row now displays each authority's thesaurus value with a "Thes: " prefix. In the authority MARC editor interface the thesaurus value corresponds to the "Subject Heading Thesaurus" fixed field (http://www.loc.gov/marc/authority/ad008.html) labeled “Subj”. For example, a value of "Thes: a" means that the authority is a Library of Congress Subject Heading, and a value of "Thes: k" means the authority is a Canadian Subject Heading.
+
+*A Library of Congress list of thesaurus values:*
+
+
+* '' = Alternate no attempt to code
+* a = Library of Congress Subject Headings
+* b = LC subject headings for children's literature
+* c = Medical Subject Headings
+* d = National Agricultural Library subject authority file
+* k = Canadian Subject Headings
+* n = Not applicable
+* r = Art and Architecture Thesaurus
+* s = Sears List of Subject Headings
+* v = Repertoire de vedettes-matiere
+* z = Other
+* | = No attempt to code
+
+
+
+
+Importing Statistical Categories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can now retrieve statistical categories (stat cats) from the MARC
+record and apply them to the items in Evergreen. When importing or
+overlaying items through the Vandelay MARC batch import process, edit
+your Holdings Import Profile to tell Evergreen which subfield contains
+your stat cat data. That subfield in your MARC records should be
+formatted like the following:
+
+----
+CATEGORY 1|VALUE 1||CATEGORY 2|VALUE 2
+----
+
+Notice that the pipe character '|' is used to separate each category
+from its value, and two pipes separate each pair of category values.
+
+If you are overlaying existing copies which already have stat cats
+attached to them, the overlay process will keep those values unless the
+incoming copies contain updated values for matching categories.
+
+
+
+
+Remove the ‡biblios.net Z39.50 target from seed data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Z39.50 target at z3950.biblios.net/bibliographic has not worked
+for years, so its service definition is no longer provided in the
+seed data for new installations of Evergreen.
+
+Users of existing Evergreen systems should consider removing
+the Z39.50 definition for ‡biblios.net. This can be done from
+Admin | Server Administration | Z39.50 Servers in the staff
+client.
+
+
+
+
+SKOS for coded values
+^^^^^^^^^^^^^^^^^^^^^
+Some vocabularies used (or which could be used) for stock
+record attributes and coded value maps in Evergreen are
+published on the web using SKOS. The record attributes system
+can now associate Linked Data URIs with specific attribute
+values. In particular, seed data supplying URIs for the
+RDA Content Type, Media Type, and Carrier Type in this release.
+
+This is an experimental, "under-the-hood" feature that will be built
+upon in subsuquent releases.
+
+
+
+
+MARC Tag-table Service
+^^^^^^^^^^^^^^^^^^^^^^
+The tag tables for the web staff client MARC editor are
+now stored in the database rather than a separate XML
+tooltips file as used by the XUL MARC editor.  The tag-table
+service, which is part of the web staff client sprint 2
+preview in this release, has the following features:
+
+- specifies whether (sub)fields are optional or mandatory
+- specifies whether (sub)fields are repeatable or not
+- a coded value map can be associated with a subfield to
+  establish a controlled vocabulary for that subfield
+- MARC field and subfield definitions can be overridden
+  by institutions further down in the organizational unit
+  hierarchy.  This allows, for example, a library to specify
+  definitions for local MARC tags.
+- values supplied by the tag-table service are used to
+  populate values in context menus in the web staff client
+  MARC editor.
+
+The initial seed data for the in-database tag table is
+derived from the current tooltips XML file.
+
+
+
+
+Web staff client cataloging preview
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The web staff client now includes additional functionality
+to support cataloging and item maintenance, including:
+
+- a new MARC editor
+- the service backing the authority headings chooser now
+  has the ability to filter the browse by subject thesaurus
+- Z39.50 search and record import
+- improvements to copy and record bucket functionality
+- embedding the link checker interface
+- embedding the MARC batch import/export interface
+- the web staff volume/copy editor
+
+Nearly all of the cataloging functionality available in the XUL
+staff client is now present in the web staff client with the 
+exception of printing spine labels. Nonetheless, the web staff
+client remains a preview and is not recommended for production use.
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Conditional Negative Balances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen sites will now have more control over whether a negative balance can
+be applied to a user's billing record and when that negative balance can be 
+applied. Through a series of Library Settings, a site can prohibit negative
+balances on bills or can allow those negative balances to be applied for a
+specific period of time after a lost or overdue bill is charged to the user.
+Sites can set a default for all types of bills or can apply distinct settings
+for lost bills and for overdue fines. The more specific settings will override
+the default. 
+
+Sites that opt to allow negative balances for a specific period of time must
+1) enable the relevant "prohibit negative balances" setting(s) and 2) specify
+the time period in the relevant Negative Balance Interval setting(s).  
+
+In addition to the new library settings, the system now has a new account 
+adjustment payment type. This payment type will be utilized for libraries 
+prohibiting negative balances to replace the previous voiding behavior that 
+caused the negative balances to occur. The account adjustment payment type will
+also be used for all libraries, regardless of the state of negative balance
+settings, in cases where overdue fines are adjusted when an overdue item is
+marked lost.
+
+An _Adjust to Zero_ option has been added to the bills interface of the patron
+record. This option will always adjust the selected bill to a zero balance.
+It can also be used to easily clear a negative balance from the patron's
+record. A user must have the new ADJUST_BILLS permission to see and use this
+option.
+
+This new feature also changes the behavior for the client option to void a bill
+from the patron record. If a user does not have the VOID_BILLING permission, the
+option to void bills will be hidden in the bills interface and in the Full 
+Details view of a specific bill. 
+
+To truly remove the ability to produce negative balances on a transaction,
+administrators need to 1) enable the relevant setting in the Library Settings
+Editor and 2) remove the VOID_BILLING permission from staff accounts since
+manual voiding will continue to produce negative balances.
+
+New Library Settings
+++++++++++++++++++++
+ * Negative Balance Interval (Default) (bill.negative_balance_interval_default)
+ * Negative Balance Interval for Lost (bill.negative_balance_interval_on_lost) -
+ * Negative Balance Interval for Overdues (bill.negative_balance_interval_on_overdues
+ * Prohibit negative balance on bills (Default) (bill.prohibit_negative_balance_default)
+ * Prohibit negative balance on bills for lost materials (bill.prohibit_negative_balance_on_lost)
+ * Prohibit negative balance on bills for overdue materials (bill.prohibit_negative_balance_on_overdues)
+ 
+New Permissions
++++++++++++++++
+ * ADJUST_BILLS 
+
+
+
+
+Selfcheck Inactivity Warning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Selfcheck interface now warns patrons when they are about to be
+logged out due to inactivity 20 seconds prior to logging them out.
+
+The inactivity timeout is also reset with each checkout to avoid timeouts 
+while checking out lots of items.
+
+
+
+
+User Registration Includes Inactive Accounts in Dupe Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When registering a user, the system checks to see if there are already exiting users with the same name, address, email, etc. Now this duplicate user search includes inactive users so that matches can be re-activated if desired, rather than creating duplicate accounts.
+
+
+
+
+Client
+~~~~~~
+
+
+
+Link in catalog to clear Added Content cache
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+On the catalog's record summary page, there is now a link for staff that
+allow them to forcibly clear the cache for the Added Content for that
+record. This is helpful if the Added Content retrieved the wrong
+cover jacket art, summary, etc. and caches the wrong result.
+
+
+
+
+Disable Google Analytics in Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the staff client interface, Google Analytics for the web catalog is
+now disabled by default. This was a preventive measure to reduce the
+potential risks for leaking patron information.
+
+
+
+
+Move Acquisitions Admin Menu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the staff client interface, the Acquisitions Administration menu is
+now directly accessible from the main "Admin" menu instead of 
+living under "Server Administration". It has also been renamed as "Acquisitions
+Administration".
+
+
+
+
+OPAC
+~~~~
+
+
+
+Account Expiration Date in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Account Expiration Date has been added to the catalog's My Account display
+on the main Account Summary page and the Account Preferences page.  This should
+help patrons with figuring out when their accounts are due to expire before
+they actually expire.
+
+
+
+Change to Available Copies Display
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The _Show_ link in the available copies area of the record summary will now
+display for any org unit that owns a copy of a particular title, even if all
+those copies are unavailable. The _Show_ link will not display if a) the copy
+display is already scoped to that org unit or b) the org unit does not own
+copies of the title.
+
+The language has also been changed to read "x of y copies available at z
+library."
+
+
+
+
+
+Column sorting in circulation screens
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sorting of selected columns is now available in the *Items Checked Out*, *Check Out History*,
+and *Holds* screens.
+
+* Clicking on the appropriate column heads now sorts the contents from
+``ascending'' to ``descending'' to ``no sort''.  (The ``no sort'' restores the
+original list as presented in the screen.)
+
+* The sort indicator (an up or down arrow) is placed to the right
+of the column head, as appropriate.
+
+* The combined *Title/Author* column in the *Items Checked Out* screen is now separated into two
+independently sortable columns (Title and Author).
+
+* Title sorting is done with the non-filing characters (leading ``the'', ``a'',
+``an'', and other langugage equivalents) removed. The leading articles are rendered in
+a smaller font, so as to keep the main entry prominent.  In
+addition to the non-filing characters removed for the sort, leading
+non-alphanumeric characters are ignored in the sort.
+
+
+
+
+New bib source variable for catalog customization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For bibliographic records, there is a "bib source" that can be
+associated with every record. This source is now available as a
+variable that can be used behind the scenes when customizing
+the online catalog. The new bib source variables do not present
+themselves in the catalog display by default.
+
+
+
+
+New class attribute for e-resource links
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the catalog, links to electronic resources now have a link class
+attribute of "uri_link" to make them easier to customize or build
+additional services upon.
+
+
+
+
+
+Removal of deprecated "JSPAC" interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The deprecated Javascript OPAC interface known as "JSPAC" is no
+longer included in Evergreen as of this release.
+
+With the understanding that local sites may have made use of
+existing parts of the old JSPAC interface -- especially images and
+CSS -- no attempt is made at upgrade time to automatically remove
+the existing files from disk.
+
+When upgrading, you may wish to remove "index.xml" from your Apache
+DirectoryIndex directives.
+
+The following directories, xml, js, and css files were formerly part
+of JSPAC, and you may be able to safely remove them from your system
+after verifying that they and their contents are no longer required:
+
+- web/opac/common/css/
+- web/opac/common/js/dtree.js
+- web/opac/common/xml/
+- web/opac/extras/bbags.js
+- web/opac/extras/bbags.xml
+- web/opac/skin/default/js/
+- web/opac/skin/default/xml/
+- web/opac/theme/
+
+The list of images removed in this change is lengthy, and not
+included here.
+
+
+
+
+Removal of legacy selfcheck interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The legacy selfcheck interface is no longer included in Evergreen as
+of this release.
+
+This interface was formerly located at a URL ending in
+extras/selfcheck/selfcheck.xml
+
+No attempt is made at upgrade time to automatically remove this
+interface.
+
+It is recommended that you remove this interface and its associated
+configuration after performing an upgrade:
+
+(paths relative to Evergreen web root)
+
+- opac/extras/selfcheck/selfcheck.css
+- opac/extras/selfcheck/selfcheck.js
+- opac/extras/selfcheck/selfcheck.xml
+- opac/extras/selfcheck/selfcheck_print.css
+
+You can also remove the related Apache configuration block starting
+with:
+
+[source, conf]
+<LocationMatch .*/selfcheck.xml>
+
+
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+The Evergreen project would like to acknowledge the following
+organizations who commissioned developments in this release of
+Evergreen:
+
+ * Georgia Public Library Service
+ * Grand Rapids Public Library
+ * Kenton County Public Library
+ * King County Library System
+ * Massachusetts Library Network Cooperative
+ * NC Cardinal
+ * OhioNet
+ * Pennsylvania Integrated Library System 
+
+We would also like to thank the following individuals who contributed
+code, documentation patches and tests to this release of Evergreen:
+
+ * Thomas Berezansky
+ * Matt Berowski
+ * Adam Bowling
+ * Jason Boyer
+ * Christine Burns
+ * Galen Charlton
+ * Bill Erickson
+ * Jason Etheridge
+ * Jeff Davis
+ * Lynn Floyd
+ * Jeff Godin
+ * Angela Kilsdonk
+ * Doug Kyle
+ * Debbie Luchenbill
+ * Kathy Lussier
+ * Terran McCanna
+ * Stephen Moss
+ * Dan Pearl
+ * Michael Peters
+ * Mike Rylander
+ * Jane Sandberg
+ * Dan Scott
+ * Ben Shum
+ * Josh Stompro
+ * Remington Steed
+ * Jason Stephenson
+ * Yamil Suarez
+ * Dan Wells
+ * Liam Whalen
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * Anderson County Library
+ * Berklee College of Music
+ * Bibliomation
+ * British Columbia Libraries Cooperative
+ * Calvin College
+ * Catalyst Dev Works
+ * Central/Western Massachusetts Automated Resource Sharing
+ * Emerald Data Networks, Inc.
+ * Equinox Software, Inc.
+ * Georgia Public Library Service
+ * Grand Rapids Public Library
+ * Indiana State Library
+ * King County Library System
+ * Lake Agassiz Regional Library
+ * Laurentian University
+ * Linn-Benton Community College
+ * Massachusetts Library Network Cooperative
+ * Merrimack Valley Library Consortium
+ * MOBIUS
+ * Northwest Regional Library System
+ * Sigio
+ * Traverse Area District Library 
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

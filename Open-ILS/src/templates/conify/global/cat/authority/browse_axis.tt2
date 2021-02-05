@@ -1,0 +1,34 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l("Configure Authority Browse Axes") %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>[% l('Browse Axes') %]</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="aba_grid.showCreateDialog()">[% l('New Browse Axis') %]</button>
+            <button dojoType="dijit.form.Button" onClick="aba_grid.deleteSelected()">[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+        <table  jsId="aba_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'auto'"
+                fieldOrder="['code','name','description','sorter']"
+                suppressEditFields="['id']"
+                query="{id: '*'}"
+                fmClass="aba"
+                editOnEnter="true">
+        </table>
+</div>
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+
+    function my_init() {
+        aba_grid.overrideWidgetArgs.sorter = {
+            "dijitArgs": {"query": {"sorter": "t"}}
+        };
+        aba_grid.loadAll({"order_by": {"aba": "code"}});
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]

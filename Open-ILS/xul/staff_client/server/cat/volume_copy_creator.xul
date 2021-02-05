@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Copy Viewer/Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_volume_copy_creator_win" 
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    title="&staff.cat.volume_copy_creator.title;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+    var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; 
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="volume_copy_creator.js"/>
+    
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
+<vbox flex="1" class="my_overflow">
+    <vbox id="summary_box" oils_persist="height"/>
+    <splitter
+        collapse="before"
+        resize_before="flex"
+        resize_after="flex"
+        oils_persist="state hidden"
+        oils_persist_peers="summary_box main">
+        <grippy/>
+    </splitter>
+    <vbox id="main" oils_persist="height" flex="1">
+        <groupbox flex="1" class="my_overflow">
+            <caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
+            <grid flex="1">
+                <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
+                <rows id="rows">
+                    <row id="batch_bar">
+                        <spacer />
+                        <spacer />
+                        <grid flex="1">
+                            <columns>
+                                <column/>
+                                <column/>
+                                <column/>
+                                <column/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <vbox class="cn_class">
+                                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"
+                                            class="header"/>
+                                        <hbox id="batch_class"/>
+                                    </vbox>
+                                    <vbox class="cn_prefix">
+                                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"
+                                            class="header"/>
+                                        <hbox id="batch_prefix"/>
+                                    </vbox>
+                                    <vbox>
+                                        <label
+                                            value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
+                                            accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;"
+                                            control="marc_cn_menulist" class="header"/>
+                                        <hbox id="marc_cn"/>
+                                    </vbox>
+                                    <vbox class="cn_suffix">
+                                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"
+                                            class="header"/>
+                                        <hbox id="batch_suffix"/>
+                                    </vbox>
+                                    <vbox>
+                                        <label class="header" value="&staff.cat.volume_copy_creator.batch_bar;"/>
+                                        <hbox id="batch_button_box"/>
+                                    </vbox>
+                                </row>
+                            </rows>
+                        </grid>
+                    </row>
+                    <row>
+                        <label value="&staff.cat.volume_copy_creator.library_label.value;" style="font-weight: bold"/>
+                        <label value="&staff.cat.volume_copy_creator.num_of_volumes_label.value;" style="font-weight: bold"/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+        <hbox style="border-bottom: solid black thin" flex="0">
+            <hbox id="misc_control_bar">
+                <button id="generate_barcodes"
+                    label="&staff.cat.volume_copy_creator.generate_barcodes.label;"
+                    oncommand="g.generate_barcodes();"
+                    accesskey="&staff.cat.volume_copy_creator.generate_barcodes.accesskey;"/>
+                <checkbox id="check_barcodes"
+                    label="&staff.cat.volume_copy_creator.check_barcodes.label;"
+                    oncommand="g.save_prefs();"
+                    accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
+                <checkbox id="print_labels"
+                    label="&staff.cat.volume_copy_creator.print_labels.label;"
+                    oncommand="g.save_prefs();"
+                    accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
+            </hbox>
+            <spacer flex="1"/>
+            <hbox id="non_unified_buttons">
+                <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
+                <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
+            </hbox>
+            <button id="Create" disabled="true" oncommand="g.stash_and_close('unified_interface');"/>
+        </hbox>
+    </vbox>
+</vbox>
+
+</window>
+

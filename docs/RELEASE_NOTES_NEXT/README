@@ -1,0 +1,13 @@
+New features should be accompanied by a file in this directory for general
+features, infrastructure, performance enhancements or the like, or a
+directory below this for area- or "module"-specific additions and changes.
+
+The file should be in asciidoc format and contain enough description to
+enable the documentation team to write something coherent about the new
+functionality. The name of the file should match the feature. No numbering,
+etc. is required. With each release, the contents of this directory will be
+appended to the release notes and removed from this directory.
+
+The special file _acknowledgements is meant for acknowledging contributors
+to the upcoming version of Evergreen. The names should be cleared in the
+master branch at the beginning of each release cycle.

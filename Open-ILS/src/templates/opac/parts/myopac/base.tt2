@@ -1,0 +1,75 @@
+[%  WRAPPER "opac/parts/base.tt2" %]
+
+[% myopac_pages = [
+        {url => "main", name => l("Account Summary")},
+        {url => "messages", name => l("Messages")},
+        {url => "circs", name => l("Items Checked Out")},
+        {url => "holds", name => l("Holds")},
+        {url => "prefs", name => l("Account Preferences")},
+        {url => "lists", name => l("My Lists")}
+    ];
+    IF (ctx.show_reservations_tab == 'true');
+        myopac_pages.push({url => "reservations", name => l("Reservations")});
+    END;
+    IF ctx.curbside_pickup_libs.size;
+        myopac_pages.push({url => "holds_curbside", name => l("Curbside Pickup")});
+    END;
+    skin_root = "../"
+%]
+    <h2 class="sr-only">[% l('My Account') %]</h2>
+    [% INCLUDE "opac/parts/topnav.tt2" %]
+    <div class="mobile_hide">
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+
+     <!-- Added so search available from my account pages -->
+    <div class="mobile_view" id="mobile_acct_search_links">
+      <span class="adv_search_catalog_lbl mobile_search_lbl_clr"><strong>[% l('Search:') %]</strong></span>
+      <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {locg => CGI.param('locg')}, 1) %]"
+                    id="home_adv_search_link" class="mobile_search_lbl_clr">[%l('Basic')%]</a> &nbsp;</span>
+		<span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            id="home_adv_search_link" class="mobile_search_lbl_clr">[% l('Advanced') %]</a> &nbsp;</span>
+       <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, ['fi:has_browse_entry']) %]" 
+            class="mobile_search_lbl_clr">[% l('Browse') %]</a>&nbsp;</span>
+    </div><!-- End Mobile search view -->
+
+    <div id="content-wrapper">
+        <div id="myopac_tabs">
+            <div id="acct_tabs">
+                [%- FOREACH page IN myopac_pages;
+                    IF page.url == myopac_page;
+                        cls_which = "acct-tab-on";
+                        ctx.page_title = l("My Account - [_1]", page.name);
+                    ELSE;
+                        cls_which = "acct-tab-off";
+                    END -%]
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]"
+                    class="[% cls_which %]">[% page.name; %]</a>
+                [% END %]
+            </div>
+
+            <!-- Select box navigation for media view -->
+            <div id="acct_select">
+               <form name="acct_nav">
+
+                 <select name="acct_url" 
+                    title="[% l('Select an account page') %]" 
+                    onchange="window.location.href=document.acct_nav.acct_url.options[document.acct_nav.acct_url.selectedIndex].value">
+                    <option value="" selected="selected">[% l('Go to...') %]</option>
+                    [% FOREACH page IN myopac_pages;
+                      IF page.url != myopac_page; %]
+                        <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit', 'hid']) %]">[% page.name; %]</option>
+                    [% ELSE; %]
+                        <option value="" disabled>[% page.name; %]</option>
+                    [% END;
+                   END; %] 
+                 </select>
+	            </form>
+            </div>
+	    </div><!-- myopac_tabs -->
+        <div id="main-content">
+            [% content %]
+            <div class="common-full-pad"></div>
+        </div>
+    </div> <!-- content-wrapper -->
+[% END %]

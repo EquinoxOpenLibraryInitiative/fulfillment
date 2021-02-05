@@ -1,0 +1,568 @@
+<?xml version="1.0"?>
+
+<bindings id="openils_bindings"
+   xmlns="http://www.mozilla.org/xbl"
+   xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+   xmlns:xbl="http://www.mozilla.org/xbl">
+
+    <binding id="help">
+        <resources/>
+
+        <content>
+            <!-- FIXME: I18N -->
+            <xul:button label="Help" accesskey="H" xbl:inherits="label,accesskey" />
+        </content>
+
+        <implementation>
+
+            <constructor>
+                <![CDATA[
+                try {
+                    // This widget will try to load help content from various static and dynamic URL's, stopping at the
+                    // first one that it finds.  Given an example location.href of '/xul/server/patron/display.xul' and
+                    // a @src of 'foo.html', it will check these URL's in this order:
+                    //
+                    // foo.html
+                    // /xul/server/patron/display.xul.custom_help.html
+                    // /xul/server/patron/display.xul.help.html
+                    // /xul/server/patron/custom_help.html
+                    // /xul/server/patron/help.html
+                    // /xul/server/custom_help.html
+                    // /xul/server/help.html
+                    // /xul/custom_help.html
+                    // /xul/help.html
+                    // /custom_help.html
+                    // /help.html
+                    //
+                    // If @pathname is specified, it will override the value from location.pathname
+                    // If @hostname is specified, it will override the value from location.hostname
+                    // If @port is specified, it will override the value from location.port
+                    // If @protocol is specified, it will override the value from location.protocol
+
+                    this.addEventListener( 'command', function(ev) { this._open_window(); }, false);
+                } catch(E) {
+                    alert('Error constructing help widget in bindings.xml: ' + E);
+                    throw(E);
+                }
+                ]]>
+            </constructor>
+
+            <method name="_open_window">
+                <body>
+                    <![CDATA[
+                    try {
+
+                            var obj = this;
+                            var protocol = obj.getAttribute('protocol') || location.protocol;
+                            var hostname = obj.getAttribute('hostname') || location.hostname;
+                            var port = obj.getAttribute('port') || location.port;
+                            var pathname = obj.getAttribute('pathname') || location.pathname;
+
+                            function test_url(loc) {
+                                if (loc == '/' || !loc) { return false; }
+                                var x = new XMLHttpRequest();
+                                var url = protocol + '//' + hostname + ( port ? ':' + port : '' ) + loc;
+                                dump('help widget: testing <'+url+'>\n');
+                                x.open("HEAD", url, false);
+                                x.send(null);
+                                return x.status == 200;
+                            }
+
+                            function open_url(loc) {
+                                var url = protocol + '//' + hostname + ( port ? ':' + port : '' ) + loc +'?id='+obj.id;
+                                dump('help widget: opening <'+url+'>\n');
+                                window.open(url, obj.getAttribute('label'), 'resizable,scrollbars');
+                            }
+
+                            if (test_url('/'+this.getAttribute('src'))) {
+                                open_url('/'+this.getAttribute('src'));
+                            } else {
+                                if (test_url(pathname + '.custom_help.html')) {
+                                    open_url(pathname + '.custom_help.html');
+                                } else {
+                                    if (test_url(pathname + '.help.html')) {
+                                        open_url(pathname + '.help.html');
+                                    } else {
+                                        var pathparts = pathname.split('/');
+                                        var base_url; var url; var test_result;
+                                        for (var i = pathparts.length - 2; i>0 && !test_result; i--) {
+                                            base_url = ''; url = '';
+                                            for ( j = 1; j <= i; j++ ) { base_url += '/' + pathparts[j]; };
+                                            url = base_url + '/custom_help.html';
+                                            test_result = test_url(url);
+                                            if (!test_result) {
+                                                url = base_url + '/help.html';
+                                                test_result = test_url(url);
+                                            }
+                                        }
+                                        if (test_result) {
+                                            open_url(url);
+                                        } else {
+                                            if (test_url("/custom_help.html")) {
+                                                open_url("/custom_help.html");
+                                            } else {
+                                                if (test_url("/help.html")) {
+                                                    open_url("/help.html");
+                                                } else {
+                                                    /* FIXME - I18N */
+                                                    alert('No Help Found');
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                    } catch(E) {
+                        alert('Error opening window in help widget in bindings.xml: ' + E);
+                        throw(E);
+                    }
+                    ]]>
+                </body>
+            </method>
+
+        </implementation>
+    </binding>
+
+
+	<binding id="messagecatalog">
+		<resources/>
+
+		<content>
+			<children>
+			</children>
+		</content>
+
+		<implementation>
+
+			<constructor>
+				<![CDATA[
+                try {
+                        this._load_sprintf();
+                        this._props = {};
+                        this._load_from_src();
+                } catch(E) {
+                    alert('Error constructing messagecatalog in bindings.xml: ' + E);
+                    throw(E);
+                }
+				]]>
+			</constructor>
+
+			<destructor>                                                                                              
+				<![CDATA[                                                                                         
+				try {                                                                                                            
+					delete this._props;                                                                                      
+					delete this.sprintf;                                                                                     
+				} catch(E) {                                                                                                     
+					alert('Error destroying messagecatalog in bindings.xml: ' + E);                                             
+					throw(E);                                                                                                    
+				}                                                                                                                
+				]]>                                                                                               
+			</destructor>  
+
+			<property name="src">
+				<getter>
+					<![CDATA[
+                    try {
+    					return this.getAttribute('src');
+                    } catch(E) {
+                        alert('Error getting @src in messagecatalog in bindings.xml: ' + E);
+                        throw(E);
+                    }
+					]]>
+				</getter>
+				<setter>
+					<![CDATA[
+                    try {
+					    this.setAttribute('src',val);
+    					this.load_from_src();
+    					return val;
+                    } catch(E) {
+                        alert('Error setting @src in messagecatalog in bindings.xml: ' + E);
+                        throw(E);
+                    }
+					]]>
+				</setter>
+			</property>
+
+			<method name="_load_from_src">
+				<body>
+					<![CDATA[
+                    try {
+                            var x = new XMLHttpRequest();
+                            x.open("GET",this.src,false);
+                            x.send(null);
+                            if ((x.status == 0 || x.status == 200) && x.responseText) {
+                                var props = this._props2object(x.responseText);
+                                for (var i in props) {
+                                    this._props[i] = props[i];
+                                }
+                            } else {
+                                var msg = "messageCatalog: No text from " + this.src;
+                                alert(msg); throw(msg);
+                            }
+                           
+                            try { // fail silently if no custom properties file exists
+                                var custom_src = String(this.src).replace(/\.properties$/,'_custom.properties'); 
+                                var x2 = new XMLHttpRequest();
+                                x2.open("GET",custom_src,false);
+                                x2.send(null);
+                                if ((x2.status == 0 || x2.status == 200) && x2.responseText) {
+                                    var props = this._props2object(x2.responseText);
+                                    for (var i in props) {
+                                        this._props[i] = props[i];
+                                    }
+                                }
+                            } catch(EE) {}
+
+                    } catch(E) {
+                        alert('Error loading properties in messagecatalog in bindings.xml: ' + E);
+                        throw(E);
+                    }
+					]]>
+				</body>
+			</method>
+
+			<method name="_props2object">
+				<parameter name="str"/>
+				<body>
+					<![CDATA[
+                        try {
+                            var lines = str.split("\n");
+                            var props = {};
+                            var line = '';
+                            var in_comment = false;
+
+                            for (var l in lines) {
+                                line += lines[l];
+
+                                // handle multi-line comments
+                                if (line.indexOf('/*') >= 0) in_comment = true;
+
+                                if (in_comment && line.indexOf('*/') > 0) {
+                                    var comment_start = line.indexOf('/*');
+                                    var comment_end = line.indexOf('*/');
+                                    line = line.substring(0, comment_start) + line.substring(0, comment_end + 2);
+                                    in_comment = false;
+                                } else if (in_comment) continue;
+                                    
+                                // get rid of entire-line comments
+                                if (line.indexOf('#') == 0) {
+                                    line = '';
+                                    continue;
+                                }
+
+                                // handle end-of-line comments
+                                var end_comment = line.indexOf('//');
+                                if (end_comment >= 0) line = line.substring(0, end_comment);
+
+                                // and line concatenation
+                                if (line.charAt(line.length - 1) == '\\') {
+                                    line = line.substring(0,line.length - 1);
+                                    continue;
+                                }
+
+                                var eq_pos = line.indexOf('=');
+                                if (eq_pos < 0) continue;
+
+                                var k = line.substring(0,eq_pos);
+                                k = k.replace(/\s+/g,"");
+
+                                var v = line.substring(eq_pos + 1);
+
+                                var current_m = 0;
+                                var cont = false;
+                                do {    
+                                    if (v.indexOf( "{" + current_m + "}" ) >= 0 ) {
+                                        var mes_bund = new RegExp( "\\\{" + current_m + "\\\}", 'g' );
+                                        var sprintf_format = "%" + (current_m + 1) + "$s";
+
+                                        v = v.replace( mes_bund, sprintf_format );
+
+                                        cont = true;
+                                        current_m++;
+                                    } else {
+                                        cont = false;
+                                    }
+                                } while ( cont == true );
+
+                                props[k] = v;
+                                line = '';
+                                }
+
+                            return props;
+                        } catch(E) {
+                            alert('Error in props2object in messagecatalog in bindings.xml: ' + E);
+                            throw(E);
+                        }
+					]]>
+				</body>
+			</method>
+
+			<method name="testString">
+				<parameter name="key"/>
+				<body>
+					<![CDATA[
+						try {
+                            var str = this._props[key];
+                            return (typeof str != 'undefined');
+						} catch(e) {
+                            return false;
+						}
+					]]>
+				</body>
+			</method>
+
+
+			<method name="getString">
+				<parameter name="key"/>
+				<body>
+					<![CDATA[
+						try {
+                            var str = this._props[key];
+                            if (typeof str == 'undefined') throw(str);
+							return str;
+						} catch(e) {
+							alert("*** Failed to get string " + key + " in bundle: " + this.src + "\n" + e);
+							throw(e);
+						}
+					]]>
+				</body>
+			</method>
+
+			<method name="getFormattedString">
+				<parameter name="key"/>
+				<parameter name="params"/>
+				<body>
+					<![CDATA[
+						try {
+							var str = this._props[key]; 
+                            if (typeof str == 'undefined') throw(str);
+							var these = [ str ].concat(params);
+							var v = this.sprintf.apply(this,these);
+
+							// replace unicode escapes
+/*
+							v = v.replace(
+								/\\u([0-9a-f]{4})/gi,
+								function (r,s) { return String.fromCharCode(s); }
+							);
+*/
+
+							return v;
+						} catch(e) {
+							alert("*** Failed to get string " + key + " in bundle: " + this.src + "\n");
+							throw(e);
+						}
+					]]>
+				</body>
+			</method>
+
+			<method name="_load_sprintf">
+				<body>
+					<![CDATA[
+					try { 
+						this.sprintf = function() {
+								// FIXME - is the following license GPL-compatible? seems equivalent to the public domain
+								/**
+								 * JavaScript printf/sprintf functions.
+								 *
+								 * This code is unrestricted: you are free to use it however you like.
+								 * 
+								 * The functions should work as expected, performing left or right alignment,
+								 * truncating strings, outputting numbers with a required precision etc.
+								 *
+								 * For complex cases, these functions follow the Perl implementations of
+								 * (s)printf, allowing arguments to be passed out-of-order, and to set the
+								 * precision or length of the output based on arguments instead of fixed
+								 * numbers.
+								 *
+								 * See http://perldoc.perl.org/functions/sprintf.html for more information.
+								 *
+								 * Implemented:
+								 * - zero and space-padding
+								 * - right and left-alignment,
+								 * - base X prefix (binary, octal and hex)
+								 * - positive number prefix
+								 * - (minimum) width
+								 * - precision / truncation / maximum width
+								 * - out of order arguments
+								 *
+								 * Not implemented (yet):
+								 * - vector flag
+								 * - size (bytes, words, long-words etc.)
+								 * 
+								 * Will not implement:
+								 * - %n or %p (no pass-by-reference in JavaScript)
+								 *
+								 * @version 2007.04.27
+								 * @author Ash Searle
+								 */
+
+							function pad(str, len, chr, leftJustify) {
+							var padding = (str.length >= len) ? '' : Array(1 + len - str.length >>> 0).join(chr);
+							return leftJustify ? str + padding : padding + str;
+
+							}
+
+							function justify(value, prefix, leftJustify, minWidth, zeroPad) {
+							var diff = minWidth - value.length;
+							if (diff > 0) {
+								if (leftJustify || !zeroPad) {
+								value = pad(value, minWidth, ' ', leftJustify);
+								} else {
+								value = value.slice(0, prefix.length) + pad('', diff, '0', true) + value.slice(prefix.length);
+								}
+							}
+							return value;
+							}
+
+							function formatBaseX(value, base, prefix, leftJustify, minWidth, precision, zeroPad) {
+							// Note: casts negative numbers to positive ones
+							var number = value >>> 0;
+							prefix = prefix && number && {'2': '0b', '8': '0', '16': '0x'}[base] || '';
+							value = prefix + pad(number.toString(base), precision || 0, '0', false);
+							return justify(value, prefix, leftJustify, minWidth, zeroPad);
+							}
+
+							function formatString(value, leftJustify, minWidth, precision, zeroPad) {
+							if (precision != null) {
+								value = value.slice(0, precision);
+							}
+							return justify(value, '', leftJustify, minWidth, zeroPad);
+							}
+
+							var a = arguments, i = 0, format = a[i++];
+							return format.replace(/%%|%(\d+\$)?([-+#0 ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([scboxXuidfegEGS])/g, function(substring, valueIndex, flags, minWidth, _, precision, type) {
+								if (substring == '%%') return '%';
+
+								// parse flags
+								var leftJustify = false, positivePrefix = '', zeroPad = false, prefixBaseX = false;
+								for (var j = 0; flags && j < flags.length; j++) switch (flags.charAt(j)) {
+								case ' ': positivePrefix = ' '; break;
+								case '+': positivePrefix = '+'; break;
+								case '-': leftJustify = true; break;
+								case '0': zeroPad = true; break;
+								case '#': prefixBaseX = true; break;
+								}
+
+								// parameters may be null, undefined, empty-string or real valued
+								// we want to ignore null, undefined and empty-string values
+
+								if (!minWidth) {
+								minWidth = 0;
+								} else if (minWidth == '*') {
+								minWidth = +a[i++];
+								} else if (minWidth.charAt(0) == '*') {
+								minWidth = +a[minWidth.slice(1, -1)];
+								} else {
+								minWidth = +minWidth;
+								}
+
+								// Note: undocumented perl feature:
+								if (minWidth < 0) {
+								minWidth = -minWidth;
+								leftJustify = true;
+								}
+
+								if (!isFinite(minWidth)) {
+								throw new Error('sprintf: (minimum-)width must be finite');
+								}
+
+								if (!precision) {
+								precision = 'fFeE'.indexOf(type) > -1 ? 6 : (type == 'd') ? 0 : void(0);
+								} else if (precision == '*') {
+								precision = +a[i++];
+								} else if (precision.charAt(0) == '*') {
+								precision = +a[precision.slice(1, -1)];
+								} else {
+								precision = +precision;
+								}
+
+								// grab value using valueIndex if required?
+								var value = valueIndex ? a[valueIndex.slice(0, -1)] : a[i++];
+
+								switch (type) {
+								case 'S':
+								case 's': return formatString(String(value), leftJustify, minWidth, precision, zeroPad);
+								case 'c': return formatString(String.fromCharCode(+value), leftJustify, minWidth, precision, zeroPad);
+								case 'b': return formatBaseX(value, 2, prefixBaseX, leftJustify, minWidth, precision, zeroPad);
+								case 'o': return formatBaseX(value, 8, prefixBaseX, leftJustify, minWidth, precision, zeroPad);
+								case 'x': return formatBaseX(value, 16, prefixBaseX, leftJustify, minWidth, precision, zeroPad);
+								case 'X': return formatBaseX(value, 16, prefixBaseX, leftJustify, minWidth, precision, zeroPad).toUpperCase();
+								case 'u': return formatBaseX(value, 10, prefixBaseX, leftJustify, minWidth, precision, zeroPad);
+								case 'i':
+								case 'd': {
+										  var number = parseInt(+value);
+										  var prefix = number < 0 ? '-' : positivePrefix;
+										  value = prefix + pad(String(Math.abs(number)), precision, '0', false);
+										  return justify(value, prefix, leftJustify, minWidth, zeroPad);
+									  }
+								case 'e':
+								case 'E':
+								case 'f':
+								case 'F':
+								case 'g':
+								case 'G':
+										  {
+										  var number = +value;
+										  var prefix = number < 0 ? '-' : positivePrefix;
+										  var method = ['toExponential', 'toFixed', 'toPrecision']['efg'.indexOf(type.toLowerCase())];
+										  var textTransform = ['toString', 'toUpperCase']['eEfFgG'.indexOf(type) % 2];
+										  value = prefix + Math.abs(number)[method](precision);
+										  return justify(value, prefix, leftJustify, minWidth, zeroPad)[textTransform]();
+									  }
+								default: return substring;
+								}
+								});
+						}
+					} catch(e) {
+						alert("*** Failed to load sprintf library: " + e + "\n");
+						throw(e);
+					}
+					]]>
+				</body>
+			</method>
+		</implementation>
+	</binding>
+
+	<binding id="caption" extends="chrome://global/content/bindings/general.xml#basetext">
+		<resources>
+			<stylesheet src="chrome://global/skin/groupbox.css"/>
+		</resources>
+
+		<content>
+			<children>
+				<xul:image
+					onclick="
+						var n = document.getAnonymousNodes(parentNode.parentNode)[1];
+						if (n.hidden) {
+							n.hidden = false;
+							this.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif');
+						} else {
+							n.hidden = true;
+							this.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/triangle.gif');
+						}
+					"
+				/>
+				<xul:image class="caption-icon" xbl:inherits="src=image"/>
+				<xul:label class="caption-text" flex="1" xbl:inherits="default,value=label,crop,accesskey" />
+			</children>
+		</content>
+
+		<implementation>
+			<constructor>
+				<![CDATA[
+					var n = document.getAnonymousNodes(this)[0];
+					n.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif');
+				]]>
+			</constructor>
+			<destructor>
+				<![CDATA[
+					var n = document.getAnonymousNodes(this)[0];
+					n.onclick = null;
+				]]>
+			</destructor>
+		</implementation>
+	</binding>
+
+</bindings>

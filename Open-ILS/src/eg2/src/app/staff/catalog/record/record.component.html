@@ -1,0 +1,107 @@
+
+<ng-container *ngIf="summary">
+  <eg-title i18n-prefix prefix="Bib {{summary.record.tcn_value()}} - {{summary.display.title}}">
+  </eg-title>
+</ng-container>
+
+<eg-confirm-dialog #pendingChangesDialog
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
+</eg-confirm-dialog>
+
+<div id="staff-catalog-record-container">
+  <div id='staff-catalog-bib-summary-container' class='mt-1'>
+    <eg-bib-summary [bibSummary]="summaryForDisplay()">
+    </eg-bib-summary>
+  </div>
+  <div class="row ml-0 mr-0">
+    <div id='staff-catalog-bib-navigation'>
+      <eg-catalog-record-pagination [recordId]="recordId" [recordTab]="recordTab">
+      </eg-catalog-record-pagination>
+    </div>
+    <!-- push the actions component to the right -->
+    <div class="flex-1"></div>
+    <div id='staff-catalog-bib-navigation'>
+      <eg-catalog-record-actions [recordId]="recordId"
+        (addHoldingsRequested)="addHoldingsRequested()">
+      </eg-catalog-record-actions>
+    </div>
+  </div>
+  <div id='staff-catalog-bib-tabs-container' class='mt-3'>
+    <div class="row">
+      <div class="col-lg-12 text-right">
+        <button class="btn btn-secondary btn-sm"
+            [disabled]="recordTab == defaultTab"
+            (click)="setDefaultTab()" i18n>Set Default View</button>
+      </div>
+    </div>
+    <ngb-tabset #recordTabs [activeId]="recordTab" 
+      (tabChange)="beforeTabChange($event)">
+      <ngb-tab title="Item Table" i18n-title id="item_table">
+        <ng-template ngbTabContent>
+          <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
+        </ng-template>
+      </ngb-tab>
+      <!-- NOTE some tabs send the user over to the AngJS app -->
+      <ngb-tab title="MARC Edit" i18n-title id="marc_edit">
+        <ng-template ngbTabContent>
+          <div class="mt-3">
+            <eg-marc-editor #marcEditor (recordSaved)="handleMarcRecordSaved()" 
+              [recordId]="recordId"></eg-marc-editor>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="MARC View" i18n-title id="marc_html">
+        <ng-template ngbTabContent>
+          <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="View Holds" i18n-title id="holds">
+        <ng-template ngbTabContent>
+          <eg-holds-grid [recordId]="recordId"
+            preFetchSetting="catalog.record.holds.prefetch"
+            printTemplate="holds_for_bib"
+            persistKey="cat.catalog.wide_holds"
+            [defaultSort]="[{name:'request_time',dir:'asc'}]"
+            [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Monograph Parts" i18n-title id="monoparts">
+        <ng-template ngbTabContent>
+          <eg-catalog-record-parts [recordId]="recordId">
+          </eg-catalog-record-parts>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Holdings View" i18n-title id="holdings">
+        <ng-template ngbTabContent>
+          <eg-holdings-maintenance #holdingsMaint [recordId]="recordId">
+          </eg-holdings-maintenance>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Conjoined Items" i18n-title id="conjoined">
+        <ng-template ngbTabContent>
+          <eg-catalog-record-conjoined [recordId]="recordId">
+          </eg-catalog-record-conjoined>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Shelf Browse" i18n-title id="cnbrowse">
+        <ng-template ngbTabContent>
+          <ng-container *ngIf="summary">
+            <div class="mt-2">
+              <eg-catalog-cn-browse-results [bibSummary]="summary">
+              </eg-catalog-cn-browse-results>
+            </div>
+          </ng-container>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Patron View" i18n-title id="catalog">
+        <ng-template ngbTabContent>
+          <eg-opac-record-detail [recordId]="recordId">
+          </eg-opac-record-detail>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
+
+

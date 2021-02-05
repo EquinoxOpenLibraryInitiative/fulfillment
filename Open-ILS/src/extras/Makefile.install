@@ -1,0 +1,136 @@
+# ---------------------------------------------------------------------
+# Author: Bill Erickson <erickson@esilibrary.com>
+# Author: Dan Scott <dscott@laurentian.ca>
+#
+# Makefile to install prerequisites for OpenSRF and Evergreen
+#
+# Currently supports Debian (buster, stretch, jessie),
+# Ubuntu (16.04), Ubuntu (18.04).
+#
+# Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
+#
+# usage:
+# 	make -f Makefile.install debian-buster
+# 	- or -
+# 	make -f Makefile.install debian-stretch
+# 	- or -
+# 	make -f Makefile.install debian-jessie
+# 	- or -
+# 	make -f Makefile.install ubuntu-xenial
+# 	- or -
+# 	make -f Makefile.install ubuntu-bionic
+# 	- or -
+# 	make -f Makefile.install fedora
+#
+# ---------------------------------------------------------------------
+
+# variables shared by all installers
+
+# Make any assumptions about the shell being used explicit
+export SHELL=/bin/bash 
+
+export LIBNET_Z3950_SIMPLESERVER=Net-Z3950-SimpleServer-1.15
+export LIBNET_Z3950_SIMPLESERVER_URL=http://ftp.indexdata.dk/pub/simpleserver/$(LIBNET_Z3950_SIMPLESERVER)
+
+# The libdbi sources can be fetched from sourceforge.net.  They are stored on
+# the open-ils.org site now for ease of direct linking
+export LIBDBI=libdbi-0.8.3
+export LIBDBI_DRIVERS=libdbi-drivers-0.8.3
+export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
+
+# some OSes require a newer version of NodeJS
+# NOTE: Using the LTS binaries for NodeJS
+export NODEJS_VERSION=v12.13.0
+export NODEJS_BINDIR=node-$(NODEJS_VERSION)-linux-x64
+export NODEJS_TARBIN=$(NODEJS_BINDIR).tar.xz
+export NODEJS_BINARY="https://nodejs.org/dist/$(NODEJS_VERSION)/$(NODEJS_TARBIN)"
+
+# As this Makefile is designed to be used by a make process running as
+# root, this will avoid problems on some systems when tar extracts
+# files and tries to give them the same UID/GID as they have in their
+# archives, but those accounts don't exist on the local system.
+#
+# e.g, libdbi has files set 1000/1000. On most systems, there's a user
+# and a group with these IDs, but there can be systems where nothing
+# uses those IDs, and where tar fails with e.g. 'tar: libdbi-0.8.3:
+# Cannot change ownership to uid 1000, gid 1000: Invalid argument'
+#
+export TAR_OPTIONS=--no-same-owner --no-same-permissions
+
+# ----------------------------------------------------------------------------
+
+# avoid hard-coding the path to related makefiles
+DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
+
+all:
+	@echo "please specify an OS" && exit 0
+debian-buster:
+	@make -f $(DIR)/Makefile.debian-buster
+debian-stretch:
+	@make -f $(DIR)/Makefile.debian-stretch
+debian-jessie:
+	@make -f $(DIR)/Makefile.debian-jessie
+ubuntu-bionic:
+	@make -f $(DIR)/Makefile.ubuntu-bionic
+ubuntu-xenial:
+	@make -f $(DIR)/Makefile.ubuntu-xenial
+fedora:
+	@make -f $(DIR)/Makefile.fedora
+
+postgres-server-debian-buster:
+	@make -f $(DIR)/Makefile.debian-buster install_postgres_server
+postgres-server-debian-buster-10:
+	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_10
+postgres-server-debian-stretch:
+	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server
+postgres-server-debian-stretch-10:
+	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_10
+postgres-server-debian-jessie:
+	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
+postgres-server-debian-jessie-10:
+	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server_10
+postgres-server-ubuntu-bionic:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server
+postgres-server-ubuntu-bionic-10:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_10
+postgres-server-ubuntu-xenial:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server
+postgres-server-ubuntu-xenial-10:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server_10
+postgres-server-fedora:
+	@make -f $(DIR)/Makefile.fedora install_postgres_server
+
+ubuntu-bionic-developer:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_developer
+ubuntu-xenial-developer:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_developer
+debian-buster-developer:
+	@make -f $(DIR)/Makefile.debian-buster install_developer
+debian-stretch-developer:
+	@make -f $(DIR)/Makefile.debian-stretch install_developer
+debian-jessie-developer:
+	@make -f $(DIR)/Makefile.debian-jessie install_developer
+
+ubuntu-bionic-translator:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_translator
+ubuntu-xenial-translator:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_translator
+debian-buster-translator:
+	@make -f $(DIR)/Makefile.debian-buster install_translator
+debian-stretch-translator:
+	@make -f $(DIR)/Makefile.debian-stretch install_translator
+debian-jessie-translator:
+	@make -f $(DIR)/Makefile.debian-jessie install_translator
+
+ubuntu-bionic-packager:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_packager
+ubuntu-xenial-packager:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
+debian-buster-packager:
+	@make -f $(DIR)/Makefile.debian-buster install_packager
+debian-stretch-packager:
+	@make -f $(DIR)/Makefile.debian-stretch install_packager
+debian-jessie-packager:
+	@make -f $(DIR)/Makefile.debian-jessie install_packager
+
+# vim:noet:sw=4:ts=4:

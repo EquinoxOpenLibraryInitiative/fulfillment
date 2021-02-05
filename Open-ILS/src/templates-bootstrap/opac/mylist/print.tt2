@@ -1,0 +1,29 @@
+[%- PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Confirm Basket Printing") %]
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+
+<div class="container">
+  [% IF ctx.mylist.size %]
+  <h3>[% l('Confirm Basket Printing') %]</h3>
+  <p class="big-strong">[% l('Please confirm that you want to print the [_1] titles in the basket.', ctx.mylist.size) %]
+    <form method="post" action="[% mkurl(ctx.opac_root _ '/mylist/doprint', {}, 1) %]">
+      <input type="hidden" name="redirect_to" value="[% ctx.referer %]" />
+      <div class="form-check m-2">
+        <input class="form-check-input" type="checkbox" value="" id="clear_cart">
+        <label class="form-check-label" for="clear_cart">
+            [% l('Clear entire basket after printing.') %]
+        </label>
+      </div>
+      <br />
+      <button id="print_cart_submit" type="submit" class="btn btn-confirm"><i class="fas fa-print" aria-hidden="true"></i> [% l("Print") %]</button>
+      <button type="reset" name="cancel" onclick="window.location='[% ctx.referer | html %]'"  id="clear_basket_cancel" class="btn btn-deny"><i class="fas fa-times-circle" aria-hidden="true"></i> [% l('Cancel') %]</button>
+    </form>
+  [% ELSE %]
+    <div class="warning_box"><h3>[% l("The basket is empty."); %]</h3></div>
+    <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-undo-alt" aria-hidden="true"></i> [% l('Return') %]</button>
+  [% END %]
+</div>
+[%- END %]

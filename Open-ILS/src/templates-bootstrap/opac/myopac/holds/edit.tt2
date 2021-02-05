@@ -1,0 +1,121 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/org_selector.tt2";
+    PROCESS "opac/parts/metarecord_hold_filters.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "holds"; # in this case, just for tab coloring.
+
+    hold = ctx.holds.0;
+    ahr = hold.hold.hold;
+    attrs = {marc_xml => hold.marc_xml};
+    PROCESS get_marc_attrs args=attrs;
+    hold.human_status = PROCESS get_hold_status hold=hold;
+
+    # Do this up front to avoid verbosity later
+    expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT) : '';
+    thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) : '';
+%]
+
+<div>
+    <div class="header_middle">
+        <h3>[% l('Edit Hold') %]</h3>
+        <a href="[% ctx.opac_root %]/myopac/holds" class="float-right"><i class="fas fa-list"></i> [% l('List all holds') %]</a>
+    </div>
+    <form method="post">
+    <div id="hold_editor" class="mt-4">
+        [%  IF hold; title = attrs.title;
+                IF ahr.hold_type == 'P';
+                    title = l('[_1] ([_2])', title, hold.hold.part.label);
+                END
+        %]
+        <div class="my-4">
+            <h1>[% title | html %]</h1>
+            <h2>[% attrs.author | html %]</h2>
+            [% IF attrs.format_icon %]
+                <strong>[% l('Format:') %]</strong>
+                <img src="[% attrs.format_icon %]" alt="[% attrs.format_label | html %]" title="[% attrs.format_label | html %]" />
+            [% END %]
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+            <strong>[% l('Status') %]</strong>: [% hold.human_status %]
+            </div>
+            <div class="col-12">
+             <input type="hidden" name="action" value="edit" />
+                            <input type="hidden" name="hold_id"
+                                value="[% ahr.id %]" />
+                            [% l('Pickup library') %]
+
+                            [% INCLUDE build_org_selector
+                                name='pickup_lib' value=ahr.pickup_lib
+                                can_have_vols_only=1 hold_pickup_lib=1 %]
+            </div>
+            <div class="col-12">
+            [% IF hold.hold.status < 3 OR hold.hold.status == 7 %]
+                    [%# The following actions cannot be performed on holds that
+                        have already been captured... %]
+
+                            [% l('Cancel unless filled by') %]
+
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" name="expire_time"  value="[% expire_time | html %]" data-date-format="mm/dd/yyyy">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+
+
+                            [% l('Active?') %]
+
+                            <select class="form-control" name="frozen">
+                                <option value="f"[% ahr.frozen == 't' ? '' :' selected="selected"' %]>
+                                    [% l('Yes, this hold is active now') %]
+                                </option>
+                                <option value="t"[% ahr.frozen == 't' ? ' selected="selected"' : '' %]>
+                                    [% l('No, this hold is suspended') %]
+                                </option>
+                            </select>
+
+                            [% l('If suspended, activate on') %]
+
+                         <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" name="thaw_date" id="datepicker" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+
+
+                    [% END %]
+
+            </div>
+            <div class="col-12">
+
+                    [% IF hold.metarecord_filters.formats.size OR
+                        (hold.metarecord_filters.langs.size.defined && hold.metarecord_filters.langs.size > 1);
+                            PROCESS metarecord_hold_filters_selector
+                                hold_data=hold; END %]
+            </div>
+             <div class="col-12">
+                <a href="[% ctx.opac_root %]/myopac/holds" class="btn btn-deny"><i class="fas fa-arrow-circle-left"></i> [% l('Go Back') %]</a>
+                            <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button>
+             </div>
+        </div>
+            </form>
+        [% ELSE;
+            l('Hold not found');
+        END %]
+    </div>
+</div>
+<script>
+    $('#datepicker').datepicker({
+        weekStart: 1,
+        autoclose: true,
+        todayHighlight: true,
+    });
+    $('#datepicker').datepicker("setDate", new Date());
+</script>
+[% END %]
+

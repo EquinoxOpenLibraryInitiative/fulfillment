@@ -1,0 +1,16 @@
+site:
+  title: Evergreen Documentation
+  start_page: docs:shared:about_this_documentation
+  url: http://localhost/prod
+content:
+  sources:
+  - url: ../
+#    - url: git://git.evergreen-ils.org/Evergreen.git
+    branches: HEAD
+    start_path: docs
+ui:
+  bundle:
+    url: ./../../eg-antora/build/ui-bundle.zip
+
+output:
+  dir: /var/www/html/prod

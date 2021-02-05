@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/circ.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<!--<?xul-overlay href="/xul/server/patron/bill_summary_overlay.xul"?>-->
+
+<window id="bill_interface_win" width="700" height="550" oils_persist="sizemode width height" active="true"
+    onload="try{ font_helper(); persist_helper(); my_init(); } catch(E) { alert(E); }"
+    onunload="try{ my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="bill2.js"/>
+
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
+
+    <commandset>
+        <command id="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" disabled="true"/>
+        <command id="copy_details" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" disabled="true"/>
+        <command id="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" disabled="true"/>
+        <command id="adjust_to_zero" label="&staff.patron.bill_interface.adjust_to_zero.label;" accesskey="&staff.patron.bill_interface.adjust_to_zero.accesskey;" disabled="true"/>
+        <command id="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" disabled="true"/>
+        <command id="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" disabled="true"/>
+        <command id="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;" disabled="true"/>
+    </commandset>
+
+    <popupset>
+        <menupopup id="actions_popup">
+            <menuitem command="opac" />
+            <menuitem command="copy_details" />
+            <menuitem class="voidall_command" command="voidall" />
+            <menuitem class="adjust_to_zero_command" command="adjust_to_zero" />
+            <menuitem command="refund" />
+            <menuitem command="add" />
+            <menuitem command="details" />
+        </menupopup>
+    </popupset>
+
+    <vbox flex="1" class="my_overflow">
+        <groupbox orient="vertical" flex="1">
+            <caption id="caption" label="&staff.patron.bill_interface.caption.label;"/>
+            <hbox id="before_splitter1" oils_persist="height">
+                <grid flex="1">
+                    <columns flex="1">
+                        <column/>
+                        <column/>
+                        <column flex="1"/>
+                        <column/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <vbox pack="center"><label value="&staff.patron.bill_interface.total_owed;" class="big_emphasis1" /></vbox><vbox pack="center"><label id="total_owed2" class="big_emphasis1"/></vbox>
+                            <spacer flex="1"/>
+                            <vbox pack="center"><label value="&staff.patron.bill_interface.refunds_available;" class="big_emphasis2"/></vbox><vbox pack="center"><label id="refunds_owed" class="big_emphasis2"/></vbox>
+                        </row>
+                        <row>
+                            <vbox pack="center"><label value="&staff.patron.bill_interface.total_checked;" class="big_emphasis1" /></vbox><vbox pack="center"><label id="checked_owed2" class="big_emphasis1"/></vbox>
+                            <spacer flex="1"/>
+                            <vbox class="hide_patron_credit" pack="center">
+                                <label value='&staff.patron.bill_interface.credit_available;' class="big_emphasis2"/>
+                            </vbox>
+                            <vbox class="hide_patron_credit" pack="center">
+                                <label id="credit_forward" class="big_emphasis2"/>
+                            </vbox>
+                        </row>
+                    </rows>
+                </grid>
+                <spacer flex="1"/>
+                <groupbox>
+                    <caption label="&staff.patron.bills_overlay.pay_bill.label;"/>
+                    <grid>
+                        <columns>
+                            <column/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="&staff.patron.bills_overlay.payment_type.value;" class="emphasis1" accesskey="&staff.patron.bills_overlay.payment_type.accesskey;" control="payment_type"/>
+                                <menulist id="payment_type">
+                                    <menupopup id="payment_type_menupopup">
+                                        <menuitem id="payment_type_menuitem1" class="hide_patron_cash" label="&staff.patron.bills_overlay.cash.label;" value="cash_payment"/>
+                                        <menuitem id="payment_type_menuitem2" class="hide_patron_check" label="&staff.patron.bills_overlay.check.label;" value="check_payment"/>
+                                        <menuitem id="payment_type_menuitem3" class="hide_patron_credit_card" label="&staff.patron.bills_overlay.credit_card.label;" value="credit_card_payment"/>
+                                        <menuitem id="payment_type_menuitem4" class="hide_patron_credit" label="&staff.patron.bills_overlay.patron_credit.label;" value="credit_payment" />
+                                        <menuitem id="payment_type_menuitem5" class="hide_patron_work" label="&staff.patron.bills_overlay.word.label;" value="work_payment"/>
+                                        <menuitem id="payment_type_menuitem6" class="hide_patron_forgive" label="&staff.patron.bills_overlay.forgive.label;" value="forgive_payment"/>
+                                        <menuitem id="payment_type_menuitem7" class="hide_patron_goods" label="&staff.patron.bills_overlay.goods.label;" value="goods_payment"/>
+                                    </menupopup>
+                                </menulist>
+                            </row>
+                            <row>
+                                <label value="&staff.patron.bill_interface.payment_received.label;" accesskey="&staff.patron.bill_interface.payment_received.accesskey;" class="emphasis1" control="payment" />
+                                <hbox><textbox id="payment" size="6"/></hbox>
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox>
+                        <checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" accesskey="&staff.patron.bills_overlay.annotate_payment.accesskey;" oils_persist="checked" checked="false" oncommand="default_focus();"/>
+                        <button label="&staff.patron.bills_overlay.see_distribution.label;" accesskey="&staff.patron.bills_overlay.see_distribution.accesskey;" oncommand="distribute_payment(); default_focus();"/>
+                        <button id="apply_payment_btn" label="&staff.patron.bills_overlay.apply_payment.label;" accesskey="&staff.patron.bills_overlay.apply_payment.accesskey;"/>
+                    </hbox>
+                </groupbox>
+            </hbox>
+            <splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="before_splitter1 after_splitter1" />
+            <vbox flex="1" id="after_splitter1" oils_persist="height">
+                <hbox>
+                    <button id="bill_patron_btn" label="&staff.patron.bills_overlay.bill_patron.label;" accesskey="&staff.patron.bills_overlay.bill_patron.accesskey;" />
+                    <button id="bill_history_btn" label="&staff.patron.bills_overlay.history.label;" accesskey="&staff.patron.bills_overlay.history.accesskey;" />
+                    <spacer flex="1"/>
+                    <vbox pack="center">
+                        <label id="circulating_hint" hidden="true" 
+                            value="&staff.patron.bills_overlay.still_checked_out.label;"/>
+
+                        <label id="longoverdue_hint" hidden="true" 
+                            value="&staff.patron.bills_overlay.longoverdue_checked_out.label;"/>
+
+                        <label id="lost_hint" hidden="true"
+                            value="&staff.patron.bills_overlay.lost_checked_out.label;"/>
+                    </vbox>
+                    <menubar>
+                        <menu label="&staff.patron.bill_interface.actions.label;" accesskey="&staff.patron.bill_interface.actions.accesskey;">
+                            <menupopup>
+                                <menuitem command="opac" />
+                                <menuitem command="copy_details" />
+                                <menuitem class="voidall_command" command="voidall" />
+                                <menuitem class="adjust_to_zero_command" command="adjust_to_zero" />
+                                <menuitem command="refund" />
+                                <menuitem command="add" />
+                                <menuitem command="details" />
+                            </menupopup>
+                        </menu>
+                    </menubar>
+                </hbox>
+                <tree id="bill_tree" flex="1" enableColumnDrag="true" seltype="multiple" editable="true" context="actions_popup"/>
+                <hbox>
+                    <hbox id="bill_list_actions" />
+                    <button label="&staff.patron.bills_overlay.check_all.label;" accesskey="&staff.patron.bills_overlay.check_all.accesskey;" oncommand="check_all();"/>
+                    <button id="uncheck_all" label="&staff.patron.bills_overlay.uncheck_all.label;" accesskey="&staff.patron.bills_overlay.uncheck_all.accesskey;" oncommand="uncheck_all();"/>
+                    <button label="&staff.patron.bills_overlay.check_all_refunds.label;" accesskey="&staff.patron.bills_overlay.check_all_refunds.accesskey;" oncommand="check_all_refunds();"/>
+                    <button id="print" label="&staff.patron.bills_overlay.print_bills.label;" accesskey="&staff.patron.bills_overlay.print_bills.accesskey;" oncommand="print_bills();"/>
+                    <spacer flex="1"/>
+                    <button label="&staff.patron.bills_overlay.receipt_options.label;" accesskey="&staff.patron.bills_overlay.receipt_options.accesskey;" type="menu">
+                        <menupopup>
+                            <menuitem id="receipt_upon_payment" type="checkbox" label="&staff.patron.bills_overlay.receipt_upon_payment.label;" accesskey="&staff.patron.bills_overlay.receipt_upon_payment.accesskey;" oils_persist="checked"/>
+                            <menuitem id="printer_prompt" type="checkbox" label="&staff.patron.bills_overlay.printer_prompt.label;" accesskey="&staff.patron.bills_overlay.printer_prompt.accesskey;"  oils_persist="checked"/>
+                            <hbox style="border: solid thin black">
+                                <vbox pack="center">
+                                    <label value="&staff.patron.bills_overlay.number_of_copies.label;" accesskey="&staff.patron.bills_overlay.number_of_copies.accesskey;" control="num_of_receipts" />
+                                </vbox>
+                                <vbox pack="center">
+                                    <textbox id="num_of_receipts" value="1" type="number" min="0" size="2" oils_persist="value"/>
+                                </vbox>
+                            </hbox>
+                        </menupopup>
+                    </button>
+                </hbox>
+            </vbox>
+            <splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="after_splitter1 after_splitter2" />
+            <hbox id="after_splitter2" oils_persist="height">
+                <vbox>
+                    <hbox>
+                        <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis1"/><label id="currently_voided" value="0.00"/>
+                    </hbox>
+                    <hbox><label value='&staff.patron.bill_interface.change_due_upon_payment.label;' class="big_emphasis1"/><label id="change_due" value="0.00" class="big_emphasis1"/></hbox>
+                    <checkbox id="convert_change_to_credit" class="hide_patron_credit" label="&staff.patron.bills_overlay.convert_change_to_credit.label;" accesskey="&staff.patron.bills_overlay.convert_change_to_credit.accesskey;"/>
+                </vbox>
+                <spacer flex="1"/>
+                <grid>
+                    <columns>
+                        <column />
+                        <column />
+                    </columns>
+                    <rows>
+                        <row>
+                            <spacer />
+                            <label id="pending_payment_label" value="&staff.patron.bill_interface.payment.label;" class="emphasis1" />
+                            <label id="pending_change_label" value="&staff.patron.bill_interface.change.label;" class="emphasis1" />
+                        </row>
+                        <row>
+                            <label id="pending_label" value="&staff.patron.bill_interface.pending.label;" class="emphasis1" />
+                            <hbox><textbox id="pending_payment" readonly="true" context="clipboard" size="6" value='0.00'/></hbox>
+                            <hbox><textbox id="pending_change" readonly="true" context="clipboard" size="6" value='0.00'/></hbox>
+                        </row>
+                    </rows>
+                </grid>
+                <grid>
+                    <columns>
+                        <column />
+                        <column />
+                    </columns>
+                    <rows>
+                        <row>
+                            <spacer />
+                            <label id="owed_label" value="&staff.patron.bill_interface.owed.label;" control="total_owed" class="emphasis1"/>
+                            <label id="billed_label" value="&staff.patron.bill_interface.billed.label;" control="total_billed" class="emphasis2"/>
+                            <label id="paid_label" value="&staff.patron.bill_interface.paid.label;" control="total_paid" class="emphasis2"/>
+                        </row>
+                        <row>
+                            <label id="total_label" value="&staff.patron.bill_interface.total.label;" control="total_owed" class="emphasis1"/>
+                            <hbox><textbox id="tb_total_owed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="total_billed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="tb_total_paid" readonly="true" context="clipboard" size="6"/></hbox>
+                        </row>
+                        <row>
+                            <label id="checked_label" value="&staff.patron.bill_interface.checked.label;" control="checked_owed" class="emphasis2"/>
+                            <hbox><textbox id="checked_owed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="checked_billed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="checked_paid" readonly="true" context="clipboard" size="6"/></hbox>
+                        </row>
+                    </rows>
+                </grid>
+            </hbox>
+        </groupbox>
+    </vbox>
+
+</window>
+

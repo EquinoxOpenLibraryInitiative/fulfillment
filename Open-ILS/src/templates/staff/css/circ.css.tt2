@@ -1,0 +1,203 @@
+
+/* push the patron summary up to compensate for the extra
+ * padding required to support the fixed navigation */
+.patron-summary-grid-wrapper {
+  margin-top: 20px;
+}
+
+/** style to make a grid look like a striped table */
+#patron-summary-grid div.row {padding: 3px; border-right: 2px solid rgb(248, 248, 248);}
+#patron-summary-grid div.row:nth-child(odd) {background-color: rgb(248, 248, 248);}
+
+/* there are bootstrap tyles for error, warning, etc., 
+but the ones I'm finding aren't quite cutting it..*/
+.patron-summary-alert {color: red; font-weight:bold}
+.patron-summary-alert-small {color: red; background-color: white;}
+.patron-summary-divider { border-top: 1px solid #CCC}
+.patron-summary-act-link {font-size: .8em;}
+.patron-summary-has-notes:hover, .patron-summary-has-notes:visited{ text-decoration: none; }
+
+.patron-summary-pref-name {
+  padding-left: 6px;
+  color: #5cb85c;
+}
+
+/* Tag icon used for name keywords shouldn't look like a link */
+
+.glyphicon-tags, .glyphicon-tags:hover, .glyphicon-tags:focus {
+  color: #333;
+  text-decoration: none;
+}
+
+/* FIXME: use .barcode instead */
+#patron-checkout-barcode,
+#patron-renewal-barcode,
+#patron-checkin-barcode { width: 16em; }
+
+#patron-search-form div.form-group {
+  margin-bottom: 5px;
+}
+
+#patron-fixed-tabs {
+    z-index: 4;
+    background-color: rgba(255,255,255,1);
+}
+
+.patron-name-header {
+  margin-top: 20px;
+}
+
+/* let search form elements fill their containers w/ slight padding */
+#patron-search-form-row {margin-left: 0px;}
+#patron-search-form div.col-md-2 { padding: 2px; }
+#patron-search-form input:not([type="checkbox"]) { width: 100%; }
+#patron-search-form .eg-org-selector,
+#patron-search-form .eg-org-selector button,
+#patron-search-form .patron-search-selector,
+  #patron-search-form .patron-search-selector button { 
+  width: 100%; 
+  text-align: left
+}
+
+
+#patron-payments-spreadsheet {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #aaa;
+}
+
+#patron-payments-spreadsheet .flex-cell {
+  margin: 2px;
+}
+
+#patron-payments-spreadsheet .flex-cell.well {
+  min-height: 1.5em;
+  margin-bottom: 0px; /* bootstrap default is 20px */
+}
+
+#hold-notify-settings div.row { margin-top: 12px; }
+#hold-notify-settings div.row:not(.header-row):nth-child(odd) {
+  background-color: rgb(248, 248, 248);
+}
+#hold-notify-settings div.row:not(.header-row) {
+  border-bottom: 1px solid #CCC;
+}
+
+/* -- patron registration -- */
+
+/* make all input widgets the same width, i.e. fill their column */
+
+.reg-field-input {font-weight: 700; }
+.reg-field-input input:not([type="checkbox"]) { width: 100%; }
+
+/* selector contents float left to allow depth-based left-padding */
+.reg-field-input .eg-org-selector,
+.reg-field-input .btn-group {
+  width: 100%; 
+  text-align: left;
+}
+
+/* selector button labels float right */
+.reg-field-input .eg-org-selector button,
+.reg-field-input .btn-group > button {
+  width: 100%; 
+  text-align: right;
+}
+
+/* floating div along top-right with field documentation */
+#reg-alert-pane {
+    position: fixed;
+    top:160px;
+    right:20px;
+    /*
+    border:2px dashed #d9e8f9;
+    -moz-border-radius: 10px;
+    */
+    font-weight: bold;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#reg-dupe-links {
+		margin-bottom: 10px;
+}
+
+
+#reg-field-doc legend {
+    /* otherwise the font size is quite large */
+    font-size: 100%;
+}
+
+.reg-field-row {
+    padding-bottom: 3px; 
+}
+
+.reg-field-row label {
+    font-weight: normal;
+}
+
+.patron-reg-fixed-bar {
+    position: fixed;
+    top:50px;
+    right: 20px;
+    left: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    z-index: 1;
+    background-color: rgba(255,255,255,1);
+}
+
+.patron-reg-actions-bar {
+  padding: 5px;
+}
+.patron-reg-actions-bar span {
+  font-weight: bold;
+}
+
+.patron-reg-barcodes > .header {
+  font-weight: bold;
+}
+
+/* Bootstrap alert panes are too stylized/padded/etc. in this case,
+ * but consider revisiting. */
+.patron-reg-validation-alert {
+  font-weight: bold;
+  color: red;
+}
+
+/* Angular applies these classes based on the field's 
+ * required and pattern settings */
+#patron-reg-container .ng-invalid,
+#patron-reg-container .ng-invalid-required,
+#patron-pay-by-credit-form .ng-invalid {
+  background-color: yellow;
+  color: red;
+}
+
+.patron-reg-names-separator {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.patron-reg-pref-names {
+  background-color: rgb(215, 215, 215);
+}
+
+.patron-reg-pending-address {
+  border:2px dashed #d9e8f9;
+  -moz-border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+#no-edit-alert-container {
+  position: absolute;
+  bottom: -200px;
+  z-index: 10;
+}
+
+/* -- end patron registration -- */
+
+[%# 
+vim: ft=css 
+%]

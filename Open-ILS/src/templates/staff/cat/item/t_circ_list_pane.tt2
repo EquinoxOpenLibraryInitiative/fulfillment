@@ -1,0 +1,70 @@
+<div class="col-md-12" ng-show="!isMaxCircHistoryZero && circ_list.length == 0">
+  <div class="alert alert-info">
+    [% l('Item has not circulated.') %]
+  </div>
+</div>
+<div class="col-md-12" ng-show="isMaxCircHistoryZero">
+  <div class="alert alert-info">
+    [% l('Circulation History not available for display.') %]
+  </div>
+</div>
+<div class="row" ng-show="!isMaxCircHistoryZero && circ_list.length">
+  <div class="flex-row">
+      <div class="flex-cell well">
+          <button class="btn btn-default" ng-click="retrieveAllPatrons()">
+            [% l('Retrieve All These Patrons') %]
+          </button>
+      </div>
+  </div>
+</div>
+
+
+<div class="row" ng-show="!isMaxCircHistoryZero" ng-repeat="circ in circ_list">
+  <div class="flex-row">
+    <div class="flex-cell well">
+      <a ng-if="circ.usr()" target="_self"
+        href="./circ/patron/{{circ.usr().id()}}/checkout">
+        [% l('[_1], [_2] [_3] : [_4]', 
+          '{{circ.usr().family_name()}}'
+          '{{circ.usr().first_given_name()}}'
+          '{{circ.usr().second_given_name()}}'
+          '{{circ.usr().card().barcode()}}') %]
+      </a>
+      <span ng-if="!circ.usr()">[% l('<Aged Circulation>') | html %]</span>
+      <span class="pad-horiz">[% l('Circulation ID: [_1]', '{{circ.id()}}') %]</span>
+    </div>
+    <div>
+      <button class="btn btn-default" ng-click="addBilling(circ)" 
+        ng-disabled="!circ.usr()">
+        [% l('Add Billing') %]
+      </button>
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Check Out Date') %]</div>
+    <div class="flex-cell well">{{circ.xact_start() | date:egDateAndTimeFormat}}</div>
+    <div class="flex-cell">[% l('Due Date') %]</div>
+    <div class="flex-cell well">{{circ.due_date() | egDueDate:egDateAndTimeFormat:circ.circ_lib():circ.duration()}}</div>
+    <div class="flex-cell">[% l('Stop Fines Time') %]</div>
+    <div class="flex-cell well">{{circ.stop_fines_time() | date:egDateAndTimeFormat}}</div>
+    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell well">{{circ.checkin_time() | date:egDateAndTimeFormat}}</div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Check Out Library') %]</div>
+    <div class="flex-cell well">{{circ.circ_lib().shortname()}}</div>
+    <div class="flex-cell">[% l('Renewal?') %]</div>
+    <div class="flex-cell well">{{
+      circ.phone_renewal() == 't' ||
+      circ.desk_renewal() == 't' ||
+      circ.opac_renewal() == 't' ||
+      circ.auto_renewal() == 't'
+    }}</div>
+    <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
+    <div class="flex-cell well">{{circ.stop_fines()}}</div>
+    <div class="flex-cell">[% l('Check In Library') %]</div>
+    <div class="flex-cell well">{{circ.checkin_lib().shortname()}}</div>
+  </div>
+  <hr/>
+</div>
+

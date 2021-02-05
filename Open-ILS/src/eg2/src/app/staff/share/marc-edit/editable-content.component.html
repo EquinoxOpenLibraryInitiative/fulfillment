@@ -1,0 +1,50 @@
+
+<!--
+Some context menus have additional static options.
+Track their labels here.
+-->
+<eg-string #add006 text="Add 006" i18n-text></eg-string>
+<eg-string #add007 text="Add 007" i18n-text></eg-string>
+<eg-string #add008 text="Add/Replace 008" i18n-text></eg-string>
+<eg-string #insertBefore text="Insert Field Before" i18n-text></eg-string>
+<eg-string #insertAfter text="Insert Field After" i18n-text></eg-string>
+<eg-string #deleteField text="Delete Field" i18n-text></eg-string>
+
+<ng-container *ngIf="bigText">
+  <div contenteditable
+    id='{{randId}}'
+    spellcheck="false"
+    class="d-inline-block text-dark text-break {{moreClasses}}"
+    [ngClass]="{'auth-invalid': isAuthInvalid()}"
+    [attr.tabindex]="fieldText ? -1 : '0'"
+    [attr.aria-label]="ariaLabel"
+    [egContextMenu]="contextMenuEntries()"
+    (menuItemSelected)="contextMenuChange($event.value)"
+    (keydown)="inputKeyDown($event)"
+    (focus)="selectText()"
+    (blur)="inputBlurred()"
+    (input)="bigTextValueChange()">
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!bigText">
+  <input
+    id='{{randId}}'
+    spellcheck="false"
+    class="text-dark rounded-0 form-control {{moreClasses}}"
+    [ngClass]="{'auth-invalid': isAuthInvalid()}"
+    [size]="inputSize()"
+    [maxlength]="maxLength || ''"
+    [disabled]="fieldText"
+    [attr.tabindex]="fieldText ? -1 : '0'"
+    [attr.aria-label]="ariaLabel"
+    [egContextMenu]="contextMenuEntries()"
+    (menuItemSelected)="contextMenuChange($event.value)"
+    (keydown)="inputKeyDown($event)"
+    (focus)="selectText()"
+    (blur)="inputBlurred()"
+    [ngModel]="getContent()"
+    (ngModelChange)="setContent($event)"
+  />
+</ng-container>
+

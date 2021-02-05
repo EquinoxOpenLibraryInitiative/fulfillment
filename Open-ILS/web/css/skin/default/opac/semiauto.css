@@ -1,0 +1,35 @@
+/* once done renaming and everything, combine with style.css */
+.bold { font-weight: bold; }
+.normal-height { height: 15px; }
+.big-height { height: 20px; }
+.very-big-height { height: 30px; }
+.big-block { margin: auto; width: 974px; height: 0px; }
+.qtype_selector_margin { margin-right: 7px; }
+.warning_box {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: larger;
+}
+.pad-bottom-five { padding: 5px; }
+.item_list_padding { padding: 8px 0px 6px 0px; border: 0; }
+.opac-auto-108 { padding-left: 5px; }
+.pad-top-ten { padding-top: 10px; }
+.opac-auto-121 { padding-top: 6px; }
+#new_cat_link_holder a { display: block; width: 675px; height: 213px; }
+.pos-rel { position: relative; }
+#search-box table { position: relative; left: -10px; }
+#util_back_btn { position: relative; top: 1px; left: 10px; }
+#util_help_btn { position: relative; top: 2px; left: 40px; }
+#util_forw_btn { position: relative; top: 2px; left: 50px; }
+#util_home_btn { position: relative; top: 3px; left: 20px; }
+.pos-rel-top-5 { position: relative; top: 5px; }
+#util_print_btn { position: relative; top: 5px; left: 30px; }
+#adv_quick_search_sidebar { text-align: center; margin-top: 20px; width: 400px; }
+.opac-auto-161 { text-align: right; padding-right: 7px; width: 62px; }
+.nowrap { white-space: nowrap; }
+.opac-auto-164 { white-space: nowrap; padding-left: 5px; }
+.full-width { width: 100%; }
+.selector_actions_for_list { width: 175px; margin-right: 11px; }
+.selector_actions_for_list_inner_option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
+#cn_browse_div > div { width: 90%; text-align: center; margin: 10px; }
+#cn_browse { width: 95%; text-align: center; padding: 15px; }

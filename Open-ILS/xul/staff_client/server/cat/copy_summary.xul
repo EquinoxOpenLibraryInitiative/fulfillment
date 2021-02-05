@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Brief Bib Display -->
+<!--
+    vim:noet:sw=4:ts=4:
+-->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_copy_summary_win" 
+    onload="try { font_helper(); persist_helper(); my_init(); } catch(E) { alert(E); }"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
+        function $w(id,text) { if ($(id)) util.widgets.set_text($(id),text); }
+
+        function my_init() {
+            try {
+                if (typeof JSAN == 'undefined') { 
+                    throw( $("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for cat_copy_summary.xul');
+
+                var copy_id = xul_param('copy_id'); 
+
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.date'); JSAN.use('util.widgets');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+                var copy = xul_param('copy',{'stash_name':'temp_copy','clear_xpcom':true});
+                var callnumber = xul_param('callnumber',{'stash_name':'temp_callnumber','clear_xpcom':true});
+
+                $('caption').setAttribute('tooltiptext', $('catStrings').getFormattedString('staff.cat.copy_summary.copy_id', [(copy_id || copy.id())]));
+
+                JSAN.use('circ.util');
+                var columns = circ.util.columns( 
+                    { 
+                        'barcode' : { 'hidden' : false },
+                        'location' : { 'hidden' : false },
+                        'owning_lib' : { 'hidden' : false },
+                        'circ_lib' : { 'hidden' : false },
+                        'call_number' : { 'hidden' : false },
+                        'status' : { 'hidden' : false },
+                        'alert_message' : { 'hidden' : false },
+                    } 
+                ).concat(
+                    {
+                        'id' : 'total_circs', 'label' : $('catStrings').getString('staff.cat.copy_summary.total_circs.label'), 'flex' : 1,
+                        'primary' : false, 'hidden' : false,
+                        'render' : 'v = obj.network.simple_request("FM_CIRC_COUNT_RETRIEVE_VIA_COPY",[ my.acp.id() ]).total.count; v;' 
+                    }
+                );
+
+                JSAN.use('util.list'); g.list = new util.list('item_summary_list');
+                g.list.init(
+                    {
+                        'columns' : columns,
+                    }
+                );
+                $('list_actions').appendChild( g.list.render_list_actions() );
+                g.list.set_list_actions();
+ 
+                function acp_callback(req) {
+                    try {
+                        var copy = req.getResultObject();
+                        if (typeof copy.ilsevent != 'undefined') throw(copy);
+
+                        function acn_callback(rreq) {
+                            try {
+                                $w('copy_summary_barcode',copy.barcode());    
+                                $w('copy_summary_ref',get_bool(copy.ref()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_opac_visible',get_bool(copy.opac_visible()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_circulate',get_bool(copy.circulate()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_holdable',get_bool(copy.holdable()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_age_protect',copy.age_protect() == null ? $('staff.cat.copy_summary.unset') : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );    
+                                $w('copy_summary_location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );    
+                                $w('copy_summary_create_date',util.date.formatted_date(copy.create_date(),'%F'));
+                                $w('copy_summary_edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
+                                $w('copy_summary_status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );    
+                            } catch(E) {
+                                g.error.standard_unexpected_error_alert('rendering copy',E);
+                            }
+                            try {
+                                var cn = rreq.getResultObject();
+                                if (typeof cn.ilsevent != 'undefined') {
+                                    switch(Number(cn.ilsevent)) {
+                                        case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
+                                            $w('copy_summary_callnumber', $('catStrings').getString('staff.cat.copy_summary.not_cataloged'));    
+                                        break;
+                                        default:
+                                            throw(cn);
+                                        break;
+                                    }
+                                } else {
+                                    $w('copy_summary_callnumber',cn.label());    
+                                }
+                                g.list.append({'row':{'my':{'acp':copy,'acn':cn,'circ':xulG.circ}}});
+                                g.barcode = copy.barcode(); g.doc_id = cn.record();
+                                if (g.doc_id > -1) {
+                                    $('show_in_opac').hidden = false;
+                                }
+                            } catch(E) {
+                                g.error.standard_unexpected_error_alert('retrieving volume',E);
+                            }
+                        }
+
+                        if (callnumber) {
+                            acn_callback( { 'getResultObject' : function() { return callnumber; } } );
+                        } else {
+                            g.network.simple_request(
+                                'FM_ACN_RETRIEVE.authoritative',
+                                [ copy.call_number() ], acn_callback
+                            );
+                        }
+                    } catch(E) {
+                        g.error.standard_unexpected_error_alert('retrieving copy',E);
+                    }
+                }
+
+                if (copy_id) {
+                    g.network.simple_request( 'FM_ACP_RETRIEVE', [ copy_id ], acp_callback);
+                } else {
+                    acp_callback( { 'getResultObject' : function() { return copy; } } );
+                    copy_id = copy.id();
+                }
+
+                g.network.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_COPY',[ copy_id ],function(req) {
+                    try {
+                        var robj = req.getResultObject();
+                        if (typeof robj.ilsevent != 'undefined') throw(robj);
+                        $w('copy_summary_total_circs',robj.total.count);
+                    } catch(E) {
+                        g.error.standard_unexpected_error_alert('retrieving circ total',E);
+                    }
+                });
+
+                if ( $('alternate_view').checked ) {
+                    toggle_deck();
+                }
+
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('copy_summary.xul',E); } catch(F) { alert(E + '\n' + F); }
+            }
+        }
+
+        function toggle_deck() {
+            try {
+                if ($('item_deck').selectedIndex == 0) {
+                    $('item_deck').selectedIndex = 1; /* change to grid */
+                } else {
+                    $('item_deck').selectedIndex = 0; /* change to tree */
+                }
+            } catch(E) {
+            }
+        }
+    ]]>
+    </script>
+
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
+    <groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
+        <caption label="&staff.cat.copy_summary.label;" id="caption"/>
+        <deck id="item_deck" oils_persist="selectedIndex">
+            <tree id="item_summary_list" enableColumnDrag="true" flex="1"/>
+            <grid>
+                <columns>
+                    <column/>
+                    <column/>
+                    <column/>
+                    <column/>
+                    <column/>
+                    <column/>
+                    <column/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.barcode.label;"/>
+                        <label id="copy_summary_barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.location.label;"/>
+                        <label id="copy_summary_location"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.call_number.label;"/>
+                        <label id="copy_summary_callnumber"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.status.label;"/>
+                        <label id="copy_summary_status"/>
+                    </row>
+                    <row>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.circulate.label;"/>
+                        <label id="copy_summary_circulate"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.reference.label;"/>
+                        <label id="copy_summary_ref"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.holdable.label;"/>
+                        <label id="copy_summary_holdable"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.opac_visible.label;"/>
+                        <label id="copy_summary_opac_visible"/>
+                    </row>
+                    <row>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.created.label;"/>
+                        <label id="copy_summary_create_date"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.edited.label;"/>
+                        <label id="copy_summary_edit_date"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.age_protect.label;"/>
+                        <label id="copy_summary_age_protect"/>
+                        <label style="font-weight: bold" value="&staff.cat.copy_summary.total_circs.label;"/>
+                        <label id="copy_summary_total_circs"/>
+                    </row>
+                </rows>
+            </grid>
+        </deck>
+        <hbox>
+            <hbox id="list_actions"/>
+            <button id="show_in_opac" hidden="true" label="&staff.cat.copy_summary.show_in_opac.label;" accesskey="&staff.cat.copy_summary.show_in_opac.accesskey;"
+                oncommand="JSAN.use('cat.util'); cat.util.show_in_opac([{barcode:g.barcode,doc_id:g.doc_id}]);"/>
+            <checkbox id="alternate_view" label="&staff.cat.copy_summary.alternate_view.label;" accesskey="&staff.cat.copy_summary.alternate_view.accesskey;" 
+                oils_persist="checked" oils_persist_no_poke="true"
+                oncommand="toggle_deck()"/>
+        </hbox>
+    </groupbox>
+
+</window>
+

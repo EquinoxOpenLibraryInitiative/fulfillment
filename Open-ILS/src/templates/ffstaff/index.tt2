@@ -1,0 +1,16 @@
+[%
+  WRAPPER "ffstaff/t_base.tt2";
+  ctx.page_title = l("Home"); 
+  ctx.page_app = "egHome";
+%]
+
+[% BLOCK APP_CSS; END %]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/app.js"></script>
+[% END %]
+
+<div ng-view></div> 
+
+[% END %]
+

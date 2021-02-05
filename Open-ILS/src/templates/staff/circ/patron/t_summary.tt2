@@ -1,0 +1,230 @@
+
+<div ng-cloak class="patron-summary-grid-wrapper">
+  <div ng-show="patron()" id="patron-summary-grid">
+    <div class="row patron-summary-pref-name"
+      ng-if="patron().pref_prefix() || patron().pref_family_name() || patron().pref_first_given_name() || patron().pref_second_given_name() || patron().pref_suffix()">
+      <div class="col-md-12">
+        [% l('[_1] [_2], [_3] [_4] [_5] (Preferred)', 
+          '{{patron().pref_prefix() || patron().prefix()}}',
+          '{{patron().pref_family_name() || patron().family_name()}}',
+          '{{patron().pref_first_given_name() || patron().first_given_name()}}',
+          '{{patron().pref_second_given_name() || patron().second_given_name()}}',
+          '{{patron().pref_suffix() || patron().suffix()}}')
+        %]
+      </div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-divider' : !$index}"
+      ng-repeat="penalty in alert_penalties()">
+      <div 
+        class="col-md-9 patron-summary-alert"
+        title="{{penalty.standing_penalty().name()}}">
+        {{penalty.note() || penalty.standing_penalty().label()}}
+      </div>
+      <div class="col-md-3">
+        {{penalty.set_date() | date:$root.egDateFormat}}
+      </div>
+    </div>
+    <div class="row patron-summary-divider">
+      <div
+        class="col-md-9 patron-summary-alert"
+        title="[% l('Patron Alert Message') %]"
+        ng-if="patron().alert_message()">
+        {{patron().alert_message()}}
+      </div>
+    </div>
+    <div class="row" ng-class="{'patron-summary-alert' : doesPatronExpireSoon()}">
+      <div ng-if="doesPatronExpireSoon()" class="col-md-12">[% l('Patron account will expire soon.  Please renew.') %]</div>
+    </div>
+    <div ng-if="patron().photo_url()" class="row">
+         <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" alt=""></div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-divider' : alert_penalties().length || patron().alert_message()}">
+      <div class="col-md-5">[% l('Profile') %]</div>
+      <div class="col-md-7">{{patron().profile().name()}}</div>
+    </div>
+    <div class="row" ng-if="show_name()">
+      <div class="col-md-5">[% l('ID') %]</div>
+      <div class="col-md-7">{{patron().id()}}</div>
+    </div>
+    <div class="row" ng-if="show_name()">
+      <div class="col-md-5">[% l('Name') %]</div>
+      <div class="col-md-7">
+                    [% l('[_1], [_2] [_3]',
+                '{{patron().family_name()}}',
+                '{{patron().first_given_name()}}',
+                '{{patron().second_given_name()}}') %]
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Home Library') %]</div>
+      <div class="col-md-7" title="{{patron().home_ou().name()}}">{{patron().home_ou().shortname()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Net Access') %]</div>
+      <div class="col-md-7">{{patron().net_access_level().name()}}</div>
+    </div>
+    <div class="row"
+      ng-class="{'patron-summary-alert' : !patron().dob()}">
+      <a class="col-md-5" ng-if="obscure_dob()" ng-click="show_dob(true)">[% l('Date of Birth') %]</a>
+      <div class="col-md-5" ng-if="!obscure_dob()">[% l('Date of Birth') %]</div>
+      <div class="col-md-7" ng-show="now_show_dob()">{{patron().dob() | date:$root.egDateFormat}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Parent/Guardian') %]</div>
+      <div class="col-md-7">{{patron().guardian()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Last Activity') %]</div>
+      <div class="col-md-7" title="{{patron().usr_activity()[0].etype().label()}}">{{patron().usr_activity()[0].event_time() | date:$root.egDateFormat}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Last Updated') %]</div>
+      <div class="col-md-7">{{patron().last_update_time() | date:$root.egDateFormat}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Create Date') %]</div>
+      <div class="col-md-7">{{patron().create_date() | date:$root.egDateFormat}}</div>
+    </div>
+    <div class="row"
+      ng-class="{'patron-summary-alert' : isPatronExpired()}">
+      <div class="col-md-5">[% l('Expire Date') %]</div>
+      <div class="col-md-7">{{patron().expire_date() | date:$root.egDateFormat}}</div>
+    </div>
+    <div class="row patron-summary-divider" 
+      ng-class="{'patron-summary-alert' : patron_stats().fines.balance_owed}">
+      <div class="col-md-5">[% l('Fines Owed') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().fines.balance_owed | currency}}
+      </div>
+    </div>
+    <div class="row"
+      ng-show="patron_stats().fines.group_balance_owed > patron_stats().fines.balance_owed"
+      ng-class="{'patron-summary-alert' : patron_stats().fines.group_balance_owed}">
+      <div class="col-md-5">[% l('Group Fines') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().fines.group_balance_owed | currency}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Items Out') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.total_out}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.overdue}">
+      <div class="col-md-5">[% l('Overdue') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.overdue}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.long_overdue}">
+      <div class="col-md-5">[% l('Long Overdue') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.long_overdue}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.claims_returned}">
+      <div class="col-md-5">[% l('Claimed Returned') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.claims_returned}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.lost}">
+      <div class="col-md-5">[% l('Lost') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.lost}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Non-Cataloged') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.noncat}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Holds') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().holds.ready}} / {{patron_stats().holds.total}}
+      </div>
+    </div>
+    <div class="row patron-summary-divider">
+      <div class="col-md-5">[% l('Card') %]</div>
+      <div class="col-md-7">{{patron().card().barcode()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Username') %]</div>
+      <div class="col-md-7">{{patron().usrname()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Day Phone') %]</div>
+      <div class="col-md-7">{{patron().day_phone()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Evening Phone') %]</div>
+      <div class="col-md-7">{{patron().evening_phone()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Other Phone') %]</div>
+      <div class="col-md-7">{{patron().other_phone()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('ID1') %]&nbsp;<span ng-if="hasIdentTypeName" class="ident_type">({{patron().ident_type().name()}})</span></div>
+      <div class="col-md-7">{{patron().ident_value()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('ID2') %]</div>
+      <div class="col-md-7">{{patron().ident_value2()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Email') %]</div>
+	  <!-- Bound href="mailto: patron().email()" to an anchor tag to allow the patron's email address to be clicked directly from the summary. -->
+      <div class="col-md-7"><a ng-href="mailto:{{patron().email()}}">{{patron().email()}}</a></div>
+    </div>
+    <div class="row" ng-repeat="map in summary_stat_cats()">
+      <div class="col-md-5">{{map.stat_cat().name()}}</div>
+      <div class="col-md-7">{{map.stat_cat_entry()}}</div>
+    </div>
+    <div class="row" ng-if="patron().name_keywords()">
+      <div class="col-md-5">[% l('Name Keywords') %]</div>
+      <div class="col-md-7">{{patron().name_keywords()}}</div>
+    </div>
+    <div class="row patron-summary-divider" ng-if="patron().waiver_entries().length > 0">
+      [% l('Allow others to use my account') %]
+    </div>
+    <div class="row" ng-repeat="waiver in patron().waiver_entries()">
+      <div class="col-md-5">{{waiver.name()}}</div>
+      <div class="col-md-7">
+        <ul>
+          <li ng-show="waiver.place_holds() == 't'">[% l('Place holds') %]</li>
+          <li ng-show="waiver.pickup_holds() == 't'">[% l('Pick up holds') %]</li>
+          <li ng-show="waiver.view_history() == 't'">[% l('View borrowing history') %]</li>
+          <li ng-show="waiver.checkout_items() == 't'">[% l('Check out items') %]</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-repeat="addr in patron().addresses()">
+    <div class="panel">
+      <div class="panel-body">
+        <fieldset>
+          <legend ng-class="{'patron-summary-alert': addr.valid() == 'f'}">
+            {{addr.address_type()}} 
+            (<a href class="patron-summary-act-link" 
+                ng-click="copy_address(addr)">[%- l('copy') -%]</a><a 
+                href class="patron-summary-act-link" 
+                ng-click="print_address(addr)">[%- l('/print') -%]</a>)
+          </legend>
+          <div>{{addr.street1()}} {{addr.street2()}}</div>
+          <div>{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</div>
+        </fieldset>
+        <textarea id="patron-address-copy-{{addr.id()}}" rows="2" 
+          style="visibility:hidden">[%- l(
+            '[_1] [_2] [_3]&#13;&#10;[_4] [_5]&#13;&#10;[_6], [_7] [_8]', 
+            '{{patron().first_given_name()}}',
+            '{{patron().second_given_name()}}',
+            '{{patron().family_name()}}',
+            '{{addr.street1()}}',
+            '{{addr.street2()}}',
+            '{{addr.city()}}',
+            '{{addr.state()}}',
+            '{{addr.post_code()}}') 
+          -%]</textarea>
+      </div>
+    </div>
+  </div>
+</div>

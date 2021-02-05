@@ -1,0 +1,176 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date:\n" 
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: field.auoi.org_unit.label:29
+msgid "Allowed Org Unit"
+msgstr ""
+
+#: field.rodcirc.checkin_staff.label:58
+msgid "Check In Staff"
+msgstr ""
+
+#: class.rodcirc.label:52
+msgid "Overdue Circulation"
+msgstr ""
+
+#: field.rodcirc.stop_fines_time.label:76
+msgid "Fine Stop Date/Time"
+msgstr ""
+
+#: field.rodcirc.checkin_lib.label:57
+msgid "Check In Library"
+msgstr ""
+
+#: field.rodcirc.circ_type.label:84
+msgid "Circulation Type"
+msgstr ""
+
+#: field.rodcirc.fine_interval.label:66
+msgid "Fine Interval"
+msgstr ""
+
+#: field.rodcirc.billing_total.label:85
+msgid "Billing Totals"
+msgstr ""
+
+#: field.rodcirc.duration.label:64
+msgid "Circulation Duration"
+msgstr ""
+
+#: field.aws.name.label:45
+msgid "Workstation Name"
+msgstr ""
+
+#: class.auoi.label:20
+msgid "User Sharing Opt-in"
+msgstr ""
+
+#: field.rodcirc.recurring_fine_rule.label:73
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: field.rodcirc.duration_rule.label:65
+msgid "Circ Duration Rule"
+msgstr ""
+
+#: field.auoi.id.label:25
+msgid "Opt-in ID"
+msgstr ""
+
+#: field.rodcirc.payment_total.label:86
+msgid "Payment Totals"
+msgstr ""
+
+#: field.rodcirc.phone_renewal.label:71
+msgid "Phone Renewal"
+msgstr ""
+
+#: field.rodcirc.circ_lib.label:60
+msgid "Circulating Library"
+msgstr ""
+
+#: field.rodcirc.max_fine.label:68
+msgid "Max Fine Amount"
+msgstr ""
+
+#: field.rodcirc.xact_finish.label:79
+msgid "Transaction Finish Date/Time"
+msgstr ""
+
+#: field.auoi.usr.label:28
+msgid "User"
+msgstr ""
+
+#: field.auoi.opt_in_ws.label:26 class.aws.label:39
+msgid "Workstation"
+msgstr ""
+
+#: field.rodcirc.stop_fines.label:75
+msgid "Fine Stop Reason"
+msgstr ""
+
+#: field.rodcirc.opac_renewal.label:70
+msgid "OPAC Renewal"
+msgstr ""
+
+#: field.rodcirc.circ_staff.label:61
+msgid "Circulating Staff"
+msgstr ""
+
+#: field.rodcirc.payments.label:82
+msgid "Transaction Payments"
+msgstr ""
+
+#: field.rodcirc.checkin_time.label:59
+msgid "Check In Date/Time"
+msgstr ""
+
+#: field.rodcirc.max_fine_rule.label:69
+msgid "Max Fine Rule"
+msgstr ""
+
+#: field.rodcirc.xact_start.label:80
+msgid "Check Out Date/Time"
+msgstr ""
+
+#: field.rodcirc.billable_transaction.label:83
+msgid "Base Transaction"
+msgstr ""
+
+#: field.rodcirc.recurring_fine.label:72
+msgid "Recurring Fine Amount"
+msgstr ""
+
+#: field.auoi.staff.label:27
+msgid "Staff Member"
+msgstr ""
+
+#: field.aws.id.label:44
+msgid "Workstation ID"
+msgstr ""
+
+#: field.rodcirc.usr.label:78
+msgid "Patron"
+msgstr ""
+
+#: field.rodcirc.due_date.label:63
+msgid "Due Date/Time"
+msgstr ""
+
+#: field.rodcirc.billings.label:81
+msgid "Transaction Billings"
+msgstr ""
+
+#: field.auoi.opt_in_ts.label:30
+msgid "Opt-in Date/Time"
+msgstr ""
+
+#: field.rodcirc.desk_renewal.label:62
+msgid "Desk Renewal"
+msgstr ""
+
+#: field.rodcirc.target_copy.label:77
+msgid "Circulating Item"
+msgstr ""
+
+#: field.rodcirc.renewal_remaining.label:74
+msgid "Remaining Renewals"
+msgstr ""
+
+#: field.aws.owning_lib.label:46
+msgid "Owning Library"
+msgstr ""
+
+#: field.rodcirc.id.label:67
+msgid "Circ ID"
+msgstr ""

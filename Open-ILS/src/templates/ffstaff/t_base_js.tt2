@@ -1,0 +1,39 @@
+<!-- TODO: remotely hosted JS should be hosted locally -->
+<!-- TODO: combine and minify JS -->
+
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/js.cookies.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+
+<!-- angular -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-animate.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-touch.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+
+<!-- IDL / opensrf (network) -->
+<script src="/IDL2js"></script>
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js"></script>
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf.js"></script>
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_xhr.js"></script>
+
+<!-- needed for login -->
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
+
+<!-- angular-driven shared services -->
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/idl.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/net.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/auth.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/pcrud.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/env.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/org.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/startup.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/ui.js"></script>
+
+<!-- navbar driver -->
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/navbar.js"></script>

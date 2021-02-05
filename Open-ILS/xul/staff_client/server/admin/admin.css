@@ -1,0 +1,55 @@
+@import "/js/dojo/dojo/resources/dojo.css";
+@import "/js/dojo/dijit/themes/tundra/tundra.css";
+@import "/js/dojo/dojox/grid/_grid/Grid.css";
+.container:after {content: ""; display: block; height: 0; clear: both; }
+body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white; margin: 0px; padding: 0px;}
+.welcome_box { position:absolute; top: 5px; right: 5px; }
+.title { font-weight: bold; font-size: 14pt; margin: 10px;}
+.hidden { display: none }
+.form_table td { padding: 6px; }
+.form_table thead td { border-bottom: 1px solid #808080; }
+.hide_me { visibility: hidden; display: none }
+.has_color { background: #E0F0E0; color: #000000; }
+.data_grid { font-weight: 500; border-collapse: collapse;}
+.data_grid thead tr { background: #E0F0E0; color: #000000; }
+.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
+.data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
+.data_grid_center { text-align: center; }
+.data_grid_padded tbody td { padding: 10px; }
+.insert_row { border: 2px solid #A0B0A0; padding: 50px;}
+.padded { padding-left: 7px; padding-right: 7px; }
+.select_big { width: 15em; }
+.select_bigger { width: 18em; }
+.context_help { font-weight: bold; color: blue; }
+
+select { width: 12em; }
+select:disabled { color: #555555; }
+input[type="text"]:disabled { color: #555555; }
+.tall { height:100%; }
+
+button {
+    color:#050;
+    font-family:'trebuchet ms',helvetica,sans-serif;
+    font-size:84%;
+    font-weight:bold;
+    background-color:#fed;
+    border:1px solid;
+    border-top-color:#696;
+    border-left-color:#696;
+    border-right-color:#363;
+    border-bottom-color:#363;
+    margin: 4px;
+}
+
+button:disabled  { 
+    color: #808080; 
+    background: #E0E0E0; 
+    border: 1px solid #808080;
+}
+
+.cal_img {
+    cursor: pointer; 
+    border: 1px solid red; 
+    padding: 0px; margin: 0px; 
+}
+.cal_img:hover { background: red ; }

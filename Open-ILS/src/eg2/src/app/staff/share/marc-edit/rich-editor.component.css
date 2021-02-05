@@ -1,0 +1,15 @@
+
+.fixed-fields-container {
+  /*
+   * wait for https://bugs.launchpad.net/evergreen/+bug/1735568 approval
+  background-color: lightcyan;
+  border-bottom: 1px solid gray;
+  */
+}
+
+.link-button .material-icons {
+  font-size: 17px;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+}

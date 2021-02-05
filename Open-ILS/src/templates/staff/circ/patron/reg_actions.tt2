@@ -1,0 +1,48 @@
+<!-- actions bar shared by both variations of the patron edit UI -->
+
+<div>
+  <span>
+    [% l('Show:') %]
+    <span class="pad-all-min">
+      <a href 
+        ng-class="{disabled : edit_passthru.vis_level == 2}"
+        ng-click="edit_passthru.vis_level=2">[% l('Required Fields') %]</a>
+    </span>
+    <span class="pad-all-min">
+      <a href 
+        ng-class="{disabled : edit_passthru.vis_level == 1}"
+        ng-click="edit_passthru.vis_level=1">[% l('Suggested Fields') %]</a>
+    </span>
+    <span class="pad-all-min">
+      <a href 
+        ng-class="{disabled : edit_passthru.vis_level == 0}"
+        ng-click="edit_passthru.vis_level=0">[% l('All Fields') %]</a>
+    </span>
+  </span>
+</div>
+<div class="flex-cell"></div>
+<div>
+  <span class="pad-all-min">
+    <button type="button" class="btn btn-default"
+      ng-click="edit_passthru.print()">[% l('Print') %]</button>
+  </span>
+  <span class="pad-all-min">
+    <button type="button" class="btn btn-default" 
+      ng-disabled="edit_passthru.hide_save_actions()"
+      ng-click="edit_passthru.save()">[% l('Save') %]</button>
+  </span>
+  <span ng-if="!offline" class="pad-all-min">
+    <button type="button" class="btn btn-default"
+      ng-disabled="edit_passthru.hide_save_actions()"
+      ng_click="edit_passthru.save({clone:true})">[% l('Save & Clone') %]</button>
+  </span>
+  <div id="no-edit-alert-container">
+    <div class="alert alert-warning" ng-show="edit_passthru.self_edit_disallowed()">
+      [% l('Editing your own account is disallowed') %]
+    </div>
+    <div class="alert alert-warning" ng-show="edit_passthru.group_edit_disallowed()">
+      [% l('Editing users in this group is disallowed') %]
+    </div>
+  </div>
+</div>
+

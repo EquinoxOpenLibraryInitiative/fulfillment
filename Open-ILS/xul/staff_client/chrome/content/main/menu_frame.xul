@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Main, Menu and Tab Navigation -->
+<!-- 
+ vim:noet:sw=4:ts=4:
+-->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<!--
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/menu_frame.css" type="text/css"?>
+-->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://open_ils_staff_client/content/main/menu_frame_overlay.xul"?>
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
+<!--
+<?xul-overlay href="/xul/server/main/menu_frame_overlay.xul"?>
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+-->
+
+<window id="menu_frame_win"
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    orient="vertical" width="1024" height="740"
+    sizemode="maximized" persist="width height sizemode" title="&staff.main.menu.title;"
+    windowtype="eg_menu"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {}; var idleService = null; var idleObserver = null;</script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="JSAN.js"/>
+    <script type="text/javascript" src="constants.js"/>
+    <script type="text/javascript" src="../OpenILS/util/fmall.js"/>
+    <script type="text/javascript" src="menu.js"/>
+    <script type="text/javascript" src="../cat/opac.js"/>
+    <script type="text/javascript">
+    <![CDATA[
+        function setup_idle_observer(delay) {
+            dump("will minimize after " + delay + " idle seconds\n");
+            idleService = Components.classes[
+                "@mozilla.org/widget/idleservice;1"
+            ].getService(Components.interfaces.nsIIdleService);
+            idleObserver = {
+                observe: function(subject, topic, data) {
+                    if (topic == "idle") {
+                        window.minimize();
+                        dump("minimizing window; subject: " + subject +
+                            ", topic: " + topic +
+                            ", data: " + data + "\n");
+                    }
+                }
+            };
+            try { // prevent scary popup from invalid delay time
+                idleService.addIdleObserver(idleObserver, delay); // seconds
+            } catch(E) {
+                dump("Idle delay of '" + delay + "' is not a valid delay time");
+            }
+            // You could remove the IdleObserver with the following line...
+            // idleService.removeIdleObserver(idleObserver, delay);
+            // ... but why would we?
+        }
+        function my_init() {
+            try {
+
+                if (typeof JSAN == 'undefined') { throw(document.getElementById('offlineStrings').getString('common.jsan.missing')); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                /*
+                JSAN.addRepository('/xul/server/');
+                */
+                JSAN.addRepository('..');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for menu_frame.xul');
+
+                g.cgi = new CGI();
+
+                JSAN.use('main.menu'); g.menu = new main.menu();
+                g.menu.init( { 
+                    'server' : g.cgi.param('server'),
+                    'firstURL' : g.cgi.param('firstURL'),
+                } );
+
+                JSAN.use('util.window'); g.window = new util.window();
+
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                XML_HTTP_SERVER = g.data.server_unadorned;
+
+                window.egwinid = g.window.appshell_name_increment();
+                document.title = window.egwinid + ': ' + g.data.list.au[0].usrname() + '@' + g.data.ws_name + '.' + g.data.server_unadorned;
+
+                var delay = g.data.hash.aous["ui.general.idle_timeout"];
+                if (delay) setup_idle_observer(delay);
+            } catch(E) {
+                var err_msg = document.getElementById("offlineStrings").getFormattedString("common.exception", ["menu_frame.xul", E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+    ]]>
+    </script>
+
+    <messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties" />    
+
+    <commandset id="universal_cmds" />
+
+    <keyset id="menu_frame_keys" />
+
+    <popupset id="universal_popupset" />
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- CONTENT -->
+
+    <box id="menu_frame_main" class="my_overflow"/>
+
+</window>
+

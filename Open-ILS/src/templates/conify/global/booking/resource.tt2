@@ -1,0 +1,74 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Resources') %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+    <div>[% l('Resources') %]</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='brsrcGrid.showCreateDialog()'>[% l('New Resource') %]</button>
+        <button dojoType='dijit.form.Button' onClick='brsrcGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>[% l('Context Org Unit') %]</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId='contextOrgSelector'
+            searchAttr='shortname'
+            labelAttr='shortname'>
+    </select>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="brsrcGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['owner', 'type', 'barcode',
+                'overbook', 'deposit', 'deposit_amount', 'user_fee']"
+            query="{id: '*'}"
+            fmClass='brsrc'
+            showPaginator='true'
+            autoHeight='true'
+            editOnEnter='true'>
+    </table>
+</div>
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require("openils.widget.PCrudAutocompleteBox");
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+    function filterGrid() {
+        brsrcGrid.resetStore();
+        var unit = contextOrgSelector.getValue();
+        var list = fieldmapper.aou.findOrgUnit(unit).orgNodeTrail().map( function (i) {return i.id() } );
+
+        if(unit){
+            brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, { 'owner' : list });
+        } else {
+            brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}});
+        }
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            var org_id = openils.User.user.ws_ou();
+            var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( function (i) {return i.id() } );
+
+            new openils.User().buildPermOrgSelector('ADMIN_BOOKING_RESOURCE', contextOrgSelector, null, function() {
+                dojo.connect(contextOrgSelector, 'onChange', filterGrid);});
+
+            var search = {'owner':list};
+
+            setTimeout(
+                function() {
+                    if (typeof xulG != 'undefined' && xulG.resultant_brsrc)
+                        search = {id: xulG.resultant_brsrc};
+
+                    brsrcGrid.overrideEditWidgets.type =
+                        new openils.widget.PCrudAutocompleteBox({
+                            "fmclass": "brt", "searchAttr": "name"
+                        });
+                    brsrcGrid.overrideEditWidgets.type.shove = {"create": ""};
+                    brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
+                }, 0
+            );
+        }
+    );
+</script>
+[% END %]

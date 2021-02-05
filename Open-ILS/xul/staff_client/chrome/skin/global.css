@@ -1,0 +1,164 @@
+@import url("browser.css");
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
+@namespace html url("http://www.w3.org/TR/REC-html40"); 
+
+*|textarea:focus { background-color: #DDFFDD; }
+*|input:focus { background-color: #DDFFDD; }
+
+tabpanel { border: 2px groove black; }
+caption { font-weight: bold; }
+
+/*
+iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+.my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+*/
+
+.operator_change { background-color: red; }
+
+.shrinkable_groupbox { font-weight: bold; -moz-binding: url('chrome://open_ils_staff_client/content/main/bindings.xml#caption'); }
+messagecatalog { -moz-binding: url('chrome://open_ils_staff_client/content/main/bindings.xml#messagecatalog'); }
+help { -moz-binding: url('chrome://open_ils_staff_client/content/main/bindings.xml#help'); }
+
+.my_overflow { overflow: auto; }
+
+
+.text_left { text-align: left; }
+.text_right { text-align: right; }
+.text_center { text-align: center; }
+.text_justify { text-align: justify; }
+
+.tan { background-color: #D2B48C; }
+.sandy_brown { background-color: #F4A460; }
+.peach_puff { background-color: #FFDAB9; }
+.pale_violet_red { background-color: #D87093; }
+.cadet_blue { background-color: #5F9EA0; }
+.dark_salmon { background-color: #E9967A; }
+.coral { background-color: #FF7F50; }
+
+.deleted_address { background-color: red; }
+
+.field_row { border: solid thin #262; }
+.ctrl_grid { min-height: 1em; overflow: auto; }
+.ctrl_row { } 
+.data_grid { overflow: auto; }
+.data_row { }
+.fixed_grid { }
+.fixed_grid label:hover { text-decoration: underline; }
+.fixed_columns column { border-right: dotted thin #262; }
+.fixed_rows { }
+.fixed_row { }
+.fixed_label { }
+.fixed_textbox { }
+.marc_buttons_box description { font-weight: bold; }
+.marc { 
+    -moz-appearance: none;
+    font-family: monospace;
+    font-size: x-large;
+    border: none;
+    padding: 0px; 
+    margin: 0px; 
+}
+.marc:hover { background-color: #DDDDDD; }
+.invalid { background-color: #FF8888; }
+.invalid:hover { background-color: #FF8888; }
+*|textarea:focus { background-color: #DDFFDD; }
+.marc_wrapper { min-height: 1.2em; vertical-align: middle; }
+.marc_tag_wrapper { }
+.marc_ind_wrapper { }
+.marc_ind1_wrapper { }
+.marc_ind2_wrapper { }
+.marc_data_wrapper { }
+.marc_tag { min-width: 2.4em; vertical-align: middle; }
+.marc_ind { min-width: 1.2em; vertical-align: middle; }
+.marc_ind1 { }
+.marc_ind2 { }
+.marc_data { min-width: 500px; }
+.resizable { }
+.test_class { }
+
+#main_toolbox toolbar[mode="icons"] .toolbarbutton-text {
+    display:none;
+}
+
+#main_toolbox toolbar[mode="text"] .toolbarbutton-icon {
+    display:none;
+}
+
+#main_toolbox toolbarbutton {
+    -moz-image-region: rect( 0px 32px 32px 0px ); /* Top Left 32x32 icon */
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    -moz-box-orient: horizontal;
+    padding: 6px;
+}
+
+#main_toolbox [iconsize="small"] toolbarbutton {
+    -moz-image-region: rect( 0px 48px 16px 32px ); /* Top right 16x16 icon */
+}
+
+#main_toolbox toolbarbutton[disabled="true"] {
+    -moz-image-region: rect( 32px 32px 64px 0px ); /* Left Second 32x32 icon */
+}
+
+#main_toolbox [iconsize="small"] toolbarbutton[disabled="true"] {
+    -moz-image-region: rect( 16px 48px 32px 32px ); /* Right Second 16x16 icon */
+}
+
+#main_toolbox toolbarbutton[checked="true"] {
+    -moz-image-region: rect( 64px 32px 96px 0px ); /* Left Third 32x32 icon */
+}
+
+#main_toolbox [iconsize="small"] toolbarbutton[checked="true"] {
+    -moz-image-region: rect( 32px 48px 48px 32px ); /* Right Third 16x16 icon */
+}
+
+#main_toolbox toolbarbutton[checked="true"][disabled="true"] {
+    -moz-image-region: rect( 96px 32px 128px 0px ); /* Left Fourth 32x32 icon */
+}
+
+#main_toolbox [iconsize="small"] toolbarbutton[checked="true"][disabled="true"] {
+    -moz-image-region: rect( 48px 48px 64px 32px ); /* Right Fourth 16x16 icon */
+}
+
+#main_toolbox .labelbelow toolbarbutton {
+    -moz-box-orient: vertical;  
+}
+
+/* Define icon files by command, not by id. */
+#main_toolbox toolbarbutton[command="cmd_circ_checkout"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/Arrow-rightup-small_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_circ_checkin"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/center_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_search_opac"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/Search_Items_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_copy_status"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_libro_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_patron_search"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_lente_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_patron_register"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_famiglia_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_hotkeys_toggle"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/hotkeys_disable_toolbar.png"); }
+
+/* More icons, courtesy of Christine Morgan of NOBLE - They are in a subfolder for later development reasons. */
+#main_toolbox toolbarbutton[command="cmd_portal"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/portal_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_edit_copy_buckets"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/edit_copy_buckets_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_edit_record_buckets"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/edit_record_buckets_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_circ_renew"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/circ_renew_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_circ_hold_pull_list"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/circ_hold_pull_list_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_browse_holds_shelf"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/browse_holds_shelf_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_retrieve_last_patron"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/retrieve_last_patron_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_unified_search"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_unified_search_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_view_my_pl"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_view_my_pl_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_new_brief_record"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_new_brief_record_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_user_requests"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_user_requests_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_bib_search"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_bib_search_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_upload"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_upload_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_create_po"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_create_po_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_claim_eligible"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_claim_eligible_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_create_invoice"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_create_invoice_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_view_local_inv"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_invoice_search_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_view_local_po"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_po_search_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_reservation"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_pull_list"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_pull_list_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_capture"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_capture_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_reservation_pickup"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_pickup_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_reservation_return"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_return_toolbar.png"); }
+
+/* Temp icons because tsbere is lazy - Someone please find/make new ones ;) */
+#main_toolbox toolbarbutton[command="cmd_create_marc"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_indici_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_authority_manage"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_indici_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_retrieve_last_record"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_indici_toolbar.png"); }

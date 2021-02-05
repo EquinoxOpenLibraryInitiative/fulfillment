@@ -1,0 +1,139 @@
+/* import the default css for the install applications */
+@import "default/acq.css";
+@import "default/admin.css";
+@import "default/serial.css";
+@import "default/biblio.css";
+/* import the dojo CSS */
+@import "/js/dojo/dojo/resources/dojo.css";
+@import "/js/dojo/dijit/themes/tundra/tundra.css";
+@import "/js/dojo/dojox/grid/resources/Grid.css";
+/*@import "/js/dojo/dojox/grid/resources/tundraGrid.css";*/
+
+
+html, body, #oils-base-body-block {
+  
+    height:100%;
+    border:0;
+    margin:0;
+    padding:0;
+    background:white;
+}
+body { width: 99%; }
+#oils-base-body-block { height: 98%; }
+table { border-collapse: collapse; }
+
+.tall { height:98%; }
+.wide { width:98%; }
+
+/* use this for divs whose contents should be entirely contained within the div */
+.container:after {content: ""; display: block; height: 0; clear: both; }
+
+.invisible { visibility: hidden; }
+.hidden { display: none; }
+.display { display: block; visibility: visible; }
+.oils-login-dialog td { padding: 5px; }
+
+/* main layout blocks */
+#oils-base-main-block { margin-top: 0px; padding-top: 0px;}
+/*
+#oils-base-navigate-block { width: 0%; vertical-align: top; float:left;}
+#oils-base-sidebar-block { width: 0%; vertical-align: top; float:left;}
+*/
+#oils-base-content-block { vertical-align: top; padding: 0px 5px 0px 5px;}
+
+/*#oils-base-header-auto-login { padding-right: 20px; }*/
+#oils-base-header-block {  text-align: right; margin-top: 0px; padding-bottom: 0px;}
+#oils-base-header-menu-block { float:left; text-align: left; width: 50%; }
+#oils-base-header-auto-login-block { float:right; text-align: right; width: 47%;}
+
+/*#oils-base-footer-block { width: 100%; text-align: center; vertical-align: bottom;}*/
+#oils-base-footer-block { position:fixed; bottom:0px; left:0px; right:0px; border-top:1px solid #aaa; text-align:center;}
+
+#oils-base-navigate-list { width: 100%; }
+.oils-base-navigate-sub-list { padding-left: 4px; }
+.oils-base-navigate-item {}
+
+/* general purpose form table */
+.oils-admin-table { width: 100%; }
+.oils-admin-table td { padding: 4px; }
+.oils-admin-table textarea { width: 400px; height: 40px; overflow:auto;}
+.oils-admin-label { width: auto; }
+
+.label { margin: 1px; }
+
+.oils-generic-table th { padding:5px; font-weight: bold; }
+.oils-generic-table td { padding:5px; }
+
+
+/* local dojo style enhancements ----------------------------------- */
+/*
+.dojoxGrid {border: 1px solid #333; height: 90%;}
+*/
+/*
+.dojoxGrid {height: 90%;}
+.dojoxGrid-cell {padding: 8px;}
+*/
+.dijitTooltipTable td {padding: 3px;} /* custom class for handling dialog tables */
+/* ----------------------------------------------------------------- */
+
+.autoGridLineNumber {
+    background-color: -moz-dialog;
+    font-weight: bold;
+}
+
+.oils-fm-edit-pane { margin: 5px; }
+.oils-fm-edit-pane td { padding: 5px; }
+.oils-fm-edit-pane-help {  
+    width:10px;
+    padding:0px;
+    margin:0px;
+    border:1px solid #e0e0e0;
+    text-align:center;
+    vertical-align:middle;
+}
+.oils-fm-edit-dialog td { border:1px solid #999;}
+.oils-pcrudfilterdialog-table tr td { padding: 0.75ex 0.5em; }
+.oils-pcrudfilterdialog-table tr:nth-child(even) {
+    background-color: #d7d7d7;
+}
+.oils-pcrudfilterdialog-remover-holder {
+    text-align: left; vertical-align: middle;
+    width: 33%;
+}
+.oils-pcrudfilterdialog-remover {
+    background-color: #ccc; color: #f00;
+    padding: 0.25em; border: 1px outset #000;
+    text-decoration: none;
+}
+.oils-pcrudfilterdialog-buttonholder > * { padding: 0 2em; }
+.oils-header-panel {
+    width: 100%;
+    margin-top:20px;
+   
+}
+.oils-header-panel div:first-child {
+    width: 50%;
+    text-align:left;
+    float:left;
+    font-size:130%;
+    font-weight: bold;
+}
+.oils-header-panel div:last-child {
+    width: 49%;
+    text-align:right;
+    float:right;
+  
+}
+
+
+.oils-progress-dialog { width: 300px; }
+
+.openils-widget-editpane-ro-name-cell {
+    font-weight: bold;
+}
+.openils-widget-editpane-ro-value-cell {
+    text-decoration: underline;
+}
+
+.pad-level-1 { padding: 5px; }
+.center { text-align: center; }

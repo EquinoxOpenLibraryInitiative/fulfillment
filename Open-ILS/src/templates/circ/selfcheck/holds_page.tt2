@@ -1,0 +1,20 @@
+<div id='oils-selfck-hold-table-div'>
+    <table id='oils-selfck-hold-table' class='oils-selfck-item-table'>
+        <thead>
+            <tr>
+                <td id='oils-self-hold-pic-cell'></td>
+                <td>[% l('Title') %]</td>
+                <td>[% l('Author') %]</td>
+                <td>[% l('Status') %]</td>
+            </tr>
+        </thead>
+        <tbody id='oils-selfck-hold-tbody'>
+            <tr id='oils-selfck-hold-row'>
+                <td><img class='oils-selfck-jacket' name='jacket'/></td>
+                <td name='title'></td>
+                <td name='author'></td>
+                <td name='status'></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

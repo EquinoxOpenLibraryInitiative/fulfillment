@@ -1,0 +1,27 @@
+<!--
+Template for printing offline checkout receipts; fields available include:
+
+* transactions - list of loans made during this session. Each
+  includes:
+
+  * barcode
+  * patron_barcode
+  * due_date
+  * noncat_count
+
+-->
+<div>
+  <div>[% l('Patron [_1]', '{{transactions[0].patron_barcode}}') %]</div>
+  <div>[% l('You checked out the following [_1] items:', '{{transactions.length}}') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="checkout in transactions">
+      <div ng-if="checkout.barcode">[% l('Barcode:') %] {{checkout.barcode}}</div>
+      <div ng-if="!checkout.barcode">[% l('Non-cataloged Item') %] ({{checkout.noncat_count}})</div>
+      <div>[% l('Due Date:') %] {{checkout.due_date | date:"short"}}</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{today | date:'short'}}</div>
+<br/>
+

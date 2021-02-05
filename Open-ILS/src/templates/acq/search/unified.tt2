@@ -1,0 +1,245 @@
+[% WRAPPER "base.tt2" %]
+[% ctx.page_title = l("Acquisitions Search") %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/invoice.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/picklist.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/purchase_order.js"></script>
+<div id="acq-unified-body" class="hidden">
+    <div id='oils-scroll-to-top'></div>
+    <div id="acq-unified-heading">
+        <span id="acq-unified-heading-actual">[% l('Acquisitions Search') %]</span>
+        <span id="acq-unified-heading-controls">
+            <button id="acq-unified-hide-form" onclick="hideForm();">
+                [% l('Hide Search Form') %]
+            </button>
+            <button id="acq-unified-reveal-form" onclick="revealForm();"
+                class="hidden">
+                [% l('Reveal Search Form') %]
+            </button>
+        </span>
+        <div style="clear: both;"><!-- layout; don't remove --></div>
+    </div>
+    <div id="acq-unified-form">
+        <div>
+            <label for="acq-unified-result-type">[% l('Search for') %]</label>
+            <select id="acq-unified-result-type">
+                <option value="lineitem">[% l('line items') %]</option>
+                <option value="lineitem_and_bib">
+                    [% l('line items &amp; catalog records') %]
+                </option>
+                <option value="picklist">[% l('selection lists') %]</option>
+                <option value="purchase_order">[% l('purchase orders') %]</option>
+                <option value="invoice">[% l('invoices') %]</option>
+            </select>
+            <label for="acq-unified-conjunction">[% l('matching') %]</label>
+            <select id="acq-unified-conjunction">
+                <option value="and">[% l('all') %]</option>
+                <option value="or">[% l('any') %]</option>
+            </select>
+            <label for="acq-unified-conjunction">
+                [% l('of the following terms:') %]
+            </label>
+        </div>
+        <div id="acq-unified-terms">
+            <table id="acq-unified-terms-table">
+                <tbody id="acq-unified-terms-tbody">
+                    <tr id="acq-unified-terms-row-tmpl"
+                        class="acq-unified-terms-row">
+                        <td name="selector"
+                            class="acq-unified-terms-selector"></td>
+                        <td name="match"
+                            class="acq-unified-terms-match">
+                            <select>
+                                <option value="">[% l('is') %]</option>
+                                <option value="__not">[% l('is NOT') %]</option>
+                                <option value="__fuzzy" disabled="disabled">
+                                    [% l('contains') %]
+                                </option>
+                                <option value="__not,__fuzzy"
+                                    disabled="disabled">
+                                    [% l('does NOT contain') %]
+                                </option>
+                                <option value="__lte" disabled="disabled">
+                                    [% l('is on or BEFORE') %]
+                                </option>
+                                <option value="__gte" disabled="disabled">
+                                    [% l('is on or AFTER') %]
+                                </option>
+                                <option value="__in" disabled="disabled">
+                                    [% l('matches a term from a file') %]
+                                </option>
+                            </select>
+                        </td>
+                        <td name="widget"
+                            class="acq-unified-terms-widget"></td>
+                        <td name="remove"
+                            class="acq-unified-terms-remove"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="acq-unified-add-term">
+            <button onclick="termManager.addRow()">[% l('Add Search Term') %]</button>
+        </div>
+        <div>
+            <button onclick="resultManager.submitter();">
+                [% l('Search') %]
+            </button>
+        </div>
+    </div>
+    <div id="acq-unified-results-purchase_order" class="hidden">
+        <div class="acq-unified-result-specific-controls">
+            <button onclick="dijit.byId('acq-unified-po-grid').refresh();">
+                [% l('Refresh Grid') %]
+            </button>
+        </div>
+        <table
+            id="acq-unified-po-grid"
+            autoHeight="true"
+            dojoType="openils.widget.AutoGrid"
+            query="{id: '*'}"
+            fieldOrder="['name', 'owner', 'ordering_agency', 'provider',
+                'create_time', 'edit_time', 'state']"
+            suppressFields="['owner', 'editor', 'creator']"
+            defaultCellWidth="'auto'"
+            showPaginator="true"
+            fmClass="acqpo">
+            <thead>
+                <tr>
+                    <th field="name" get="getName" formatter="formatPoName">
+                        [% l('Name') %]
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="acq-unified-results-picklist" class="hidden">
+        <div class="acq-unified-result-specific-controls">
+            <button dojoType="dijit.form.Button"
+                onClick="dijit.byId('acq-unified-pl-grid').refresh();">
+                [% l('Refresh Grid') %]
+            </button>
+            <div dojoType="dijit.form.DropDownButton">
+                <span>[% l('New Selection List') %]</span>
+                <div dojoType="dijit.TooltipDialog"
+                    execute="createPl(arguments[0]);">
+                    <table class="dijitTooltipTable">
+                        <tr>
+                            <td><label for="name">[% l('Name:') %]</label></td>
+                            <td><input dojoType="dijit.form.TextBox"
+                                name="name"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <button dojoType="dijit.form.Button"
+                                    type="submit">[% l('Create') %]</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div dojoType="dijit.form.DropDownButton">
+                <span>[% l('Clone Selected') %]</span>
+                <div dojoType="dijit.TooltipDialog"
+                    execute="cloneSelectedPl(arguments[0]);">
+                    <table class="dijitTooltipTable">
+                        <tr>
+                            <td><label for="name">[% l('New Name:') %]</label></td>
+                            <td><input dojoType="dijit.form.TextBox"
+                                name="name"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <button dojoType="dijit.form.Button"
+                                    type="submit">[% l('Clone') %]</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div dojoType="dijit.form.DropDownButton">
+                <span>[% l('Merge Selected') %]</span>
+                <div dojoType="dijit.TooltipDialog"
+                    execute="mergeSelectedPl(arguments[0]);"
+                    jsId="plMergeDialog">
+                    <script type="dojo/connect" event="onOpen">
+                        loadLeadPlSelector();
+                    </script>
+                    <table class="dijitTooltipTable">
+                        <tr>
+                            <td><label for="name">[% l('Choose the Lead Selection List:') %]</label></td>
+                             <td><input jsId="plMergeLeadSelector"
+                                 dojoType="dijit.form.FilteringSelect"
+                                 name="lead" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <button dojoType="dijit.form.Button"
+                                    type="submit">[% l('Merge') %]</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <button dojoType="dijit.form.Button"
+                onclick="deleteSelectedPl();">[% l('Delete Selected') %]</button>
+        </div>
+        <table
+            id="acq-unified-pl-grid"
+            autoHeight="true"
+            dojoType="openils.widget.AutoGrid"
+            query="{id: '*'}"
+            fieldOrder="['name', 'owner', 'entry_count',
+                'create_time', 'edit_time']"
+            suppressFields="['editor', 'creator']"
+            defaultCellWidth="'auto'"
+            showPaginator="true"
+            fmClass="acqpl">
+            <thead>
+                <tr>
+                    <th field="name" get="getName" formatter="formatPlName">
+                        [% l('Name') %]
+                    </th>
+                    <th field="owner" get="getPlOwnerName">[% l('Owner') %]</th>
+                    <th field="entry_count">[% l('Entry Count') %]</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="acq-unified-results-invoice" class="hidden">
+        <div class="acq-unified-result-specific-controls">
+            <button onclick="dijit.byId('acq-unified-inv-grid').refresh();">
+                [% l('Refresh Grid') %]
+            </button>
+            <button onclick="printInvoiceVouchers();">
+                [% l('Print Selected Invoices') %]
+            </button>
+        </div>
+        <table
+            id="acq-unified-inv-grid"
+            autoHeight="true"
+            dojoType="openils.widget.AutoGrid"
+            query="{id: '*'}"
+            fieldOrder="['inv_ident', 'receiver', 'provider', 'shipper']"
+            defaultCellWidth="'auto'"
+            showPaginator="true"
+            fmClass="acqinv">
+            <thead>
+                <tr>
+                    <th field="inv_ident" get="getInvIdent"
+                        formatter="formatInvIdent"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="acq-unified-results-no_results" class="hidden">
+        [% l('There are no results from your search.') %]
+    </div>
+    <div id="acq-unified-results-lineitem" class="hidden">
+        [% INCLUDE "acq/common/li_table_pager.tt2" %]
+        [% INCLUDE "acq/common/li_table.tt2" %]
+    </div>
+    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'></div>
+</div>
+[% END %]

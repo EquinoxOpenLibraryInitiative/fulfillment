@@ -1,0 +1,333 @@
+/* record summary */
+.record-summary-alert {
+    color: red;
+}
+
+.target-record-aside {
+    font-size: 80%;
+    font-style: italic;
+}
+
+.marcrecord {
+    background-color: #ddd;
+    padding: 10px; /* provide consistant space around marc field editor */
+    margin: 0 -15px; /* line up editing sections left and right */
+}
+
+.marcflateditor {
+    max-width: 100%;
+    font-family: 'Lucida Console', Monaco, monospace;
+}
+
+.marcfastitemadd, .marctypesource {
+    border-bottom: solid thin gray;
+    flex-wrap: wrap;
+}
+
+.marcedit {
+    background-color: #fff;
+    border-collapse: collapse;
+    border: solid thin gray;
+    padding: 0px 5px 0px 5px;
+    margin: 0px;
+}
+
+.marcedit_stacked_subfield {
+    display: block;
+    margin-left: 3em;
+}
+
+input.marcedit:focus {
+    background-color: lightcyan;
+}
+
+.keyboardhelp {
+    background-color: #fff;
+    border-bottom: 1px solid gray;
+}
+
+.marcffeditor {
+    max-width: 800px;
+}
+
+.fixed-field-box {
+    border: none;
+}
+.marcffcontainer {
+     background-color: lightcyan;
+     border-bottom: 1px solid gray;
+}
+.marcsfvalue {
+    border-left: 1px !important;
+}
+
+.marcsfcode {
+    color: blue;
+    font-weight: normal;
+    text-align: center;
+    margin-left: 0px !important;
+    width: 1.5em;
+}
+
+.marcsfcodedelimiter {
+    background-color: #ddd;
+    color: blue;
+    font-family: 'Lucida Console', Monaco, monospace;
+    font-weight: normal;
+    text-align: center;
+    padding-right: 0px !important;
+    border: none !important;
+}
+
+.unvalidatedheading {
+    color: red;
+}
+
+.marctag, .marcind {
+    text-align: center;
+}
+
+.marcind {
+    width: 1.5em;
+}
+.marctag {
+    width: 2.6em;
+}
+
+.marcEditableControlfield {
+    text-align: left;
+}
+
+.marcSubfieldCode, .marcInd1, .marcInd2, .marcTag {
+    width: 1em;
+}
+
+.marcSubfieldDelimiter, .marcSubfieldCode {
+    color: blue;
+}
+
+.marcInd1, .marcInd2, .marcTag {
+    text-align: center;
+}
+
+.marcSubfield {
+    min-width: 1em;
+}
+
+.active-physchar {
+    font-weight: bold;
+    color: red;
+}
+
+.tooltip {
+    /* width: 10em; */
+}
+
+caption {
+    font-weight: bold;
+}
+
+grid row, grid column {
+    border-collapse: collapse;
+    border: solid thin gray;
+    vertical-align: bottom;
+}
+
+grid column {
+    background-color: #f5f5f5; 
+    padding: 2px;
+}
+
+grid#leaderGrid textbox {
+    min-width: 1em;
+}
+
+grid#leaderGrid label {
+    font-weight: bold;
+}
+
+grid#leaderGrid label, grid#leaderGrid textbox {
+    visibility: hidden;
+}
+
+grid#leaderGrid[type="BKS"] *[set~="BKS"], grid#leaderGrid[type="BKS"] *[set~="BKS"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="SER"] *[set~="SER"], grid#leaderGrid[type="SER"] *[set~="SER"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="VIS"] *[set~="VIS"], grid#leaderGrid[type="VIS"] *[set~="VIS"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="MIX"] *[set~="MIX"], grid#leaderGrid[type="MIX"] *[set~="MIX"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="MAP"] *[set~="MAP"], grid#leaderGrid[type="MAP"] *[set~="MAP"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="SCO"] *[set~="SCO"], grid#leaderGrid[type="SCO"] *[set~="SCO"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="REC"] *[set~="REC"], grid#leaderGrid[type="REC"] *[set~="REC"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="COM"] *[set~="COM"], grid#leaderGrid[type="COM"] *[set~="COM"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="AUT"] *[set~="AUT"], grid#leaderGrid[type="AUT"] *[set~="AUT"] + textbox {
+    visibility: visible;
+}
+
+grid#leaderGrid[type="MFHD"] *[set~="MFHD"], grid#leaderGrid[type="MFHD"] *[set~="MFHD"] + textbox {
+    visibility: visible;
+}
+
+grid[name="-none-"] * label { color: black; }
+
+.marcValidated { color: black; }
+.marcUnvalidated { color: red; }
+
+#z3950-search-form-row {
+    margin-bottom: 20px;
+}
+
+/*
+ *  MARC view styles
+ */
+
+/* ensure that side-by-side MARC record views don't overlap text */
+.marc_tag_row {
+    word-break: break-word;
+}
+
+.marc_tag_col {
+    text-align: right;
+    vertical-align: top;
+}
+
+.marc_tag_ind1 {
+    vertical-align: top;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.marc_tag_ind2 {
+    vertical-align: top;
+    border-left: 1px solid #A0A0A0;
+    padding-left: 3px;
+}
+
+.marc_subfields {
+    vertical-align: top;
+    padding-left: 3px;
+}
+
+/*
+ * Holdings Editor Styles
+ * /
+
+/* Wrapping in bootstrap style can separate radio buttons from their labels. */
+.col-xs-3 {
+    white-space: nowrap;
+}
+
+/* Print Item Templates Styles */
+
+div.print-label-toolbox input[type=number], div.print-label-toolbox input[type=text] {
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin-right: 12px;
+  width: 56px;
+  }
+
+div.print-label-toolbox div.eg-print-label-section {
+  display: block;
+  margin: 0 0 10px 0;
+  }
+
+div.eg-print-label-group {
+  border-bottom: 1px solid #DED;
+  margin: 0 0 10px 0;
+  padding: 0 0 10px 0;
+  }
+
+.eg-print-label-section p {
+  margin: 0 0 5px 0;
+  }
+
+div.print-label-toolbox input.ng-invalid {
+  background-color: #FFFF00;
+  color: #FF0000;
+  }
+
+div.print-label-toolbox label {
+  padding-right: 4px;
+  }
+
+div.print-label-toolbox ul {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  }
+
+div.print-label-toolbox ul li {
+  display: inline-block;
+  padding: 0 0 0 6px;
+  }
+
+div.print-label-toolbox ul li:first-child {
+  display: inline-block;
+  padding: 0 0 0 0;
+  }
+
+table.custom-label-table td {
+  vertical-align: top;
+  }
+
+.print-template-text {
+   height: 36em;
+   width: 100%;
+   }
+
+.cn-template-text {
+  height: 12em;
+  width: 100%;
+}
+
+.record-merge-container {
+  flex: 1;
+  max-height: 600px;
+  /*
+   * LP1739293 Leaving for reference in case anyone wants to allow the
+   * marc records to occupy more horizontal space and/or put scroll bars
+   * on the individual records instead of a single vertical scroll.
+  min-width: 600px;
+  max-width: 900px;
+  overflow-y: scroll;
+  */
+}
+
+.record-merge-container pre {
+  /* in the merge view, wrap text so it doesn't gobble up 
+   * all of the horizontal space */
+  white-space: pre-wrap;
+}
+
+/* Avoid word wrapping in edit mode and add scrolls for navigation */
+.record-edit-container {
+  flex: 1;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  white-space: nowrap;
+}
+
+.new-cn, .new-cp { background-color: lightgreen; border:1px dashed #000; }

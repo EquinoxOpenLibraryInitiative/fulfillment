@@ -1,0 +1,131 @@
+<!-- Common entities -->
+<!ENTITY conify.save_button.label "Save">
+<!ENTITY conify.delete_button.label "Delete">
+<!ENTITY conify.new_kid_button.label "New Child">
+<!-- Main configuration interface menu -->
+<!ENTITY conify.admin.title "Global :: Administration">
+<!ENTITY conify.admin.top_pane.title "Controls">
+<!ENTITY conify.admin.configure "Configure your ILS">
+<!ENTITY conify.admin.left_pane.controls "Controls">
+<!ENTITY conify.admin.org_unit_type.link "Organization Types">
+<!ENTITY conify.admin.org_unit.link "Organizational Units">
+<!ENTITY conify.admin.grp_tree.link "Permission Groups">
+<!ENTITY conify.admin.perm_list.link "Permissions">
+<!ENTITY conify.admin.copy_status.link "Copy Statuses">
+<!ENTITY conify.admin.marc_code_maps.link "Coded Value Maps">
+<!ENTITY conify.admin.bottom_pane.title "Controls">
+<!-- Organization unit type configuration interface -->
+<!ENTITY conify.org_unit_type.title "Global :: Actor :: Organization Unit Types">
+<!ENTITY conify.org_unit_type.type_tree.label "Organization Unit Types">
+<!ENTITY conify.org_unit_type.type_name "Type Name">
+<!ENTITY conify.org_unit_type.opac_label "OPAC Label">
+<!ENTITY conify.org_unit_type.parent_type "Parent Type">
+<!ENTITY conify.org_unit_type.can_have_volumes "Can Have Volumes and Copies">
+<!ENTITY conify.org_unit_type.can_have_users "Can Have Users">
+<!-- Organization unit configuration interface -->
+<!ENTITY conify.org_unit.title "Global :: Actor :: Organization Units">
+<!ENTITY conify.org_unit.ou_tree.label "Organizational Units">
+<!ENTITY conify.org_unit.editor_pane.title "Main Settings">
+<!ENTITY conify.org_unit.editor_pane.org_unit_name "Organization Unit Name">
+<!ENTITY conify.org_unit.editor_pane.org_unit_code "Organization Unit Policy Code">
+<!ENTITY conify.org_unit.editor_pane.main_email "Main Email Address">
+<!ENTITY conify.org_unit.editor_pane.main_phone "Main Phone Number">
+<!ENTITY conify.org_unit.editor_pane.org_unit_type "Organization Unit Type">
+<!ENTITY conify.org_unit.editor_pane.parent "Parent Organization Unit">
+<!ENTITY conify.org_unit.editor_pane.opac_visible "OPAC Visible">
+<!-- Hours of operation --> 
+<!ENTITY conify.org_unit.hoo_pane.title "Hours of Operation">
+<!ENTITY conify.org_unit.hoo_pane.open_time "Open time">
+<!ENTITY conify.org_unit.hoo_pane.close_time "Close time">
+<!ENTITY conify.org_unit.hoo_pane.closed "Closed">
+<!ENTITY conify.org_unit.hoo_pane.monday "Monday">
+<!ENTITY conify.org_unit.hoo_pane.tuesday "Tuesday">
+<!ENTITY conify.org_unit.hoo_pane.wednesday "Wednesday">
+<!ENTITY conify.org_unit.hoo_pane.thursday "Thursday">
+<!ENTITY conify.org_unit.hoo_pane.friday "Friday">
+<!ENTITY conify.org_unit.hoo_pane.saturday "Saturday">
+<!ENTITY conify.org_unit.hoo_pane.sunday "Sunday">
+<!-- Addresses --> 
+<!ENTITY conify.org_unit.addresses_pane.title "Addresses">
+<!ENTITY conify.org_unit.addresses_pane.physical.title "Physical Address">
+<!ENTITY conify.org_unit.addresses_pane.holds.title "Holds Address">
+<!ENTITY conify.org_unit.addresses_pane.mailing.title "Mailing Address">
+<!ENTITY conify.org_unit.addresses_pane.ill.title "ILL Address">
+<!ENTITY conify.org_unit.addresses_pane.type "Type">
+<!ENTITY conify.org_unit.addresses_pane.valid "Valid">
+<!ENTITY conify.org_unit.addresses_pane.street1 "Street 1">
+<!ENTITY conify.org_unit.addresses_pane.street2 "Street 2">
+<!ENTITY conify.org_unit.addresses_pane.city "City">
+<!ENTITY conify.org_unit.addresses_pane.state "State">
+<!ENTITY conify.org_unit.addresses_pane.zip "Zip">
+<!ENTITY conify.org_unit.addresses_pane.country "Country">
+<!ENTITY conify.org_unit.addresses_pane.county "County">
+<!ENTITY conify.org_unit.addresses_pane.san "SAN">
+<!-- This is a highlighted label that is followed by the name of the organizational unit -->
+<!ENTITY conify.org_unit.status_bar "Now editing:">
+
+<!ENTITY conify.copy_status.title "Global :: Configuration :: Copy Status">
+<!ENTITY conify.copy_status.new_status.label "New Status:">
+<!ENTITY conify.copy_status.new_status.name "New Status Name">
+<!ENTITY conify.copy_status.new_status.save "Add">
+<!ENTITY conify.copy_status.save_changes "Save Changes">
+<!ENTITY conify.copy_status.delete_selected "Delete Selected">
+
+<!ENTITY conify.marc_code_maps.title "Global :: Configuration :: MARC Code Maps">
+<!ENTITY conify.marc_code_maps.audience_map.title "Audience Map">
+<!ENTITY conify.marc_code_maps.audience_map.new.label "New Audience Map:">
+<!ENTITY conify.marc_code_maps.new_code "New Code">
+<!ENTITY conify.marc_code_maps.new_value "New Value">
+<!ENTITY conify.marc_code_maps.audience_map.description "Description">
+<!ENTITY conify.marc_code_maps.delete_selected "Delete Selected">
+<!ENTITY conify.marc_code_maps.save_changes "Save Changes">
+
+<!ENTITY conify.marc_code_maps.bib_level.title "Bibliographic Level Map">
+<!ENTITY conify.marc_code_maps.bib_level.new.label "New Bibliographic Level:">
+<!ENTITY conify.marc_code_maps.add "Add">
+
+<!ENTITY conify.marc_code_maps.item_form.title "Item Form Map">
+<!ENTITY conify.marc_code_maps.item_form.new.label "New Item Form:">
+
+<!ENTITY conify.marc_code_maps.item_type.title "Item Type Map">
+<!ENTITY conify.marc_code_maps.item_type.new.label "New Item Type:">
+
+<!ENTITY conify.marc_code_maps.language.title "Language Map">
+<!ENTITY conify.marc_code_maps.language.new.label "New Language:">
+
+<!ENTITY conify.marc_code_maps.literary_form.title "Literary Form Map">
+<!ENTITY conify.marc_code_maps.literary_form.new.label "New Literary Form:">
+
+<!ENTITY conify.marc_code_maps.video.title "Videorecording Format Map">
+<!ENTITY conify.marc_code_maps.video.new.label "New Video Recording Format:">
+
+<!-- perm_list.html Entities -->
+<!ENTITY conify.perm_list.permission_list.title "Global :: Permission :: Permission List">
+<!ENTITY conify.perm_list.new_code.label "New Code">
+<!ENTITY conify.perm_list.add_button.label "Add">
+<!ENTITY conify.perm_list.save_changes.label "Save Changes">
+<!ENTITY conify.perm_list.delete_selected.label "Delete Selected">
+<!ENTITY conify.perm_list.new_permission.label "New Permission:">
+ 
+ <!-- grp_tree.html Entities -->
+ <!ENTITY conify.grp_tree.group_tree.title "Global :: Permission :: Group Tree">
+ <!ENTITY conify.grp_tree.permission_groups.label "Permission Groups">
+ <!ENTITY conify.grp_tree.group_config.label "Group Configuration">
+ <!ENTITY conify.grp_tree.group_name.label "Group Name">
+ <!ENTITY conify.grp_tree.description.label "Description">
+ <!ENTITY conify.grp_tree.permission_interval.label "Permission Interval">
+ <!ENTITY conify.grp_tree.hold_priority.label "Hold Priority">
+ <!ENTITY conify.grp_tree.editing_permission.label "Editing Permission">
+ <!ENTITY conify.grp_tree.parent_group.label "Parent Group">
+ <!ENTITY conify.grp_tree.user_group.label "User Group">
+ <!ENTITY conify.grp_tree.save_button.label "Save">
+ <!ENTITY conify.grp_tree.delete_button.label "Delete">
+ <!ENTITY conify.grp_tree.new_child_button.label "New Child">
+ <!ENTITY conify.grp_tree.group_permissions.title "Group Permissions">
+ <!ENTITY conify.grp_tree.new_mapping.label "New Mapping">
+ <!ENTITY conify.grp_tree.permission.label "Permission:">
+ <!ENTITY conify.grp_tree.depth.label "Depth:">
+ <!ENTITY conify.grp_tree.grantable.label "Grantable:">
+ <!ENTITY conify.grp_tree.add_mapping_button.label "Add Mapping">
+ <!ENTITY conify.grp_tree.save_changes.label "Save Changes">
+ <!ENTITY conify.grp_tree.remove_selected.label "Delete Selected">

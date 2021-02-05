@@ -1,0 +1,76 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Transit List') %]</span>
+  </div>
+</div>
+
+<div>
+  <div class="form-group col-md-4">
+    <div class="row">
+      <label><input type="radio" ng-model="transit_direction" value="to"></input>[% l('Transits To') %]</label>
+      <label><input type="radio" ng-model="transit_direction" value="from"></input>[% l('Transits From') %]</label>
+    </div>
+    <div class="row">
+      <label for="select-transit-ou">[% l('Library: ' ) %]</label>
+      <eg-org-selector id="select-transit-ou" selected="context_org"></eg-org-selector>
+    </div>
+  </div>
+  <div class="form-group form-inline col-md-4">
+    <label for="select-start-date">[% l('Start Date: ') %]</label>
+    <eg-date-input id="select-start-date" ng-model="dates.start_date"></eg-date-input>
+    <label for="select-end-date">[% l('End Date: ') %]</label>
+    <eg-date-input id="select-end-date" ng-model="dates.end_date"></eg-date-input>
+  </div>
+</div>
+
+<hr/>
+
+<eg-grid
+  id-field="id"
+  idl-class="atc"
+  features="-sort,-multisort"
+  grid-controls="grid_controls"
+  persist-key="circ.transits.list"
+  dateformat="{{$root.egDateAndTimeFormat}}">
+
+  <eg-grid-menu-item handler="add_copies_to_bucket" 
+    label="[% l('Add Items to Bucket') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="edit_copies" 
+    label="[% l('Edit Item Attributes') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item handler="abort_transit" 
+    label="[% l('Cancel Transit') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="print_full_list"
+    label="[% l('Print Transits') %]"></eg-grid-menu-item>
+
+  <eg-grid-field path='id' hidden required></eg-grid-field>
+  <eg-grid-field path='target_copy.id' hidden required></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.record.simple_record.id' hidden required></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.id' hidden required></eg-grid-field>
+  <eg-grid-field path='target_copy.barcode' label="[% l('Barcode') %]" sortable>
+    <a target="_self" href="./cat/item/{{item['target_copy.id']}}">{{item['target_copy.barcode']}}</a>
+  </eg-grid-field>
+  <eg-grid-field path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
+  <eg-grid-field path='target_copy.location.name' label="[% l('Shelving Location') %]" hidden sortable></eg-grid-field>
+  <eg-grid-field label="[% l('CN Prefix') %]" path="target_copy.call_number.prefix.label"></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.label_sortkey' hidden sortable>{{item['target_copy.call_number.label']}}</eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.label' hidden required sortable></eg-grid-field>
+  <eg-grid-field label="[% l('CN Suffix') %]" path="target_copy.call_number.suffix.label"></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.record.simple_record.title' label="[% l('Title') %]" sortable>
+    <a href="/eg2/staff/catalog/record/{{item['target_copy.call_number.record.simple_record.id']}}">
+      {{item['target_copy.call_number.record.simple_record.title']}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.record.simple_record.author' hidden></eg-grid-field>
+  <eg-grid-field path='source.shortname' label="[% l('Source Library') %]" sortable></eg-grid-field>
+  <eg-grid-field path='dest.shortname' label="[% l('Destination Library') %]" sortable></eg-grid-field>
+  <eg-grid-field path='source_send_time' datatype="timestamp" sortable></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.hold_type'></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.request_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.capture_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.expire_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.usr.family_name' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.usr.first_given_name' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.usr.card.barcode' label="[% l('Patron Barcode') %]" hidden></eg-grid-field>
+</eg-grid>
+

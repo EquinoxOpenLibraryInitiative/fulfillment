@@ -1,0 +1,37 @@
+<ng-container *ngIf="editor && subfieldLabels && marcForms && marcTypes">
+  <form [formGroup]="editor">
+    <div class="row">
+      <div class="col-lg-3" i18n>Form</div>
+      <div class="col-lg-9">
+        <eg-combobox #formCombobox [entries]="marcForms" formControlName="marcForm" [selectedId]="defaultMarcForm">
+          <eg-combobox-entry entryId=" " entryLabel="<None selected>" i18n-entryLabel></eg-combobox-entry>
+        </eg-combobox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3" i18n>Type</div>
+      <div class="col-lg-9">
+        <eg-combobox #typeCombobox [entries]="marcTypes" formControlName="marcType" selectedId="a"></eg-combobox>
+      </div>
+    </div>
+    <ng-container *ngFor="let field of fields">
+      <div class="row" *ngFor="let subfield of field.subfields">
+        <ng-container *ngIf="!subfield[1]">
+          <div class="col-lg-3">
+            <label for="{{idPrefix}}-{{editorFieldIdentifier(field, subfield)}}">
+              {{subfieldLabels[editorFieldIdentifier(field, subfield)]}}
+            </label>
+          </div>
+          <div class="col-lg-9">
+            <input id="{{idPrefix}}-{{editorFieldIdentifier(field, subfield)}}" formControlName="{{editorFieldIdentifier(field, subfield)}}" />
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <button class="btn btn-primary" (click)="emitXml()">
+      <ng-container *ngIf="buttonLabel">{{buttonLabel}}</ng-container>
+      <ng-container *ngIf="!buttonLabel" i18n>Save</ng-container>
+    </button>
+  </form>
+</ng-container>
+

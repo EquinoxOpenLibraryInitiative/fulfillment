@@ -1,0 +1,297 @@
+.spacer {clear: both}
+
+#oils-acq-index-block { font-weight:bold; }
+/*
+.oils-sub-navigate-block { width: 100%;  text-align: left; padding: 3px;}
+.oils-sub-navigate-block span { padding: 3px; }
+*/
+
+.oils-acq-basic-roomy { margin: 10px 0; }
+/*.oils-acq-detail-content-pane {height:600px;width:100%}*/
+.oils-acq-basic-form-div {padding:4px; width:95%;}
+
+/* bib search */
+#oils-acq-search-container { width:100%; }
+#oils-acq-search-sources-block { vertical-align: top; margin-top: 20px;}
+#oils-acq-search-form-block { vertical-align: top; margin-top: 20px;}
+#oils-acq-search-sources-selector { padding: 2px; }
+#oils-acq-search-sources-selector option { margin-bottom: 2px; }
+.oils-acq-search-form-row { width: 100%; }
+.oils-acq-search-form-label {}
+.oils-acq-search-form-input {}
+#oils-acq-search-sources-list { padding: 1px; }
+#oils-acq-search-sources-list li { list-style-type: none; padding-left: 0px; }
+.oils-acq-search-sources-sublist { padding: 1px; list-style-type: none;}
+.oils-acq-search-sources-sublist li { margin-left: 10px; }
+.oils-acq-search-subsources-label { margin-top: 5px; }
+#oils-acq-search-sources-label { margin-bottom: 10px; }
+#oils-acq-search-fields-label { margin-bottom: 10px; }
+/*#oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}*/
+#oils-acq-search-fields-submit-block { margin: 5px; }
+#oils-acq-search-source-select option {padding: 5px;}
+#oils-acq-search-fields-tbody td {padding: 3px;}
+
+/* list of picklists */
+#oils-acq-picklist-list-table {width: 100%;}
+#oils-acq-picklist-list-table td {padding: 3px;}
+
+/* a single picklist */
+#oils-acq-picklist-table { width: 100%; }
+#oils-acq-picklist-header { padding: 4px; margin-bottom: 20px; }
+.oils-acq-picklist-records-jacket-td { width: 46px; height: 54px; }
+.oils-acq-picklist-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
+.oils-acq-picklist-records-title {vertical-align: top}
+.oils-acq-picklist-records-copies {text-align: right; width: 200px}
+#oils-acq-picklist-paging-block { width: 25%; float: left; position: relative; }
+#oils-acq-picklist-actions-block { width: 75%; text-align: right; float: right; position: relative; }
+#oils-acq-picklist-header-subtable { width: 100%; }
+#oils-acq-picklist-header-block { width: 100%; display: block }
+
+/* list of pos */
+#oils-acq-po-list-table {width: 100%;}
+#oils-acq-po-list-table td {padding: 3px;}
+#oils-acq-po-search-form .dijit {width:130px;}
+
+/* a single po */
+#oils-acq-po-table { width: 100%; }
+#oils-acq-po-header { padding: 4px; margin-bottom: 20px; }
+.oils-acq-po-records-jacket-td { width: 46px; }
+.oils-acq-po-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
+.oils-acq-po-records-title-row {}
+.oils-acq-po-records-author-row td { padding-left: 30px; }
+.oils-acq-po-records-phys_desc-row td { padding-left: 30px; }
+.oils-acq-po-records-phys_desc-row {}
+.oils-acq-po-prepay { font-weight: bold; color: #c00; }
+
+#oils-acq-po-paging-block { width: 50%; text-align: left;}
+#oils-acq-po-actions-block { width: 50%; text-align: right;}
+#oils-acq-po-header-subtable { width: 100%; }
+
+#oils-acq-list-header { margin: 10px; width: 98%;}
+#oils-acq-list-header-label { float: left; }
+#oils-acq-list-header-actions { float: right; }
+
+/* purchase order line item detail page */
+#oils-acq-po-li-header { padding: 4px; margin-bottom: 20px; }
+#oils-acq-po-li-summary {}
+#oils-acq-po-li-summary td {padding: 2px;}
+.oils-acq-po-li-attr {}
+.oils-acq-po-li-attr-type {}
+.oils-acq-po-li-attr-name {}
+.oils-acq-po-li-attr-value {}
+#oils-acq-po-li-marc-block { margin-top: 10px; padding: 6px; }
+#oils-acq-po-li-details-table { width: 100%; }
+.oils-acq-po-li-detail-row {}
+
+/* picklist entry page */
+#oils-acq-lineitem-header { padding: 4px; margin-bottom: 20px; }
+#oils-acq-lineitem-summary {}
+#oils-acq-lineitem-summary td {padding: 2px;}
+.oils-acq-lineitem-attr {}
+.oils-acq-lineitem-attr-type {}
+.oils-acq-lineitem-attr-name {}
+.oils-acq-lineitem-attr-value {}
+#oils-acq-lineitem-marc-block { margin-top: 10px; padding: 6px; }
+.oils-acq-po-heading-po { font-weight: bold; }
+
+#oils-acq-metapo-summary {
+    border: 1px inset #ccc;
+    width: 400px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+#oils-acq-metapo-summary th, #oils-acq-metapo-summary td { padding: 3px; }
+#oils-acq-metapo-summary tbody th { font-weight: bold; }
+#oils-acq-metapo-summary thead th {
+    font-size: 110%;
+    font-weight: bold;
+    text-align: center;
+}
+#oils-acq-metapo-summary td { text-align: right; }
+
+#oils-acq-tag-manager-display { padding: 8px 2px; }
+#oils-acq-tag-manager-add { padding: 8px 2px; border-top: 1px dotted #ccc; }
+.oils-acq-fund-tag {
+    border: 1px #666 dashed;
+    margin: 2px 8px;
+    padding: 4px;
+}
+.oils-acq-fund-tag A { margin-left: 10px; }
+#oils-acq-fund-xfer-table th { border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999; padding: 4px; }
+#oils-acq-fund-xfer-table td { padding: 4px 4px 4px 24px; }
+#oils-acq-fund-xfer-submit-row { text-align: center; }
+
+/* li search page */
+h1 { font-size: 150%;font-weight: bold;margin-bottom: 12px; }
+h2 { font-size: 138%;font-weight: bold;margin-bottom: 11px; }
+h3 { font-size: 125%;font-weight: bold;margin-bottom: 10px; }
+h4 { font-size: 112%;font-weight: bold;margin-bottom: 9px; }
+#oils-acq-li-search-form-holder {border-bottom: 2px #666 inset; margin: 6px 0;}
+.oils-acq-li-search-form-row { margin: 6px 0; }
+input.oils-acq-li-search { margin: 0 12px; }
+label.oils-acq-li-search { margin: 0 12px; }
+span.oils-acq-li-search { margin: 0 12px; }
+span#records-up { font-weight: bold; }
+label[for="attr_search_type_scalar"] { vertical-align: top; }
+.oils-acq-li-search-scalar { margin: 8px 0; }
+
+#acq-lit-table {width:100%}
+#acq-lit-table th {padding:5px; font-weight: bold; text-align:left;}
+#acq-lit-table td {padding:2px;}
+.acq-lit-row { border-bottom: 1px solid #AAA; }
+.acq-lit-alt-row td { padding-left:30px; }
+.acq-lit-po-heading td { background-color: #ccc; border: 1px solid #000; }
+.acq-lit-po-heading td span { padding-left: 6px; padding-right: 6px; }
+.acq-lit-po-heading td span span { padding: 0; }
+.acq-lit-po-heading td span a[attr="name"] { font-weight: bold; }
+#acq-lit-info-tbody td {padding:5px;}
+#acq-lit-info-related { margin-top: 10px; }
+#acq-lit-distrib-formula-table { margin-top: 10px; margin-bottom: 5px;}
+#acq-lit-li-details-table {margin-top:5px;}
+#acq-lit-li-details-table td {padding:0px 3px 1px 3px;}
+#acq-lit-li-details-table th {padding:0px 3px 1px 3px; font-weight:bold;}
+#acq-lit-li-details-table .dijit {width:130px;}
+#acq-lit-li-details-table td input {width:100px;}
+#acq-lit-export-attr { margin-left: 10px; }
+.acq-lit-note-textarea { border-right: 2px solid #aaa; width:50%;}
+.acq-lit-note-textarea div { padding: 4px; font-weight: bold; }
+.acq-lit-li-menu-left {text-align:left; width:300px;}
+.acq-lit-li-menu-right {text-align:left;}
+.acq-lit-distrib-form-use-count { color: #999; font-weight: bold; }
+#acq-lit-distrib-applied-heading { font-size: 110%; font-weight: bold; }
+.acq-lit-distrib-applied-row td { border-right: 1px #999 solid;border-bottom: 1px #999 solid; }
+.acq-lit-distrib-applied-row th { border-bottom: 1px #999 solid;padding-bottom: 4px;}
+.acq-lit-table-spacer { height:20px; }
+.acq-lit-row td[name="selector"] { width:1.5em; font-weight:bold; color:blue; font-size:110%;}
+span[name="worksheet"] { padding: 0 6px; }
+#acq-lit-li-claim-dia-lid-list-init { margin-left: 8px; }
+
+#acq-batch-update { padding: 20px 0; }
+#acq-batch-update th { font-weight: bold; }
+#acq-batch-update td { white-space: nowrap; padding-right: 0.5em; }
+
+#acq-worksheet-contents thead th { font-weight: bold; background-color: #ccc; text-align: center; border-bottom: 1px #000 solid; border-right: 1px #000 solid; padding: 0 6px; }
+#acq-worksheet-contents tbody td { text-align: left; vertical-align: top; border: 1px #999 inset; padding: 0 2px; }
+
+.acq-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
+.acq-notes-note-row { margin: 6px 0; }
+#acq-po-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; border-radius: 5px 5px 5px 5px; }
+#acq-po-notes-tbody td {padding: 20px 10px 20px 10px; border-bottom:2px solid #aaa;}
+#acq-lit-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; border-radius: 5px 5px 5px 5px; }
+#acq-lit-notes-tbody td {padding: 20px 10px 20px 10px; border-bottom:2px solid #aaa;}
+#acq-lit-alert-value { height: 5em; width: 20em; }
+span[name="vendor_public"] {color: #00c;padding-right: 1em;font-weight: bold;}
+span[name="alert_code"] {color: #c00;padding-right: 1em;font-weight: bold;}
+span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;margin: 0 7px;}
+
+#acq-related-info-tbody td {padding:5px;}
+#acq-related-mini ul { list-style-type: square; }
+#acq-related-li-create-holder {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+}
+
+/* fiscal rollover ui */
+#oils-acq-rollover-tooltip-table td { border-bottom: 2px solid #888 }
+#acq-fund-list-rollover-summary-wrapper {
+    width:98%; 
+    margin-top:20px
+}
+#acq-fund-list-rollover-summary {
+    width:50%; 
+    margin-left:auto; 
+    margin-right:auto;
+    text-align:center;
+    border:1px solid #888;
+}
+
+/* INVOICING */
+#oils-acq-invoice-table td { padding: 5px; }
+.oils-acq-invoice-table td { padding: 5px; vertical-align: bottom;}
+.oils-acq-invoice-table thead th { font-weight: bold; background: #e0e0e0;}
+#acq-invoice-new-msg { font-weight: bold; margin: 10px;}
+#acq-invoice-li-details { padding: 10px; font-weight: bold; border: 1px solid #888; margin: 10px; }
+#acq-invoice-create { margin: 10px; }
+.acq-inoice-item-extra-info { padding-left: 10px; }
+.acq-inoice-item-info { font-weight: bold; }
+.acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }
+.acq-invoice-invalid-amount  { color: red; font-weight: bold; }
+.acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}
+.acq-invoice-paid-col {background : #E0E0E0; text-align: center;}
+.acq-invoice-center-col { text-align: center; }
+.acq-invoice-money { width: 7em; }
+#acq-invoice-entry-thead th { white-space: nowrap; }
+#acq-invoice-item-thead th { white-space: nowrap; }
+
+.acq-lineitem-summary { font-weight: bold; }
+.acq-lineitem-summary-extra { padding-left: 10px; }
+
+#acq-unified-heading { margin-bottom: 10px; }
+#acq-unified-heading-actual { float: left; width: 50%; font-size: 120%; font-weight: bold; }
+#acq-unified-heading-controls { float: right; width: 50%; text-align: right; }
+#acq-unified-form { margin-bottom: 10px; border-bottom: 1px dashed #666; padding-bottom: 10px; }
+#acq-unified-form > div { margin: 6px 0; }
+option[disabled="disabled"] { font-style: italic; }
+#acq-unified-terms-table { width: 100%; }
+#acq-unified-terms-table td { padding: 4px 0; }
+#acq-unified-add-term { padding-bottom: 20px; }
+.acq-unified-option-header { padding-left: 12px; }
+.acq-unified-option-regular { padding-left: 24px; }
+.acq-unified-terms-selector { width: 20%; }
+.acq-unified-terms-widget { width: 60%; }
+.acq-unified-terms-match { width: 15%; }
+.acq-unified-terms-remove { width: 5%; text-align: right; }
+.acq-unified-remover { color: #c00; }
+.acq-unified-result-specific-controls { margin-bottom: 8px; }
+span[name="bib_origin"] img { vertical-align: middle; }
+
+#acq-eligible-li-table { margin: 10px 0; }
+#acq-eligible-li-table th { background-color: #ccc; border: 1px #333 inset; font-weight: bold; padding: 6px; }
+#acq-eligible-li-table td { padding: 2px 6px; border: 1px #333 inset; }
+#acq-eligible-li-table div[name="lid_link_holder"] { margin-left: 10px; }
+
+#acq-po-item-table th { font-weight: bold; padding: 2px 6px; }
+#acq-po-item-table-items tr td { padding: 2px 6px; }
+#acq-po-item-table-items tr td button[name="delete"] { color: #c00; }
+#acq-po-item-table-items tr { margin: 6px 0; }
+#acq-po-item-table-controls { margin-top: 8px; }
+
+#acq-litpager-controls[disabled="true"] { color: #ccc; }
+
+.acq-po-info th { text-align: right; }
+#acq-lit-copies-li-summary { 
+    border: 1px #666 dashed;
+    margin-bottom: 15px;
+    padding: 4px;
+}
+
+.acq-li-inline-copies-table { 
+    border-collapse: collapse; 
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.acq-inline-copies-row td {
+    background-color: #FEF;
+    border: 2px solid #333;
+}
+.acq-li-inline-copies-table td { 
+    border: 1px solid #464; 
+}
+
+span[name="cancel_reason"] { text-decoration: underline; font-weight: bold; }
+
+.acq-existing-count-warn {
+    font-weight: bold;
+    color: red;
+}
+
+#oils-acq-final-invoice-pane {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#acq-final-invoice-tbody td {
+    padding: 6px;
+    border: 1px solid #AAA;
+}
+

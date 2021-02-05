@@ -1,0 +1,421 @@
+# Czech translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-09-15 19:07+0000\n"
+"PO-Revision-Date: 2018-02-15 13:34+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:21
+msgid "(853) Basic"
+msgstr "(853) Základní"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:22
+msgid "(854) Supplement"
+msgstr "(854) Doplněk"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:23
+msgid "(855) Index"
+msgstr "(855) Rejstíř"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:66
+msgid "(Inactive)"
+msgstr "(Neaktivní)"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:55
+msgid "<u>P</u>rint"
+msgstr "<u>T</u>isk"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:9
+msgid "Active"
+msgstr "Aktivní"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:93
+msgid "Add"
+msgstr "Přidat"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:47
+msgid "Add New"
+msgstr "Přidat nový"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:178
+msgid "Add to record entry"
+msgstr "Přidat k  záznamu"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:39
+msgid "Batch Item Receive"
+msgstr "Dávkový příjem exemplářů"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:104
+msgid "Bibliographic Record"
+msgstr "Bibliografický záznam"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:34
+msgid "Billing address:"
+msgstr "Adresa trvalého bydliště"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:6
+msgid "Bindery"
+msgstr "Vazba"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:7
+msgid "Bound"
+msgstr "Svázané"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:207
+msgid "Captions and Patterns"
+msgstr "Označení a schémata"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:144
+msgid "Chronology"
+msgstr "Chronologie"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:8
+msgid "Claimed"
+msgstr "Reklamováno"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:261 ../../Open-ILS/src/templates/serial/subscription.tt2:36
+msgid "Clone Subscription"
+msgstr "Klonovat předplatné"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:305
+msgid "Clone!"
+msgstr "Klonovat!"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:118 ../../Open-ILS/src/templates/serial/list_stream.tt2:149
+msgid "Create"
+msgstr "Vytvořit"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:8
+msgid "Create Date"
+msgstr "Datum vytvoření"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:26
+msgid "Create Many Streams"
+msgstr "Vytvořit více řad exemplářů"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:76
+msgid "Create New Items"
+msgstr "Vytvočit nové položky"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:135
+msgid "Create Streams"
+msgstr "Vytvořit řadu exemplářů"
+
+#. ("<span name=\"obj_create\"></span>")
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:64
+msgid "Created by %1"
+msgstr "Vytvořila(a) %1"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:92
+msgid "Date Expected"
+msgstr "Očekávané datum"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:100
+msgid "Date Received"
+msgstr "Datum přijetí"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:40 ../../Open-ILS/src/templates/serial/list_stream.tt2:34 ../../Open-ILS/src/templates/serial/list_subscription.tt2:22 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:15 ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:10
+msgid "Delete Selected"
+msgstr "Smazat vybrané"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:105
+msgid "Department:"
+msgstr "Oddělení:"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:65
+msgid "Department: ${0}"
+msgstr "Oddělění: ${0}"
+
+#. ("<span name=\"department\"></span>")
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:45
+msgid "Department: %1"
+msgstr "Oddělení: %1"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:9
+msgid "Discarded"
+msgstr "Vyřazeno"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:116 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:3
+msgid "Distributions"
+msgstr "Distribuce"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:184
+msgid "Do not use record entry"
+msgstr "Nepoužívat záhlaví záznamu"
+
+#. ("<span name=\"obj_edit\"></span>")
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:65
+msgid "Edited by %1"
+msgstr "Editoval(a) %1"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:100
+msgid "End Date"
+msgstr "Datum ukončení"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:146
+msgid "Enumeration"
+msgstr "Enumerace"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:5
+msgid "Expected"
+msgstr "Očekávané"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:106
+msgid "Expected Date Offset"
+msgstr "Očekávaná odchylka data"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:83
+msgid "Generate"
+msgstr "Generovat"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:43
+msgid "Generate Issuance and Item Predictions"
+msgstr "Generovat  číslování a predikci čísel"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:16
+msgid "Generate Predictions"
+msgstr "Generovat predikce"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:268
+msgid ""
+"Holdings-related objects, like issuances, items, units, and summaries will "
+"<em>not</em> be cloned."
+msgstr ""
+"Objekty týkající se vlastnictví, jako číslování, položky, jednotky a souhrny "
+" <em>nebudou</em> klonovány."
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:79
+msgid "How many items?"
+msgstr "Kolik položek?"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:139
+msgid "How many?"
+msgstr "Kolik?"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:92 ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:5
+msgid "ID"
+msgstr "ID"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:77
+msgid "Import"
+msgstr "Importovat"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:50
+msgid "Import From Bibliographic or Legacy Serial Records"
+msgstr ""
+"Import z bibliografických záznamů nebo ze záznamů periodik z původního "
+"systému"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:219 ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:3
+msgid "Issuances"
+msgstr "Číslování / chronologie"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:3 ../../Open-ILS/src/templates/serial/list_item.tt2:32
+msgid "Items"
+msgstr "Exempláře"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:24
+msgid "Mailing address:"
+msgstr "Kontaktní adresa"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:70
+msgid "Manage Routing List"
+msgstr "Spravovat seznam předběžných příjemců"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:180
+msgid "Merge with record entry"
+msgstr "Sloučit se záhlavím záznamu"
+
+#: ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:11
+msgid "New Distribution"
+msgstr "Nová distribuce"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:8
+msgid "New Issuance"
+msgstr "Nové číslování/chronologe"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:35
+msgid "New Items"
+msgstr "Nové exempláře"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:23
+msgid "New Stream"
+msgstr "Nová řada exemplářů"
+
+#: ../../Open-ILS/src/templates/serial/list_subscription.tt2:19
+msgid "New Subscription"
+msgstr "Nové předplatné"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:10
+msgid "Not Held"
+msgstr "Není vlastněno"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:11
+msgid "Not Published"
+msgstr "Nevydáno"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:115
+msgid "Note:"
+msgstr "Poznámka:"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:107
+msgid "Number of Distributions"
+msgstr "Počet předplatných"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:94
+msgid "Owning Library"
+msgstr "Vlastnická knihovna"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:55
+msgid "P"
+msgstr "P"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:7
+msgid "Pattern Code"
+msgstr "Kód schématu"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:69
+msgid "Predict a certain number of issuances:"
+msgstr "Predikovat určitý počet čísel"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:57
+msgid "Predict until end of subscription"
+msgstr "Predikovat do konce předplatného"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:83
+msgid "Reader (barcode):"
+msgstr "Čtenář (čáorvý kód)"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:63
+msgid "Reader: ${0} / ${1}, ${2} ${3} (${4})"
+msgstr "Čtenář: ${0} / ${1}, ${2} ${3} (${4})"
+
+#. ("<span name=\"barcode\"></span>", "<span name=\"name\"></span>", "<span name=\"ou\"></span>")
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:18
+msgid "Reader: %1 / %2 (%3)"
+msgstr "Čtenář: %1 / %2 (%3)"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:12
+msgid "Received"
+msgstr "Přijato"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:295
+msgid "Record specified by this unique identifier:"
+msgstr "Záznam je specifikován tímto jedinečným identifikátorem"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:37 ../../Open-ILS/src/templates/serial/list_stream.tt2:32 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:8 ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:6
+msgid "Refresh Grid"
+msgstr "Obnovit tabulku"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:10
+msgid "Remove"
+msgstr "Odebrat"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:29
+msgid "Routing List For Selected Stream"
+msgstr "Seznam předběžných příjemců pro vybrané řady exemplářů"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:283
+msgid "Same record as the existing subscription"
+msgstr "Stejný záznam jako existující předplatné"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:125 ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:11 ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:40
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:72
+msgid "Select records from which to import caption and pattern fields."
+msgstr ""
+"Vybrat záznam, ze kterého se mají importovat pole pro označní a schémata"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:2
+msgid "Serial Routing List"
+msgstr "Seznam předběžných příjemců seriálu"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:45
+msgid "Showing items attached to the issuance,"
+msgstr "Zobrazuji položky připojené k číslování/chronologii"
+
+#. ("<em><a href=\"javascript:void(0);\" id=\"sdist_label_here\"></a></em>", "<span id=\"sdist_org_unit_name_here\"></span>")
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:38
+msgid "Showing streams attached to the distribution, %1 (%2)."
+msgstr "Zobrazuji soubory exemplářů připojené k distribuci, %1 (%2)."
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:97
+msgid "Start Date"
+msgstr "Datum začátku"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:107
+msgid "Status"
+msgstr "Status"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:86
+msgid "Stream"
+msgstr "Řada exemplářů"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:20 ../../Open-ILS/src/templates/serial/list_stream.tt2:3
+msgid "Streams"
+msgstr "Řady exemplářů"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:33
+msgid "Subscription Details"
+msgstr "Detaily předplatného"
+
+#: ../../Open-ILS/src/templates/serial/list_subscription.tt2:15 ../../Open-ILS/src/templates/serial/list_subscription.tt2:2 ../../Open-ILS/src/templates/serial/subscription.tt2:52
+msgid "Subscriptions"
+msgstr "Předplatné"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:84
+msgid "Summary"
+msgstr "Souhrn"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:264
+msgid ""
+"This feature will clone a subscription and all of its subscription notes, "
+"distributions, distribution notes, captions and patterns, streams, and "
+"routing list users."
+msgstr ""
+"Tato funkce naklonuje předplatné a všechny poznámky k předplatnému, "
+"distribuce, poznámky k distribuci, označení a schémata, řady exemplářů a "
+"uživatele seznamu předběžných příjemců, které jsou k předplatnému připojeny"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:272
+msgid "To what bibliographic record should the new subscription be attached?"
+msgstr "Ke kterému bibliografickému záznamu  má být předplatné připojeno?"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:6
+msgid "Type"
+msgstr "Typ"
+
+#. ("<span name=\"stream_id\"></span>")
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:12
+msgid "Unlabeled stream ID #%1"
+msgstr "Neoznačená řada exemplářů  ID #%1"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:182
+msgid "Use record entry only"
+msgstr "Použít pouze záhlaví záznamu"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:49
+msgid "View/Edit"
+msgstr "Zobrazit/editovat"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:55 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:6
+msgid "View/Edit Notes"
+msgstr "ZObrazit/editovat poznámky"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:28
+msgid "Wizard ..."
+msgstr "Průvodce ..."

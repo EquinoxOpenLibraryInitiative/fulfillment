@@ -1,0 +1,140 @@
+= Antora Docs build procedure
+
+:idseparator: -
+
+== Using generate_docs.pl
+
+This tool should perform all of the steps in "Doing it Manually", automatically. This tool requires some command line arguments and also requires some prerequisites.
+
+=== Installing Node
+
+Be sure and have Node installed.
+
+see https://github.com/nvm-sh/nvm#installation-and-update[Installing Node]
+
+[source,bash]
+----
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+----
+
+=== Antora pre-reqs
+
+Once Node is installed, follow the Antora prereqs
+
+Summarized from https://docs.antora.org/antora/2.3/install/linux-requirements/[Antora pre-reqs]
+
+[source,bash]
+----
+$ nvm install --lts
+----
+
+=== Run generate_docs.pl
+
+This tool does the rest of the work. You will be requried to supply these things:
+
+[cols="2*"]
+|===
+
+|base-url
+|[URL where html output is expected to be available eg: http//examplesite.org]
+
+|tmp-space
+|[Writable path for staging the antora UI repo and build files, defaults to ./build]
+
+|html-output
+|[Path for the generated HTML files, defaults to ./output]
+
+|antora-ui-repo
+|[Antora-UI repository for the built UI, defaults to git://git.evergreen-ils.org/eg-antora.git]
+
+|antora-version
+|[Version of antora to use for build, defaults to 2.3]
+
+|===
+
+Example:
+
+[source,bash]
+----
+$ cd Evergreen/docs
+$ ./generate_docs.pl \
+--base-url http//examplesite.org/prod \
+--tmp-space ../../tmp \
+--html-output /var/www/html/prod \
+--antora-ui-repo git://git.evergreen-ils.org/eg-antora.git \
+--antora-version 2.3
+
+----
+
+NOTE: This tool will create the tmp-space and html-ouput directories if they do not exist. These folders will be erased and re-created with each execution.
+
+
+
+== Doing it all manually
+
+[source,bash]
+----
+$ git clone git://git.evergreen-ils.org/Evergreen.git
+$ git clone git://git.evergreen-ils.org/eg-antora.git
+$ cd Evergreen
+----
+
+First we have to install antora:
+Summarized from 
+https://docs.antora.org/antora/2.1/install/install-antora/
+
+[source,bash]
+----
+$ cd docs
+# (we want to install into the local directory as opposed to globally)
+$ npm install @antora/cli@2.3 @antora/site-generator-default@2.3 antora-lunr antora-site-generator-lunr
+----
+
+
+Now, install the ui pre-reqs building
+lifted from
+https://docs.antora.org/antora-ui-default/set-up-project/
+and
+https://github.com/Mogztter/antora-lunr
+
+[source,bash]
+----
+$ cd ../../eg-antora
+$ npm install
+$ npm gulp-bundle
+----
+
+At this point you should find a file in:
+
+NOTE: build/ui-bundle.zip
+
+Note that if you are using a customized build of antora-ui you will need to include the proper lunr ui components in your local repository. Now you can build the website but you may want to edit the file:
+
+NOTE: docs/site.yml
+
+Because the output folder for the website is defaulted to 
+
+NOTE: /var/www/html/prod
+
+And the default web URL is:
+
+NOTE: http://localhost/prod
+
+Build:
+
+[source,bash]
+----
+$ cd ../Evergreen/docs
+DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr antora --generator antora-site-generator-lunr site.yml
+----
+
+If all went well - then you will have the site built in the output folder that was configured in site.yml!
+
+Interesting reading related to Antora and AsciiDoc and AsciiDoctor
+
+NOTE: https://asciidoctor.org/docs/asciidoc-asciidoctor-diffs/
+
+NOTE: https://blog.anoff.io/2019-02-15-antora-first-steps/
+
+NOTE: https://owncloud.org/news/owncloud-docs-migrating-antora-pt-1-2/
+

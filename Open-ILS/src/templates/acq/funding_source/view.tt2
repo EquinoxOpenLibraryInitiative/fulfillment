@@ -1,0 +1,162 @@
+[% WRAPPER 'base.tt2' %]
+<script type="text/javascript"> var fundingSourceID = [% ctx.page_args.0 %]; </script>
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>[% l('Funding Source Details') %]</div>
+</div>
+
+<div class='oils-acq-actions-div' style='margin:8px;'> <!-- XXX CSS -->
+
+    <!-- Dropdown menu for creating a new funding source credit -->
+    <div dojoType="dijit.form.DropDownButton">
+        <span>[% l('Apply Credit') %]</span>
+        <div dojoType="dijit.TooltipDialog" execute="applyFSCredit(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="amount">[% l('Amount: ') %]</label></td>
+                    <td>
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="note">[% l('Note: ') %]</label></td>
+                    <td>
+                        <input dojoType="dijit.form.TextBox" name="note"> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">[% l('Apply') %]</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+    <div dojoType="dijit.form.DropDownButton">
+        <span>[% l('Allocate to Fund') %]</span>
+        <div dojoType="dijit.TooltipDialog" execute="applyFSAllocation(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="fund">[% l('Fund: ') %]</label></td>
+                    <td>
+                        <div id="oils-acq-funding-source-fund-allocate"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="amount">[% l('Amount: ') %]</label></td>
+                    <td>
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
+                    </td>
+                </tr>
+                <!-- Percent-based allocations are not supported.  Will implement or remove later.
+                <tr>
+                    <td><label for="percent">[% l('Percent: ') %]</label></td>
+                    <td>
+                        <input 
+                            dojoType="dijit.form.NumberTextBox" 
+                            constraints="{min:0,max:100}" 
+                            promptMessage="[% l('Please enter an amount between 0 and 100') %]"
+                            name="percent"> 
+                        </input>
+                    </td>
+                </tr>
+                -->
+                <tr>
+                    <td><label for="note">[% l('Note: ') %]</label></td>
+                    <td>
+                        <input dojoType="dijit.form.TextBox" name="note"> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">[% l('Apply') %]</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.TabContainer">
+
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="[% l('Summary') %]" selected='true'>
+            <script type='dojo/connect' event='onShow'>loadFSGrid();</script>
+
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="fundingSourceGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">[% l('ID') %]</th> 
+                                <th field="name" width='auto'>[% l('Name') %]</th> 
+                                <th field="code">[% l('Code') %]</th> 
+                                <th field="balance" get='getSummaryInfo'>[% l('Balance') %]</th>
+                                <th field="credit_total" get='getSummaryInfo'>[% l('Total Credits') %]</th>
+                                <th field="allocation_total" get='getSummaryInfo'>[% l('Total Debits') %]</th>
+                                <th field="currency_type">[% l('Currency Type') %]</th> 
+                                <th field="owner" width='auto' get='getOrgInfo'>[% l('Owner') %]</th>
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div> 
+            </div>               
+        </div>
+ 
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="[% l('Credits') %]">
+            <script type='dojo/connect' event='onShow'>loadCreditGrid(); </script> 
+
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+                    <table 
+                        jsId="fsCreditGrid"
+                        autoheight="true"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['amount', 'effective_date', 'deadline_date', 'note']"
+                        suppressFields="['id', 'funding_source']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfscred"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+                    </table>
+                </div> 
+            </div> 
+        </div>
+
+        <!-- Fund Allocations -->
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="[% l('Allocations') %]">
+            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
+            
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client"> 
+
+                    <table 
+                        jsId="fsAllocationGrid" 
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['fund', 'amount', 'create_time', 'allocator', 'note']"
+                        suppressFields="['id', 'funding_source']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfa"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+
+                        <thead>
+                            <tr>
+                                <th field='fund' get='getFund' formatter='formatFund'></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div> 
+            </div> 
+        </div>
+
+    </div>
+</div>
+
+<!-- load the page-specific JS -->
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_funding_source.js'> </script>
+
+[% END %]
+

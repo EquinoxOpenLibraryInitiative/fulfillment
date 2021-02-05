@@ -1,0 +1,165 @@
+[% WRAPPER 'base.tt2' %]
+[% ctx.page_title = l("Purchase Order") %]
+<div dojoType="dijit.layout.ContentPane" style="height:100%">
+    <div id='oils-scroll-to-top'></div>
+    <div>
+        <div id='oils-acq-picklist-header'>
+            <big>
+                [% l('Purchase Order ([_1])', '<span id="acq-po-view-state"></span>') %] 
+            </big>
+            <span id='acq-po-activated-on' class='hidden'></span>
+            <table class="oils-generic-table acq-po-info">
+                <tr>
+                    <th>[% l('ID') %]</th><td><a id="acq-po-view-id"></a></td>
+                    <th>[% l('Prepayment Required?') %]</th>
+                    <td><span id="acq-po-view-prepay"></span></td>
+                </tr>
+                <tr>
+                    <th>[% l('Name') %]</th>
+                    <td>
+                        <a id="acq-po-view-name" href="javascript:void(0);" onclick="updatePoName()"></a>
+                        <div class="hidden" id="acq-dupe-po-name">
+                            [% l('PO name already in use: ') %]
+                            <a href='javascript:;' id='acq-dupe-po-link'>[% l('View PO') %]</a>
+                        </div>
+                    </td>
+                    <th>[% l('Activatable?') %]</th>
+                    <td>
+                        <span id="acq-po-activate-checking"></span>
+                        <span class="hidden" id="acq-po-activate-links" style='padding: 5px'>
+                            <span dojoType="dijit.form.Button" onClick="activatePo()" jsId="activatePoButton">
+                                [% l('Activate Order') %]
+                            </span>
+                            <span style='padding: 5px;'> / </span>
+                            <span dojoType="dijit.form.Button" onClick="activatePo(true)" jsId="activatePoNoAssetsButton">
+                                [% l('Activate Without Loading Items') %]
+                            </span>
+                        </span>
+                        <span class="hidden" id="acq-po-finalize-links" style='padding: 5px'>
+                            <span dojoType="dijit.form.Button" onClick="finalizePo()" jsId="finalizePoButton">
+                                [% l('Finalize Blanket Order') %]
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[% l('Provider') %]</th>
+                    <td><span id="acq-po-view-provider"></span></td>
+                    <th>[% l('Notes') %]</th>
+                    <td>
+                        <a href="javascript:void(0);"
+                            id="acq-po-view-notes"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[% l('Total Lineitems') %]</th>
+                    <td><span id="acq-po-view-total-li"></span></td>
+                    <th>[% l('EDI Messages') %]</th>
+                    <td>
+                        <a href="javascript:void(0);"
+                            id="acq-po-view-edi-messages"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[% l('Total Estimated') %]</th>
+                    <td>[% l('$[_1]', '<span id="acq-po-view-total-estimated"></span>') %]</td>
+                    <th>[% l('History') %]</th>
+                    <td>
+                        <a class="hidden" href="javascript:void(0);"
+                            id="acq-po-view-history">[% l('View') %]</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[% l('Total Encumbered') %]</th>
+                    <td>[% l('$[_1]', '<span id="acq-po-view-total-enc"></span>') %]</td>
+                    <th id="acq-po-invoice-label" class="hidden">[% l('Invoicing') %]</th>
+                    <td id="acq-po-invoice-stuff" class="hidden">
+                        <button dojoType="dijit.form.Button"
+                            id="acq-po-view-invoice-link">
+                            [% l('View Invoices ([_1])',
+                            '<span id="acq-po-view-invoice-count"></span>') %]
+                        </button> &nbsp;
+                        <button dojoType="dijit.form.Button"
+                            id="acq-po-create-invoice-link">
+                            [% l('Create Invoice') %]
+                        </button> &nbsp;
+                        <button dojoType="dijit.form.DropDownButton">
+                            <span>[% l('Link Invoice') %]</span>
+                            <div dojoType="dijit.TooltipDialog"
+                                id="acq-po-link-invoice">
+                                <script type="dojo/connect" event="onOpen">
+                                    if (!invoiceLinkDialogManager) {
+                                        invoiceLinkDialogManager =
+                                            new InvoiceLinkDialogManager(
+                                                "po", PO
+                                            );
+                                    }
+                                </script>
+                                [% INCLUDE "acq/common/inv_dialog.tt2"
+                                    which = "po" %]
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[% l('Total Spent') %]</th>
+                    <td>[% l('$[_1]', '<span id="acq-po-view-total-spent"></span>') %]</td>
+                    <th id="acq-po-cancel-label"></th>
+                    <td>
+                        <span id="acq-po-view-cancel-reason"></span>
+                        <span id="acq-po-choose-cancel-reason" class="hidden">
+                            <span dojoType="dijit.form.DropDownButton">
+                                <span>[% l('Cancel order') %]</span>
+                                <span dojoType="dijit.TooltipDialog">
+                                    <label for="acq-po-cancel-reason">
+                                        [% l('Reason:') %]
+                                    </label>
+                                    <span id="acq-po-cancel-reason"></span>
+                                    <button jsId="acqPoCancelReasonSubmit"
+                                        dojoType="dijit.form.Button"
+                                        type="submit">[% l('Cancel order') %]</button>
+                                </span>
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <div class='hidden' id='acq-po-return-to-search'>
+                            <button dojoType='dijit.form.Button' id='acq-po-return-to-search-button'>[% l('&#x2196; Return to Search') %]</button>
+                        </div>
+                        <div class='hidden' id='acq-po-return-to-invoice'>
+                            <button dojoType='dijit.form.Button' id='acq-po-return-to-invoice-button'>[% l('&#x2196; Return to Invoice') %]</button>
+                        </div>
+                    </td>
+                    <th class="hidden" id="acq-po-zero-activate-label">[% l('Allow activation with <br/> zero-copy lineitems') %]</th>
+                    <td class="hidden" id="acq-po-zero-activate"><input type='checkbox' id='acq-po-activate-zero-copies' onclick='checkCouldActivatePo()'/></td>
+                </tr>
+                <tr>
+                    <td colspan='3'>
+                        <a class="hidden" id="acq-po-split" href="javascript:void(0);"
+                            onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">
+                            [% l('Split Order by Lineitems') %]
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
+    <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'></script>
+    <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/po/item_table.js"></script>
+    <script type="text/javascript">
+        var poId = "[% ctx.page_args.1 %]";
+        var liFocus = "[% ctx.page_args.0 %]";
+        if (liFocus && !poId) {
+            poId = liFocus;
+            liFocus = null;
+        }
+    </script>
+    [% INCLUDE 'acq/common/li_table.tt2' %]
+    [% INCLUDE "acq/common/notes.tt2" which = "Po" %]
+    [% INCLUDE "acq/po/item_table.tt2" %]
+</div>
+[% END %]

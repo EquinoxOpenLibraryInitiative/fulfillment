@@ -1,0 +1,44 @@
+<div id="myopac_messages_div">
+    <h3>[% l("Messages") %]</h3>
+    <div id="single_message_main">
+        <form method="post" id="messages-form" action="[% ctx.opac_root %]/myopac/messages"  class="my-2">
+            <input type="hidden" name="message_id" value="[% ctx.patron_message_id %]" />
+            <input type="hidden" name="offset" value="[% offset %]" />
+            <input type="hidden" name="limit" value="[% limit %]" />
+            <span>
+                <a href="[% mkurl('messages', {}, ['single', 'message_id']) %]" class="btn btn-action m-1">
+                <i class="fas fa-arrow-circle-left" aria-hidden="true"></i>
+                [% l('Return to Message List') %]
+                </a>
+
+                <button type="submit" name="action" value="mark_unread" class="btn btn-opac m-1">
+                   <i class="fas fa-eye-slash" aria-hidden="true"></i>
+                    [% l('Mark Unread') %]
+                </button>
+                <button type="submit" name="action" value="mark_deleted" class="btn btn-deny m-1"
+                    onclick="return confirm('[% l("Are you sure you wish to permanently delete this message?") %]')">
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    [% l('Delete') %]
+                </button>
+            </span>
+        </form>
+        <div class="row">
+        <div class="my-2 col-12">
+            <b>[% l("Date") %]</b>
+            <span class="mx-2">[% date.format(ctx.parse_datetime(ctx.patron_messages.0.create_date), DATE_FORMAT); %]</span>
+        </div>
+        <div class="my-2 col-12">
+            <b>[% l("Library") %]</b>
+            <span class="mx-2">[% ctx.patron_messages.0.library | html %]</span>
+        </div>
+        <div class="my-2 col-12">
+            <b>[% l("Subject") %]</b>
+            <span class="mx-2">[% ctx.patron_messages.0.title | html %]</span>
+        </div>
+        <div class="my-2 col-12">
+            <b>[% l("Message") %]</b>
+            <span class="mx-2">[% ctx.patron_messages.0.message | html %]</span>
+        </div>
+        </div>
+    </div>
+</div>

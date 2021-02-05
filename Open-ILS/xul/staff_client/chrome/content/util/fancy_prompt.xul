@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="fancy_prompt_win" 
+    onload="try { my_init(); font_helper(); persist_helper( xul_param('title') ); } catch(E) { alert(E); }"
+    oils_persist="width height"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+
+        function my_init() {
+            try {
+                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for fancy_prompt.xul');
+
+                var top_xml = xul_param('top_xml',{'stash_name':xul_param('top_xml_in_stash')});
+                if (top_xml) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString( top_xml, 'text/xml' );
+                    var node = doc.documentElement;
+                    if (node) document.getElementById('fancy_prompt_topbar').appendChild(node);
+                }
+
+                var my_xml = xul_param('xml',{'stash_name':xul_param('xml_in_stash')});
+                if (my_xml) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString( my_xml, 'text/xml' );
+                    var node = doc.documentElement;
+                    if (node) document.getElementById('fancy_prompt_main').appendChild(node);
+                }
+
+                var bot_xml = xul_param('bottom_xml',{'stash_name':xul_param('bottom_xml_in_stash')});;
+                if (bot_xml) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString( bot_xml, 'text/xml' );
+                    var node = doc.documentElement;
+                    if (node) document.getElementById('fancy_prompt_bottombar').appendChild(node);
+                }
+
+                var nl = document.getElementsByAttribute('name','fancy_submit');
+                for (var i = 0; i < nl.length; i++) {
+                    nl[i].addEventListener('command',fancy_save,false);
+                }
+
+                var nl = document.getElementsByAttribute('name','fancy_cancel');
+                for (var i = 0; i < nl.length; i++) {
+                    nl[i].addEventListener('command',function(ev) { window.close(); },false);
+                }
+
+                if (xul_param('title')) {
+                    try { window.title = xul_param('title'); } catch(E) {}
+                    try { document.title = xul_param('title'); } catch(E) {}
+                }
+
+                if (xul_param('focus')) {
+                    var focus_element = document.getElementById(xul_param('focus'));
+                    if (focus_element) focus_element.focus();
+                }
+
+                var snd = xul_param('sound');
+                var snd_obj = xul_param('sound_object');
+                if (snd) {
+                    try {
+                        var params = { 'sig' : 'fancy_prompt_my_init' };
+                        if (snd_obj) { params.reuse_queue_from_this_snd_obj = snd_obj; }
+                        JSAN.use('util.sound'); var sound = new util.sound(params);
+                        if (snd) { sound[ snd ](); }
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+
+                xulG.fancy_status = 'incomplete';
+
+            } catch(E) {
+                var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+                    "system administrator or software developer the following:\nfancy_prompt.xul\n" + E + '\n';
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function fancy_save(ev) {
+            try {
+                //if (ev.target.id) g.data.fancy_prompt_data[ ev.target.id ] = ev.target.value || ev.target.getAttribute('value');
+                //g.data.fancy_prompt_data[ 'fancy_submit' ] = ev.target.value || ev.target.getAttribute('value');
+                //var nl = document.getElementsByAttribute('name','fancy_data');
+                //for (var i = 0; i < nl.length; i++) {
+                //    g.data.fancy_prompt_data[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
+                //}
+                //g.data.stash('fancy_prompt_data');
+    
+                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                if (ev.target.id) xulG[ ev.target.id ] = ev.target.value || ev.target.getAttribute('value');
+                xulG[ 'fancy_submit' ] = ev.target.value || ev.target.getAttribute('value');
+                var nl = document.getElementsByAttribute('name','fancy_required_data');
+                    for (var i = 0; i < nl.length; i++) {
+                    xulG[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
+                    if ( xulG[ nl[i].id ] == '' ) {
+                        nl[i].focus(); return; // abort save
+                    }
+                }
+                var nl = document.getElementsByAttribute('name','fancy_data');
+                    for (var i = 0; i < nl.length; i++) {
+                    xulG[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
+                }
+                xulG.fancy_status = 'complete';
+    
+                window.close();
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('fancy_save',E); } catch(F) { alert('fancy_save ' + E + ' ' + F); }
+            }
+        }
+    ]]>
+    </script>
+
+    <vbox id="fancy_prompt_topbar"/>
+    <vbox id="fancy_prompt_main" flex="1" style="overflow: auto"/>
+    <vbox id="fancy_prompt_bottombar"/>
+
+</window>
+

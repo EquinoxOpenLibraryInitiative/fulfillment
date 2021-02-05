@@ -1,0 +1,56 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="allowAll,-display"
+  id-field="id"
+  idl-class="acp"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.copy.view">
+
+  [% INCLUDE 'staff/cat/bucket/copy/t_grid_menu.tt2' %]
+
+  <eg-grid-action label="[% l('Remove Selected Items from Bucket') %]" group="[% l('Bucket') %]"
+    handler="detachCopies"></eg-grid-action>
+  <eg-grid-action label="[% l('Move Selected Items to Pending Items') %]" group="[% l('Bucket') %]"
+    handler="moveToPending"></eg-grid-action>
+  <eg-grid-action label="[% l('Request Selected Items') %]" group="[% l('Items') %]"
+    handler="requestItems"></eg-grid-action>
+  <eg-grid-action label="[% l('Edit Selected Items') %]" group="[% l('Items') %]"
+    handler="spawnHoldingsEdit"></eg-grid-action>
+  <eg-grid-action label="[% l('Edit Call Numbers') %]" group="[% l('Items') %]"
+    handler="spawnCallNumberEdit"></eg-grid-action>
+  <eg-grid-action handler="showItems" group="[% l('Show') %]"
+    label="[% l('Open in Item Status') %]"></eg-grid-action>  
+  <eg-grid-action handler="print_labels" group="[% l('Show') %]"
+    label="[% l('Print Labels') %]"></eg-grid-action>
+  <eg-grid-action label="[% l('Transfer Selected Items to Marked Call Number') %]" group="[% l('Items') %]"
+    handler="transferCopies"></eg-grid-action>
+  <eg-grid-action label="[% l('Delete Selected Items from Catalog') %]" group="[% l('Items') %]"
+    handler="deleteCopiesFromCatalog"></eg-grid-action>
+  <eg-grid-action label="[% l('Apply Tags') %]" 
+    handler="applyTags"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="call_number.record.id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/item/{{item['id']}}">
+      {{item['barcode']}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label_sortkey" visible><span>{{item['call_number.label']}}</span></eg-grid-field>
+  <eg-grid-field label="[% l('Call Number Label') %]" path="call_number.label" hidden required></eg-grid-field>
+  <eg-grid-field label="[% l('CN Prefix') %]" path="call_number.prefix.label"></eg-grid-field>
+  <eg-grid-field label="[% l('CN Suffix') %]" path="call_number.suffix.label"></eg-grid-field>
+  <eg-grid-field label="[% l('Location') %]"    path="location.name" visible></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]"
+    path="call_number.record.simple_record.title" visible>
+    <a href="/eg2/staff/catalog/record/{{item['call_number.record.id']}}">
+      {{item['call_number.record.simple_record.title']}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field path="latest_inventory.inventory_date" datatype="timestamp" label="[% l('Inventory Date') %]"></eg-grid-field>
+  <eg-grid-field path="latest_inventory.inventory_workstation.name" label="[% l('Inventory Workstation') %]"></eg-grid-field>
+
+</eg-grid>

@@ -1,0 +1,35 @@
+
+<!-- todo disabled -->
+<ng-template #defaultDisplayTemplate let-r="result">
+{{r.label || r.id}}
+</ng-template>
+
+<ng-template #acqfTemplate egIdlClass="acqf" let-r="result">
+  {{r.fm.code()}} ({{r.fm.year()}})
+</ng-template>
+<ng-template #acplTemplate egIdlClass="acpl" let-r="result">
+  {{r.fm.name()}} ({{getOrgShortname(r.fm.owning_lib())}})
+</ng-template>
+
+<div class="d-flex">
+  <input type="text" 
+    class="form-control"
+    [ngClass]="{'text-success font-italic font-weight-bold': selected && selected.freetext}"
+    [placeholder]="placeholder"
+    [name]="name"
+    [disabled]="isDisabled"
+    [required]="isRequired"
+    [(ngModel)]="selected" 
+    [ngbTypeahead]="filter"
+    [resultTemplate]="getResultTemplate()"
+    [inputFormatter]="formatDisplayString"
+    (click)="onClick($event)"
+    (blur)="onBlur()"
+    container="body"
+    (selectItem)="selectorChanged($event)"
+    #instance="ngbTypeahead"/>
+  <div class="d-flex flex-column icons" (click)="openMe($event)">
+    <span class="material-icons">keyboard_arrow_up</span>
+    <span class="material-icons">keyboard_arrow_down</span>
+  </div>
+</div>

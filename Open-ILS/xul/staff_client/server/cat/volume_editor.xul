@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Copy Viewer/Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_volume_editor_win" 
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    title="&staff.cat.volume_editor.title;" height="800" width="300" oils_persist="height width"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="volume_editor.js"/>
+
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
+    <groupbox flex="1" style="overflow: auto">
+        <caption id="caption" label="&staff.cat.volume_editor.caption.label;"/>
+        <hbox>
+            <button label="&staff.cat.volume_editor.cancel.label;" accesskey="&staff.cat.volume_editor.cancel.accesskey;" oncommand="window.close();"/>
+            <spacer flex="1" />
+            <button label="&staff.cat.volume_editor.modify.label;" accesskey="&staff.cat.volume_editor.modify.accesskey;" oncommand="g.stash_and_close();"/>
+        </hbox>
+        <hbox>
+            <spacer flex="1" />
+            <checkbox id="auto_merge" label="&staff.cat.volume_editor.automerge.label;" accesskey="&staff.cat.volume_editor.automerge.accesskey;" tooltiptext="&staff.cat.volume_editor.automerge.description;" oils_persist="checked"/>
+        </hbox>
+        <grid flex="1">
+            <columns>
+                <column />
+                <column class="cn_class"/>
+                <column class="cn_prefix"/>
+                <column />
+                <column class="cn_suffix"/>
+            </columns>
+            <rows id="rows">
+                <row id="batch_bar">
+                    <spacer />
+                    <vbox class="cn_class">
+                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"
+                            class="header"/>
+                        <hbox id="batch_class"/>
+                    </vbox>
+                    <vbox class="cn_prefix">
+                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"
+                            class="header"/>
+                        <hbox id="batch_prefix"/>
+                    </vbox>
+                    <vbox>
+                        <label
+                            value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
+                            accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;"
+                            control="marc_cn_menulist" class="header"/>
+                        <hbox id="marc_cn"/>
+                    </vbox>
+                    <vbox class="cn_suffix">
+                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"
+                            class="header"/>
+                        <hbox id="batch_suffix"/>
+                    </vbox>
+                    <vbox>
+                        <label class="header" value="&staff.cat.volume_copy_creator.batch_bar;"/>
+                        <hbox id="batch_button_box"/>
+                    </vbox>
+                </row>
+                <row>
+                    <label value="&staff.cat.volume_editor.owning_lib;" class="header"/>
+                    <label value="&staff.cat.volume_editor.classification;" class="header cn_class"/>
+                    <label value="&staff.cat.volume_editor.prefix;" class="header cn_prefix"/>
+                    <label value="&staff.cat.volume_editor.label;" class="header"/>
+                    <label value="&staff.cat.volume_editor.suffix;" class="header cn_suffix"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</window>
+

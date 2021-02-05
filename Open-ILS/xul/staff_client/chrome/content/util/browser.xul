@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
+
+<window id="util_browser_win" 
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                        if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('..');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for util_browser.xul');
+
+                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                XML_HTTP_SERVER = data.server_unadorned;
+
+                var name = xul_param('tab_name') || xul_param('name') || null;
+                var url; try { url = xul_param('url'); } catch(E) { dump(E + '\n'); };
+                if (!url) url = urls.browser;
+
+                JSAN.use('util.browser'); g.browser = new util.browser();
+
+                var push_xulG = true;
+                if (xul_param('no_xulG')) push_xulG = false;
+
+                var p =    { 
+                    'url' : url,
+                    'push_xulG' : push_xulG,
+                    'printer_context' : xul_param('printer_context'),
+                    'html_source' : xul_param('html_source'),
+                    'debug_label' : 'debug'
+                };
+                if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
+                    p.passthru_content_params = window.xulG.passthru_content_params;
+                }
+                if (typeof window.xulG == 'object' && typeof window.xulG.on_url_load == 'function') {
+                    p.on_url_load = window.xulG.on_url_load;
+                }
+
+                g.browser.init( p );
+
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
+                }
+                if (xul_param('show_nav_buttons')) {
+                    document.getElementById('back').hidden = false;
+                    document.getElementById('forward').hidden = false;
+                }
+                if (xul_param('show_print_button')) {
+                    document.getElementById('browser_print').hidden = false;
+                }
+
+                if (xul_param('title')) {
+                    try { document.title = xul_param('title'); } catch(E) {}
+                    try { window.title = xul_param('title'); } catch(E) {}
+                }
+
+            } catch(E) {
+                var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+                    "system administrator or software developer the following:\n" + E + '\n';
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function default_focus() {
+            try {
+                dump('entering browser.xul, default_focus()\n');
+                g.browser.updateNavButtons();
+            } catch(E) {
+                dump('Error in browser.xul, default_focus(): ' + E + '\n');
+            }
+        }
+
+    ]]>
+    </script>
+
+    <commandset id="util_browser_cmds">
+        <command id="cmd_broken" />
+        <command id="cmd_print" label="&common.browser.print.label;" accesskey="&common.browser.print.accesskey;" />
+        <command id="cmd_debug" />
+        <command id="cmd_view_source" />
+        <command id="cmd_find" />
+        <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
+        <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
+        <command id="cmd_forward" label="&common.browser.forward.label;" accesskey="&common.browser.forward.accesskey;" />
+        <command id="cmd_zoom_in" oncommand="g.browser.apply_zoom(null, 0.1);" />
+        <command id="cmd_zoom_out" oncommand="g.browser.apply_zoom(null, -0.1);" />
+        <command id="cmd_zoom_reset" oncommand="g.browser.apply_zoom(1);" />
+    </commandset>
+
+    <keyset>
+        <key key="-" command="cmd_zoom_out"   modifiers="accel"/>
+        <key key="+" command="cmd_zoom_in"    modifiers="accel"/>
+        <key key="=" command="cmd_zoom_in"    modifiers="accel"/>
+        <key key="0" command="cmd_zoom_reset" modifiers="accel"/>
+    </keyset>
+
+    <popupset>
+        <menupopup id="debug_popup">
+            <menuitem label="&common.browser.view_source.label;" accesskey="&common.browser.view_source.accesskey;" command="cmd_view_source" />
+            <menuitem label="&common.browser.set_url.label;" accesskey="&common.browser.set_url.accesskey;" command="cmd_debug" />
+            <menuitem label="&common.browser.find.label;" accesskey="&common.browser.find.accesskey;" command="cmd_find" />
+        </menupopup>
+    </popupset>
+
+    <vbox flex="1">
+        <hbox>
+            <button id="back" command="cmd_back" disabled="true" hidden="true"/>
+            <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
+            <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
+            <spacer flex="1"/>
+            <label id="debug" value="&common.debug.menu.btn;" disabled="true" popup="debug_popup" />
+            <button id="browser_print" command="cmd_print" hidden="true"/>
+        </hbox>
+        <browser id="browser_browser" flex="1" autoscroll="false" type="content" oils_force_external="true" />
+    </vbox>
+
+</window>
+

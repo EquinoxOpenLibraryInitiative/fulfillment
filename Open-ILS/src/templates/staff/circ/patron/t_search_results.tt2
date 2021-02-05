@@ -1,0 +1,52 @@
+
+<!-- patron search results grid -->
+<eg-grid
+  idl-class="au" id-field="id"
+  features="-sort,-display,-multisort"
+  main-label="[% l('Patron Search Results') %]"
+  menu-label="[% l('Add To Bucket') %]"
+  grid-controls="gridControls"
+  items-provider="patronSearchGridProvider"
+  persist-key="circ.patron.search"
+  dateformat="{{$root.egDateAndTimeFormat}}">
+
+  <eg-grid-menu-item handler="merge_patrons"
+    disabled="need_two_selected" standalone="true"
+    label="[% l('Merge Patrons') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('New Bucket') %]"
+    handler="openCreateBucketDialog"></eg-grid-menu-item>
+
+  <eg-grid-menu-item divider="true"></eg-grid-menu-item>
+
+  <eg-grid-menu-item ng-repeat="bkt in bucketSvc.allBuckets"
+    label="{{bkt.name()}}" handler-data="bkt"
+    handler="addToBucket" disabled="need_one_selected"></eg-grid-menu-item>
+
+  <eg-grid-field label="[% l('ID') %]" path='id' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Card') %]" path='card.barcode' visible>
+    <a href="./circ/patron/{{item.id()}}/checkout">{{item.card().barcode()}}</a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Profile') %]" path='profile.name' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Last Name') %]" path='family_name' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% l('First Name') %]" path='first_given_name' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% l('Middle Name') %]" path='second_given_name' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% l('DoB') %]" path='dob' dateformat="{{$root.egDateFormat}}" datatype="timestamp" visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% l('Home Library') %]" path='home_ou.shortname' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Created On') %]" path='create_date' datatype="timestamp" visible sortable multisortable></eg-grid-field>
+
+  <eg-grid-field label="[% l('Mailing:Street 1') %]" path='mailing_address.street1' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Mailing:Street 2') %]" path='mailing_address.street2'></eg-grid-field>
+  <eg-grid-field label="[% l('Mailing:City') %]" path='mailing_address.city'></eg-grid-field>
+  <eg-grid-field label="[% l('Mailing:County') %]" path='mailing_address.county'></eg-grid-field>
+  <eg-grid-field label="[% l('Mailing:State') %]" path='mailing_address.state'></eg-grid-field>
+  <eg-grid-field label="[% l('Mailing:Zip') %]" path='mailing_address.post_code'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Billing:Street 1') %]" path='billing_address.street1'></eg-grid-field>
+  <eg-grid-field label="[% l('Billing:Street 2') %]" path='billing_address.street2'></eg-grid-field>
+  <eg-grid-field label="[% l('Billing:City') %]" path='billing_address.city'></eg-grid-field>
+  <eg-grid-field label="[% l('Billing:County') %]" path='billing_address.county'></eg-grid-field>
+  <eg-grid-field label="[% l('Billing:State') %]" path='billing_address.state'></eg-grid-field>
+  <eg-grid-field label="[% l('Billing:Zip') %]" path='billing_address.post_code'></eg-grid-field>
+  <eg-grid-field path='*' ignore="id family_name first_given_name second_given_name dob create_date"></eg-grid-field>
+</eg-grid>

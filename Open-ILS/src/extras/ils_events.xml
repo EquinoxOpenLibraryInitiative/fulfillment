@@ -1,0 +1,1099 @@
+<ils_events>
+	<notes>
+		This file describes the event codes that an ILS method might return.  Not all
+		methods will return event codes and it is up to each method to define which
+		types of events it may return.  The standard event procedure is to return an
+		object (JSON hash) with a field called "ilsevent" which contains the event code
+		below.
+
+		If events need to be placed into groups for any reason, the segregation shall
+		be defined below with the accompanying events.
+	</notes>
+
+	<event code='0' textcode='SUCCESS'>
+		<desc xml:lang="en-US">Success</desc>
+	</event>
+	<event code='1' textcode='UNKNOWN'>
+		<desc xml:lang="en-US">Placeholder event.  Used for development only</desc>
+	</event>
+	<event code='3' textcode='NO_CHANGE'>
+		<desc xml:lang="en-US">No change occurred</desc>
+	</event>
+
+    <event code='4' textcode='CACHE_MISS'>
+        <desc xml:lang="en-US">A cached object could not be retrieved by the given reference.</desc>
+    </event>
+
+	<event code='1000' textcode='LOGIN_FAILED'>
+		<desc xml:lang="en-US">User login failed</desc>
+	</event>
+	<event code='1001' textcode='NO_SESSION'>
+		<desc xml:lang="en-US">User login session has either timed out or does not exist</desc>
+	</event>
+	<event code='1002' textcode='ACTOR_USER_NOT_FOUND'>
+		<desc xml:lang="en-US">Someone attempted to retrieve a user from the system and the user was not found</desc>
+	</event>
+	<event code='1003' textcode='Z3950_SEARCH_FAILED'>
+		<desc xml:lang="en-US">The Z search did not succeed</desc>
+	</event>
+	<event code='1004' textcode='Z3950_BAD_QUERY'>
+		<desc xml:lang="en-US">The Z query is not formatted correctly</desc>
+	</event>
+
+	<event code='1200' textcode='USERNAME_EXISTS'>
+		<desc xml:lang="en-US">The given username already exists in the database</desc>
+	</event>
+	<event code='1201' textcode='CIRC_PERMIT_BAD_KEY'>
+		<desc xml:lang="en-US">A checkout was attempted without a valid checkout permit key</desc>
+	</event>
+	<event code='1202' textcode='ITEM_NOT_CATALOGED'>
+		<desc xml:lang="en-US">The requested item is not cataloged in the database</desc>
+	</event>
+	<event code='1203' textcode='COPY_BAD_STATUS'>
+		<desc xml:lang="en-US">The given copy is not in a standard circulation status</desc>
+	</event>
+	<event code='1204' textcode='CIRC_BAD_STATUS'>
+		<desc xml:lang="en-US">
+			The given circulation is not in a standard status or
+			the circulation was never fully closed properly
+		</desc>
+	</event>
+	<event code='1205' textcode='CARD_EXISTS'>
+		<desc xml:lang="en-US">The given user barcode already exists</desc>
+	</event>
+	<event code='1206' textcode='VOLUME_NOT_EMPTY'>
+		<desc xml:lang="en-US">The selected volume has copies attached</desc>
+	</event>
+	<event code='1207' textcode='REFUND_EXCEEDS_BALANCE'>
+		<desc xml:lang="en-US">A refund greater than the negative balance on a transaction was provided</desc>
+	</event>
+	<event code='1208' textcode='TITLE_LAST_COPY'>
+		<desc xml:lang="en-US">The last copy attached to a title is being removed or deleted</desc>
+	</event>
+	<event code='1209' textcode='Z3950_LOGIN_FAILED'>
+		<desc xml:lang="en-US">The login failed</desc>
+	</event>
+	<event code='1210' textcode='INCORRECT_PASSWORD'>
+		<!-- used when updating a password and the original is wrong -->
+		<desc xml:lang="en-US">The provided password is not correct</desc>
+	</event>
+	<event code='1211' textcode='BILL_ALREADY_VOIDED'>
+		<desc xml:lang="en-US">The bill is already voided</desc>
+	</event>
+	<event code='1212' textcode='PATRON_EXCEEDS_OVERDUE_COUNT'>
+		<desc xml:lang="en-US">The patron has too many overdue items</desc>
+	</event>
+
+	<event code='1213' textcode='PATRON_BARRED'>
+		<desc xml:lang="en-US">The patron is barred</desc>
+	</event>
+
+	<event code='1214' textcode='PATRON_DUP_IDENT1'>
+		<desc xml:lang="en-US">The selected primary identification type and value are in use by another patron</desc>
+	</event>
+
+	<event code='1215' textcode='CIRC_EXCEEDS_COPY_RANGE'>
+		<desc xml:lang="en-US">
+			The selected copy may not circulate because the recipient's home 
+			location is not within the copy's circulation range
+		</desc>
+	</event>
+
+	<event code='1216' textcode='PATRON_CARD_INACTIVE'>
+		<desc xml:lang="en-US">The patron's card is not active</desc>
+	</event>
+	<event code='1217' textcode='PATRON_INACTIVE'>
+		<desc xml:lang="en-US">This account is marked as inactive</desc>
+	</event>
+	<event code='1218' textcode='ITEM_AGE_PROTECTED'>
+		<desc xml:lang="en-US">This item is too new to have a hold placed on it</desc>
+	</event>
+	<event code='1219' textcode='COPY_REMOTE_CIRC_LIB'>
+		<desc xml:lang="en-US">A copy with a remote circulating library (circ_lib) was encountered</desc>
+	</event>
+
+	<event code='1220' textcode='ITEM_NOT_HOLDABLE'>
+		<desc xml:lang="en-US">An unholdable copy was encountered</desc>
+	</event>
+
+	<event code='1221' textcode='ORG_CANNOT_HAVE_VOLS'>
+		<desc xml:lang="en-US">The selected location cannot have volumes attached</desc>
+	</event>
+
+	<event code='1222' textcode='PATRON_NO_EMAIL_ADDRESS'>
+		<desc xml:lang="en-US">The user does not have a valid email address assigned</desc>
+	</event>
+	<event code='1223' textcode='PATRON_NO_PHONE'>
+		<desc xml:lang="en-US">The user does not have a valid phone number assigned</desc>
+	</event>
+	<event code='1224' textcode='PATRON_ACCOUNT_EXPIRED'>
+		<desc xml:lang="en-US">The patron's account has expired</desc>
+	</event>
+	<event code='1225' textcode='TRANSIT_ABORT_NOT_ALLOWED'>
+		<desc xml:lang="en-US">The transit on this item may not be canceled due to the state the item is in</desc>
+	</event>
+
+	<event code='1226' textcode='REFUND_EXCEEDS_DESK_PAYMENTS'>
+		<desc xml:lang="en-US">
+			This refund amount is not allowed because it exceeds 
+			the total amount of desk payments for this transaction.
+		</desc>
+	</event>
+
+
+	<event code='1227' textcode='COPY_DELETE_WARNING'>
+		<desc xml:lang="en-US">The copy in question is not in an ideal status for deleting</desc>
+	</event>
+
+	<event code='1228' textcode='BIB_RECORD_DELETED'>
+		<desc xml:lang="en-US">The requested bib record is marked as deleted</desc>
+	</event>
+	<event code='1229' textcode='VOLUME_DELETED'>
+		<desc xml:lang="en-US">The requested volume is marked as deleted</desc>
+	</event>
+	<event code='1230' textcode='XACT_COLLISION'>
+		<desc xml:lang="en-US">The saved item has been edited by another user</desc>
+	</event>
+
+	<event code='1231' textcode='RECORD_NOT_EMPTY'>
+		<desc xml:lang="en-US">The selected bib record has volumes attached</desc>
+	</event>
+	<event code='1232' textcode='ITEM_DEPOSIT_REQUIRED'>
+		<desc xml:lang="en-US">Payment of an item deposit is required.</desc>
+	</event>
+	<event code='1233' textcode='ITEM_RENTAL_FEE_REQUIRED'>
+		<desc xml:lang="en-US">Payment of an item rental fee is required.</desc>
+	</event>
+	<event code='1234' textcode='ITEM_DEPOSIT_PAID'>
+		<desc xml:lang="en-US">An item deposit was paid.</desc>
+	</event>
+	<event code='1235' textcode='INVALID_USER_XACT_ID'>
+        <desc xml:lang="en-US">While you were trying to make payments, this account's transaction history changed.  Please go back and try again.</desc>
+	</event>
+    <event code='1236' textcode='PATRON_EXCEEDS_LOST_COUNT'>
+        <desc xml:lang="en-US">The patron has too many lost items.</desc>
+    </event>
+	<event code='1237' textcode='HOLD_ITEM_CHECKED_OUT'>
+        <desc xml:lang="en-US">The item you have attempted to place on hold is already checked out to the requestor.</desc>
+	</event>
+	<event code='1500' textcode='ACTION_CIRCULATION_NOT_FOUND'>
+		<desc xml:lang="en-US">
+			Someone attempted to retrieve a circulation object from the system and 
+			the object was not found.
+		</desc>
+	</event>
+	<event code='1501' textcode='BIBLIO_RECORD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested biblio_record_entry was not found</desc>
+	</event>
+	<event code='1502' textcode='ASSET_COPY_NOT_FOUND'>
+		<desc xml:lang="en-US">
+			Someone attempted to retrieve a copy object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+	<event code='1503' textcode='ACTION_HOLD_REQUEST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_request was not found</desc>
+	</event>
+	<event code='1504' textcode='ACTION_TRANSIT_COPY_NOT_FOUND'>
+		<desc xml:lang="en-US">
+			Someone attempted to retrieve a transit object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+
+	<event code='1506' textcode='CONTAINER_NOT_FOUND'>
+		<desc xml:lang="en-US">
+			Someone attempted to retrieve a container object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+	<event code='1507' textcode='CONTAINER_ITEM_NOT_FOUND'>
+		<desc xml:lang="en-US">
+			Someone attempted to retrieve a container item object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+	<event code='1508' textcode='ASSET_CALL_NUMBER_NOT_FOUND'>
+		<desc xml:lang="en-US">Requested asset_call_number was not found</desc>
+	</event>
+
+
+	<event code='1518' textcode='ACTION_HOLD_TRANSIT_COPY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_transit_copy was not found</desc>
+	</event>
+
+
+	<event code='1520' textcode='WORKSTATION_NOT_FOUND'>
+		<desc xml:lang="en-US"> Requested workstation object does not exist </desc>
+	</event>
+	<event code='1523' textcode='TITLE_NOTE_NOT_FOUND'>
+		<desc xml:lang="en-US"> Requested title note does not exist </desc>
+	</event>
+	<event code='1525' textcode='BILLING_NOT_FOUND'>
+		<desc xml:lang="en-US"> Requested billing note does not exist </desc>
+	</event>
+
+	<event code='1527' textcode='OPEN_TCN_NOT_FOUND'>
+		<desc xml:lang="en-US">No TCN could be found that does not collide with existing records</desc>
+	</event>
+	<event code='1528' textcode='ACTOR_USER_ADDRESS_NOT_FOUND'>
+		<desc xml:lang="en-US">Requested address was not found</desc>
+	</event>
+
+
+	<event code='1529' textcode='ACTOR_WORKSTATION_NOT_FOUND'>
+  		<desc xml:lang='en-US'>The requested actor_workstation was not found</desc>
+	</event>
+	<event code='1530' textcode='CONFIG_IDENTIFICATION_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_identification_type was not found</desc>
+	</event>
+	<event code='1531' textcode='ACTION_SURVEY_QUESTION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey_question was not found</desc>
+	</event>
+	<event code='1532' textcode='MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_billable_transaction_summary was not found</desc>
+	</event>
+	<event code='1533' textcode='ACTOR_USR_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_usr_note was not found</desc>
+	</event>
+	<event code='1534' textcode='ACTOR_USER_SETTING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_setting was not found</desc>
+	</event>
+	<event code='1535' textcode='METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_author_field_entry was not found</desc>
+	</event>
+	<event code='1536' textcode='ACTION_IN_HOUSE_USE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_in_house_use was not found</desc>
+	</event>
+
+
+	<event code='1538' textcode='ACTION_SURVEY_RESPONSE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey_response was not found</desc>
+	</event>
+	<event code='1539' textcode='CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_copy_bucket_item was not found</desc>
+	</event>
+	<event code='1540' textcode='AUTHORITY_RECORD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_record_entry was not found</desc>
+	</event>
+	<event code='1541' textcode='AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_record_descriptor was not found</desc>
+	</event>
+	<event code='1542' textcode='CONFIG_LANGUAGE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_language_map was not found</desc>
+	</event>
+	<event code='1543' textcode='MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_credit_card_payment was not found</desc>
+	</event>
+	<event code='1544' textcode='CONFIG_METABIB_FIELD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_metabib_field was not found</desc>
+	</event>
+	<event code='1545' textcode='PERM_EX_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested perm_ex was not found</desc>
+	</event>
+	<event code='1546' textcode='CONFIG_AUDIENCE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_audience_map was not found</desc>
+	</event>
+	<event code='1547' textcode='CONFIG_ITEM_FORM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_item_form_map was not found</desc>
+	</event>
+
+	<event code='1549' textcode='CONFIG_STANDING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_standing was not found</desc>
+	</event>
+	<event code='1550' textcode='MONEY_OPEN_USER_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_open_user_summary was not found</desc>
+	</event>
+
+
+	<event code='1552' textcode='ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_hours_of_operation was not found</desc>
+	</event>
+	<event code='1553' textcode='ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_closed_date was not found</desc>
+	</event>
+	<event code='1554' textcode='CONFIG_RULES_CIRC_DURATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_circ_duration was not found</desc>
+	</event>
+	<event code='1555' textcode='MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_open_billable_transaction_summary was not found</desc>
+	</event>
+
+
+	<event code='1557' textcode='ACTOR_ORG_UNIT_SETTING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_setting was not found</desc>
+	</event>
+	<event code='1558' textcode='ASSET_COPY_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_copy_note was not found</desc>
+	</event>
+	<event code='1559' textcode='METABIB_FULL_REC_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_full_rec was not found</desc>
+	</event>
+	<event code='1560' textcode='METABIB_METARECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_metarecord was not found</desc>
+	</event>
+	<event code='1561' textcode='PERMISSION_PERM_LIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_perm_list was not found</desc>
+	</event>
+	<event code='1562' textcode='METABIB_METARECORD_SOURCE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_metarecord_source_map was not found</desc>
+	</event>
+	<event code='1563' textcode='METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_keyword_field_entry was not found</desc>
+	</event>
+	<event code='1564' textcode='MONEY_CASH_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_cash_payment was not found</desc>
+	</event>
+	<event code='1565' textcode='ACTOR_PROFILE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_profile was not found</desc>
+	</event>
+	<event code='1566' textcode='MONEY_FORGIVE_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_forgive_payment was not found</desc>
+	</event>
+	<event code='1567' textcode='METABIB_RECORD_DESCRIPTOR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_record_descriptor was not found</desc>
+	</event>
+	<event code='1568' textcode='CONFIG_COPY_STATUS_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_copy_status was not found</desc>
+	</event>
+	<event code='1569' textcode='ACTOR_USER_STANDING_PENALTY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_standing_penalty was not found</desc>
+	</event>
+
+
+	<event code='1571' textcode='ASSET_CALL_NUMBER_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_call_number_note was not found</desc>
+	</event>
+	<event code='1572' textcode='AUTHORITY_RECORD_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_record_note was not found</desc>
+	</event>
+
+
+	<event code='1574' textcode='CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_call_number_bucket_item was not found</desc>
+	</event>
+	<event code='1575' textcode='CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_biblio_record_entry_bucket was not found</desc>
+	</event>
+	<event code='1576' textcode='EX_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested ex was not found</desc>
+	</event>
+	<event code='1577' textcode='ACTION_HOLD_COPY_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_copy_map was not found</desc>
+	</event>
+	<event code='1578' textcode='ACTION_HOLD_NOTIFICATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_notification was not found</desc>
+	</event>
+	<event code='1579' textcode='ASSET_COPY_LOCATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_copy_location was not found</desc>
+	</event>
+	<event code='1580' textcode='METABIB_VIRTUAL_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_virtual_record was not found</desc>
+	</event>
+	<event code='1581' textcode='ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_stat_cat_entry_copy_map was not found</desc>
+	</event>
+	<event code='1582' textcode='CONFIG_ITEM_TYPE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_item_type_map was not found</desc>
+	</event>
+	<event code='1583' textcode='ACTION_SURVEY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey was not found</desc>
+	</event>
+	<event code='1584' textcode='ACTOR_ORG_ADDRESS_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_address was not found</desc>
+	</event>
+
+
+	<event code='1586' textcode='ACTOR_ORG_UNIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit was not found</desc>
+	</event>
+	<event code='1587' textcode='CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_call_number_bucket was not found</desc>
+	</event>
+	<event code='1588' textcode='ASSET_STAT_CAT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_stat_cat was not found</desc>
+	</event>
+	<event code='1589' textcode='ACTOR_CARD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_card was not found</desc>
+	</event>
+	<event code='1590' textcode='ACTOR_STAT_CAT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat was not found</desc>
+	</event>
+	<event code='1591' textcode='METABIB_SERIES_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_series_field_entry was not found</desc>
+	</event>
+	<event code='1592' textcode='CONTAINER_USER_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_user_bucket was not found</desc>
+	</event>
+	<event code='1593' textcode='MONEY_CREDIT_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_credit_payment was not found</desc>
+	</event>
+	<event code='1594' textcode='AUTHORITY_FULL_REC_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_full_rec was not found</desc>
+	</event>
+	<event code='1595' textcode='CONFIG_NON_CATALOGED_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_non_cataloged_type was not found</desc>
+	</event>
+	<event code='1596' textcode='ACTOR_ORG_UNIT_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_type was not found</desc>
+	</event>
+	<event code='1597' textcode='BIBLIO_RECORD_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested biblio_record_note was not found</desc>
+	</event>
+	<event code='1598' textcode='MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_user_circulation_summary was not found</desc>
+	</event>
+	<event code='1599' textcode='MONEY_GROCERY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_grocery was not found</desc>
+	</event>
+	<event code='1600' textcode='CONFIG_BIB_SOURCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_bib_source was not found</desc>
+	</event>
+	<event code='1601' textcode='MONEY_BILLABLE_TRANSACTION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_billable_transaction was not found</desc>
+	</event>
+	<event code='1602' textcode='ACTOR_STAT_CAT_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat_entry was not found</desc>
+	</event>
+	<event code='1603' textcode='CONTAINER_USER_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_user_bucket_item was not found</desc>
+	</event>
+	<event code='1604' textcode='MONEY_USER_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_user_summary was not found</desc>
+	</event>
+	<event code='1605' textcode='CONFIG_LIT_FORM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_lit_form_map was not found</desc>
+	</event>
+	<event code='1606' textcode='MONEY_WORK_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_work_payment was not found</desc>
+	</event>
+	<event code='1607' textcode='ACTION_OPEN_CIRCULATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_open_circulation was not found</desc>
+	</event>
+	<event code='1608' textcode='METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_subject_field_entry was not found</desc>
+	</event>
+	<event code='1609' textcode='CONFIG_RULES_RECURRING_FINE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_recurring_fine was not found</desc>
+	</event>
+	<event code='1610' textcode='MONEY_CHECK_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_check_payment was not found</desc>
+	</event>
+	<event code='1611' textcode='ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat_entry_default was not found</desc>
+	</event>
+	<event code='1612' textcode='CONFIG_RULES_MAX_FINE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_max_fine was not found</desc>
+	</event>
+	<event code='1613' textcode='PERMISSION_GRP_TREE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_grp_tree was not found</desc>
+	</event>
+	<event code='1614' textcode='ACTION_SURVEY_ANSWER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey_answer was not found</desc>
+	</event>
+	<event code='1615' textcode='ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_non_cataloged_circulation was not found</desc>
+	</event>
+	<event code='1616' textcode='MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_open_user_circulation_summary was not found</desc>
+	</event>
+	<event code='1617' textcode='ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_unfulfilled_hold_list was not found</desc>
+	</event>
+	<event code='1618' textcode='METABIB_TITLE_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_title_field_entry was not found</desc>
+	</event>
+	<event code='1619' textcode='ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat_entry_user_map was not found</desc>
+	</event>
+	<event code='1620' textcode='PERMISSION_GRP_PERM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_grp_perm_map was not found</desc>
+	</event>
+	<event code='1621' textcode='CONTAINER_COPY_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_copy_bucket was not found</desc>
+	</event>
+	<event code='1622' textcode='BIBLIO_RECORD_NODE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested biblio_record_node was not found</desc>
+	</event>
+	<event code='1623' textcode='PERMISSION_USR_PERM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_usr_perm_map was not found</desc>
+	</event>
+	<event code='1624' textcode='MONEY_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_payment was not found</desc>
+	</event>
+	<event code='1625' textcode='CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_biblio_record_entry_bucket_item was not found</desc>
+	</event>
+	<event code='1626' textcode='ASSET_STAT_CAT_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_stat_cat_entry was not found</desc>
+	</event>
+
+
+	<event code='1628' textcode='MONEY_BILLING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_billing was not found</desc>
+	</event>
+	<event code='1629' textcode='PERMISSION_USR_GRP_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_usr_grp_map was not found</desc>
+	</event>
+	<event code='1630' textcode='ACTOR_USER_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_note was not found</desc>
+	</event>
+
+	<event code='1631' textcode='MONEY_COLLECTIONS_TRACKER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
+	</event>
+	<event code='1632' textcode='CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
+	</event>
+	<event code='1633' textcode='MONEY_DESK_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
+	</event>
+	<event code='1634' textcode='REPORTER_TEMPLATE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_template was not found</desc>
+	</event>
+	<event code='1635' textcode='REPORTER_REPORT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_report was not found</desc>
+	</event>
+	<event code='1636' textcode='REPORTER_OUTPUT_FOLDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_output_folder was not found</desc>
+	</event>
+	<event code='1637' textcode='REPORTER_REPORT_FOLDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_report_folder was not found</desc>
+	</event>
+	<event code='1638' textcode='REPORTER_TEMPLATE_FOLDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_template_folder was not found</desc>
+	</event>
+	<event code='1639' textcode='REPORTER_SCHEDULE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_schedule was not found</desc>
+	</event>
+	<event code='1640' textcode='ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_usr_org_unit_opt_in was not found</desc>
+	</event>
+	<event code='1641' textcode='ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_open_circ_count_by_circ_mod was not found</desc>
+	</event>
+	<event code='1642' textcode='CONFIG_CIRC_MODIFIER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_modifier was not found</desc>
+	</event>
+	<event code='1643' textcode='VANDELAY_BIB_QUEUE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_bib_queue was not found</desc>
+	</event>
+	<event code='1644' textcode='VANDELAY_AUTHORITY_QUEUE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_authority_queue was not found</desc>
+	</event>
+	<event code='1645' textcode='CONFIG_CIRC_MATRIX_TEST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_matrix_test was not found</desc>
+	</event>
+	<event code='1646' textcode='VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_queued_bib_record was not found</desc>
+	</event>
+	<event code='1647' textcode='VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_queued_authority_record was not found</desc>
+	</event>
+	<event code='1648' textcode='PERMISSION_USR_WORK_OU_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_usr_work_ou_map was not found</desc>
+	</event>
+	<event code='1649' textcode='VANDELAY_IMPORT_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay.import_item was not found</desc>
+	</event>
+	<event code='1650' textcode='CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_matrix_ruleset_not_found was not found</desc>
+	</event>
+	<event code='1651' textcode='AUTHORITY_RECORD_NUMBER_EXISTS'>
+		<desc xml:lang='en-US'>An authority record already exists with the requested ARN</desc>
+	</event>
+
+
+	<event code='1841' textcode='ACQ_PICKLIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.picklist was not found</desc>
+	</event>
+	<event code='1843' textcode='ACQ_LINEITEM_ATTR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_attr was not found</desc>
+	</event>
+	<event code='1844' textcode='ACQ_FUNDING_SOURCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source was not found</desc>
+	</event>
+	<event code='1845' textcode='ACQ_PROVIDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.provider was not found</desc>
+	</event>
+	<event code='1846' textcode='ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_credit was not found</desc>
+	</event>
+	<event code='1847' textcode='ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_dedit was not found</desc>
+	</event>
+	<event code='1848' textcode='ACQ_FUND_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund was not found</desc>
+	</event>
+	<event code='1849' textcode='ACQ_FUND_DEBIT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_debit_total was not found</desc>
+	</event>
+	<event code='1850' textcode='ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_allocation_total was not found</desc>
+	</event>
+	<event code='1851' textcode='ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_encumbrance_total was not found</desc>
+	</event>
+	<event code='1852' textcode='ACQ_FUND_SPENT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_spent_total was not found</desc>
+	</event>
+	<event code='1853' textcode='ACQ_FUND_COMBINED_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_combined_balance was not found</desc>
+	</event>
+	<event code='1854' textcode='ACQ_FUND_SPENT_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_spent_balance was not found</desc>
+	</event>
+	<event code='1855' textcode='ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_credit_total was not found</desc>
+	</event>
+	<event code='1856' textcode='ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_allocation_total was not found</desc>
+	</event>
+	<event code='1857' textcode='ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_balance was not found</desc>
+	</event>
+	<event code='1858' textcode='ACQ_LINEITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem was not found</desc>
+	</event>
+	<event code='1859' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order was not found</desc>
+	</event>
+	<event code='1860' textcode='ACQ_PURCHASE_ORDER_TOO_SHORT'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be split because it does not have more than one lineitem</desc>
+	</event>
+	<event code='1861' textcode='ACQ_PURCHASE_ORDER_TOO_LATE'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be split because it has gone beyond the "pending" state</desc>
+	</event>
+	<event code='1862' textcode='ACQ_FUND_EXCEEDS_STOP_PERCENT'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be activated because it would over-encumber a fund.</desc>
+	</event>
+	<event code='1863' textcode='ACQ_FUND_EXCEEDS_WARN_PERCENT'>
+		<desc xml:lang='en-US'>Activating the requested acq.purchase_order would encumber it beyond its warning level.</desc>
+	</event>
+	<event code='1870' textcode='ACQ_LINEITEM_DETAIL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_detail was not found</desc>
+	</event>
+	<event code='1871' textcode='PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission.usr_object_perm_map was not found</desc>
+	</event>
+	<event code='1872' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_provider_attr_definition was not found</desc>
+	</event>
+	<event code='1873' textcode='ACQ_CURRENCY_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.currency_type was not found</desc>
+	</event>
+	<event code='1875' textcode='ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1876' textcode='ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1877' textcode='ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1878' textcode='ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1879' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1880' textcode='CONFIG_BILLING_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_billing_type was not found</desc>
+	</event>
+	<event code='1881' textcode='PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_grp_penalty_threshold was not found</desc>
+	</event>
+    <event code='1882' textcode='RECORD_REFERENCED_BY_LINEITEM'>
+        <desc xml:lang="en-US">The selected bib record has an open lineitem order referencing it.</desc>
+    </event>
+
+	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
+		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>
+	</event>
+	<event code='1701' textcode='COPY_LOCATION_EXISTS'>
+		<desc xml:lang="en-US"> The copy location object already exists </desc>
+	</event>
+	<event code='1716' textcode='COPY_LOCATION_NOT_EMPTY'>
+		<desc xml:lang="en-US"> The copy location is not empty </desc>
+	</event>
+	<event code='1717' textcode='COPY_LOCATION_NOT_FOUND'>
+		<desc xml:lang="en-US"> The copy location does not exist </desc>
+	</event>
+	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
+		<desc xml:lang="en-US"> There is an open circulation on the requested item </desc>
+	</event>
+	<event code='1703' textcode='WORKSTATION_NAME_EXISTS'>
+		<desc xml:lang="en-US"> A workstation with that name already exists </desc>
+	</event>
+	<event code='1704' textcode='TCN_EXISTS'>
+		<desc xml:lang="en-US">A record already exists with the requested TCN value</desc>
+	</event>
+	<event code='1705' textcode='VOLUME_LABEL_EXISTS'>
+		<desc xml:lang="en-US">A volume with the same label, title and owning library exists</desc>
+	</event>
+	<event code='1706' textcode='ITEM_BARCODE_EXISTS'>
+		<desc xml:lang="en-US">An item with the same barcode exists</desc>
+	</event>
+	<event code='1707' textcode='HOLD_EXISTS'>
+		<desc xml:lang="en-US">User already has an open hold on the selected item</desc>
+	</event>
+	<event code='1708' textcode='MONEY_COLLECTIONS_TRACKER_EXISTS'>
+		<desc xml:lang="en-US">A duplicate money.collections_tracker object already exists in the database</desc>
+	</event>
+	<event code='1709' textcode='MAX_HOLDS'>
+		<desc xml:lang="en-US">User has reached the maximum number of holds</desc>
+	</event>
+	<event code='1710' textcode='CONTAINER_EXISTS'>
+		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
+	</event>
+	<event code='1711' textcode='BIB_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">A bib record queue with the same name already exists</desc>
+	</event>
+	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
+	</event>
+	<event code='1713' textcode='SURVEY_RESPONSES_EXIST'>
+		<desc xml:lang="en-US">Responses to this survey exist</desc>
+	</event>
+	<event code='1714' textcode='HIGH_LEVEL_HOLD_HAS_NO_COPIES'>
+		<desc xml:lang="en-US">A hold request at a higher level than copy has been attempted, but there are no copies that belonging to the higher-level unit.</desc>
+	</event>
+	<event code='1715' textcode='HOLD_SUSPEND_AFTER_CAPTURE'>
+		<desc xml:lang="en-US">Attempt to suspend a hold after it has been captured.</desc>
+	</event>
+	<event code='1716' textcode='MONEY_DEBIT_CARD_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_debit_card_payment was not found</desc>
+	</event>
+
+	<event code='1900' textcode='URL_VERIFY_NOT_SESSION_CREATOR'>
+		<desc xml:lang="en-US">You did not create this URL Verify session, so you cannot change it.  You may be able to clone it.</desc>
+	</event>
+
+	<event code='1901' textcode='URL_VERIFY_SESSION_ALREADY_SEARCHED'>
+		<desc xml:lang="en-US">This session has already been searched.</desc>
+	</event>
+
+	<event code='2000' textcode='BAD_PARAMS'>
+		<desc xml:lang="en-US">Invalid parameters were encountered in a method</desc>
+	</event>
+	<event code='2001' textcode='DATABASE_UPDATE_FAILED'>
+		<desc xml:lang="en-US">The attempt to write to the DB failed</desc>
+	</event>
+	<event code='2002' textcode='DATABASE_QUERY_FAILED'>
+		<desc xml:lang="en-US">The attempt to query to the DB failed</desc>
+	</event>
+	<event code='2003' textcode='INTERNAL_SERVER_ERROR'>
+		<desc xml:lang="en-US">There was an internal server error</desc>
+	</event>
+        <event code='2004' textcode='ACTOR_USER_DELETE_OPEN_XACTS'>
+                <desc xml:lang="en-US">The user you have attempted to delete cannot be deleted because it has open circulations and/or unpaid bills.</desc>
+        </event>
+	<event code='2005' textcode='OBJECT_UNIQUE_IDENTIFIER_USED'>
+		<desc xml:lang="en-US">You are trying to create an object with a unique identifier (such as a 'name' field) that is already in use.</desc>
+	</event>
+
+    <!-- CREDIT EVENTS -->
+	<event code='4001' textcode='CREDIT_PROCESSOR_NOT_ENABLED'>
+		<desc xml:lang="en-US">Credit card processor not enabled</desc>
+	</event>
+	<event code='4002' textcode='CREDIT_PROCESSOR_BAD_PARAMS'>
+		<desc xml:lang="en-US">Not enough parameters to use credit card processor</desc>
+	</event>
+	<event code='4003' textcode='CREDIT_PROCESSOR_NOT_ALLOWED'>
+		<desc xml:lang="en-US">The credit card processor you have named is not allowed</desc>
+	</event>
+	<event code='4004' textcode='CREDIT_PROCESSOR_NOT_SPECIFIED'>
+		<desc xml:lang="en-US">No credit card processor specified either in org unit settings or in call to credit service API method.</desc>
+	</event>
+	<event code='4010' textcode='CREDIT_PROCESSOR_NO_DEFAULT_SELECTED'>
+		<desc xml:lang="en-US">No default credit processor is selected</desc>
+	</event>
+	<event code='4019' textcode='CREDIT_PROCESSOR_INVALID_CC_NUMBER'>
+		<desc xml:lang="en-US">An invalid credit card number has been supplied.</desc>
+	</event>
+	<event code='4020' textcode='CREDIT_PROCESSOR_DECLINED_TRANSACTION'>
+		<desc xml:lang="en-US">The credit card processor has declined the transaction.</desc>
+	</event>
+	<event code='4040' textcode='CREDIT_PROCESSOR_SUCCESS_WO_RECORD'>
+        <desc xml:lang="en-US">A *TERRIBLE* problem has occurred: a credit
+            card transaction was processed successfully, but the patron's
+            payment could not be recorded within Evergreen.  Please seek
+            assistance.</desc>
+	</event>
+
+
+	<event code='5000' textcode='PERM_FAILURE'>
+		<desc xml:lang="en-US">Permission Denied</desc>
+	</event>
+    <event code='7025' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
+        <desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
+    </event>
+    <event code='7026' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
+        <desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
+    </event>
+    <event code='7027' textcode='PATRON_PASSWORD_WAS_NOT_STRONG'>
+        <desc xml:lang='en-US'>The user attempted to set their password to a weak value.</desc>
+    </event>
+
+
+	<!-- ================================================================ -->
+	<!-- CIRC EVENTS -->
+	<event code='7000' textcode='ROUTE_ITEM'>
+		<desc xml:lang="en-US"> 
+			A copy needs to be routed to a different location	
+			The destination location will be specified by an 'org' key
+			within the event object
+		</desc>
+	</event>
+
+	<event code='7001' textcode='PATRON_BAD_STANDING'>
+		<desc xml:lang="en-US">
+			The patron in question is not able to check out materials because
+			their account is in bad standing
+		</desc>
+	</event>
+
+	<event code='7002' textcode='PATRON_EXCEEDS_CHECKOUT_COUNT'>
+		<desc xml:lang="en-US">The patron in question has the maximum number of items already checked out</desc>
+	</event>
+	<event code='7003' textcode='COPY_CIRC_NOT_ALLOWED'>
+		<desc xml:lang="en-US"> Target copy is not allowed to circulate </desc>
+	</event>
+	<event code='7004' textcode='COPY_NOT_AVAILABLE'>
+		<desc xml:lang="en-US"> Copy is not available </desc>
+	</event>
+	<event code='7005' textcode='LOCATION_CIRC_NOT_ALLOWED'>
+		<desc xml:lang="en-US"> Location does not allow materials to circulate </desc>
+	</event>
+	<event code='7006' textcode='COPY_IS_REFERENCE'>
+		<desc xml:lang="en-US"> Copy is reference material </desc>
+	</event>
+	<event code='7007' textcode='COPY_NEEDED_FOR_HOLD'>
+		<desc xml:lang="en-US"> Copy is needed to fulfill a hold </desc>
+	</event>
+	<event code='7008' textcode='MAX_RENEWALS_REACHED'>
+		<desc xml:lang="en-US"> Circulation has no more renewals remaining </desc>
+	</event>
+	<event code='7009' textcode='CIRC_CLAIMS_RETURNED'>
+		<desc xml:lang="en-US"> Requested circulation is marked claims returned </desc>
+	</event>
+	<event code='7010' textcode='COPY_ALERT_MESSAGE'>
+		<desc xml:lang="en-US"> The requested copy has an alert message attached </desc>
+	</event>
+	<event code='7011' textcode='COPY_STATUS_LOST'>
+		<desc xml:lang="en-US">Copy is marked as lost</desc>
+	</event>
+	<event code='7012' textcode='COPY_STATUS_MISSING'>
+		<desc xml:lang="en-US">Copy is marked as missing</desc>
+	</event>
+	<event code='7013' textcode='PATRON_EXCEEDS_FINES'>
+		<desc xml:lang="en-US">The patron in question has reached the maximum fine amount</desc>
+	</event>
+	<event code='7014' textcode='COPY_IN_TRANSIT'>
+		<desc xml:lang="en-US">Copy is in transit</desc>
+	</event>
+	<event code='7015' textcode='NEGATIVE_PATRON_BALANCE'>
+		<desc xml:lang="en-US">This requested action would result in a negative patron balance</desc>
+	</event>
+	<event code='7016' textcode='ITEM_ON_HOLDS_SHELF'>
+		<desc xml:lang="en-US">This item is currently on the holds shelf for another patron:</desc>
+	</event>
+	<event code='7017' textcode='ROUTE_TO_COPY_LOCATION'>
+		<desc xml:lang="en-US"> 
+		A copy needs to be routed to a copy location.  The location
+		should be specified within the event with a 'location' key
+		</desc>
+	</event>
+	<event code='7018' textcode='COPY_MARKED_LOST'>
+		<desc xml:lang="en-US">The requested item is already marked as lost</desc>
+	</event>
+	<event code='7019' textcode='HOLD_CAPTURE_DELAYED'>
+		<desc xml:lang="en-US">Hold capture was delayed for this item</desc>
+	</event>
+	<event code='7020' textcode='COPY_RESERVED'>
+		<desc xml:lang="en-US">Item reserved for booking request</desc>
+	</event>
+	<event code='7021' textcode='RESERVATION_NOT_FOUND'>
+		<desc xml:lang="en-US">Booking reservation not found</desc>
+	</event>
+	<event code='7022' textcode='RESERVATION_CAPTURE_FAILED'>
+		<desc xml:lang="en-US">Booking reservation capture failed</desc>
+	</event>
+	<event code='7023' textcode='RESERVATION_BAD_PARAMS'>
+		<desc xml:lang="en-US">Provided parameters describe unacceptable reservation.</desc>
+	</event>
+	<event code="7024" textcode="HOLD_RESERVATION_CONFLICT">
+		<desc xml:lang="en-US">Both a hold and a reservation exist for this item; staff intervention is required to resolve the conflict.</desc>
+	</event>
+	<event code='7025' textcode='COPY_STATUS_LONG_OVERDUE'>
+		<desc xml:lang="en-US">Copy is marked as long-overdue</desc>
+	</event>
+	<event code='7026' textcode='COPY_STATUS_LOST_AND_PAID'>
+	        <desc xml:lang="en-US">Copy is marked as lost and paid</desc>
+	</event>
+	<event code='7028' textcode='PATRON_CIRC_MISMATCH'>
+	        <desc xml:lang="en-US">Potentially notified patron does not own the circulation.</desc>
+	</event>
+	<event code='7029' textcode='MAX_AUTO_RENEWALS_REACHED'>
+		<desc xml:lang="en-US">Circulation has no more auto-renewals remaining</desc>
+	</event>
+	<event code='7030' textcode='CURBSIDE_NOT_ALLOWED'>
+		<desc xml:lang="en-US">Curbside pickup is not enabled for this location</desc>
+	</event>
+	<event code='7031' textcode='CURBSIDE_MAX_FOR_TIME'>
+		<desc xml:lang="en-US">Maximum scheduled curbside pickups at the requested time</desc>
+	</event>
+	<event code='7032' textcode='CURBSIDE_EXISTS'>
+		<desc xml:lang="en-US">A scheduled, unfilled curbside request already exists</desc>
+	</event>
+
+
+	<!-- ================================================================ -->
+
+
+	<event code='8000' textcode='OFFLINE_SESSION_ACTIVE'>
+		<desc xml:lang="en-US"> An offline session for this location is currently processing </desc>
+	</event>
+	<event code='8001' textcode='OFFLINE_SESSION_FILE_EXISTS'>
+		<desc xml:lang="en-US"> An offline file for this workstation exists within this session </desc>
+	</event>
+	<event code='8002' textcode='OFFLINE_FILE_ERROR'>
+		<desc xml:lang="en-US"> An offline file or directory could not be created or accessed </desc>
+	</event>
+	<event code='8003' textcode='OFFLINE_PARAM_ERROR'>
+		<desc xml:lang="en-US"> Missing params in offline upload </desc>
+	</event>
+	<event code='8004' textcode='OFFLINE_CONFIG_ERROR'>
+		<desc xml:lang="en-US"> Offline server is not configured properly </desc>
+	</event>
+	<event code='8005' textcode='OFFLINE_CHECKSUM_FAILED'>
+		<desc xml:lang="en-US"> Offline server is not configured properly </desc>
+	</event>
+	<event code='8006' textcode='OFFLINE_SESSION_NOT_FOUND'>
+		<desc xml:lang="en-US"> Offline server is not configured properly </desc>
+	</event>
+	<event code='8007' textcode='OFFLINE_SESSION_EXISTS'>
+		<desc xml:lang="en-US"> A session with the given name already exists </desc>
+	</event>
+	<event code='8008' textcode='OFFLINE_INVALID_SESSION'>
+		<desc xml:lang="en-US"> The session name is invalid </desc>
+	</event>
+	<event code='8009' textcode='OFFLINE_NO_ORG'>
+		<desc xml:lang="en-US"> No org id was provided </desc>
+	</event>
+	<event code='8010' textcode='OFFLINE_SESSION_COMPLETE'>
+		<desc xml:lang="en-US"> No org id was provided </desc>
+	</event>
+	<event code='8011' textcode='SKIP_ASSET_CHANGED'>
+		<desc xml:lang="en-US"> Asset status was changed since the offline transaction was recorded</desc>
+	</event>
+
+	<event code='9000' textcode='REPORT_TEMPLATE_EXISTS'>
+		<desc xml:lang="en-US"> A report template with the given name and folder already exists</desc>
+	</event>
+
+	<event code='9001' textcode='REPORT_REPORT_EXISTS'>
+		<desc xml:lang="en-US"> A report with the given name and folder already exists</desc>
+	</event>
+
+	<event code='10000' textcode='ACQ_LINEITEM_APPROVED'>
+		<desc xml:lang="en-US">The lineitem cannot be altered because it has already been approved</desc>
+	</event>
+	<event code='10001' textcode='ACQ_LINEITEM_NO_COPIES'>
+		<desc xml:lang="en-US">The lineitem has no attached copies</desc>
+	</event>
+	<event code='10002' textcode='ACQ_LINEITEM_DETAIL_NO_FUND'>
+		<desc xml:lang="en-US">The lineitem detail has no associated fund</desc>
+	</event>
+	<event code='10003' textcode='ACQ_LINEITEM_DETAIL_NO_ORG'>
+		<desc xml:lang="en-US">The lineitem detail has no owning_lib</desc>
+	</event>
+	<event code='10004' textcode='ACQ_LINEITEM_NO_PRICE'>
+		<desc xml:lang="en-US">The lineitem has no price</desc>
+	</event>
+	<event code='10005' textcode='ACQ_LINEITEM_NO_PROVIDER'>
+		<desc xml:lang="en-US">The lineitem has no provider</desc>
+	</event>
+
+	<event code='10101' textcode='ACQ_ALREADY_CANCELED'>
+		<desc xml:lang="en-US">The object is already canceled.</desc>
+	</event>
+	<event code='10102' textcode='ACQ_NOT_CANCELABLE'>
+		<desc xml:lang="en-US">The object is not in a cancelable state.</desc>
+	</event>
+
+	<!-- ================================================================ -->
+
+    <event code='11000' textcode='SERIAL_SUBSCRIPTION_NOT_EMPTY'>
+        <desc xml:lang="en-US">The subscription still has dependent objects</desc>
+    </event>
+
+    <event code='11001' textcode='SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES'>
+        <desc xml:lang="en-US">The caption/pattern still has dependent issuances</desc>
+    </event>
+
+    <event code='11101' textcode='SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE'>
+        <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a copy template.</desc>
+    </event>
+
+    <event code='11102' textcode='SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER'>
+        <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a call number.</desc>
+    </event>
+
+    <event code='11103' textcode='TRANSIT_CHECKIN_INTERVAL_BLOCK'>
+        <desc xml:lang="en-US">Checkin attempted on item during minimum transit checkin interval.</desc>
+    </event>
+
+    <event code='11104' textcode='SERIAL_CORRUPT_PATTERN_CODE'>
+        <desc xml:lang="en-US">A serial pattern code has been configured
+        that fails to conform to MFHD standards for fields 853-855.</desc>
+    </event>
+
+	<!-- ================================================================ -->
+
+    <event code='11105' textcode='PATRON_CREDIT_DISABLED'>
+        <desc xml:lang="en-US">Payments by patron credit are not allowed 
+            for the selected transaction</desc>
+    </event>
+
+    <event code='11106' textcode='TOTAL_HOLD_COPY_RATIO_EXCEEDED'>
+        <desc xml:lang="en-US">Renewal attempt failed because the "hold / total copies" ratio exceeds the configured limit</desc>
+    </event>
+
+    <event code='11107' textcode='AVAIL_HOLD_COPY_RATIO_EXCEEDED'>
+        <desc xml:lang="en-US">Renewal attempt failed because the "hold / available copies" ratio exceeds the configured limit</desc>
+    </event>
+
+    <event code='11008' textcode='SERIAL_DISTRIBUTION_NOT_EMPTY'>
+        <desc xml:lang="en-US">The distribution still has dependent objects</desc>
+    </event>
+    <event code='11009' textcode='SERIAL_STREAM_NOT_EMPTY'>
+        <desc xml:lang="en-US">The stream still has dependent objects</desc>
+    </event>
+    <event code='11010' textcode='SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY'>
+        <desc xml:lang="en-US">The prediction pattern still has dependent objects</desc>
+    </event>
+
+	<!-- ================================================================ -->
+
+    <event code='12000' textcode='ITEM_TO_MARK_CHECKED_OUT'>
+      <desc xml:lang="en-US">The item to be marked is checked out to a patron.</desc>
+    </event>
+    <event code='12001' textcode='ITEM_TO_MARK_IN_TRANSIT'>
+      <desc xml:lang="en-US">The item to be marked is in transit.</desc>
+    </event>
+    <event code='12002' textcode='ITEM_TO_MARK_LAST_HOLD_COPY'>
+      <desc xml:lang="en-US">The item to be marked is the last possible target for a hold.</desc>
+    </event>
+
+	<!-- ================================================================ -->
+
+    <event code='12003' textcode='TITLE_HAS_HOLDS'>
+      <desc xml:lang="en-US">This title has hold requests on it that will be canceled if they are not transferred.</desc>
+    </event>
+</ils_events>
+
+
+
+

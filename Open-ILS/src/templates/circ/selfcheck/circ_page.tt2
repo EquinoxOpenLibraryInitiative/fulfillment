@@ -1,0 +1,30 @@
+<div id='oils-selfck-circ-table-div'>
+    <table id='oils-selfck-circ-table' class='oils-selfck-item-table'>
+        <thead>
+            <tr>
+                <td id='oils-self-circ-pic-cell'></td>
+                <td>[% l('Barcode') %]</td>
+                <td>[% l('Title') %]</td>
+                <td>[% l('Author') %]</td>
+                <td>[% l('Due Date') %]</td>
+                <td class='hidden'>[% l('Renewals Left') %]</td>
+                <td>[% l('Type') %]</td>
+            </tr>
+        </thead>
+        <tbody id='oils-selfck-circ-tbody'>
+            <tr id='oils-selfck-circ-row'>
+                <td><img class='oils-selfck-jacket' name='jacket'/></td>
+                <td name='barcode'></td>
+                <td name='title'></td>
+                <td name='author'></td>
+                <td name='due_date'></td>
+                <td class='hidden' name='remaining'></td>
+                <td>
+                    <div name='checkout' class='hidden'>[% l('Checkout') %]</div>
+                    <div name='renew' class='hidden'>[% l('Renewal') %]</div>
+                </td>
+            </tr>
+        </tbody>
+        <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'></tbody>
+    </table>
+</div>

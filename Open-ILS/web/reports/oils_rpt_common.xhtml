@@ -1,0 +1,95 @@
+<!-- Load dojo -->
+<style type="text/css">
+	@import url('/js/dojo/dojo/resources/dojo.css');
+	@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+	@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+</style>
+<script type="text/javascript">
+	var djConfig= {
+		isDebug: false,
+		parseOnLoad: true
+	}
+</script>
+<script type="text/javascript" src="/js/ui/default/staff/build/js/iframeResizer.contentWindow.min.js"></script>
+<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+<script type="text/javascript">
+	dojo.require('dojo.parser');
+	dojo.require('dojo.string');
+	dojo.require('dojo.cookie');
+
+	function status_update (markup) {
+		dojo.byId('status_text').innerHTML = markup;
+	}
+</script>
+
+<script type='text/javascript' src='/opac/common/js/utils.js'> </script>
+<script type='text/javascript' src='/opac/common/js//config.js'> </script> 
+<script type='text/javascript' src='/opac/common/js/CGI.js'> </script>
+<script type='text/javascript' src='/opac/common/js/JSON_v1.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fmall.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fmgen.js'> </script>
+<script type='text/javascript' src='/opac/common/js/opac_utils.js'> </script>
+<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+<script type='text/javascript' src='/opac/common/js/org_utils.js'> </script>
+<script type='text/javascript' src='/opac/common/js/init.js'> </script>
+<script type='text/javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+<script type='text/javascript' src='/opac/common/js/slimtree.js'> </script>
+<script type='text/javascript' src='/opac/common/js/sorttable.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fm_table.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fm_table_conf.js'> </script>
+<script type='text/javascript' src='/opac/common/js/md5.js'> </script>
+<script type="text/javascript">
+	stpicopen  = '../opac/images/slimtree/folder2.gif';
+	stpicclose = '../opac/images/slimtree/folderopen2.gif';
+	stpicblank = '../opac/images/slimtree/page.gif';
+	stpicline  = '../opac/images/slimtree/line.gif';
+	stpicjoin  = '../opac/images/slimtree/join.gif';
+	stpicjoinb = '../opac/images/slimtree/joinbottom.gif';
+</script>
+
+
+<link rel="stylesheet" type="text/css" media="all" 
+	href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
+
+<script type="text/javascript" src="adminlib.js"></script>
+<script type="text/javascript" src="oils_rpt_vars.js"></script>
+<script type="text/javascript" src="oils_rpt_utils.js"></script>
+<script type="text/javascript" src="oils_rpt_tree.js"></script>
+<script type="text/javascript" src="oils_rpt_builder.js"></script>
+<script type="text/javascript" src="oils_rpt_builder_widgets.js"></script>
+<script type="text/javascript" src="oils_rpt_folders.js"></script>
+<script type="text/javascript" src="oils_rpt_folder_window.js"></script>
+<script type="text/javascript" src="oils_rpt_widget.js"></script>
+<script type="text/javascript" src="oils_rpt_param_editor.js"></script>
+<script type="text/javascript" src="oils_rpt_tforms.js"></script>
+<script type="text/javascript" src="oils_rpt_filters.js"></script>
+<script type="text/javascript" src="oils_rpt.js"></script>
+<script type="text/javascript" src="oils_rpt_report_editor.js"></script>
+
+<link type='text/css' rel='stylesheet' href="/opac/common/css/fm_table.css"/>
+<link rel="stylesheet" type="text/css" href="oils_rpt.css"/>
+
+<script type="text/javascript">function _l(l) { location.href = l + location.search; }</script>
+
+
+
+<span class='hide_me' id='oils_rpt_generic_success'>
+	&reports.oils_rpt_common.action_succeeded;
+</span>
+
+<span class='hide_me' id='oils_rpt_generic_failure'>
+	&reports.oils_rpt_common.action_failed;
+</span>
+
+
+<button style='padding: 0px;' id='generic_calendar_button' class='hide_me'>
+	<img src="/opac/common/js/jscalendar/img.gif"
+		style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;"
+		title="&reports.oils_rpt_common.generic_calendar_button;"
+		onmouseover="this.style.background='red';"
+		onmouseout="this.style.background=''" />
+</button>
+

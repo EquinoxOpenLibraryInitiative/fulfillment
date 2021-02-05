@@ -1,0 +1,216 @@
+<div class="">
+
+  <div class="label label-danger" ng-show="copy.deleted() == 't'">
+    [% l('This item has been marked as Deleted.') %]
+  </div>
+
+  <div class="flex-row" ng-if="copy.dummy_title() || copy.dummy_author()">
+    <div class="flex-cell" ng-if="copy.dummy_title()">[% l('Precat Title') %]</div>
+    <div class="flex-cell well" ng-if="copy.dummy_title()">{{copy.dummy_title()}}</div>
+    
+    <div class="flex-cell" ng-if="copy.dummy_author()">[% l('Precat Author') %]</div>
+    <div class="flex-cell well" ng-if="copy.dummy_author()">{{copy.dummy_author()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Barcode') %]</div>
+    <div class="flex-cell well">{{copy.barcode()}}</div>
+
+    <div class="flex-cell">[% l('Circ Library') %]</div>
+    <div class="flex-cell well">{{copy.circ_lib().shortname()}}</div>
+
+    <div class="flex-cell">[% l('Call # Prefix') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().prefix().label()}}
+    </div>
+
+    <div class="flex-cell">[% l('Status') %]</div>
+    <div
+      class="flex-cell well"
+      title="[% l('Holdable') %]: {{copy.status().holdable() | boolText}} / [% l('OPAC Visible') %]: {{copy.status().opac_visible() | boolText}}"
+    >{{copy.status().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Price') %]</div>
+    <div class="flex-cell well">{{copy.price()}}</div>
+
+    <div class="flex-cell">[% l('Owning Library') %]</div>
+    <div class="flex-cell well">{{copy.call_number().owning_lib().shortname()}}</div>
+
+    <div class="flex-cell">[% l('Call #') %]</div>
+    <div class="flex-cell well">{{copy.call_number().label()}}</div>
+
+    <div class="flex-cell">[% l('Due Date') %]</div>
+    <div class="flex-cell well">{{circ.due_date() | egDueDate:egDateAndTimeFormat:circ.circ_lib():circ.duration()}}</div>
+  </div>
+
+  <div class="flex-row">
+	<div class="flex-cell">[% l('Acquisition Cost') %]</div>
+    <div class="flex-cell well">{{copy.cost()}}</div>
+
+    <div class="flex-cell">[% l('Shelving Location') %]</div>
+    <div
+      class="flex-cell well"
+      title="[% l('Holdable') %]: {{copy.location().holdable() | boolText}} / [% l('OPAC Visible') %]: {{copy.location().opac_visible() | boolText}}"
+    >{{copy.location().name()}}</div>
+
+    <div class="flex-cell">[% l('Call # Suffix') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().suffix().label()}}
+    </div>
+
+    <div class="flex-cell">[% l('Checkout Date') %]</div>
+    <div class="flex-cell well">{{circ_summary.start_time() | date:egDateAndTimeFormat}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('ISBN') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().record().simple_record().isbn() || copy.dummy_isbn()}}
+    </div>
+
+    <div class="flex-cell">[% l('Loan Duration') %]</div>
+    <div class="flex-cell well">
+      <div ng-if="copy.loan_duration() == 1">[% l('Short') %]</div>
+      <div ng-if="copy.loan_duration() == 2">[% l('Normal') %]</div>
+      <div ng-if="copy.loan_duration() == 3">[% l('Long') %]</div>
+    </div>
+
+    <div class="flex-cell">[% l('Renewal Type') %]</div>
+    <div class="flex-cell well">
+      <div ng-if="circ.opac_renewal() == 't'">[% l('OPAC') %]</div>
+      <div ng-if="circ.desk_renewal() == 't'">[% l('Desk') %]</div>
+      <div ng-if="circ.phone_renewal() == 't'">[% l('Phone') %]</div>
+      <div ng-if="circ.auto_renewal() == 't'">[% l('Automatic') %]</div>
+    </div>
+
+    <div class="flex-cell">[% l('Checkout Workstation') %]</div>
+    <div class="flex-cell well">{{circ_summary.checkout_workstation()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Date Created') %]</div>
+    <div class="flex-cell well">{{copy.create_date() | date:egDateAndTimeFormat}}</div>
+    <div class="flex-cell">[% l('Fine Level') %]</div>
+    <div class="flex-cell well">
+      <div ng-if="copy.fine_level() == 1">[% l('Low') %]</div>
+      <div ng-if="copy.fine_level() == 2">[% l('Normal') %]</div>
+      <div ng-if="copy.fine_level() == 3">[% l('High') %]</div>
+    </div>
+
+    <div class="flex-cell">[% l('Total Circs') %]</div>
+    <div class="flex-cell well">{{total_circs}}</div>
+
+    <div class="flex-cell">[% l('Duration Rule') %]</div>
+    <div class="flex-cell well">{{circ.duration_rule().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Date Active') %]</div>
+    <div class="flex-cell well">{{copy.active_date() | date:egDateAndTimeFormat}}</div>
+
+    <div class="flex-cell">[% l('Reference') %]</div>
+    <div class="flex-cell well">{{copy.ref()}}</div>
+
+    <div class="flex-cell">[% l('Total Circs - Current Year') %]</div>
+    <div class="flex-cell well">{{total_circs_this_year}}</div>
+
+    <div class="flex-cell">[% l('Recurring Fine Rule') %]</div>
+    <div class="flex-cell well">{{circ.recurring_fine_rule().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Status Changed') %]</div>
+    <div class="flex-cell well">{{copy.status_changed_time() | date:egDateAndTimeFormat}}</div>
+
+    <div class="flex-cell">[% l('OPAC Visible') %]</div>
+    <div class="flex-cell well">{{copy.opac_visible()}}</div>
+
+    <div class="flex-cell">[% l('Total Circs - Prev Year') %]</div>
+    <div class="flex-cell well">{{total_circs_prev_year}}</div>
+
+    <div class="flex-cell">[% l('Max Fine Rule') %]</div>
+    <div class="flex-cell well">{{circ.max_fine_rule().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Item ID') %]</div>
+    <div class="flex-cell well">{{copy.id()}}</div>
+
+    <div class="flex-cell">[% l('Holdable') %]</div>
+    <div class="flex-cell well">{{copy.holdable()}}</div>
+
+    <div class="flex-cell">[% l('In-House Uses') %]</div>
+    <div class="flex-cell well">{{copy._inHouseUseCount}}</div>
+
+    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_time() || 
+        circ_summary.last_checkin_time() | date:egDateAndTimeFormat}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Circulate') %]</div>
+    <div class="flex-cell well">{{copy.circulate()}}</div>
+
+    <div class="flex-cell">[% l('Renewal Workstation') %]</div>
+    <div class="flex-cell well">{{circ_summary.last_renewal_workstation()}}</div>
+
+    <div class="flex-cell">[% l('Remaining Renewals') %]</div>
+    <div class="flex-cell well">{{circ.renewal_remaining()}}</div>
+
+    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_scan_time() || 
+        circ_summary.last_checkin_scan_time() | date:egDateAndTimeFormat}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Floating') %]</div>
+    <div class="flex-cell well">{{copy.floating().name()}}</div>
+
+    <div class="flex-cell">[% l('Circ Modifier') %]</div>
+    <div class="flex-cell well">{{copy.circ_modifier().name()}}</div>
+
+    <div class="flex-cell">[% l('Age-based Hold Protection') %]</div>
+    <div class="flex-cell well">{{copy.age_protect().name()}}</div>
+
+    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_workstation().name() || 
+        circ_summary.last_checkin_workstation().name()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Inventory Date') %]</div>
+    <div class="flex-cell well">{{copy.latest_inventory().inventory_date() | date:egDateAndTimeFormat}}</div>
+
+    <div class="flex-cell">[% l('Inventory Workstation') %]</div>
+    <div class="flex-cell well">{{copy.latest_inventory().inventory_workstation().name()}}</div>
+
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Item Alerts') %]</div>
+    <div class="flex-cell" id="item-status-alert-msg">
+      <button class="btn btn-default" ng-click="addCopyAlerts(copy.id())" >[% l('Add') %]</button>
+      <button class="btn btn-default" ng-disabled="!copy_alert_count" ng-click="manageCopyAlerts(copy.id())" >[% l('Manage') %]</button>
+    </div>
+    <!-- hack to adjust positioning -->
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+  </div>
+
+</div>

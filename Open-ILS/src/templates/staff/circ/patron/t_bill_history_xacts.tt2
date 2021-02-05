@@ -1,0 +1,59 @@
+
+<div ng-if="bill_tab == 'transactions'" ng-controller="BillXactHistoryCtrl">
+
+  <eg-grid
+    idl-class="mbt"
+    id-field="id"
+    grid-controls="gridControls"
+    persist-key="circ.patron.billhistory_xacts"
+    dateformat="{{$root.egDateAndTimeFormat}}">
+
+    <eg-grid-action 
+      label="[% l('Add Billing') %]" handler="addBilling"></eg-grid-action>
+    <eg-grid-action 
+      label="[% l('Full Details') %]" handler="showFullDetails"></eg-grid-action>
+    <eg-grid-action
+      label="[% l('Print Bills') %]" handler="printBills"></eg-grid-action>
+
+    <eg-grid-field path="summary.balance_owed"></eg-grid-field>
+    <eg-grid-field path="id" label="[% l('Bill #') %]" required></eg-grid-field>
+    <eg-grid-field path="xact_finish" label="[% l('Finish') %]" datatype="timestamp"></eg-grid-field>
+    <eg-grid-field path="xact_start" label="[% l('Start') %]" datatype="timestamp"></eg-grid-field>
+    <eg-grid-field path="summary.total_owed" label="[% l('Total Billed') %]"></eg-grid-field>
+    <eg-grid-field path="summary.total_paid" label="[% l('Total Paid') %]"></eg-grid-field>
+    <eg-grid-field path="summary.xact_type" label="[% l('Type') %]"></eg-grid-field>
+
+    <eg-grid-field label="[% l('Title') %]" name="title" 
+      path="circulation.target_copy.call_number.record.simple_record.title">
+      <a href="/eg2/staff/catalog/record/{{item.record_id}}">{{item.title}}</a>
+    </eg-grid-field>
+
+    <!-- needed for bib link -->
+    <eg-grid-field name="record_id" 
+      path="circulation.target_copy.call_number.record.id" 
+      required hidden></eg-grid-field>
+
+    <eg-grid-field label="[% l('Barcode') %]" name="copy_barcode" 
+      path="circulation.target_copy.barcode">
+      <a target="_self" href="./cat/item/{{item.copy_id}}">{{item.copy_barcode}}</a>
+    </eg-grid-field>
+
+    <!-- needed for item link -->
+    <eg-grid-field name="copy_id" 
+      path="circulation.target_copy.id" required hidden></eg-grid-field>
+
+    <!-- needed for grid query -->
+    <eg-grid-field path="summary.last_payment_ts" datatype="timestamp" required hidden></eg-grid-field>
+
+    <eg-grid-field path="summary.*" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.*" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.circ_lib.shortname" label="[% l('Item Owning Library') %]"></eg-grid-field>
+    <eg-grid-field path="circulation.circ_lib.shortname" label="[% l('Checkout or Renewal Library') %]" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.due_date" label="[% l('Due Date') %]" datefilter="egDueDate" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.stop_fines" label="[% l('Fine Stop Reason') %]" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.call_number.*" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.call_number.prefix.label" label="[% l('CN Prefix') %]" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.call_number.suffix.label" label="[% l('CN Suffix') %]" hidden></eg-grid-field>
+  </eg-grid>
+</div>
+

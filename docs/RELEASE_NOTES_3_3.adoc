@@ -1,0 +1,921 @@
+Evergreen 3.3 Release Notes
+===========================
+:toc:
+:numbered:
+
+Evergreen 3.3.6
+----------------
+
+This release contains bug fixes improving on Evergreen 3.3.5.
+
+Upgrade Notes
+~~~~~~~~~~~~~
+
+The SendEmail reactor for Action/Trigger has been updated to use the
+Email::MIME Perl module for proper encoding of the email message
+header fields.  You should notice no functional difference in the
+sending of emails.  This change does add a new prerequisite package,
+so be sure to run the prerequisite installation procedure for your
+Linux distribution before upgrading Evergreen.
+
+The new dependency is the `libemail-mime-perl` package for Debian and
+Ubuntu, and the `perl-Email-MIME` package for Fedora.
+
+Bug Fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Fixes an issue with sending emails on newer versions of Ubuntu and Debian (https://bugs.launchpad.net/evergreen/+bug/1801163[Bug 1801163])
+* It is now harder to accidentally close modals in the Angular portions of the web client (https://bugs.launchpad.net/evergreen/+bug/1827942[Bug 1827942])
+* Organizational Unit Selectors in the Angular portions of the web client now present libraries in the correct order (https://bugs.launchpad.net/evergreen/+bug/1857350[Bug 1857350])
+* Fixes some permission-related code in the Angular portions of the web client (https://bugs.launchpad.net/evergreen/+bug/1860351[Bug 1860351])
+
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Fixes an issue with receiving line items from the general acquisitions search screen (https://bugs.launchpad.net/evergreen/+bug/1607922[Bug 1607922])
+
+Cataloging
+^^^^^^^^^^
+
+* The new batch import/export interface now allows users to view and edit the incoming MARC records while inspecting an imported queue (https://bugs.launchpad.net/evergreen/+bug/1830923[Bug 1830923])
+* Evergreen now asks users to confirm that they want to delete items that are in non-ideal statuses, like Checked Out (https://bugs.launchpad.net/evergreen/+bug/1735566[Bug 1735566])
+* Catalogers can now apply copy alerts to multiple items at once when creating new items (https://bugs.launchpad.net/evergreen/+bug/1832735[Bug 1832735])
+* The experimental staff catalog now uses the $ (dollar sign) instead of ‡ (double dagger) as the flat text editor's subfield delimiter (https://bugs.launchpad.net/evergreen/+bug/1848778[Bug 1848778])
+* Fixes an issue that prevented catalogers from setting a bib source for a bibliographic record (https://bugs.launchpad.net/evergreen/+bug/1843599[Bug 1843599])
+* Fixes a display issue in the experimental staff catalog holdings view (https://bugs.launchpad.net/evergreen/+bug/1840982[Bug 1840982])
+
+
+Circulation
+^^^^^^^^^^^
+
+* The check in screen now honors the `ui.circ.suppress_checkin_popups` library setting (https://bugs.launchpad.net/evergreen/+bug/1437103[Bug 1437103])
+* Fixes an issue with selecting bills on the Bill History tab (https://bugs.launchpad.net/evergreen/+bug/1780283[Bug 1780283])
+* Improves performance of the hold shelf functionality (https://bugs.launchpad.net/evergreen/+bug/1855329[Bug 1855329])
+* Fixes a display issue with the check out screen's due date box on wider screens (https://bugs.launchpad.net/evergreen/+bug/1803406[Bug 1803406])
+* The check out screeen no longer allows due dates in the past (https://bugs.launchpad.net/evergreen/+bug/1712644[Bug 1712644])
+* Circulation staff with appropriate permissions can now override certain circulation alerts (Bugs https://bugs.launchpad.net/evergreen/+bug/1851434[Bug 1851434] and https://bugs.launchpad.net/evergreen/+bug/1827901[1827901])
+* Loan duration rules can now include hour lengths that are longer than two digits (https://bugs.launchpad.net/evergreen/+bug/1857156[Bug 1857156])
+* The check in grid now has an optional Monograph Parts column (https://bugs.launchpad.net/evergreen/+bug/1739609[Bug 1739609])
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.6 point release of Evergreen:
+
+* John Amundson
+* Zavier Banks
+* Katlyn Beck
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Rogan Hamby
+* Kyle Huckins
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Beth Willis
+
+
+Evergreen 3.3.5
+----------------
+
+This release contains bug fixes improving on Evergreen 3.3.4.
+
+Bug Fixes
+~~~~~~~~~
+
+* MARC View Display Issues (https://bugs.launchpad.net/evergreen/+bug/1843637[Bug 1843637])
+* Add missing columns to patron record (https://bugs.launchpad.net/evergreen/+bug/1739607[Bug 1739607])
+* Mark the permission.grp_descendants database table as STABLE (https://bugs.launchpad.net/evergreen/+bug/1768141[Bug 1768141])
+* Webstaff locale picker repair (https://bugs.launchpad.net/evergreen/+bug/1560805[Bug 1560805])
+* Assign copy alert permissions (https://bugs.launchpad.net/evergreen/+bug/1811442[Bug 1811442])
+* Fix issue where reports interface was partially loaded (https://bugs.launchpad.net/evergreen/+bug/1845050[Bug 1845050])
+* Handle autorenewals when aging circulations (https://bugs.launchpad.net/evergreen/+bug/1840669[Bug 1840669])
+* Default circulation auto_renewal field to FALSE (https://bugs.launchpad.net/evergreen/+bug/1839002[Bug 1839002])
+* Add missing Auto Renewal fields to the IDL (https://bugs.launchpad.net/evergreen/+bug/1835577[Bug 1835577])
+* Refactor auto_renewal back end code (https://bugs.launchpad.net/evergreen/+bug/1835035[Bug 1835035])
+* Update Item Status templates for auto-renewal (https://bugs.launchpad.net/evergreen/+bug/1835085[Bug 1835085])
+* Improve permissions when editing user accounts (e.g. editing your own account) (https://bugs.launchpad.net/evergreen/+bug/1842940[Bug 1842940])
+* Reduce the cost of utility functions, speeding up search (https://bugs.launchpad.net/evergreen/+bug/1836963[Bug 1836963])
+* Fix Current Date in Date Returned in Circ History CSV (https://bugs.launchpad.net/evergreen/+bug/1813056[Bug 1813056])
+* Fix Last Captured Hold Check for Holds Shelf (https://bugs.launchpad.net/evergreen/+bug/1827250[Bug 1827250])
+* Only include OPAC-visible copies in SRU/Z39.50 holdings (https://bugs.launchpad.net/evergreen/+bug/1609556[Bug 1609556])
+* Re-alphabetize Local & Server Administration Links (https://bugs.launchpad.net/evergreen/+bug/1803790[Bug 1803790])
+* Allow saving Bill Full Details grids (https://bugs.launchpad.net/evergreen/+bug/1729435[Bug 1729435])
+* Improve usability of Patron Bill History date selector (https://bugs.launchpad.net/evergreen/+bug/1841089[Bug 1841089])
+* MARC Batch Import/Export: Disable grid row select on queued record matches (https://bugs.launchpad.net/evergreen/+bug/1842763[Bug 1842763])
+* Fix when the "duplicate barcode" alert appears (https://bugs.launchpad.net/evergreen/+bug/1777698[Bug 1777698])
+* Fix paging of pending patrons (https://bugs.launchpad.net/evergreen/+bug/1749970[Bug 1749970])
+* Check bib visibility for located URI auto suggest (https://bugs.launchpad.net/evergreen/+bug/1802952[Bug 1802952])
+* Patron Prefix and Suffix Display in Summary (https://bugs.launchpad.net/evergreen/+bug/1821969[Bug 1821969])
+* Do not include Tag Owner in Tag (https://bugs.launchpad.net/evergreen/+bug/1825403[Bug 1825403])
+* Browser refresh no longer closes an open purchase order (https://bugs.launchpad.net/evergreen/+bug/1765434[Bug 1765434])
+* Avoid hard-coded paths in Apache config (https://bugs.launchpad.net/evergreen/+bug/1844720[Bug 1844720])
+* Close all open dialogs on Angular route change (https://bugs.launchpad.net/evergreen/+bug/1849372[Bug 1849372])
+* Offline: Non-cataloged item receipt printing (https://bugs.launchpad.net/evergreen/+bug/1806783[Bug 1806783])
+* Require some Storage submodules instead of use them (https://bugs.launchpad.net/evergreen/+bug/1835620[Bug 1835620])
+* Remove extra grid refresh from configuration load (https://bugs.launchpad.net/evergreen/+bug/1846038[Bug 1846038])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.5 point release of Evergreen:
+
+* Andrea Buntz
+* Bill Erickson
+* Chris Sharp
+* Dan Briem
+* Dan Wells
+* Galen Charlton
+* Garry Collum
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* John Amundson
+* Josh Stompro
+* Kyle Huckins
+* Michele Morgan
+* Mike Rylander
+* Remington Steed
+* Terran McCanna
+* Tiffany Little
+
+Evergreen 3.3.4
+----------------
+This release is a security release that fixes cross-site scripting
+(XSS) vulnerabilities in the Evergreen public catalog. This release
+also includes several other bugfixes improving on Evergreen 3.3.3.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+ * `Open-ILS/src/templates/opac/browse.tt2`
+ * `Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2`
+ * `Open-ILS/src/templates/opac/parts/header.tt2`
+ * `Open-ILS/src/templates/opac/parts/place_hold.tt2`
+ * `Open-ILS/src/templates/opac/parts/place_hold_result.tt2`
+ * `Open-ILS/src/templates/opac/parts/result/adv_filter.tt2`
+
+They should also review the following templates.  If these templates have
+been customized or overridden, either the template should be replaced with
+the stock version or the XSS fix (which entails adding `rel="nofollow` to
+external links) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/record/summary.tt2`
+* `Open-ILS/src/templates/opac/parts/result/table.tt2`
+
+
+Other Bugfixes
+~~~~~~~~~~~~~~
+Evergreen 3.3.4 also includes the following changes:
+
+General
+^^^^^^^
+
+* Users can now save sort priorities for grids throughout the client
+(https://bugs.launchpad.net/evergreen/+bug/1790169[Bug 1790169])
+
+Cataloging
+^^^^^^^^^^
+
+* The experimental staff catalog now includes a flat-text MARC editor
+(https://bugs.launchpad.net/evergreen/+bug/1834665[Bug 1834665])
+
+
+Circulation
+^^^^^^^^^^^
+
+* Default hold transit slips no longer include patron's personal
+information (https://bugs.launchpad.net/evergreen/+bug/1735847[Bug 1735847])
+* Fixes an issue with the reshelving process
+(https://bugs.launchpad.net/evergreen/+bug/1018011[Bug 1018011])
+
+Reports
+^^^^^^^
+
+* Fixes issues related to cloning templates made in the XUL client
+(https://bugs.launchpad.net/evergreen/+bug/1796945[Bug 1796945])
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.3.4 security release of
+Evergreen:
+
+* Thomas Berezansky
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* April Durrence
+* Bill Erickson
+* Jason Etheridge
+* Blake Graham-Henderson
+* Andrea Buntz Neiman
+* Debbie Luchenbill
+* Dan Pearl
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Dan Wells
+* Derek C. Zoladz
+
+
+Evergreen 3.3.3
+---------------
+
+This release contains bug fixes improving on Evergreen 3.3.2.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Various improvements to the Angular staff catalog (https://bugs.launchpad.net/evergreen/+bug/1823367[Bug #1823367])
+* Accessibility improvements to the date picker calendar button (https://bugs.launchpad.net/evergreen/+bug/1796903[Bug #1796903])
+* Blank values in CSV grid downloads now show as blank instead of 'null' (https://bugs.launchpad.net/evergreen/+bug/1766982[Bug #1766982])
+* Accessibility improvements to grid rows (https://bugs.launchpad.net/evergreen/+bug/1796936[Bug #1796936])
+* Adds keyboard shortcuts to Angular client (https://bugs.launchpad.net/evergreen/+bug/1829567 [Bug#1829567])
+* Fixes invalid language codes in the staff client and KPAC (https://bugs.launchpad.net/evergreen/+bug/1802593[Bug #1802593])
+* Removes duplicate columns from several grids (https://bugs.launchpad.net/evergreen/+bug/1683385[Bug 1683385])
+* Fixes some misleading comments in the Angular code (https://bugs.launchpad.net/evergreen/+bug/1836962[Bug #1836962])
+* Fixes display issue with menus at certain screen resolutions (https://bugs.launchpad.net/evergreen/+bug/1813078[Bug 1813078])
+* Fixes error display on failed Angular login (https://bugs.launchpad.net/evergreen/+bug/1834969[Bug # 1834969])
+* Fixes rows-selected message in Angular grid (https://bugs.launchpad.net/evergreen/+bug/1832148[Bug #1832148])
+* Fixes display error with comboboxes in accordions (https://bugs.launchpad.net/evergreen/+bug/1832146[Bug #1832146])
+* Updates to the Angular client's .editorconfig file. (https://bugs.launchpad.net/evergreen/+bug/1838136[Bug #1838136])
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Adds fund year to Distribution Formula fund dropdown menu (https://bugs.launchpad.net/evergreen/+bug/1329920[Bug 1329920])
+
+Administration
+^^^^^^^^^^^^^^
+
+* Fixes errors from ng x118n (https://bugs.launchpad.net/evergreen/+bug/1835990[Bug 1835990]
+
+Cataloging
+^^^^^^^^^^
+
+* Extra whitespace in 856$9 subfields no longer prevents located URIs from being displayed in electronic resource records. (https://bugs.launchpad.net/evergreen/+bug/1722827[Bug #1722827])
+* Fixes issue in Item Status import where spaces or empty lines in barcode files caused an import failure (https://bugs.launchpad.net/evergreen/+bug/1798187[Bug #1798187])
+* The Item Status list and detail views now have the same actions available. (https://bugs.launchpad.net/evergreen/+bug/1775920[Bug #1775920])
+* Adds record summary display to merge records (https://bugs.launchpad.net/evergreen/+bug/1739292[Bug #1739292])
+* Fixes issue in Bucket grids where grid configurations were not saving correctly (https://bugs.launchpad.net/evergreen/+bug/1805895[Bug# 1805895])
+* Fixes an issue with the Edit buttons in the Merge Records interface. (https://bugs.launchpad.net/evergreen/+bug/1836229[Bug #1836229])
+* "Local catalog" is now at the top of the list of Z39.50 sources. (https://bugs.launchpad.net/evergreen/+bug/1787676[Bug #1787676])
+* Fixes issue with authority_control_field.pl script (https://bugs.launchpad.net/evergreen/+bug/1650409[Bug #1650409])
+* Fixes an issue with the _Clear_ button in the holdings template editor. (https://bugs.launchpad.net/evergreen/+bug/1803584[Bug #1803584])
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes the Mark Item Damaged action (https://bugs.launchpad.net/evergreen/+bug/1759864[Bug #1759864])
+* Fixes slowness issues with checkin and checkout grids (https://bugs.launchpad.net/evergreen/+bug/1777207[Bug #1777207])
+* Fixes an issue that allowed staff to renew items to dates in the past. (https://bugs.launchpad.net/evergreen/+bug/1034058[Bug #1034058])
+* Fixes an error that occured when checking in lost items when a certain setting was enabled. (https://bugs.launchpad.net/evergreen/+bug/1511765[Bug #1511765])
+* Fixes an issue that caused the money summary to be missing from the patron record Bills tab. (https://bugs.launchpad.net/evergreen/+bug/1800484[Bug #1800484])
+* Improves translations in Mark Damaged Popup. (https://bugs.launchpad.net/evergreen/+bug/1742523[Bug #1742523])
+
+
+Reports
+^^^^^^^
+
+* Users can now hard code a list of filter values in a report template (https://bugs.launchpad.net/evergreen/+bug/1785061[Bug #1785061])
+* Fixes an issue that caused column labels to re-sort when deleting fields in a template. (https://bugs.launchpad.net/evergreen/+bug/1751800[Bug #1751800])
+* Fixes column type for Billing Totals and Billing Paid columns (https://bugs.launchpad.net/evergreen/+bug/1681930[Bug #1681930])
+
+Public Catalog
+^^^^^^^^^^^^^^
+
+* Accessibility improvements to form fields. (https://bugs.launchpad.net/evergreen/+bug/1735768[Bug #1735768])
+
+Angular Staff Catalog
+^^^^^^^^^^^^^^^^^^^^^
+
+* Fixes replace barcode function in Angular staff catalog (https://bugs.launchpad.net/evergreen/+bug/1837067[Bug #1837067])
+* Fixes retrieve last bib record in Angular staff catalog (https://bugs.launchpad.net/evergreen/+bug/1830424[Bug #1830424])
+* Makes patron barcode clickable in Angular holds grid (https://bugs.launchpad.net/evergreen/+bug/1839548[Bug #1839548])
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.3 point release of
+Evergreen:
+
+* Kristy Bauman
+* A. Bellenir
+* Jason Boyer
+* Dan Briem
+* Andrea Buntz Neiman
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* James Fournie
+* Rogan Hamby
+* Kyle Huckins
+* Cheyenne Jones
+* Tiffany Little
+* Jeanette Lundgren
+* Michele Morgan
+* Mike Risher
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Meg Stroup
+* Dan Wells
+* Beth Willis
+
+
+Evergreen 3.3.2
+----------------
+
+This release contains bug fixes improving on Evergreen 3.3.1.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Circulation
+^^^^^^^^^^^
+* Corrects a rounding error that caused fines to exceed the max fines
+amount
+(https://bugs.launchpad.net/evergreen/+bug/1704819[Bug #1704819])
+* Corrects an issue with printing Items Out receipts
+(https://bugs.launchpad.net/evergreen/+bug/1790896[Bug #1790896])
+* SIP Visa payments are now recorded as credit card, rather than cash
+payments
+(https://bugs.launchpad.net/evergreen/+bug/1796942[Bug #1796942])
+* Converting change to patron credit no longer requires staff members
+to refresh the screen to see the new credit
+(https://bugs.launchpad.net/evergreen/+bug/1775639[Bug #1775639])
+* The patron summary now includes tooltips that were available in
+the XUL client
+(https://bugs.launchpad.net/evergreen/+bug/1772206[Bug #1772206])
+* The patron holds grid now includes a SMS Carrier column
+(https://bugs.launchpad.net/evergreen/+bug/1748265[Bug #1748265])
+* When registering a new patron from Pending Patrons, the address
+type dropdown now supports a default value
+(https://bugs.launchpad.net/evergreen/+bug/1816180[Bug #1816180])
+* The Items Out grid now includes a Monograph Parts column
+(https://bugs.launchpad.net/evergreen/+bug/1789257[Bug #1789257])
+* The annotate checkbox on the bill payment screen is now sticky
+(https://bugs.launchpad.net/evergreen/+bug/1759343[Bug #1759343])
+* Group member details grid settings can now be saved
+(https://bugs.launchpad.net/evergreen/+bug/1774707[Bug #1774707])
+* The patron registration date of birth field can now display a
+format example
+(https://bugs.launchpad.net/evergreen/+bug/1819181[Bug #1819181])
+
+Cataloging
+^^^^^^^^^^
+
+* The MARC editor displays a warning when a cataloger attempts to
+close the tab without saving
+(https://bugs.launchpad.net/evergreen/+bug/1538678[Bug #1538678])
+* The MARC editor displays a warning when permissions issues
+prevent a record from saving
+(https://bugs.launchpad.net/evergreen/+bug/1693580[Bug #1693580])
+* The holdings editor saves default values more consistently
+(https://bugs.launchpad.net/evergreen/+bug/1812900[Bug #1812900])
+* The flat-text editor now uses a monospace font
+(https://bugs.launchpad.net/evergreen/+bug/1817601[Bug #1817601])
+* Statistical categories and their entries are now alphabetized in the
+holdings editor (Bugs
+https://bugs.launchpad.net/evergreen/+bug/1744386[Bug #1744386] and
+https://bugs.launchpad.net/evergreen/+bug/1777184[Bug #1777184])
+* The holdings editor now lists monograph parts in reverse alphabetical
+order
+(https://bugs.launchpad.net/evergreen/+bug/1760893[Bug #1760893])
+* Buckets created from the MARC Batch Import process are now available
+in the MARC Batch Edit interface
+(https://bugs.launchpad.net/evergreen/+bug/1440890[Bug #1440890])
+* The record bucket interface only displays the Merge action when
+multiple records are selected
+(https://bugs.launchpad.net/evergreen/+bug/1760599[Bug #1760599])
+* Fixes an issue with the displayed number of items out
+(https://bugs.launchpad.net/evergreen/+bug/1770217[Bug #1770217])
+
+Client
+^^^^^^
+
+* Fixes conflicting dependency information caused be the release of
+Angular 8
+(https://bugs.launchpad.net/evergreen/+bug/1830972[Bug #1830972])
+* Angular grids include several new accessibility features and
+keyboard shortcuts
+(https://bugs.launchpad.net/evergreen/+bug/1816480[Bug #1816480])
+* The menu in the top right corner is now named "Logout and more..."
+(https://bugs.launchpad.net/evergreen/+bug/1796914[Bug #1796914])
+* Several dropdown menus now require less scrolling
+(https://bugs.launchpad.net/evergreen/+bug/1669120[Bug #1669120])
+* Improve Angular dialog boxes
+(https://bugs.launchpad.net/evergreen/+bug/1823041[Bug #1823041])
+* Fix display of boolean values in Angular interfaces
+(https://bugs.launchpad.net/evergreen/+bug/1833080[Bug #1833080])
+
+
+Public Catalog
+^^^^^^^^^^^^^^
+
+* Avoids Internal Server Errors on search result page
+(https://bugs.launchpad.net/evergreen/+bug/1155706[Bug #1155706])
+* Double clicking the Place Hold button can no longer result in
+multiple holds
+(https://bugs.launchpad.net/evergreen/+bug/1029601[Bug #1029601])
+
+Reports
+^^^^^^^
+
+* Adds a more user-friendly interface for boolean filters
+(https://bugs.launchpad.net/evergreen/+bug/1642337[Bug #1642337])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Improves consistency in terminology in the Local Administration
+screen
+(https://bugs.launchpad.net/evergreen/+bug/1776913[Bug #1776913])
+* The Library Settings Editor now displays some example timezones
+for the lib.timezone setting
+(https://bugs.launchpad.net/evergreen/+bug/1817332[Bug #1817332])
+
+Automated tests
+^^^^^^^^^^^^^^^
+* Fixes an automated test related to translations and internationalization
+(https://bugs.launchpad.net/evergreen/+bug/1768987[Bug #1768987])
+
+Database
+^^^^^^^^
+
+* Adds some foreign key functions that may be missing from your database
+(https://bugs.launchpad.net/evergreen/+bug/1772028[Bug #1772028])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.2 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Jeff Godin
+* Rogan Hamby
+* Kyle Huckins
+* Sam Link
+* Terran McCanna
+* Michele Morgan
+* Bill Ott
+* Suzanne Paterno
+* Dan Pearl
+* Mike Risher
+* Geoff Sams
+* Jane Sandberg
+* Janet Schrader
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+
+
+Evergreen 3.3.1
+---------------
+
+This release contains bug fixes improving on Evergreen 3.3.0.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Fixes a compatibility problem with the Item Status screen related to
+  JavaScript arrow functions
+  (https://bugs.launchpad.net/evergreen/+bug/1821196[Bug #1821196])
+
+Booking
+^^^^^^^
+
+* Fixes a bug in the Booking URL path that failed with newer Apache
+  (https://bugs.launchpad.net/evergreen/+bug/1823387[Bug #1823387])
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes a display bug with the patron record Group Members list
+  (https://bugs.launchpad.net/evergreen/+bug/1642036[Bug #1642036])
+* Fixes title sort on the patron Items Out Screen
+  (https://bugs.launchpad.net/evergreen/+bug/1782014[Bug #1782014])
+* Fixes a refresh bug on the catalog record Holds View tab when moving between
+  records (https://bugs.launchpad.net/evergreen/+bug/1792188[Bug #1792188])
+* Fixes the ability to place holds from item buckets
+  (https://bugs.launchpad.net/evergreen/+bug/1806394[Bug #1806394])
+
+Cataloging
+^^^^^^^^^^
+
+* Fixes a bug where copy templates would not apply properly
+  (https://bugs.launchpad.net/evergreen/+bug/1788680[Bug #1788680])
+* Fixes the default cursor focus on the holdings editor
+  (https://bugs.launchpad.net/evergreen/+bug/1752968[Bug #1752968])
+* Fixes a bug with Postgres 10 support related to MARC Batch Import/Export
+  (https://bugs.launchpad.net/evergreen/+bug/1820339[Bug #1820339])
+* Fixes a bug in the new MARC Import/Export related to Record Match Set
+  expressions (https://bugs.launchpad.net/evergreen/+bug/1823982[Bug #1823982])
+* Fixes a bug that failed to honor the "Retain empty bib records"
+  (cat.bib.keep_on_empty) setting when transferring items
+  (https://bugs.launchpad.net/evergreen/+bug/1333893[Bug #1333893])
+* Fixes a bug that failed to include deleted bib records in TCN search
+  (https://bugs.launchpad.net/evergreen/+bug/1813633[Bug #1813633])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Added database indexes to speed up purging of Action Trigger event output
+  fields (https://bugs.launchpad.net/evergreen/+bug/1778940[Bug #1778940])
+* Fixes the help text in action_trigger_aggregator.pl related to the remote-acct
+  argument (https://bugs.launchpad.net/evergreen/+bug/1803729[Bug #1803729])
+* Adds a missing page title for the Closed Dates Editor
+  (https://bugs.launchpad.net/evergreen/+bug/1814943[Bug #1814943])
+* Adds a missing page title for the Statistical Popularity Badges admin page
+  (https://bugs.launchpad.net/evergreen/+bug/1826890[Bug #1826890])
+* Changes the direction of column sort indicators in the new Angular grids
+  (https://bugs.launchpad.net/evergreen/+bug/1825578[Bug #1825578])
+* Adds Hatch printing support to the new Angular screens
+  (https://bugs.launchpad.net/evergreen/+bug/1793005[Bug #1793005])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.1 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Blake Graham-Henderson
+* Rogan Hamby
+* Millissa Macomber
+* Katie G. Martin
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Dan Scott
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+* Beth Willis
+* John Yorio
+
+
+3.3.0 Upgrade notes
+-------------------
+
+Migrating Parent/guardian information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sites who traditionally store parent/guardian information in the
+patron 'Secondary Identification' field can migrate values from this
+field to the new guardian field with the following SQL:
+
+[source,sql]
+-------------------------------------------------------------------------
+BEGIN;
+
+-- 1. Find the local ID of the parent/guardian identification type
+
+SELECT * FROM config.identification_type;
+
+-- 2. On my test system, the id is "101".  It will vary!.
+-- Migrate the value from the ident2 field to the guardian field.
+
+UPDATE actor.usr 
+    SET guardian = ident_value2 
+WHERE 
+    ident_type2 = 101 -- !! CHANGE TO SUIT
+    AND ident_value2 IS NOT NULL 
+    AND ident_value2 <> '';
+
+-- 3. delete the original secondary identification data
+
+UPDATE actor.usr 
+    SET ident_value2 = NULL, ident_type2 = NULL
+WHERE
+    ident_type2 = 101; -- !! CHANGE TO SUIT
+
+COMMIT;
+-------------------------------------------------------------------------
+
+
+Upgrading PostgreSQL
+~~~~~~~~~~~~~~~~~~~~
+Evergreen now supports PostgreSQL 9.6 and 10.
+If you upgrade your database from a PostgreSQL version of 9.5, or
+lower, to PostgreSQL versions 9.6 or 10, you will need to recreate 3
+indexes in additon to the normal database upgrade steps.  The index
+recreation is necessary because of changes to the PostgreSQL
+`unaccent` extension module.
+
+The following snippet of SQL code will do the necessary steps:
+
+[source,sql]
+------------------------------------------------------------------------
+DROP INDEX actor_usr_first_given_name_unaccent_idx;
+DROP INDEX actor_usr_second_given_name_unaccent_idx;
+DROP INDEX actor_usr_family_name_unaccent_idx;
+CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(first_given_name));
+CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(second_given_name));
+CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(family_name));
+------------------------------------------------------------------------ 
+
+
+3.3.0 New Features
+------------------
+
+Administration
+~~~~~~~~~~~~~~
+
+Include Item Status in marc_export Items Export
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The marc_export script now includes the item status in the 852 subfield s when exporting items.
+
+Ability to Reingest Certain Record Attributes In pingest.pl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An option, `--attr`, has been added to the `pingest.pl` support script
+that allows the user to specify which record attributes to reingest.
+It can be used one or more times to specify one or more attributes to
+ingest.  It can be omitted to reingest all record attributes.  This
+option is ignored if the `--skip-attrs` option is used.
+
+The `--attr` option is most useful after doing something specific that
+requires only a partial ingest of records.  For instance, if you add a
+new language to the `config.coded_value_map` table, you will want to
+reingest the `item_lang` attribute on all of your records.  The
+following command line will do that, and only that, ingest:
+
+----
+$ /openils/bin/pingest.pl --skip-browse --skip-search --skip-facets \
+    --skip-display --attr=item_lang
+----
+
+
+
+Architecture
+~~~~~~~~~~~~
+
+Database Support for PostgreSQL 10
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen database can now be built with PostgreSQL version 10.
+
+This update has implications for developers who write PgTap tests.  In
+versions of PostgreSQL prior to 10, one could write `\set ECHO` to
+disable the echoing of commands as they were run.  In PostgreSQL
+version 10, using `\set` without a value is an error.  One should now
+write `\set ECHO none` in order to disable the echoing of commands.
+This latter form works in all versions of PostgreSQL currently
+supported by Evergreen.
+
+
+
+Ubuntu 18.04 Bionic Beaver
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen can now be installed on Ubuntu 18.04 Bionic Beaver.  To
+install the prerequisites, use ubuntu-bionic as the Makefile.install
+target.
+
+This update also fixes a Perl warning in the HoldNotify module that is
+an error in the version of Perl (5.26) that is installed on Ubuntu
+18.04.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+MARC Import/Export Interface Update (Angular Port)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This MARC Import/Export (AKA Vandelay) interface is now built on
+Angular(7) instead of Dojo.  The functionality is consistent with the
+previous version of the interface, with minor UI adjustments to match
+the Angular style, plus one new interface called 'Recent Imports'.
+
+Import Templates
+++++++++++++++++
+Users may now save sets of import attributes from the MARC import form as 
+named templates.  Users may select a default template, applied on page load 
+by default, and users may delete existing templates.
+
+Recent Imports Tab
+++++++++++++++++++
+This is a new interface which allows users to see active and recent
+Vandelay sesssions originating from the same workstation or logged in
+user account.  Active sessions include real-time progress information so
+the user may track the progress without refreshing the page.
+
+This interface makes it possible to exit the main import tab or the
+Vandelay interface altogether and return at a later time to check on
+import progress.  It also allows users to start multiple imports at
+the same time and follow the status of each in one interace.
+
+
+Spine Label Sheet Printing
+++++++++++++++++++++++++++
+
+Catalogers can now print spine labels onto 8 1/2 x 11 inch label sheets.
+
+
+Circulation
+~~~~~~~~~~~
+
+Patron Parent/Guardian Field
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons now have a new dedicated parent/guardian field.  This field is 
+editable in the patron edit interface, displays in the patron
+summary side bar on the browser client, and is search-able from the
+patron search interface in the browser client.
+
+Patron Editor
++++++++++++++
+In addition to the standard "show" and "suggest" visibility settings, 
+the new guardian field comes with a library setting 
+'ui.patron.edit.guardian_required_for_juv' ("GUI: Juvenile account 
+requires parent/guardian").  When this setting is applied, a value 
+will be required in the patron editor when the juvenile flag is active.
+
+Allow Others to Use My Account (Privacy Waiver)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons who wish to authorize other people to use their account may
+now do so via My Account.  In the Search and History Preferences tab
+under Account Preferences, a new section labeled "Allow others to use
+my account" allows patrons to enter a name and indicate that the
+specified person is allowed to place holds, pickup holds, view
+borrowing history, or check out items on their account.  This
+information is displayed to circulation staff in the patron account
+summary in the web client.  (Staff may also add, edit, and remove
+entries via the patron editor.)
+
+A new library setting, "Allow others to use patron account (privacy
+waiver)," is used to enable or disable this feature.
+
+
+
+Client
+~~~~~~
+
+Server and Booking Administration Moved To Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Administration => Server Administration and 
+Administration => Booking Administration pages have been ported to
+Angular using the new Angular grids.  Entry points from both AngularJS
+and Angular web clients point to the new interfaces.
+
+Option to Enable Experimental Angular Staff Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new org unit setting labeled 'GUI: Enable Experimental Angular 
+Staff Catalog' (ui.staff.angular_catalog.enabled) has been added, allowing
+sites to enable a menu option in the browser client for accessing
+the experimental Angular staff catalog.
+
+When set to true, a new entry in the navigation bar appears in the
+Cataloging menu labled "Staff Catalog (Experimental)".
+
+New Features (Since 3.2)
+++++++++++++++++++++++++
+ * Pub date filter
+ * Copy location filter
+ * Group formats and editions
+ * Identifier search
+ * MARC search
+ * Browse search
+ * Place holds
+ * Record baskets and actions
+ * Record detail tabs/actions point to AngularJS versions where needed.
+ * Record detail View In Catalog button
+
+
+
+OPAC
+~~~~
+
+View upcoming booking reservations in the OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new tab in the My Account section of the OPAC shows
+patrons information about reservations on their account.
+Here, patrons can check on upcoming reservations, as 
+well as reservations they currently have checked out.
+
+Note: this interface pulls its timezone from the Library
+Settings Editor.  Make sure that you have a timezone
+listed for your library in the Library Settings Editor
+before using this feature.
+
+Display UPC as Option for Public Catalog Advanced Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Numeric Search tab of the public catalog Advanced Search
+now includes an option to search by UPC (Universal Product Code).
+
+
+
+3.3.0 Acknowledgments
+---------------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* King County Library System (KCLS)
+* MassLNC Evergreen Development Initiative
+* Pennsylvania Integrated Library System (PaILS)
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Adam Bowling
+* Steve Callender
+* Eva Cerninakova
+* Jeff Davis
+* Jason Etheridge
+* Bill Erickson
+* Rogan Hamby
+* Kathy Lussier
+* Terran McCanna
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Anahi Valdez
+* Dan Wells
+* Stephen Woidowski
+* John Yorio
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Cooperative
+* Catalyte
+* CW MARS
+* Emerald Data Networks
+* Equinox Open Library Initiative
+* Georgia PINES
+* King County Library System
+* Linn-Benton Community College
+* MassLNC
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.

@@ -1,0 +1,13 @@
+[%#
+    Override the audio config values by copying this template into your local templates
+    directory (matching the relative path) and change the values accordingly.
+#%]
+
+<script type="text/javascript">
+    SelfCheckManager.audioConfig = {
+        'login-success' : '',
+        'login-failure' : '[% ctx.media_prefix %]/audio/question.wav',
+        'checkout-success' : '[% ctx.media_prefix %]/audio/bonus.wav',
+        'checkout-failure' : '[% ctx.media_prefix %]/audio/question.wav',
+    }
+</script>

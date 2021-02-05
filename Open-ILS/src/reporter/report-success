@@ -1,0 +1,13 @@
+To: {TO}
+From: {FROM}
+Reply-To: {REPLY_TO}
+Subject: Report finished: "{REPORT_NAME}" 
+
+At {RUN_TIME} the report "{REPORT_NAME}" finished running with a complete
+time of {COMPLETE_TIME}.
+
+You can view the report at the following URL:
+{OUTPUT_URL}
+
+External documentation for the template is available at the following URL:
+{EXTERNAL_URL}

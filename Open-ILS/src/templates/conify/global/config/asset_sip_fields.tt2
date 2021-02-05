@@ -1,0 +1,27 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Asset Stat Cat Sip Fields') %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Asset Stat Cat Sip Fields') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='assetSipFieldsGrid.showCreateDialog()'>[% l('New Sip Field') %]</button>
+            <button dojoType='dijit.form.Button' onClick='assetSipFieldsGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+    <table  jsId="assetSipFieldsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['field', 'name', 'one_only']"
+            query="{field: '*'}"
+            fmClass='ascsf'
+            defaultCellWidth='15'
+            editOnEnter='true'></table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { assetSipFieldsGrid.loadAll(); } );
+</script>
+[% END %]
+
+

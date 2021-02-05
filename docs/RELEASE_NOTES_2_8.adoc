@@ -1,0 +1,872 @@
+Evergreen 2.8 Release Notes
+=============================
+
+Evergreen 2.8.8
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.7
+
+* Fixes a bug where phrase searching in the catalog failed when the phrase
+started or ended with punctuation.
+* Fixes a bug where changing the sort order in the public catalog to
+"relevance" could fail.
+* Silences unnecessary warnings emitted for libraries using extending grace
+periods.
+* Removes support for Debian Squeeze now that its long-term support period
+has ended.
+ 
+Evergreen 2.8.7
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.6
+
+Acquisitions
+~~~~~~~~~~~~
+* Adds EDI Cancel Code 85 to the acquisitions cancel reason table.
+* Fixes an issue where the "Expand All" button in selection lists was not
+working.
+
+Cataloging
+~~~~~~~~~~
+* Improves sorting in holdings maintenance so that copies sort first by parts
+then by barcode.
+
+Circulation
+~~~~~~~~~~~
+* Fixes an issue where the wrong last billing type and last billing note were
+displaying for some transactions.
+* Now calculates credit payments as integers to avoid rounding errors with
+large sets of small billings.
+* Fixes an issue in the patron record where staff was unable to retrieve the
+Message Center interface after visiting the Triggered Events page and vice 
+versa.
+* Now displays the short version of a title on the Place Holds screen when
+placing metabib holds to reduce instances where the wrong title/format
+displayed.
+
+OPAC
+~~~~
+* Fixes an issue where detailed search results showed parts for items that 
+didn't have parts.
+* Changes the e-mail address check on password reset requests so that it is no
+longer case sensitive.
+* Fixes a problem where users were unable to navigate through multiple pages of
+their holds history.
+* Removes undefined values from ISBN and ISSN arrays to prevent empty requests
+from being sent to added content providers.
+* Fixes an issue where the kids catalog was not displaying title information
+after hold placement or after adding a title to a list.
+* Corrects the kids catalog holds notification default preferences to allow for
+SMS text messaging options.
+
+
+Miscelleneous
+~~~~~~~~~~~~~
+* Fixes an issue where the Selfcheck fines receipt templated printed all open
+billable transactions, regardless of whether it had bills associated with it.
+* Fixes an issue that prevented Selfcheck's "Print List" for holds view from
+working.
+
+Evergreen 2.8.6
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.5
+
+Acquisitions / Cataloging
+~~~~~~~~~~~~~~~~~~~~~~~~~
+* Allows the Z39.50 itnerface and the acquisitions MARC Federated Search
+interface to search the UPC index of the local catalog if Z39.50 is configured
+to search that field.
+* Fixes an issue where spaces in a PO name cause the system to improperly
+process EDI response messages.
+
+Circulation
+~~~~~~~~~~~
+* Fixes a problem where the balance owed was miscalculated when a row
+was deleted from money.billing.
+* Fixes an issue where credit card payments made via PayflowPro failed because
+Evergreen does not install the PayflowPro module by default.
+* Changes credit card payment behavior so that the patron's billing address will
+be read when the patron has no mailing address. If all address fields are 
+properly set by the API caller except the country and the
+patron has no addresses, the system will attempt to determine the country from
+library settings. If insufficient address data is provided, the system will
+return an invalid params Event.
+
+OPAC
+~~~~
+* Fixes an issue where the reset password link was displaying even on systems
+that had disabled the ability to reset passwords.
+* Fixes an issue where the journal type search did not work when entering it as
+the second or third input on the advanced search screen.
+
+Administration
+~~~~~~~~~~~~~~
+* Changes marc_export to only print "waiting for input" when running
+interactively.
+
+
+
+Evergreen 2.8.5
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.4
+
+Acquisitions
+~~~~~~~~~~~~
+* Protects the stock acquisitions cancel reasons from deletion since they
+are required to properly handle EDI order responses.
+* Changes the copy location dropdown so that users can view and select copy
+locations owned outside the workstation branch if they have permission to do so. 
+This fix also adds the copy location's owning org unit to the display.
+
+Administration
+~~~~~~~~~~~~~~
+* Allows use of more special characters, including - and +, when
+entering a library's main email address in the Organizational Units
+editor.
+* Fixes an issue where marc_export attempts to call a non-existent field
+on MARC::Record if an error occurs while exporting authority records.
+
+Cataloging
+~~~~~~~~~~
+* Fixes the mapping between copies and the target part when using "Merge
+Selected" in the Monographic Parts interface.
+* Fixes an issue with the horizontal scrollbar bar in the MARC import
+queue inspector so the focus no longer jumps to the top of the screen
+when attempting to use the scrollbar.
+* Hides the staff-client saved searches header from screen readers when
+using the public catalog in non-staff mode.
+
+Circulation
+~~~~~~~~~~~
+* When placing a hold via the staff client and clicking Advanced Hold
+Options, fixes an issue where the barcode formfield populated with the
+staff member's barcode.
+* Fixes an issue where some holds with a higher proximity were
+preferred over holds with a lower proximity because the list of
+proximities of elgible copies was sorting ASCIIbetically instead of
+numerically.
+* Adds a delete flag for monographic parts, fixes staff client errors that
+were previously caused by deleted parts, and cancels any holds attached to
+those deleted parts.
+* Fixes an internal error that appeared when trying to renew an item on the
+booking resource list through the public catalog. Users will now get a message
+saying they do not have permission to renew the item. 
+
+
+Public Catalog
+~~~~~~~~~~~~~~
+* Fixes an issue where unclosed phrase searches returned zero results and
+tied up the open-ils.storage process.
+* Fixes an issue where phrase searches were ignoring modifiers used in relevance
+ranking, leading to poorly-ranked results.
+* Fixes an issue where parameters weren't properly maintained when
+searching by copy location group.
+
+Reports
+~~~~~~~
+* Adds support for UTF-8 in the Reports interface.
+
+Evergreen 2.8.4
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.3
+
+Circulation
+~~~~~~~~~~~
+* Fixes an issue where transactions with checkin-generated fines that 
+previously had a balance of zero were prematurely closing.
+* Fixes an issue where empty patron searches lead to heavy queries ending
+in a client error. Empty patron searches will now exit early with no results.
+* Provides validation on the patron self-registration form to prevent users
+from entering the date of birth in the wrong date format.
+
+Cataloging
+~~~~~~~~~~
+* Fixes an issue where all matches were not displaying during a Vandelay
+authority record import. The fix ensures a row is added for every authority
+record match in the Vandelay match grid, even when multiple matches refer to
+the same authority record.
+
+Preventing improper data deletion from subfield $e
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This release contains a fix for LP bug 1484281, "authority data may be
+deleted during propagation with current values of
+authority.control_set_authority_field."
+
+For more details see: https://bugs.launchpad.net/evergreen/+bug/1484281
+
+The related upgrade script from this release removes subfield $e
+in authority tags 100 and 110, but only from the Evergreen default
+"LoC" authority control set configuration. If your Evergreen system is
+set up with additional authority control sets besides the default
+"LoC" one, you will need to run the following pieces of SQL code.
+
+First verify that you have an additional control set besides the
+default of "LoC". Run the following SQL code and write down the ID
+number for your additional control set. The number will be an integer
+like 101.
+
+[source,sql]
+--------------------------------------------------------------------
+select *
+from authority.control_set
+where name != 'LoC'
+order by id
+--------------------------------------------------------------------
+
+In the following code you will need to change the two sections of
+"control_set = XYZ". Change the part labeled with the text "XYZ", with
+the ID number from the above query.
+
+If the above query displayed more than one additional authority
+control set, then you will need to run the code below once for each
+additional control set ID number.
+
+[source,sql]
+--------------------------------------------------------------------
+UPDATE authority.control_set_authority_field
+SET sf_list = REGEXP_REPLACE( sf_list, 'e', '', 'i')
+WHERE tag = '100' AND control_set = XYZ AND  sf_list ILIKE '%e%';
+
+UPDATE authority.control_set_authority_field
+SET sf_list = REGEXP_REPLACE( sf_list, 'e', '', 'i')
+WHERE tag = '110' AND control_set = XYZ AND  sf_list ILIKE '%e%';
+--------------------------------------------------------------------
+
+Evergreen 2.8.3
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.2
+
+Circulation
+~~~~~~~~~~~
+* Restores sort order in the patron's Items Out display so that overdue items
+sort to the top.
+* Changes the behavior of the checkin API so that future backdates are 
+successfully ignored.
+* Fixes a problem where amnesty mode was ignored when backdating checkins.
+* Allows SIP to honor floating copy checkin locations.
+
+Cataloging
+~~~~~~~~~~
+
+* Changes the behavior of the authority linker to now ignore $e and $4 in bib
+name headings.
+
+Acquisitions
+~~~~~~~~~~~~
+
+* Changes the behavior of the end-of-year process so that fund tags will now
+remain on propagated funds.
+* Allows staff with the CREAT_PURCHSE_ORDER permission to view distribution
+formulas, making it possible to use them for PO batch update operations.
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+* Improves performance of OPAC searches using format filters.
+* Removes opac_invisible copies from consideration when displaying copies
+on the search results page.
+* Fixes a UTF8 encoding issue with the SuperCat SRU service.
+
+
+Reports
+~~~~~~~
+* Optimizes the extend_reporter.full_circ_count view to improve performance
+for sites with large datasets.
+
+
+Admin
+~~~~~
+
+* Fixes a JS TypeError that prevents stat cats from displaying in the stat cat
+editor.
+* Fixes a problem where where the Collections API would crash when encountering
+users with null card values.
+* Updates the XULRunner URL in Makefile.am, allowing makefile to continue
+building the staff client.
+* Fixes a problem where the added content handler was not properly closing
+sockets.
+* Fixes a problem where the Library Settings History was not properly
+keeping the latest five settings per org unit. 
+* Expands safe token generation to include user ID in the cached data, which
+can be retrieved later for activity logging.
+* Makes xpath-based record attribute definitions work.
+
+Evergreen 2.8.2
+---------------
+
+This release contains several bugfixes improving on Evergreen 2.8.1
+
+Circulation
+~~~~~~~~~~~
+
+* Fixes an issue where a double-scan at checkin causes two holds to capture for
+the same item.
+* In patron registration, fixes a broken link in the alert informing staff that
+a patron with the same name already exists.
+* Fixes an issue where fully-paid long overdue items still appeared in the
+Other/Special Circulations window.
+* Fixes an error that appeared when staff tried to renew lost, claims returned
+or long overdue item.
+* Fixes a "Return to Record" link on the call number texting confirmation
+screen. The link previously broke in cases when the user was prompted to
+authenticate before texting.
+* Removes long overdue circs from the total items out count in My Account. 
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+* Changes the behavior of the "Add Rows" link on the advanced search screen
+so that it no longer opens duplicate rows.
+* Removes the Bib Call Number from the query type selector.
+* Removes publication-specific information from a metarecord search results
+page
+* Prevents the "you have permission to override some of the failed holds" 
+message from appearing when the user does not have permission to override holds.
+* Removes a stray semicolon that was appearing in browse search entries.
+
+Client
+~~~~~~
+
+* Prevents security warnings in the staff client when Google Analytics is 
+enabled in the catalog.
+* Adds scrollbars when necessary to the item status alternate view tab.
+
+Reports
+~~~~~~~
+
+* Fixes an issue where strings with apostrophes could no longer be used to
+filter reports.
+
+Administration
+~~~~~~~~~~~~~~
+
+* Creates a script allowing EDI Ruby dependency installation on Ubuntu 14.04.
+* Fixes compatibility issues with Debian Jessie.
+* Removes "Safe" CPAN dependency from Debian/Ubuntu Makefile.install files.
+* Removes the ability for staff to edit their own user accounts.
+* Adds an index on authority.simple_heading.record so that full table scans
+aren't needed during authority record reingest.
+
+Evergreen 2.8.1
+----------------
+This release contains several bugfixes improving on Evergreen 2.8.0.
+
+Acquisitions
+~~~~~~~~~~~~
+
+* Fixes an issue where direct charges were not disencumbered when the charge
+was removed from the PO or the PO was canceled.
+* Fixes an issue where direct charges were not calculated in the PO estimated price.
+* Refreshes the PO summary ammounts (spent, encumbered, estimated) each time
+an amount-changing event occurs.
+
+Patron message center fixes and improvements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Fixes an issue where the user didn't receive an ackowledgement after
+deleting a message.
+* Displays the unread message count in the page title for increased visibility.
+* Repositions the patron messages link to the dashboard button bar.
+* For messages that originate from public notes, adjusts the sending library to be the workstation library, not the home library of the note creator.
+* Improves styling for messages by using pre-wrap, which allows longer messages
+to wrap properly.
+* Fixes an issue where users already viewing a message cannot return to the message list by clicking on the 'Message" button in the patron dashboard.
+
+Fine generator fixes
+~~~~~~~~~~~~~~~~~~~~~
+
+* Fixes an issue where payment for a lost-then-returned item was not applied to overdues.
+* Fixes an issue where overdue fines could be doubled if both
+restore-overdue-on-lost-return and generate-new-overdues-on-lost-return
+are enabled.
+
+Clear hold shelf checkin modifier fix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fixes a network error that occurred when using the Clear Hold Shelf checkin modifier.
+
+Fix Crash in Collections User Balance Summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Previously a patron in collections that paid off all transactions would cause a
+crash and stop processing any balance summary file that they are supposed to
+appear in. Now user balance summaries can be created in full even if some users
+have a 0 balance.
+
+Remove the ‡biblios.net Z39.50 target from seed data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The Z39.50 target at z3950.biblios.net/bibliographic has not worked
+for years, so its service definition is no longer provided in the
+seed data for new installations of Evergreen.
+
+Users of existing Evergreen systems should consider removing
+the Z39.50 definition for ‡biblios.net. This can be done from
+Admin | Server Administration | Z39.50 Servers in the staff
+client.
+
+Set resource limits for Clark Kent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Several parameters are now available for the reporter daemon process
+(`clark-kent.pl`) to control resource usage.  These can be used to
+reduce the chances that a malformed report can cause indigestion
+on a database or reports server.  The new parameters, which can be
+set in `opensrf.xml` or as command-line switches for `clark-kent.pl` are
+
+* `//reporter/setup/statement_timeout` / `--statement-timeout`
+
+Number of minutes to allow a report's underlying SQL query
+to run before it gets cancelled.  Default value is
+60 minutes.  If a report's query gets cancelled, the
+error_text value will be set to a valid that indicates that
+the allowed time was exceeded.
+
+* `//reporter/setup/max_rows_for_charts` / `--max-rows-for-charts`
+
+Number of rows permitted in the query's output before
+Clark Kent refuses to attempt to draw a graph. Default
+value is 1,000 rows.
+
+* `//reporter/setup/resultset_limit` / `--resultset-limit`
+
+If set, truncates the report's output to the specified
+number of hits.  Note that it will not be apparent
+to a staff user if the report's output has been
+truncated.  Default value is unlimited.
+
+The report concurrency (i.e., the number of reports that Clark
+Kent will run in parallel) can now also be controlled via
+the `opensrf.xml` setting `//reporter/setup/parallel`.
+
+Install purge_pending_users.srfsh to /openils/bin by default
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since purge_pending_users.srfsh is in the example crontab, it should
+be installed to the Evergreen binaries directory (typically /openils/bin)
+by default.
+
+
+Evergreen 2.8.0 Release Notes
+=============================
+:toc:
+:numbered:
+
+New Features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+==== Duplicate Order Detection Improvements ====
+
+Provides tools to make it more clear to staff when a purchase order or
+items on an order have been ordered before.
+
+===== Prevent Duplicate PO Names =====
+
+Staff now have the option to specify a PO name during PO creation.
+If the selected name is already in use by another PO at or below
+the ordering agency for the PO, the user is warned, the save/submit
+operations are disabled, and a link to the existing PO is display.  The
+link opens the related PO in a new tab when clicked.
+
+Selecting a name which is not yet used or clearing the name field
+(which defaults upon creation to the PO ID) will clear the warning and
+re-enable the submit/save operation.
+
+Similarly, when editing a PO, if the user attempts to use a name already
+used, the user will be warned and a link to the offending PO will be
+displayed.
+
+===== Show Existing Copies =====
+
+In the select list and PO view interfaces, beside the lineitem ID #, we
+now also display the number of catalog copies already owned at or below
+the ordering agency for the bib record in question.
+
+The count does not include copies linked to the lineitem in question
+nor does it include copies that are in some form of lost, missing, or
+discard status.
+
+==== Sticky Org Unit Selector ====
+
+The Context Org Unit Selector on the Funds screen will now remember and default
+to the most-recently selected org unit. On first use, the selector will 
+continue to default to the workstation org unit.
+
+
+Administration
+~~~~~~~~~~~~~~
+
+Apache Access Handler: OpenILS::WWW::AccessHandler
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This Perl module is intended for limiting patron access to configured locations
+in Apache. These locations could be folder trees, static files, non-Evergreen
+dynamic content, or other Apache features/modules. It is intended as a more
+patron-oriented and transparent version of the OpenILS::WWW::Proxy and
+OpenILS::WWW:Proxy::Authen modules.
+
+Instead of using Basic Authentication the AccessHandler module instead redirects
+to the OPAC for login. Once logged in additional checks can be performed, based
+on configured variables:
+
+ * Permission Checks (at Home OU or specified location)
+ * Home OU Checks (Org Unit or Descendant)
+ * "Good standing" Checks (Not Inactive or Barred)
+
+As the AccessHandler module does not actually serve the content it is
+protecting, but instead merely hands control back to Apache when it is done
+authenticating, you can protect almost anything you can serve with Apache.
+
+Use Cases
++++++++++
+The general use of this module is to protect access to something else.
+Here are some examples of what you can protect:
+
+ * Apache features
+ ** Automatic Directory Indexes
+ ** Proxies
+ *** Electronic Databases
+ *** Software on other servers/ports
+ * Non-Evergreen software
+ ** Timekeeping software for staff
+ ** Specialized patron request packages
+ * Static files and folders
+ ** Semi-public Patron resources
+ ** Staff-only downloads
+
+
+Deleted flag for copy locations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A deleted flag is now available for copy locations, allowing them to be
+"deleted" without losing statistical information for circulations in a given
+copy location. It also allows copy locations that are only used by deleted
+items to be deleted.
+
+When a copy location is deleted, it will remain in the database, but will be
+removed from display in the staff client and the catalog.
+
+
+
+
+
+New TPAC config option: Show more details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is a new option for TPAC to show more details by default.
+
+The option to show full details as a default may be especially
+important for e-content.  Valid values are 'true', 'false' and 'hide'.
+
+Setting this to 'true' shows full details by default but allows the link
+to appear for 'Show Fewer Details'. The 'hide' option shows full details
+and also suppresses the link from displaying at all.
+
+Look for "show_more_details.default" in config.tt2.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+==== Vandelay Authority Record Match Sets ====
+
+Vandelay MARC Batch Import/Export now supports match sets for authority
+record import matching.  Matches can be made against MARC tag/subfield
+entries and against a record's normalized heading + thesaurus.  Internal
+identifier (901c) matches are also supported.
+
+===== UI Modifications =====
+
+ * Authority matches display the normalized heading/thesuarus for each 
+   match.
+ * Item import summary is not displayed for authority queues, since
+   items cannot be imported with authority records.
+
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Active date display in OPAC 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a library uses the copy's active date to calculate holds age protection,
+the active date will display with the copy details instead of the create date
+in the staff client view of the catalog. Libraries that do not enable the 
+_Use Active Date for Age Protection_ library setting will continue to display
+the create date.
+
+
+
+
+Option to stop billing activity on zero-balance billed  transactions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new setting is available via the Library Settings Editor to stop any billing
+activity on fully-paid lost or longoverdue transactions. When the _Do not
+change fines/fees on zero-balance LOST transaction_ setting is enabled, once a
+lost of long overdue transaction
+has been fully paid, no more lost fees will be voided or overdue fines restored
+or generated if the item is returned. The setting will reduce, though not
+eliminate, negative balances in the system.
+
+New Library Setting
++++++++++++++++++++
+ * Do not change fines/fees on zero-balance LOST transaction (circ.checkin.lost_zero_balance.do_not_change') - When an item has been marked lost and all
+fines/fees have been completely paid on the transaction, do not void or
+reinstate any fines/fees EVEN IF circ.void_lost_on_checkin and/or
+circ.void_lost_proc_fee_on_checkin are enabled.  
+
+
+
+
+Patron Message Center
+^^^^^^^^^^^^^^^^^^^^^
+There is now a new mechanism via which messages can be sent to
+patrons for them to read while logged into the public catalog.
+
+Patron messages can be generated in two ways: when a new public
+note is added to the patron's record, and when an A/T event
+that is configured to generate messages is processed.  Three
+new default A/T event definitions are added to generate
+patron messages when a hold is canceled due to lack of a target,
+staff action, or the item expiring on the shelf.
+
+In the public catalog, patrons can read their messages, mark
+one or more messages as read or unread, or delete messages that
+they do not want to see again.  The XUL staff client has a new
+menu option on the patron display, "Message Center", that allows
+staff to view messages.  Messages are intentionally not meant
+to be editable by patrons or library staff.
+
+During upgrade, existing public patron notes that are marked
+public are copied over as new patron messages that are marked
+as read.
+
+There are four new fields available in the A/T event definition:
+
+ * Message Title
+ * Message Template
+ * Message Library Path
+ * Message User Path
+
+If these four fields are set, when the A/T event is processed,
+a message is generated in addition to whatever reactor is
+specified by the event definition.  This means that, for example,
+an email overdue notice can also generate a message that the
+patron can view in the public catalog.
+
+
+
+
+Void Lost and Long Overdue Bills on Claims Returned
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Four new settings have been added to allow sites to void lost item and long
+overdue billings and processing fees when an item is marked as Claims Returned.
+
+New Library Settings
+++++++++++++++++++++
+ * Void lost item billing when claims returned (circ.void_lost_on_claimsreturned)
+ * Void lost item processing fee when claims returned (circ.void_lost_proc_fee_on_claimsreturned)
+ * Void long overdue item billing when claims returned (circ.void_longoverdue_on_claimsreturned)
+ * Void long overdue item processing fee when claims returned (circ.void_longoverdue_proc_fee_on_claimsreturned)
+
+
+
+Staff option to place another hold on same title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a hold is successful in the client, staff will now see a link
+to place another hold on the same title. This link provides some workflow
+improvement for times when staff are placing holds for multiple patrons on a
+newly-added title or when they are placing holds for book clubs.
+
+
+
+OPAC
+~~~~
+
+
+
+TPAC Discoverability Enhancements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A number of discoverability enhancements have been made to the catalog
+to better support search engines:
+
+ * Titles of catalog pages now follow a "Page title - Library name" pattern
+   to provide more specific titles in search results, bookmarks, and browser
+   tabs.
+ * The OpenSearch title now specifies the library name instead of the generic
+   "Evergreen OpenSearch" at every scope.
+ * Subject headings are now exposed as http://schema.org/about[schema:about]
+   properties instead of http://schema.org/keyword[schema:keyword].
+ * Electronic resources are now assigned a http://schema.org/url[schema:url]
+   property, and any notes or link text are assigned a
+   http://schema.org/description[schema:description] property.
+ * Given a Library of Congress relator code for 1xx and 7xx fields, we now
+   surface the URL for that relator code along with
+   the http://schema.org/contributor[schema:contributor] property to give
+   machines a better chance of understanding how the person or organization
+   actually contributed to this work.
+ * Linking out to related records:
+   ** Given an LCCN (010 field), we link to the corresponding Library of Congress
+      record using http://schema.org/sameAs[schema:sameAs].
+   ** Given an OCLC number (035 field, subfield `a` beginning with `(OCoLC)`), we
+      link to the corresponding WorldCat record using
+      http://schema.org/sameAs[schema:sameAs].
+   ** Given a URI (024 field, subfield 2 = `'uri'`), we link to the
+      corresponding OCLC Work Entity record using
+      http://schema.org/exampleOfWork[schema:exampleOfWork].
+ * The sitemap generator script now includes located URIs as well as copies
+   listed in the `asset.opac_visible_copies` materialized view, and checks
+   the children or ancestors of the requested libraries for holdings as well.
+ * Links that robots should not crawl, such as search result links, are now
+   marked with the https://support.google.com/webmasters/answer/96569?hl=en[@rel="nofollow"]
+   property.
+ * Catalog pages for record details and for library descriptions now express
+   a https://support.google.com/webmasters/answer/139066?hl=en[@rel="canonical"]
+   link to simplify the number of variations of page URLs that could otherwise
+   have been derived from different search parameters.
+ * Catalog pages that do not exist now return a proper 404 "HTTP_NOT_FOUND"
+   HTTP status code, and record detail pages for records that have been deleted
+   now return a proper 410 "HTTP_GONE" HTTP status code, instead of returning a
+   misleading 200 "OK" HTTP status code.
+ * Record detail and library pages now include http://ogp.me/[Open Graph Protocol]
+   markup.
+
+
+
+
+Add new link to My Lists in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is now a direct link to "My Lists" from the "My Account" area in the 
+top upper-right part of the screen.  This gives users the ability to quickly
+access their lists while logged into the catalog.
+
+
+Permalinks
+^^^^^^^^^^
+The record summary page will now offer a link to a shorter permalink that
+can be used for sharing the record with others. All URL parameters are stripped
+from the link with the exception of the locg and copy_depth parameters. Those
+parameters are maintained so that people can share a link that displays just
+the holdings from one library/system or displays holdings from all libraries
+with a specific library's holdings floating to the top.
+
+
+
+Removal of Bib Call Number Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Bib Call Number Search has been removed as a default numeric search in
+the catalog. Evergreen sites that wish to restore this search to the catalog
+can add the following to the numeric_qtype menu in the numeric.tt2 file.
+
+----
+ <option value="identifier|bibcn">[% l('Bib Call Number') %]</option>
+----
+
+
+
+
+Improved styling on Text call number screen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New styling on the _Text call number_ screen has added highlighting to the
+displayed message, makes the font consistent with other text on the screen, and
+displays better on mobile devices.
+
+
+
+
+Bug Fixes
+---------
+
+IMPORTANT SECURITY INFORMATION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A serious security flaw that allows unauthorized remote access to
+organizational unit settings is fixed in the following releases of
+Evergreen: 2.5.9, 2.6.7, and 2.7.4.  All prior releases of Evergreen
+are vulnerable to exploitation of this flaw to reveal sensitive system
+information.  If you are running a vulnerable release of Evergreen you
+are *strongly* encouraged to upgrade to a non-vulnerable release as
+soon as possible.
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations who commissioned developments in this release of
+Evergreen:
+
+ * Central/Western Massachusetts Automated Resource Sharing
+ * Georgia Public Library Service
+ * Massachusetts Library Network Cooperative
+ * NC Cardinal
+
+We would also like to thank the following individuals who contributed
+code and documentations patches to this release of Evergreen:
+ 
+ * Adam Bowling
+ * Thomas Berezansky
+ * Matthew Berowski
+ * Bradley Bonner
+ * Adam Bowling
+ * Jason Boyer
+ * Kate Butler
+ * Steven Chan
+ * Galen Charlton
+ * Bill Erickson
+ * Jason Etheridge
+ * Blake Henderson
+ * Pasi Kallinen
+ * Jake Litrell
+ * Kathy Lussier
+ * Terran McCanna
+ * Christine Morgan
+ * Bill Ott
+ * Michael Peters
+ * Art Rhyno
+ * Mike Rylander
+ * Dan Scott
+ * Chris Sharp
+ * Ben Shum
+ * Remington Steed
+ * Jason Stephenson
+ * Josh Stompro
+ * Yamil Suarez
+ * Dan Wells
+ * Liam Whalen
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * Berklee College of Music
+ * Bibliomation
+ * British Columbia Libraries Cooperative
+ * Calvin College
+ * Emerald Data Networks, Inc.
+ * Equinox Software, Inc.
+ * Georgia Public Library Service
+ * Grand Rapids Public Library
+ * Indiana State Library
+ * King County Library System
+ * Laurentian University
+ * Lake Agassiz Regional Library
+ * Massachusetts Library Network Cooperative
+ * Merrimack Valley Library Consortium
+ * MOBIUS
+ * North of Boston Library Exchange
+ * Northwest Regional Library System
+ * Pohjois-Karjalan Tietotekniikkakeskus Oy
+ * Rodgers Memorial Library
+ * Sigio
+ * University of Windsor
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

@@ -1,0 +1,30 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Patron Registration"); 
+  ctx.page_app = "egPatronRegApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/register.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/regctl.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.REG_ADDR_TYPE = "[% l('Mailing') %]";
+  s.REG_INVALID_FIELDS = 
+    "[% l('Please enter valid values for all required fields.') %]"
+  s.REG_ADDR_REQUIRED = 
+    "[% l('An address is required during registration.') %]"
+}]);
+</script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+<style>
+  /* add room for the fixed navigation elements */
+  #top-content-container { padding-top: 170px; }
+</style>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

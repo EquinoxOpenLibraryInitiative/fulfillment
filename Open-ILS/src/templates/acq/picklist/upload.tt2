@@ -1,0 +1,78 @@
+[% WRAPPER 'base.tt2' %]
+[% PROCESS 'acq/common/vlagent.tt2' %]
+
+<h1>[% l('Upload') %]</h1><br/>
+<form id="acq-pl-upload-form" enctype="multipart/form-data">
+    <input type='hidden' name='ses' id='acq-pl-upload-ses'/>
+    <table class='oils-generic-table'>
+        <tbody>
+            <tr>
+                <td>[% l('Create Purchase Order') %]</td>
+                <td>
+                    <input dojoType='dijit.form.CheckBox' jsId='acqPlUploadCreatePo'></input>
+                </td>
+            </tr>
+            <tr>
+                <td>[% l('Activate Purchase Order') %]</td>
+                <td>
+                    <input dojoType='dijit.form.CheckBox' jsId='acqPlUploadActivatePo'></input>
+                </td>
+            </tr>
+            <tr>
+                <td>[% l('Provider') %]</td>
+                <td><div id='acq-pl-upload-provider'></div></td>
+            </tr>
+            <tr id='acq-pl-upload-agency-row'>
+                <td>[% l('Context Org Unit') %]</td>
+                <td><div id='acq-pl-upload-agency'></div></td>
+            </tr>
+            <tr id='acq-pl-upload-picklist'>
+                <td>[% l('Add to Selection List') %]</td>
+                <td>
+                    <select jsId='acqPlUploadPlSelector' dojoType='dijit.form.ComboBox'></select>
+                </td>
+            </tr>
+            <tr id='acq-pl-upload-year'>
+                <td>[% l('Fiscal Year') %]</td>
+                <td>
+                    <select dojoType="dijit.form.FilteringSelect"
+                        jsId="acqUploadYearSelector"
+                        labelAttr="year"
+                        searchAttr="year">
+                    </select>
+                </td>
+            </tr>
+
+            <tr><td colspan='2'><hr/></td></tr>
+            [% PROCESS vlagent_form vl_show_copy_option=1 %]
+            <tr><td colspan='2'><hr/></td></tr>
+
+            <tr>
+                <td colspan='5'>
+                    <span id="vl-file-label">[% l('File to Upload:') %]</span>
+                    <input size='48' style='border:1px solid #888;' type="file" name="marc_upload"/>
+                    <span style='margin-left:10px;'><button dojoType="dijit.form.Button" onclick="acqUploadRecords()">[% l('Upload') %]</button></span>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <br/>
+    <br/>
+    <div id="acq-pl-upload-progress" class='hidden'>
+        <div id='acq-pl-upload-progress-bar'>
+            <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
+        </div>
+        [% PROCESS vlagent_results %]
+        <div id='acq-pl-upload-complete' class='hidden'>
+            <div>[% l('Upload Complete!') %]</div><br/>
+            <div><a id='acq-pl-upload-complete-po'>[% l('View Purchase Order') %]</a></div><br/>
+            <div><a id='acq-pl-upload-complete-pl'>[% l('View Selection List') %]</a></div><br/>
+            <div><a id='acq-pl-upload-complete-q'>[% l('View Import Queue') %]</a></div><br/>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/vlagent.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/upload.js'> </script>
+[% END %]

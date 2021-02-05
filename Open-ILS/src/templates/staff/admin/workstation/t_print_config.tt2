@@ -1,0 +1,453 @@
+<div class="container" id="admin-workstation-printing">
+
+  <style>
+    /* TODO: more context and move me */
+    textarea {
+      height: 400px;
+      width: 100%;
+    }
+    .tab-pane .row {
+      padding-top: 20px;
+    }
+    h2 { margin-bottom: 15px }
+      
+  </style>
+
+  <div class="row"> 
+    <div class="col-md-12">
+      <h2>[% l('Hatch Printer Settings') %]</h2>
+
+      <div class="alert alert-warning" 
+        ng-if="hatchIsOpen() && !useHatchPrinting()">
+        <p>
+[% l("Hatch printing is not enabled on this browser.  The settings below will have no effect until Hatch printing is enabled.") %]
+          <a href="./admin/workstation/hatch" target="_self" 
+            title="[% l('Hatch Administration') %]">
+            [% l('Enable Hatch Printing.') %]
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row"> 
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li ng-class="{active : context == 'default'}">
+          <a href='' ng-click="setContext('default')">[% l('Default') %]</a>
+        </li>
+        <li ng-class="{active : context == 'receipt'}">
+          <a href='' ng-click="setContext('receipt')">[% l('Receipt') %]</a>
+        </li>
+        <li ng-class="{active : context == 'label'}">
+          <a href='' ng-click="setContext('label')">[% l('Label') %]</a>
+        </li>
+        <li ng-class="{active : context == 'mail'}">
+          <a href='' ng-click="setContext('mail')">[% l('Mail') %]</a>
+        </li>
+        <li ng-class="{active : context == 'offline'}">
+          <a href='' ng-click="setContext('offline')">[% l('Offline') %]</a>
+        </li>
+        <li ng-class="{active : isTestView}" class="pull-right">
+          <a href='' ng-click="isTestView=true">[% l('Test Printing') %]</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+
+          <div class="alert alert-warning" ng-if="!isTestView && !hatchIsOpen()">
+[% l('Hatch is not installed in this browser.  Printing must be configured via the native browser print configuration.') %]
+          </div>
+
+          <!-- printer config UI -->
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()">
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-btn" uib-dropdown>
+                  <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                    [% l('Select Printer') %]
+                    <span class="caret"></span></button>
+                  <ul uib-dropdown-menu>
+                    <li ng-repeat="printer in printers">
+                      <a href='' ng-click="setPrinter(printer.name)">
+                        <span ng-if="printer.name == 'hatch_file_writer'">
+                          [% l('Hatch File Writer') %]
+                        </span>
+                        <span ng-if="printer.name != 'hatch_file_writer'">
+                          {{printer.name}}
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div><!-- /btn-group -->
+                <input ng-if="!printers[0]" type="text" 
+                  class="form-control" disabled="disabled"
+                  value="[% l('No Printers Found') %]">
+                <input ng-if="printers[0] && !printConfig[context]" type="text" 
+                  class="form-control" disabled="disabled"
+                  value="[% l('No Printer Selected') %]">
+                <input ng-if="useFileWriter()" type="text" disabled="disabled"
+                  class="form-control" value="[% l('Hatch File Writer') %]"/>
+                <input ng-if="printConfig[context].printer && !useFileWriter()" 
+                  type="text" class="form-control" disabled="disabled"
+                  value="{{printConfig[context].printer}}">
+              </div><!-- /input-group -->
+            </div><!-- col -->
+            <div class="col-md-4">
+              <span class="pad-right-min">
+                <button class="btn btn-warning" 
+                  ng-click="resetPrinterSettings(context)">
+                  [% l('Reset Form') %]
+                </button>
+              </span>
+              <button class="btn btn-success" 
+                ng-click="savePrinterSettings(context)">
+                [% l('Apply Changes') %]
+              </button>
+            </div>
+          </div><!-- row -->
+
+          <div class="pad-vert" 
+            ng-show="!isTestView && hatchIsOpen() && useFileWriter()">
+            <div class="alert alert-info">
+              [% |l %]Hatch File Writer translates print output to plain text 
+and writes the content to a text file in the Hatch profile directory.  No
+additional settings are required.[% END %]
+            </div>
+          </div>
+
+          <div class="row" 
+            ng-show="!isTestView && hatchIsOpen() && !useFileWriter()"
+            <div class="col-md-10">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Print Color') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].printColor"
+                    ng-options="val for val in printerOptions.printColor | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPrintColor}}') %]</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Paper Source') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].paperSource"
+                    ng-options="val for val in printerOptions.paperSource | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPaperSource}}') %]</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Paper Type') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].paper"
+                    ng-options="val for val in printerOptions.paper | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPaper}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Page Orientation') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].pageOrientation"
+                    ng-options="val for val in printerOptions.pageOrientation | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPageOrientation}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Collation') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].collation"
+                    ng-options="val for val in printerOptions.collation | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultCollation}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Print Quality') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].printQuality"
+                    ng-options="val for val in printerOptions.printQuality | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPrintQuality}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Print Sides') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].printSides"
+                    ng-options="val for val in printerOptions.printSides | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPrintSides}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Number of Items') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" size="4" class="form-control"
+                    ng-model="printConfig[context].copies"/>
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultCopies}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1">
+                  <input type="radio" name="margins" 
+                    ng-click="printConfig[context].autoMargins=true"
+                    ng-checked="printConfig[context].autoMargins"/>
+                </div>
+                <div class="col-md-2">
+                  <label>[% l('Automatic Margins') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].marginType"
+                    ng-disabled="!printConfig[context].autoMargins" 
+                    ng-options="val for val in printerOptions.marginType | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultMarginType}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1">
+                  <input type="radio" name="margins"
+                    ng-click="printConfig[context].autoMargins=false"
+                    ng-checked="!printConfig[context].autoMargins"/>
+                </div>
+                <div class="col-md-2">
+                  <label>[% l('Manual Margins') %]</label>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Left') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].leftMargin"/>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Top') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].topMargin"/>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Right') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].rightMargin"/>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Bottom') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].bottomMargin"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2"><label>[% l('Page Ranges') %]</label></div>
+                <div class="col-md-2">
+                  [% l('All Pages') %]
+                  <input type='radio' name='pageRanges' 
+                    ng-checked="printConfig[context].allPages"
+                    ng-click="printConfig[context].allPages=true"/>
+                </div>
+                <div class="col-md-2">
+                  [% l('Page Range') %]
+                  <input type='radio' name='pageRanges' 
+                    ng-checked="!printConfig[context].allPages"
+                    ng-click="printConfig[context].allPages=false"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Start') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].allPages"
+                      ng-model="printConfig[context].pageRanges[0]"/>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('End') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].allPages"
+                      ng-model="printConfig[context].pageRanges[1]"/>
+                  </div>
+                </div>
+                <!-- TODO: support multiple page ranges by 
+                    dynamically adding additional pageRanges[X] pairs -->
+              </div>
+            </div><!-- col -->
+          </div><!-- row -->
+
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()">
+            <div class="col-md-12">
+              <h3>[% l('Compiled Printer Settings') %]</h3>
+              <pre>{{printerConfString()}}</pre>
+            </div><!-- col -->
+          </div><!-- row -->
+
+          <!-- printer test UI -->
+          <div class="row" ng-show="isTestView"> 
+            <div class="col-md-10">
+              <div class="btn-group">
+                <button type="button" 
+                  class="btn btn-default btn-lg" 
+                  ng-class="{active : contentType=='text/plain'}"
+                  ng-click="setContentType('text/plain')">[% l('Plain Text') %]</button>
+                <button type="button" 
+                  class="btn btn-default btn-lg" 
+                  ng-class="{active : contentType=='text/html'}"
+                  ng-click="setContentType('text/html')">[% l('HTML') %]</button>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="input-group pull-right">
+                <div class="input-group-btn">
+                  <button type="button" 
+                    ng-click="testPrint()"
+                    class="btn btn-default btn-success">
+                      [% l('Print') %]</button>
+                  <button type="button" 
+                    ng-click="testPrint(true)"
+                    class="btn btn-default btn-info">
+                      [% l('Print with Dialog') %]</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" ng-show="isTestView"> 
+            <div class="col-md-12">
+              <div ng-show="contentType=='text/plain'"
+ng-init="textPrintContent='
+[% l('Test Print') %]
+
+1234567890
+
+12345678901234567890
+
+123456789012345678901234567890
+
+1234567890123456789012345678901234567890
+
+12345678901234567890123456789012345678901234567890
+
+12345678901234567890123456789012345678901234567890123456790
+
+[% l('Test Print') %]
+'">
+        <pre><textarea>{{textPrintContent}}</textarea></pre>
+      </div>
+
+      <div ng-show="contentType=='text/html'">
+        <textarea ng-model="htmlPrintContent" 
+ng-init="htmlPrintContent='
+<div>
+  <style>p { color: blue }</style>
+  <h2>[% l('Test HTML Print') %]</h2>
+  <br/>
+  <img src=\'https://[% ctx.hostname %]/opac/images/main_logo.png\' width=\'140\' height=\'24\'/>
+  <p>[% l('Welcome, Stranger!') %]</p>
+  <p>{{value1}}</p>
+  <p>{{value2}}</p>
+  <p>{{date_value | date}}</p>
+</div>
+'">
+                </textarea>
+              </div><!-- html content -->
+            </div><!-- col -->
+          </div><!-- row -->
+        </div><!-- tab pane -->
+      </div><!-- tab content -->
+    </div><!-- col -->
+  </div><!-- row -->
+</div><!-- container -->
+

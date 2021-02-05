@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Retrieve Patron By Barcode -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="patron_barcode_entry_win" 
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
+        
+        function my_init() {
+            try {
+            if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
+
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+                var tb = document.getElementById('barcode_tb');
+                window.barcode_entry_event_listeners = new EventListenerList();
+                window.barcode_entry_event_listeners.add(tb, 
+                    'keypress',
+                    function(ev) {
+                        if (ev.keyCode == 13 || ev.keyCode == 77) {
+                            setTimeout(
+                                function() {
+                                    submit();
+                                }, 0
+                            );
+                        }
+                    },
+                    false
+                );
+                tb.focus();
+    
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    if (xul_param('perm_editor')) {
+                        try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.barcode_entry.user_permission_editor')); } catch(E) { alert(E); }
+                    } else {
+                        try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.barcode_entry.check_out')); } catch(E) { alert(E); }
+                    }
+                }
+
+                if (xul_param('error')) { 
+                    var error = xul_param('error');
+                    alert(error);
+                }
+
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/barcode_entry.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                window.barcode_entry_event_listeners.removeAll();
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/barcode_entry.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function submit() {
+            var tb;
+            try {
+                JSAN.use('util.sound'); var sound = new util.sound();
+                tb = document.getElementById('barcode_tb');
+                var barcode = tb.value;
+
+                barcode = String( barcode ).replace( /\s+/g, '' );
+
+                if (!barcode) { sound.bad(); add_msg($("patronStrings").getString('staff.patron.barcode_entry.no_barcode')); tb.select(); tb.focus(); return; }
+
+                JSAN.use('util.network'); var net = new util.network();
+
+                tb.disabled = true;
+                document.getElementById('progress').setAttribute('hidden','false');
+                // Auto-complete the barcode, users only. Handily, looks up all we need to know in the process.
+                var barcode_object = xulG.get_barcode(window, 'actor', barcode);
+                document.getElementById('progress').setAttribute('hidden','true');
+                tb.disabled = false; tb.select(); tb.focus(); ;
+                // user_false means the user said "None of the above", so abort without further prompts/actions
+                if(barcode_object == "user_false") return;
+                if(barcode_object == false) {
+                    // Boolean false means the barcode was not found, and the user wasn't prompted.
+                    sound.bad();
+                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
+                    return;
+                }
+                else if(typeof barcode_object.ilsevent != 'undefined') {
+                    // Getting an ilsevent error otherwise means something, likely permissions issues, went wrong
+                    sound.bad();
+                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(barcode_object)]));
+                    return;
+                }
+
+                if (g.data.user_org_unit_opt_in_enabled) {
+                    var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), barcode_object.id ]);
+                    if (typeof r.ilsevent != 'undefined') {
+                        throw(r);
+                    } else {
+
+                        if (r == 2) {
+                            // opt-in is disallowed at this location by patron's home library
+                            sound.bad();
+                            add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.opt_in_restricted'));
+                            return;
+                        }
+
+                        else if (r == 0) {
+
+                            JSAN.use('patron.util');
+                            var parts;
+                            // Handily, if the user was prompted, we should already have the user's name information returned from autocomplete
+                            // Use it if there, as it saves us a network call.
+                            if(barcode_object.request_data) parts = barcode_object.request_data;
+                            // Otherwise, make the network call
+                            else parts = patron.util.retrieve_name_via_id( ses(), barcode_object.id );
+    
+                            if (0 != g.error.yns_alert(
+                                    $("patronStrings").getFormattedString('staff.patron.barcode_entry.consent_from_patron',
+                                        [parts[0], parts[1] + (parts[2] ? ' ' + parts[2] : ''), g.data.hash.aou[ parts[3] ].name(), g.data.hash.aou[ parts[3] ].shortname()]),
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_title'),
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_accept'),
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_deny'), null,
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_confirm')
+                                )
+                            ) {
+                                tb.select(); tb.focus();
+                                return;
+                            } else {
+                                var c = net.simple_request('USER_ORG_UNIT_OPT_IN_CREATE',[ ses(), barcode_object.id ]);
+                                if (typeof c.ilsevent != 'undefined') throw(r);
+                            }
+                        }
+    
+                        sound.good();
+                        spawn(barcode_object.id, barcode_object.barcode);
+                    }
+                } else {
+                    sound.good();
+                    spawn(barcode_object.id, barcode_object.barcode);
+                }
+            } catch(E) {
+                tb.select(); tb.focus();
+                g.error.standard_unexpected_error_alert('barcode_entry.xul',E);
+            }
+        }
+
+        function add_msg(text) {
+            var x = document.getElementById('status');
+            var d = document.createElement('description');
+            x.appendChild(d);
+            d.appendChild( document.createTextNode( text ) );
+            d.setAttribute('style','color: red');
+        }
+
+        function spawn(id, barcode) {
+            if (xul_param('perm_editor')) { spawn_perm_editor(id); } else { spawn_checkout(barcode); }
+        }
+
+        function spawn_checkout(barcode) {
+            try {
+                var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+                var loc = xulG.url_prefix( horizontal_interface ? 'XUL_PATRON_HORIZ_DISPLAY' : 'XUL_PATRON_DISPLAY' );
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+                    window.xulG.set_tab( loc, {}, { 'barcode' : barcode } );
+                } else {
+                    location.href = loc + '?barcode=' + window.encodeURIComponent(barcode);
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.barcode_entry.patron_display_error'),E);
+            }
+        }
+
+        function spawn_perm_editor(id) {
+            try {
+                var loc = urls.XUL_USER_PERM_EDITOR + '?ses=' + window.encodeURIComponent(ses()) + '&usr=' + id;
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+                    window.xulG.set_tab( loc, {}, {} );
+                } else {
+                    location.href = loc;
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.barcode_entry.user_perm_display_error'),E);
+            }
+        }
+
+
+        function default_focus() { try { setTimeout( function() { document.getElementById('barcode_tb').focus(); }, 0); } catch(E) {} }
+    ]]>
+    </script>
+    
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+
+    <vbox flex="1" class="my_overflow">
+        <groupbox orient="vertical" flex="1">
+            <caption label="&staff.pat.barcode_entry.retrieve_patron.label;" />
+            <hbox>
+                <label value="&staff.pat.barcode_entry.barcode.label;" accesskey="&staff.pat.barcode_entry.barcode.accesskey;" control="barcode_tb"/>
+                <textbox id="barcode_tb"  context="clipboard"/>
+                <button label="&staff.pat.barcode_entry.submit_btn.label;" accesskey="&staff.pat.barcode_entry.submit_btn.accesskey;" oncommand="submit();"/>
+            </hbox>
+            <label value="&staff.pat.barcode_entry.retrieving.label;" style="color: green" id="progress" hidden="true"/>
+            <vbox id="status">
+            </vbox>
+        </groupbox>
+    </vbox>
+
+</window>
+

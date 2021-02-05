@@ -1,0 +1,10 @@
+[% INCLUDE 'staff/share/t_patron_search_form.tt2' %]
+
+<br/>
+<div class="row">
+  <div class="col-md-12">
+    [% INCLUDE 'staff/circ/patron/t_search_results.tt2' %]
+  </div>
+</div>
+
+

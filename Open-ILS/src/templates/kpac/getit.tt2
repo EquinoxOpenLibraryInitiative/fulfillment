@@ -1,0 +1,175 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2"; # MARC 
+    WRAPPER "kpac/parts/subpage.tt2";
+    attrs = {marc_xml => ctx.marc_xml};
+    INCLUDE get_marc_attrs args=attrs;
+    ctx.page_title = attrs.title | html 
+%]
+
+<div id="search_results_parent">
+    [% INCLUDE 'kpac/parts/record_row.tt2' rec_id=ctx.bre_id %]
+</div>
+          
+<div class="checkout_options">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td valign="top" class="left_brain_cell">
+                <div class="left_brain">
+
+                    [% WRAPPER 'kpac/parts/help_popups.tt2' popup_id='card_help' %]
+                        <img src="[% ctx.media_prefix %]/images/kpac/library_card.png[% ctx.cache_key %]" alt="[% l('library card') %]" /></div></td>
+                    [% END %]
+                    [% WRAPPER 'kpac/parts/help_popups.tt2' popup_id='password_help' %]
+                        <p>[% l('Enter your password') %]</p>
+                    [% END %]
+
+                    <div class="top_side">
+                        <h2>[% l('get it!') %]</h2>
+                        <p>[% l('If you would like to place a hold on this item, please enter the ' _
+                            'following information and click Submit below:') %]</p>
+                    </div>
+
+                    <form method='POST'><!-- login + place hold form -->
+
+                        <div class="checkout_box">
+                            <div class="box1_top">&nbsp;</div>
+                            <div class="box_inside">
+
+                                [% IF !ctx.user %]
+                                    [% seed = l(' Enter Numbers... ') %]
+                                    <p>[% l('Library Card Number without spaces:') %]</p>
+                                    <div class="input_box">
+                                        <input name="username" type="text" class="text_box" style="color:#aaa;" value="[% seed %]" 
+                                            onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+                                            onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+                                    </div>
+                                    <a class="help_btn" href="javascript:;" 
+                                        onclick="helpPopup('card_help', this, event);"><img 
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png[% ctx.cache_key %]" alt="[% l('pin number help') %]" /></a>
+
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="hr">&nbsp;</div>
+
+                                    <p>[% l('Password') %]</p>
+                                    <div class="input_box">
+                                        <input name="password" type="password" class="text_box" style="color:#aaa;" value="[% seed %]" 
+                                            onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+                                            onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+                                    </div>
+
+                                    <a class="help_btn" href="javascript:;" 
+                                        onclick="helpPopup('password_help', this, event);"><img 
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png[% ctx.cache_key %]" alt="[% l('password help') %]" /></a>
+
+                                    <input type="hidden" name='pickup_lib' value='0' id='pickup_lib'>
+                                    
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="hr">&nbsp;</div>
+
+                                [% ELSE %]
+
+                                <p>[% l('Choose a Pickup Library:') %]</p>
+                                <div class="pickup_lib">
+                                    [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
+                                        PROCESS "opac/parts/org_selector.tt2";
+                                        INCLUDE build_org_selector name='pickup_lib' 
+                                        value=def_lib id='pickup_lib' can_have_vols_only=1 hold_pickup_lib=1 %]
+
+                                 <!-- HIDDEN FIELDS FOR DEFAULT NOTIFICATION PREFERENCES -->
+                                 [%- IF ctx.notify_method -%]
+                                     [%- IF ctx.notify_method == '' OR ctx.notify_method == 'phone:email' -%]
+                                         [%- SET ctx.notify_method = 'email|phone' -%]
+                                     [%- END -%]
+                                 [%- ELSE -%]
+                                     [%- SET ctx.notify_method = 'email|phone' -%]
+                                 [%- END -%]
+                                 
+                                 [%- IF ctx.user.email -%]
+                                      [% ctx.notify_method.search('email') ? 
+                                     '<input type="hidden" id="email_notify" name="email_notify" value="t"/>' : '' %]
+                                 [%- END -%]
+
+                                 [%- IF allow_phone_notifications == 'true' -%]
+                                     [% IF ctx.default_phone %]
+                                            [% phone_value = ctx.default_phone %]
+                                     [% ELSE %]
+                                            [% phone_value= ctx.user.day_phone %]
+                                     [% END %]
+                                     
+                                     [% ctx.notify_method.search('phone') ? 
+                                         '<input type="hidden" id="phone_notify_checkbox" name="phone_notify_checkbox" value="t"/>
+                                         <input type="hidden" name="phone_notify" value="' _ phone_value _ '"/>' : '' %]
+                                 [%- END -%]
+
+                                [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
+                                       [% setting_notify = 'opac.default_sms_notify';
+                                          setting_carrier = 'opac.default_sms_carrier'; %]
+                                       [% ctx.notify_method.search('sms') ?
+                                            '<input type="hidden" id="sms_notify_checkbox" name="sms_notify_checkbox" value="t" />
+                                             <input type="hidden" id="sms_carrier" name="sms_carrier" value="' _ ctx.user_setting_map.$setting_carrier _ '" />
+                                             <input type="hidden" id="sms_notify" name="sms_notify" value="' _ ctx.user_setting_map.$setting_notify _ '" />' : '' %]
+                                 [% END %]                               
+
+                                </div>
+                                [% END %]
+                            </div>
+                        </div>
+                        <div class="submit_btn">
+                            <input type='hidden' name='action' value='hold'/>
+                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png[% ctx.cache_key %]" alt="[% l('Submit') %]"/>
+                        </div>
+                    </form>
+                </div>
+            </td>
+
+            <td valign="top">
+                <div class="right_brain">
+                    <div class="top_side">
+                        <h2>[% l('save it!') %]</h2>
+                        <p>[% l('If you would like to save this item to a list to be requested later, click Submit below.') %]</p>
+                        [% IF ctx.user AND ctx.bookbags AND ctx.bookbags.size > 0 %]
+                        <br/>
+                        <p>
+                            [% l('You may also save this item to a list you have already created by selecting one of your lists below.') %]
+                        </p>
+                        [% END %]
+                    </div>
+                    <form method='POST'>
+                        <input type='hidden' name='action' value='save'/>
+                        [% IF ctx.user AND ctx.bookbags AND ctx.bookbags.size > 0 %]
+                            <div class="checkout_box">
+                                <div class="box1_top">&nbsp;</div>
+                                <div class="box_inside">
+                                    <p>[% l('Add to one of your lists?') %]</p>
+                                    <select name='bookbag'>
+                                        <option value='' selected='selected'>[% l('-- Temporary List --') %]</option>
+                                        [% FOR bbag IN ctx.bookbags %]
+                                            <option value="[% bbag.id %]">[% bbag.name | html %]</option>
+                                        [% END %]
+                                    </select>
+                                </div>
+                            </div>
+                        [% END %]
+                        <div class="submit_btn">
+                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png[% ctx.cache_key %]" alt="[% l('Submit') %]" />
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="sub_navigation2 checkout">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            [%  # in the absence of a sane referer, return to the detail page
+                url = ctx.kpac_root _ (ctx.referer.match('results') ? '/results' : '/record/' _ ctx.bre_id) %]
+            <td><a href="[% mkurl(url) %]"><img src="[% ctx.media_prefix %]/images/kpac/cancel_back_btn.png[% ctx.cache_key %]" /></a></td>
+            <td width="100%" class="nav_mid_bg">&nbsp;</td>
+        </tr>
+    </table>
+</div>
+         
+[% END %]

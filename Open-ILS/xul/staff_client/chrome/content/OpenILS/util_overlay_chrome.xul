@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay id="openils_util_overlay"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script>dump('Loading OpenILS/util_overlay_chrome.xul for ' + location.href + '\n');</script>
+    <scripts id="openils_util_scripts">
+        <script>
+        <![CDATA[
+        var _dump_level = 2; // 0 None, 1 Error, 2 Warning, 3 Info, 4 debug
+        if (!_original_dump) {
+            var _original_dump = window.dump;
+            window.dump = function (msg,level) {
+                try {
+                    if (typeof level == 'undefined') { level = 4; }
+                    if (level > _dump_level) { return; }
+                    if (typeof _dump_prefix != 'undefined') {
+                        _original_dump(_dump_prefix + ' ');
+                    }
+                    switch(level) {
+                        case 1: case 'error': _original_dump('error: '); break;
+                        case 2: case 'warn': _original_dump('warn: '); break;
+                        case 3: case 'info': _original_dump('info: '); break;
+                        case 4: case 'debug': _original_dump('debug: '); break;
+                    }
+                    _original_dump(msg);
+                } catch(E) {
+                    alert('error in dump: ' + E + '\nmsg = ' + msg + '\nlevel = ' + level + '\n');
+                }
+            };
+        }
+        ]]>
+        </script>
+        <script type="text/javascript" src="../main/constants.js" />
+        <script>
+        <![CDATA[
+            try {
+                if (typeof xulG.url_prefix != 'undefined') {
+                    dump('pulling in custom.js in util_overlay_chrome.xul\n');
+                    // Pull in local customizations
+                    var r = new XMLHttpRequest();
+                    var custom_js = xulG.url_prefix('CUSTOM_JS');
+                    r.open("GET", custom_js, false);
+                    r.send(null);
+                    if (r.status == 200) {
+                        dump('Evaluating ' + custom_js + '\n');
+                        eval( r.responseText );
+                    }
+                } else {
+                    dump('cannot pull in custom.js in util_overlay_chrome.xul\n');
+                }
+            } catch(E) {
+                dump('cannot pull in custom.js in util_overlay_chrome.xul: ' + E + '\n');
+            }
+        ]]>
+        </script>
+        <script type="text/javascript" src="util/utils.js" />
+        <script type="text/javascript" src="util/CGI.js" />
+        <script type="text/javascript" src="util/md5.js" />
+        <script type="text/javascript" src="util/JSON_v1.js" />
+        <script type="text/javascript" src="util/fmall.js" />
+        <script type="text/javascript" src="util/fmgen.js" />
+        <script type="text/javascript" src="util/RemoteRequest.js" />
+        <script type='text/javascript' src='util/en-US/OrgTree.js' />
+        <script type="text/javascript" src="util/org_utils.js" />   
+        <script type="text/javascript" src="global_util.js" />   
+        <script type="text/javascript" src="event_util.js" />   
+        <messagecatalog id="offlineStrings" src='chrome://open_ils_staff_client/locale/offline.properties'/>
+        <messagecatalog id="authStrings" src='chrome://open_ils_staff_client/locale/auth.properties'/>
+        <hbox id="debug_box" hidden="true" flex="1" style="border: red thin dashed">
+            <label value="Debug:" />
+            <textbox id="debug_tb" flex="1"/>
+            <button label="Execute" oncommand="try { var dtb = document.getElementById('debug_tb'); alert( eval( dtb.value ) ); } catch(E) { alert(E); }; dtb.focus();"/>
+            <button label="Inspect" oncommand="try { var dtb = document.getElementById('debug_tb'); var dx = eval( dtb.value ); var ds = ''; for (var di in dx) { ds += di + '=' + dx[di] + '\r\n'; }; window.open('data:text/plain;charset=UTF-8,'+window.encodeURIComponent(ds),'debug_win','chrome,resizable,modal'); } catch(E) { alert(E); }; dtb.focus();"/>
+            <button label="js2JSON" oncommand="try { var dtb = document.getElementById('debug_tb'); alert( js2JSON( eval( dtb.value ) ) ); } catch(E) { alert(E); }; dtb.focus();"/>
+        </hbox>
+        <keyset><key id="debug_box_key" keycode="VK_F7" modifiers="control,shift" oncommand="JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'}); var dtb = document.getElementById('debug_tb'); var dx = document.getElementById('debug_box'); if(data.enable_debug || !dx.hidden) { dx.hidden = !dx.hidden; if(!dx.hidden) dtb.focus();}"/></keyset>
+ 
+        <script>dump('finished openils_util_overlay\n');</script>
+    </scripts>
+
+</overlay>
+

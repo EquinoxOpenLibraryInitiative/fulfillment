@@ -1,0 +1,159 @@
+@import url("global_custom.css");
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
+@namespace html url("http://www.w3.org/TR/REC-html40"); 
+@namespace xhtml url("http://www.w3.org/1999/xhtml"); 
+
+help { -moz-binding: url('/xul/server/main/bindings.xml#help'); }
+messagecatalog { -moz-binding: url('/xul/server/main/bindings.xml#messagecatalog'); }
+.shrinkable_groupbox { font-weight: bold; -moz-binding: url('/xul/server/main/bindings.xml#caption'); }
+
+window:not([active="true"]) menubar > menu { color: menutext !important }
+
+.hideme { display: none; }
+
+treechildren::-moz-tree-checkbox(checked) {
+    /* css for checked cells */
+    list-style-image: url("chrome://global/skin/checkbox/cbox-check.gif");
+}
+
+treechildren::-moz-tree-row(selected) {
+    border: thin dashed lightblue ! important;
+}
+
+treechildren::-moz-tree-column(ordinal) {
+    background: -moz-dialog ! important;
+}
+
+treechildren::-moz-tree-cell-text(ordinal) {
+    font-weight: bold ! important;
+}
+
+#lineno { min-width: 3em ! important; }
+
+/*
+treechildren::-moz-tree-cell-text(selected,focus) {
+    color: black;
+}
+*/
+
+.ALL_FONTS_SMALLER * { font-size-adjust: .3 !important;}
+.ALL_FONTS_LARGER * { font-size-adjust: 1.1 !important; }
+.ALL_FONTS_XX_SMALL * { font-size: xx-small !important; }
+.ALL_FONTS_X_SMALL * { font-size: x-small !important; }
+.ALL_FONTS_SMALL * { font-size: small !important; }
+.ALL_FONTS_MEDIUM * { font-size: medium !important; }
+.ALL_FONTS_LARGE * { font-size: large !important; }
+.ALL_FONTS_X_LARGE * { font-size: x-large !important; }
+.ALL_FONTS_XX_LARGE * { font-size: xx-large !important; }
+.ALL_FONTS_5PT * { font-size: 5pt !important; }
+.ALL_FONTS_6PT * { font-size: 6pt !important; }
+.ALL_FONTS_7PT * { font-size: 7pt !important; }
+.ALL_FONTS_8PT * { font-size: 8pt !important; }
+.ALL_FONTS_9PT * { font-size: 9pt !important; }
+.ALL_FONTS_10PT * { font-size: 10pt !important; }
+.ALL_FONTS_11PT * { font-size: 11pt !important; }
+.ALL_FONTS_12PT * { font-size: 12pt !important; }
+.ALL_FONTS_13PT * { font-size: 13pt !important; }
+.ALL_FONTS_14PT * { font-size: 14pt !important; }
+.ALL_FONTS_15PT * { font-size: 15pt !important; }
+.ALL_FONTS_16PT * { font-size: 16pt !important; }
+.ALL_FONTS_17PT * { font-size: 17pt !important; }
+.ALL_FONTS_18PT * { font-size: 18pt !important; }
+
+.ALL_FONTS_SMALLER *|* { font-size-adjust: .3 !important;}
+.ALL_FONTS_LARGER *|* { font-size-adjust: 1.1 !important; }
+.ALL_FONTS_XX_SMALL *|* { font-size: xx-small !important; }
+.ALL_FONTS_X_SMALL *|* { font-size: x-small !important; }
+.ALL_FONTS_SMALL *|* { font-size: small !important; }
+.ALL_FONTS_MEDIUM *|* { font-size: medium !important; }
+.ALL_FONTS_LARGE *|* { font-size: large !important; }
+.ALL_FONTS_X_LARGE *|* { font-size: x-large !important; }
+.ALL_FONTS_XX_LARGE *|* { font-size: xx-large !important; }
+.ALL_FONTS_5PT *|* { font-size: 5pt !important; }
+.ALL_FONTS_6PT *|* { font-size: 6pt !important; }
+.ALL_FONTS_7PT *|* { font-size: 7pt !important; }
+.ALL_FONTS_8PT *|* { font-size: 8pt !important; }
+.ALL_FONTS_9PT *|* { font-size: 9pt !important; }
+.ALL_FONTS_10PT *|* { font-size: 10pt !important; }
+.ALL_FONTS_11PT *|* { font-size: 11pt !important; }
+.ALL_FONTS_12PT *|* { font-size: 12pt !important; }
+.ALL_FONTS_13PT *|* { font-size: 13pt !important; }
+.ALL_FONTS_14PT *|* { font-size: 14pt !important; }
+.ALL_FONTS_15PT *|* { font-size: 15pt !important; }
+.ALL_FONTS_16PT *|* { font-size: 16pt !important; }
+.ALL_FONTS_17PT *|* { font-size: 17pt !important; }
+.ALL_FONTS_18PT *|* { font-size: 18pt !important; }
+
+.copyable * { -moz-user-select: text; -moz-user-focus: normal; }
+
+*|textarea:focus { background-color: #DDFFDD; }
+*|input:focus { background-color: #DDFFDD; }
+
+button.sym {width:2em; min-width:1em; }
+
+.outline_me { outline: solid; }
+.clipboard_outline_me { outline: dotted thin gray; }
+
+.click_link { text-decoration: underline; color: blue; -moz-user-focus: normal; cursor: pointer; }
+
+tabpanel { border: 2px groove black; }
+caption { font-weight: bold; }
+
+/*
+Enable for the windows build.  This slows linux down too much.
+*/
+/*
+.circ_opacity { -moz-opacity: 0.7; }
+*/
+
+.nav { 
+    -moz-appearance: none;
+    margin: 0px;
+    min-width: 6.3em;
+    color: #000000;
+    font-family: arial, san-serif;
+    font-weight: bold;
+    height: 26px;
+}
+
+.my_overflow { overflow: auto; }
+
+/*
+iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+.my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+*/
+
+.postit_hb { border-radius: 30px; background-color: black; }
+.postit_gb { border-radius: 30px; background-color: yellow; }
+
+.success_text { color: white; background-color: green; }
+.failure_text { color: white; background-color: red; }
+
+.text_left { text-align: left; }
+.text_right { text-align: right; }
+.text_center { text-align: center; }
+.text_justify { text-align: justify; }
+
+.header { font-weight: bold; }
+.header1 { font-weight: bold; font-size: large; }
+.emphasis { font-weight: bold; }
+
+.tan { background-color: #D2B48C; }
+.sandy_brown { background-color: #F4A460; }
+.peach_puff { background-color: #FFDAB9; }
+.pale_violet_red { background-color: #D87093; }
+.cadet_blue { background-color: #5F9EA0; }
+.dark_salmon { background-color: #E9967A; }
+.coral { background-color: #FF7F50; }
+
+listitem { border-bottom: solid thin black; }
+
+/*
+ * disable Edit Hold Range and Edit Hold Focus by default; should probably be using perms/settings for this
+ */
+.edit_hold_range { display: none; }
+.edit_hold_focus { display: none; }
+
+.oils_event { color: red; }
+

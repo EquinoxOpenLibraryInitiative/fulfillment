@@ -1,0 +1,67 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs_my_lists";
+    parent="prefs";
+    prefs_page = 'prefs_my_lists' %]
+
+
+    <h3>[% l('List Preferences') %]</h3>
+    <form method='post'>
+
+       <table class="full-width table" id="acct_search_main"
+            title="[% l('List Preferences') %]">
+            <tbody>
+
+                [% IF ctx.updated_user_settings %]
+                <tr><td colspan='2'>
+                    <div class='renew-summary'>
+                        [% l('Account Successfully Updated') %]
+                    </div>
+                </td></tr>
+                [% END %]
+
+                [%- setting = 'opac.lists_per_page' -%]
+                <tr >
+                    <td><label for='[% setting %]'>[%l("Lists per page") %]</label></td>
+                    <td>
+                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [10, 15, 20, 25] %]
+                                <option value='[% val | uri %]'
+                                    [% IF ctx.user_setting_map.$setting == val %]
+                                        selected='selected'[% END %]>[% val | html %]</option>
+                            [% END %]
+                        </select>
+                      <a href="#" title="Change the amount of lists shown in 'My Lists'." data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    </td>
+                </tr>
+                [%- setting = 'opac.list_items_per_page' -%]
+                <tr >
+                    <td><label for='[% setting %]'>[%l("List items per page") %]</label></td>
+                    <td>
+                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [10, 15, 20, 25, 50] %]
+                                <option value='[% val | uri %]'
+                                    [% IF ctx.user_setting_map.$setting == val %]
+                                        selected='selected'[% END %]>[% val | html %]</option>
+                            [% END %]
+                        </select>
+                       <a href="#" title="Change the amount of items shown while viewing a 'My List'." data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
+    </form>
+    [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
+
+[% END %]

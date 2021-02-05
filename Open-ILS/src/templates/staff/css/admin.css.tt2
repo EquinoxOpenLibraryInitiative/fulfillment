@@ -1,0 +1,37 @@
+
+#age-to-lost-container {
+  margin-top: 20px;
+}
+
+#age-to-lost-container .row {
+  margin-top: 20px;
+}
+
+#age-to-lost-container .form-group {
+  padding-right: 10px;
+}
+  
+.admin-splash-container .row {
+  margin-top: 5px;
+}
+
+.admin-splash-container .new-entry {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid #F5F5F5;
+}
+
+#auto-print-container {
+  margin-top: 20px;
+}
+
+#auto-print-container .row {
+  margin-top: 20px;
+}
+
+#edit-org-container input.ng-invalid-required {
+  background-color: yellow;
+  color: red;
+}
+
+

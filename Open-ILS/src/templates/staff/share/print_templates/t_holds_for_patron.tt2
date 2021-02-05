@@ -1,0 +1,22 @@
+<!--
+Template for printing a list of hold requests for a patron. Fields include:
+
+* holds - a list of hold request, each of which includes
+ 
+  * title
+
+-->
+<div>
+  <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
+  <div>[% l('You have the following title on hold:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="hold in holds">
+      <div>{{hold.title}}</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
+  <div>[% l('You were helped by [_1]', '{{staff.first_given_name}}') %]</div>
+<br/>
+

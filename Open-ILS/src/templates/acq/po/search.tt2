@@ -1,0 +1,143 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Purchase Orders') %]
+<script type="text/javascript">
+    var poIds = function(s) {
+        return s == "" ? undefined :
+            s.split(",").map(function(t) { return Number(t); });
+    }("[% ctx.page_args.0 %]");
+</script>
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>[% l('PO Search') %]</div>
+</div>
+
+<div id="oils-acq-po-heading-template" class="hidden">
+    <span>[% l('Purchase Order: [_1]', '<a attr="name"></a>') %]</span>
+    <span>[% l('Total Lineitems: [_1]', '<span attr="lineitem_count"></span>') %]</span>
+    <span>[% l('Total Encumbered: $[_1]', '<span attr="amount_encumbered">') %]</span></span>
+    <span>[% l('Total Spent: $[_1]', '<span attr="amount_spent"></span>') %]</span>
+    <span>[% l('Total Copies: [_1]', '<span attr="copies"></span>') %]</span>
+    <span>[% l('Status: [_1]', '<span attr="state"></span>') %]</span>
+    <span><a class="hidden" attr="activator" href="javascript:void(0);">[% l('Activate Order') %]</a></span>
+</div>
+
+<script type="text/javascript">
+    function formatId(id) {
+        if(id) return '<a href="[% ctx.base_path %]/acq/po/view/' + id + '">'+id;
+    }
+</script>
+
+
+<form dojoType='dijit.form.Form' action='' method='' id='oils-acq-po-search-form'>
+
+    <script type="dojo/method" event="onSubmit">
+        doSearch(this.getValues());
+        return false; /* don't redirect */
+    </script>
+
+    <div class='oils-acq-basic-form-div'>
+
+        <label for='id'>[% l('ID') %]</label>
+        <input dojoType='dijit.form.NumberTextBox' name='id'> </input>
+
+        <label for='provider'>[% l('Provider') %]</label>
+        <input id='po-search-provider-selector'/>
+
+        <label for='state'>[% l('State') %]</label></td>
+        <script type="text/javascript">
+            dojo.require('dojo.data.ItemFileReadStore');
+            var stateStore = new dojo.data.ItemFileReadStore({
+                data : {
+                    identifier:"value",
+                    label: "name",
+                    items: [
+                        /* FIXME This is probably not the correct final list of 
+                        possible states */
+                        {name:"[% l('New') %]", value:'new'},
+                        {name:"[% l('In Process') %]", value:'in-process'},
+                        {name:"[% l('Pending') %]", value:'pending'},
+                        {name:"[% l('On order') %]", value:'on-order'}
+                    ]
+                }
+            });
+        </script>
+        <input dojoType='dijit.form.FilteringSelect' 
+            name='state' 
+            required='false' 
+            store='stateStore' 
+            labelAttr='name' 
+            valueAttr='value' 
+            searchAttr='name'/>
+
+        <label for='ordering_agency'>[% l('Ordering Agency') %]</label>
+        <input id='po-search-agency-selector'/>
+
+        <span dojoType='dijit.form.Button' type='submit'>[% l('Search') %]</span>
+    </div>
+    <div class="oils-acq-basic-form-div">
+        <input dojoType="dijit.form.CheckBox" value="1" name="metapo_view"
+            id="metapo_view" type="checkbox" />
+        <label for="metapo_view">[% l('Show results as a virtual combined PO') %]</label>
+    </div>
+</form>
+<br/>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" id="holds_po_grid">
+    <table 
+            id="po-grid" 
+            autoHeight='true'
+            jsId="poGrid" 
+            dojoType="openils.widget.AutoGrid" 
+            query="{id: '*'}" 
+            fieldOrder="['id', 'owner', 'ordering_agency', 'provider', 'create_time', 'edit_time', 'state']"
+            suppressFields="['owner', 'editor', 'creator']"
+            query="{id: '*'}"
+            defaultCellWidth='"auto"'
+            showSequenceFields='true'
+            showPaginator='true'
+            fmClass='acqpo'> 
+        <thead> 
+            <tr> 
+                <th field="id" formatter='formatId'>[% l('ID') %]</th> 
+                <!--
+                <th field="owner" get='getPOOwner'></th>
+                -->
+            </tr> 
+        </thead> 
+    </table>     
+    <div comment='dojo-needs-me'></div>
+</div>
+<div id="oils-acq-holds-metapo-summary" class="hidden">
+    <table id="oils-acq-metapo-summary">
+        <thead>
+            <tr>
+                <th colspan="2">[% l('Results Summary') %]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>[% l('Total Purchase Orders:') %]</th>
+                <td id="oils-acq-metapo-summary-po"></td>
+            </tr>
+            <tr>
+                <th>[% l('Total Lineitems:') %]</th>
+                <td id="oils-acq-metapo-summary-lineitem_count"></td>
+            </tr>
+            <tr>
+                <th>[% l('Total Copies:') %]</th>
+                <td id="oils-acq-metapo-summary-copies"></td>
+            </tr>
+            <tr>
+                <th>[% l('Total Encumbered:') %]</th>
+                <td>$<span id="oils-acq-metapo-summary-amount_encumbered"></span></td>
+            </tr>
+            <tr>
+                <th>[% l('Total Spent:') %]</th>
+                <td>$<span id="oils-acq-metapo-summary-amount_spent"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+[% INCLUDE 'acq/common/li_table.tt2' %]
+
+<!-- load the page-specific JS -->
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
+[% END %]

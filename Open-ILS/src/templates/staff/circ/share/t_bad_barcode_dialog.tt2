@@ -1,0 +1,25 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+      aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Bad Barcode') %]</h4>
+  </div>
+  <div class="modal-body">
+    <img src="[% ctx.media_prefix %]/images/bad_barcode.png"/>
+    <div>
+[% |l('{{barcode}}') %]
+Invalid barcode: <div class="strong-text-4">[_1]</div>
+Your entry has a bad check digit, possibly due to a bad scan.<br/>
+Choose Cancel to try again, or Accept to use barcode <b>[_1]</b> anyway.
+[% END %]
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" 
+      ng-click="ok()" value="[% l('Accept Barcode') %]"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
+
+

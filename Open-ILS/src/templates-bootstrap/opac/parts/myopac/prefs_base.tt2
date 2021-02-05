@@ -1,0 +1,9 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2"; %]
+
+
+
+
+[% content; %]
+
+[% END %]

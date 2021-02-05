@@ -1,0 +1,88 @@
+[% WRAPPER base.tt2 %]
+<h1>[% l('Circulation Modifier') %]</h1> <br/>
+
+<div class='hidden'>
+    <select dojoType="dijit.form.FilteringSelect" jsId="sip2Selector">
+        <option value='000'>[% l('Other') %]</option>
+        <option value='001' selected='selected'>[% l('Book') %]</option>
+        <option value='002'>[% l('Magazine') %]</option>
+        <option value='003'>[% l('Bound Journal') %]</option>
+        <option value='004'>[% l('Audio Tape') %]</option>
+        <option value='005'>[% l('Video Tape') %]</option>
+        <option value='006'>[% l('CD/CDROM') %]</option>
+        <option value='007'>[% l('Diskette') %]</option>
+        <option value='008'>[% l('Book with diskette') %]</option>
+        <option value='009'>[% l('Book with CD') %]</option>
+        <option value='010'>[% l('Book with audio tape') %]</option>
+    </select>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>[% l('Circulation Modifier') %]</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>[% l('New Circ Modifier') %]</button>
+        <button dojoType='dijit.form.Button' onClick='cmGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cmGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['code', 'name', 'description', 'sip2_media_type', 'magnetic_media']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='ccm'
+            showPaginator='true'
+            editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field="magnetic_media" options='No,Yes' values='f,t'></th>
+                <th field="sip2_media_type" formatter='formatSIPMediaType'></th>
+            </tr>
+        </thead>
+    </table>
+ </div>
+
+<script type ="text/javascript">
+
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    function formatSIPMediaType(inDatum) {
+        switch (inDatum) {
+            case '000':
+                return '[% l('Other') %]';
+            case '001':
+                return '[% l('Book') %]';
+            case '002':
+                return '[% l('Magazine') %]';
+            case '003':
+                return '[% l('Bound Journal') %]';
+            case '004':
+                return '[% l('Audio Tape') %]';
+            case '005':
+                return '[% l('Video Tape') %]';
+            case '006':
+                return '[% l('CD/CDROM') %]';
+            case '007':
+                return '[% l('Diskette') %]';
+            case '008':
+                return '[% l('Book with diskette') %]';
+            case '009':
+                return '[% l('Book with CD') %]';
+            case '010':
+                return '[% l('Book with audio tape') %]';
+        }
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            cmGrid.overrideEditWidgets.sip2_media_type = sip2Selector;
+            cmGrid.loadAll({order_by:{ccm : 'name'}});
+        }
+    );
+
+</script>
+
+[% END %]

@@ -1,0 +1,87 @@
+
+<eg-string key="catalog.record.toast.conjoined" 
+  i18n-text text="Conjoined Record Target Set"></eg-string>
+<eg-string key="catalog.record.toast.overlay" 
+  i18n-text text="Record Overlay Target Set"></eg-string>
+<eg-string key="catalog.record.toast.holdTransfer" 
+  i18n-text text="Hold Transfer Target Set"></eg-string>
+<eg-string key="catalog.record.toast.holdingTransfer" 
+  i18n-text text="Holding Transfer Target Set"></eg-string>
+<eg-string key="catalog.record.toast.cleared" 
+  text="Record Marks Cleared"></eg-string>
+
+<eg-bucket-dialog #recordBucketDialog bucketClass="biblio" [itemIds]="[recId]">
+</eg-bucket-dialog>
+
+<div class="row ml-0 mr-0">
+
+  <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}">
+    <button class="btn btn-outline-primary ml-1" i18n>Place Hold</button>
+  </a>
+
+  <button class="btn btn-outline-primary ml-1" (click)="addHoldings()" i18n>
+    Add Holdings
+  </button>
+
+  <div ngbDropdown placement="bottom-right" class="ml-1">
+    <button class="btn btn-outline-primary" id="actionsForSerials"
+      ngbDropdownToggle i18n>Serials</button>
+    <div ngbDropdownMenu aria-labelledby="actionsForSerials">
+      <a class="dropdown-item" href="/eg/staff/serials/{{recId}}" i18n>
+        Manage Subscriptions
+      </a>
+      <a class="dropdown-item" href="/eg/staff/serials/{{recId}}/manage-mfhds" i18n>
+        Manage MFHDs
+      </a>
+    </div>
+  </div>
+
+  <div ngbDropdown placement="bottom-right" class="ml-1">
+    <button class="btn btn-outline-primary" id="actionsForDd"
+      ngbDropdownToggle i18n>Mark For...</button>
+    <div ngbDropdownMenu aria-labelledby="actionsForDd">
+      <button class="dropdown-item" (click)="mark('conjoined')">
+        <span i18n>
+          Conjoined Items<ng-container *ngIf="targets.conjoined.current"> 
+            (Currently {{targets.conjoined.current}})</ng-container>
+        </span>
+      </button>
+      <button class="dropdown-item" (click)="mark('overlay')">
+        <span i18n>
+          Overlay Target<ng-container *ngIf="targets.overlay.current"> 
+            (Currently {{targets.overlay.current}})</ng-container>
+        </span>
+      </button>
+      <button class="dropdown-item" (click)="mark('holdTransfer')">
+        <span i18n>
+          Title Hold Transfer<ng-container *ngIf="targets.holdTransfer.current"> 
+            (Currently {{targets.holdTransfer.current}})</ng-container>
+        </span>
+      </button>
+      <button class="dropdown-item" (click)="mark('holdingTransfer')">
+        <span i18n>
+          Holding Transfer<ng-container *ngIf="targets.holdingTransfer.current">
+            (Currently {{targets.holdingTransfer.current}})</ng-container>
+        </span>
+      </button>
+      <button class="dropdown-item" (click)="clearMarks()">
+        <span i18n>Reset Record Marks</span>
+      </button>
+    </div>
+  </div>
+
+  <div ngbDropdown placement="bottom-right" class="ml-1">
+    <button class="btn btn-outline-primary" id="otherActionsForDd"
+      ngbDropdownToggle i18n>Other Actions</button>
+    <div ngbDropdownMenu aria-labelledby="otherActionsForDd">
+      <button class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
+        <span i18n>Add To Bucket</span>
+      </button>
+      <a class="dropdown-item" 
+        href="/eg/staff/acq/legacy/lineitem/related/{{recId}}?target=bib">
+        <span i18n>View/Place Orders</span>
+      </a>
+    </div>
+  </div>
+</div>
+

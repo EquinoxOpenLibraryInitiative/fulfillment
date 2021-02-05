@@ -1,0 +1,328 @@
+
+<!-- org unit selector -->
+
+<div class="row mt-3">
+  <div class="col-lg-4">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text" i18n>Holdings Maintenance</div>
+      </div>
+      <eg-org-select [initialOrg]="contextOrg" 
+        (onChange)="contextOrgChanged($event)">
+      </eg-org-select>
+    </div>
+  </div>
+</div>
+
+<!-- Location / Barcode cell template -->
+
+<ng-template #locationTemplate let-row="row" let-userContext="userContext">
+  <!-- pl-* is doubled for added impact -->
+  <div class="pl-{{row.locationDepth}}">
+    <span class="pl-{{row.locationDepth}}">
+      <a class="label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
+        <!--  leave the icons in place for all node types, but make them
+              invisible when they are not needed. -->
+        <span *ngIf="row.treeNode.expanded"
+          [ngClass]="{invisible: row.copy || row.treeNode.children.length == 0}"
+          class="material-icons p-0 m-0">keyboard_arrow_down</span>
+        <span *ngIf="!row.treeNode.expanded"
+          [ngClass]="{invisible: row.copy || row.treeNode.children.length == 0}"
+          class="material-icons p-0 m-0">keyboard_arrow_right</span>
+        <span>{{row.locationLabel}}</span>
+      </a>
+    </span>
+  </div>
+</ng-template>
+
+<!-- Holdable true/false display -->
+
+<ng-template #holdableTemplate let-row="row" let-userContext="userContext">
+  <ng-container *ngIf="row.copy">
+    <eg-bool [value]="userContext.copyIsHoldable(row.copy)">
+    </eg-bool>
+  </ng-container>
+</ng-template>
+
+<eg-mark-damaged-dialog #markDamagedDialog></eg-mark-damaged-dialog>
+<eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
+<eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+<eg-replace-barcode-dialog #replaceBarcode></eg-replace-barcode-dialog>
+<eg-delete-holding-dialog #deleteHolding></eg-delete-holding-dialog>
+<eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
+<eg-conjoined-items-dialog #conjoinedDialog></eg-conjoined-items-dialog>
+<eg-make-bookable-dialog #makeBookableDialog></eg-make-bookable-dialog>
+<eg-transfer-items #transferItems></eg-transfer-items>
+<eg-transfer-holdings #transferHoldings></eg-transfer-holdings>
+<eg-alert-dialog #transferAlert
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="No Target Selected"
+  dialogBody="Please select a suitable transfer target"></eg-alert-dialog>
+
+<!-- holdings grid -->
+<div class='eg-copies w-100 mt-3'>
+  <eg-grid #holdingsGrid [dataSource]="gridDataSource"
+    (onRowActivate)="onRowActivate($event)" [disablePaging]="true"
+    [rowClassCallback]="rowClassCallback" [cellTextGenerator]="cellTextGenerator"
+    [sortable]="false" persistKey="cat.holdings">
+
+    <!-- checkboxes / filters -->
+
+    <eg-grid-toolbar-checkbox i18n-label label="Show Call Numbers"
+      #callNumsCheckbox (onChange)="toggleShowCallNums($event)">
+    </eg-grid-toolbar-checkbox> 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Copies" 
+      #copiesCheckbox (onChange)="toggleShowCopies($event)">
+    </eg-grid-toolbar-checkbox> 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Empty Call Numbers"
+      #emptyCallNumsCheckbox (onChange)="toggleShowEmptyCallNums($event)">
+    </eg-grid-toolbar-checkbox> 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Empty Libs"            
+      #emptyLibsCheckbox (onChange)="toggleShowEmptyLibs($event)">
+    </eg-grid-toolbar-checkbox> 
+
+    <!-- row actions -->
+
+    <!-- row actions : Ungrouped -->
+
+    <eg-grid-toolbar-action
+      i18n-label label="Print Labels" (onClick)="openItemPrintLabels($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-label label="Request Items" (onClick)="requestItems($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-label label="Link as Conjoined to Marked Bib Record"
+      (onClick)="openConjoinedDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <!-- row actions : Add -->
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add Call Numbers"
+      (onClick)="openHoldingAdd($event, true, false)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add Items"
+      (onClick)="openHoldingAdd($event, false, true)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add Call Numbers and Items"
+      (onClick)="openHoldingAdd($event, true, true)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add Item Alerts"
+      (onClick)="openItemNotes($event, 'create')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add Items To Bucket"
+      (onClick)="openBucketDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <!-- row actions: Booking -->
+
+    <eg-grid-toolbar-action
+      i18n-group group="Booking" i18n-label label="Book Item Now"
+      (onClick)="bookItems($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Booking" i18n-label label="Make Items Bookable"
+      (onClick)="makeBookable($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Booking" i18n-label label="Manage Reservations"
+      (onClick)="manageReservations($event)">
+    </eg-grid-toolbar-action>
+    
+    <!-- row actions: Edit -->
+
+    <eg-grid-toolbar-action
+      i18n-group group="Edit" i18n-label label="Edit Call Numbers"
+      (onClick)="openHoldingEdit($event, false, true)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Edit" i18n-label label="Edit Call Numbers And Items"
+      (onClick)="openHoldingEdit($event, false, false)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Edit" i18n-label label="Edit Items"
+      (onClick)="openHoldingEdit($event, true, false)">
+    </eg-grid-toolbar-action>
+    
+    <eg-grid-toolbar-action
+      i18n-group group="Edit" i18n-label label="Edit Item Alerts"
+      (onClick)="openItemNotes($event, 'manage')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Edit" i18n-label label="Replace Barcodes"
+      (onClick)="openReplaceBarcodeDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <!-- row actions: Delete -->
+
+    <eg-grid-toolbar-action
+      i18n-group group="Delete" i18n-label label="Delete Empty Call Numbers"
+      (onClick)="deleteHoldings($event, 'callNums')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+     i18n-group group="Delete" i18n-label label="Delete Items"
+     (onClick)="deleteHoldings($event, 'copies')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Delete" i18n-label label="Delete Call Numbers and Items"
+      (onClick)="deleteHoldings($event, 'both')">
+    </eg-grid-toolbar-action>
+    
+    <!-- row actions : Show -->
+
+    <eg-grid-toolbar-action
+      i18n-group group="Show" i18n-label label="Show Item Status (list)"
+      (onClick)="openItemStatusList($event)"></eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Show" i18n-label label="Show Item Status (detail)"
+      (onClick)="openItemStatus($event)"></eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Show" i18n-label label="Show Item Holds"
+      (onClick)="openItemHolds($event)"></eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Show" i18n-label label="Show Triggered Events"
+      (onClick)="openItemTriggeredEvents($event)"></eg-grid-toolbar-action>
+
+    <!-- row actions : Mark -->
+
+    <eg-grid-toolbar-action
+      group="Mark" i18n-group i18n-label label="Mark Item Damaged"
+      (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Mark" i18n-label label="Mark Item Missing"
+      (onClick)="showMarkMissingDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Mark" 
+      i18n-label label="Mark Library/Call Number as Transfer Destination"
+      (onClick)="markLibCnForTransfer($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Transfer" 
+      i18n-label label="Transfer Items to Marked Destination"
+      (onClick)="transferSelectedItems($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Transfer" 
+      i18n-label label="Transfer Holdings to Marked Destination"
+      (onClick)="transferSelectedHoldings($event)">
+    </eg-grid-toolbar-action>
+
+    <!-- fields -->
+    <!-- NOTE column names were added to match the names from the AngJS grid
+        so grid settings would propagate -->
+
+    <eg-grid-column path="index" [hidden]="true" [index]="true">
+    </eg-grid-column>
+    <eg-grid-column name="id" path="copy.id" [hidden]="true" label="Item ID" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="callNum.id" [hidden]="true" label="Call Number ID" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column name="owner_label" [flex]="4"
+      [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
+      label="Location/Barcode" [disableTooltip]="true" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="callNumCount" datatype="number" label="Call Numbers" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="copyCount" datatype="number" label="Copies" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="callNum._label" name="call_number.label" 
+      label="Call Number" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="copy.barcode" name="barcode" label="Barcode" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circ Library" path="copy.circ_lib" 
+      name="circ_lib.name" datatype="org_unit"></eg-grid-column>
+    <eg-grid-column i18n-label label="Owning Library" path="callNum.owning_lib" 
+      datatype="org_unit"></eg-grid-column>
+    <eg-grid-column i18n-label label="Due Date" path="circ.due_date" 
+      datatype="timestamp"></eg-grid-column>
+    <eg-grid-column i18n-label label="Shelving Location" 
+      path="copy.location.name" name="location.name">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circulation Modifier" 
+      path="copy.circ_modifier" name="circ_modifier">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Item Number" path="copy.copy_number" 
+      name="copy_number" [hidden]="true">
+    </eg-grid-column>
+
+    <eg-grid-column i18n-label label="Status" 
+      path="copy.status.name" name="status_name">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Call Number Prefix" 
+      path="callNum.prefix.label" name="call_number.prefix.label" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Call Number Suffix" 
+      path="callNum.suffix.label" name="call_number.suffix.label" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Parts" path="copy._monograph_parts"
+      name="monograph_parts" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Notes" path="copy.notes.length"
+      name="note_count" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Tags" path="copy.tags.length"
+      name="tag_count" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Alerts" path="copy.copy_alerts.length"
+      name="alert_count" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circulate As MARC Type"
+      path="copy.circ_as_type" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Active/Create Date" 
+      path="copy.active_date" datatype="timestamp">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Age Hold Protection" 
+      path="copy.age_protect.name" name="age_protect.name"></eg-grid-column>
+    <eg-grid-column i18n-label label="Item Price" 
+      path="copy.price" name="price" [hidden]="true"></eg-grid-column>
+
+    <eg-grid-column i18n-label label="Circulate" path="copy.circulate" 
+      name="circulate" datatype="bool" [hidden]="true"></eg-grid-column>
+    <eg-grid-column i18n-label label="Deposit" path="copy.deposit" 
+      name="deposit" datatype="bool" [hidden]="true"></eg-grid-column>
+    <eg-grid-column i18n-label label="Deposit Amount" path="copy.deposit_amount" 
+      name="deposit_amount" datatype="money" [hidden]="true"></eg-grid-column>
+    <eg-grid-column i18n-label label="Holdable?" name="holdable" 
+      [cellTemplate]="holdableTemplate" [cellContext]="gridTemplateContext">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Reference?" path="copy.ref" 
+      name="ref" datatype="bool" [hidden]="true"></eg-grid-column>
+    <eg-grid-column i18n-label label="Last Inventory Date" 
+      path="copy.latest_inventory.inventory_date" 
+      name="latest_inventory.inventory_date" datatype="timestamp" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Last Inventory Workstation" 
+      path="copy.latest_inventory.inventory_workstation.name" 
+      name="latest_inventory.inventory_workstation.name" [hidden]="true">
+    </eg-grid-column>
+  </eg-grid>
+</div>
+

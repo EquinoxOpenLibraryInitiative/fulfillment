@@ -1,0 +1,165 @@
+[%-
+USE CGI;
+USE ws = WebSession;
+j = ws.bootstrap_client("/openils/conf/opensrf_core.xml");
+
+rank_threshold = 5000;
+base_url = 'http://dev.gapines.org/';
+
+pagesize = 10;
+IF CGI.param('pagesize');
+	pagesize = CGI.param('pagesize');
+END;
+
+itempage = CGI.param('page');
+
+#type,string,location,depth,limit,offset
+search_meth = 'open-ils.search.biblio.class';
+
+session = ws.init_app_session('open-ils.search');
+
+type = CGI.param('mr_search_type');
+string = CGI.param('mr_search_query');
+location = CGI.param('mr_search_location');
+depth = CGI.param('mr_search_depth');
+max_rank = CGI.param('max_rank') || 0;
+limit = pagesize;
+offset = (itempage - 1) * pagesize;
+
+IF offset < 0;
+	offset = 0;
+END;
+
+id_req = session.request(search_meth, type, string, location, depth, limit, offset);
+
+j = id_req.wait_complete();
+list = id_req.recv().content();
+j = id_req.finish;
+
+count = list.count;
+
+IF max_rank == '{relevanceScale}';
+	max_rank = 0;
+END;
+
+-%]
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    <channel>
+      <title>Pines Catalogue Search: [% string | html %] </title>
+      <link>[% base_url %]/opac/extras/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]&amp;pagesize=[% pagesize %]&amp;max_rank=[% max_rank %]</link>
+      <description>Search results for "[% string | html %]" at dev.gapines.org</description>
+      <language>en-us</language>
+      <copyright>&amp;copy;2004-2005, Georga Public Library Service.</copyright>
+      <openSearch:totalResults>[% count %]</openSearch:totalResults>
+      <openSearch:startIndex>[% offset + 1 %]</openSearch:startIndex>
+      <openSearch:itemsPerPage>[% pagesize %]</openSearch:itemsPerPage>
+
+[%-
+
+mr_list = list.ids;
+
+FOREACH mr_id = mr_list;
+	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id.0);
+	j = req.wait_complete();
+
+	IF max_rank == 0;
+		max_rank = mr_id.1;
+		'      <openSearch:relevanceScale>' _ max_rank _ "</openSearch:relevanceScale>\n";
+	END;
+
+	rank = mr_id.1 / max_rank;
+	rank = rank * 100;
+	rank = rank.split('\.').0;
+
+	#'<!-- Got a metarecord... ' _ mr_id.0 _ ' relevance: ' _ mr_id.1 _ ' rank: ' _ rank _ ' scale: ' _ max_rank _ '-->';
+
+	mods = req.recv().content();
+	j = req.finish;
+
+-%]
+      <item>
+        <title>[% mods.title() | html %]</title>
+        <link>[% base_url %]/opac/en-US/skin/default/xml/rresult.xml?m=[% mr_id.0 %]&amp;l=[% location %]</link>
+        <openSearch:relevance>[% rank %]</openSearch:relevance>
+        <description>
+[%-
+	IF mods.isbn();
+-%]
+		&lt;div style="float: left;"&gt;
+			&lt;a href="[% base_url %]/opac/en-US/skin/default/xml/rresult.xml?m=[% mr_id.0 %]&amp;l=[% location %]"&gt;
+				&lt;img
+					style="padding: 3px; border: none;"
+					width="45"
+					height="50"
+					src="http://images.amazon.com/images/P/[% mods.isbn().split('\s+').0 %].01.MZZZZZZZ.jpg"&gt;
+			&lt;/a&gt;
+		&lt;/div&gt;
+[%-
+	END;
+	IF mods.author();
+-%]
+		&lt;b&gt;Author:&lt;/b&gt; &lt;a href="[% base_url %]/opac/en-US/skin/default/xml/mresult.xml?tp=author&amp;t=[% mods.author() | uri | html %]&amp;l=[% location %]"&gt;[% mods.author() | html %]&lt;/a&gt;&lt;br&gt;
+[%
+	END;
+	IF mods.subject();
+%]
+		&lt;b&gt;Subjects:&lt;/b&gt; 
+[%
+	FOREACH sub IN mods.subject().keys;
+		IF loop.count() > 3;
+			', ...';
+			LAST;
+		END;
+		IF loop.index;
+			', ';
+		END;
+		-%]
+&lt;a href="[% base_url %]/opac/en-US/skin/default/xml/mresult.xml?tp=subject&amp;mr_search_query=[% sub | uri | html %]"&gt;[% sub | html %]&lt;/a&gt;[%
+	END;
+%]
+&lt;br&gt;
+
+[%
+	l = mods.online_loc();
+	IF l.size;
+		'&lt;b&gt;Other Resources:&lt;/b&gt;';
+    	x = l.size / 2;
+		i = 0;
+		saw = { 'no' => 'no' };
+%][%
+		WHILE i <= x;
+
+			h = i * 2;
+			t = h + 1;
+	
+			h = l.list.$h | uri | html;
+			t = l.list.$t | html;
+
+%][%
+			IF saw.exists(t);
+				i = i + 1;
+				NEXT;
+			END
+
+%][%
+			saw.$t = t;
+			
+			'&lt;a href="' _ h _ '"&gt;' _ t _ '&lt;/a&gt;&amp;nbsp;';
+	
+			i = i + 1;
+		END;
+		'&lt;br&gt;';
+	END; 
+
+	END;
+%]
+        </description>
+      </item>
+[%-
+
+END;
+
+ -%]
+  </channel>
+</rss>

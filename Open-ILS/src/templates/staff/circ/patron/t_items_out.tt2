@@ -1,0 +1,121 @@
+<!-- items out list -->
+
+<div>
+  <!-- only show the main vs. alt circ list tabs if the alt
+      circ list is meant to display -->
+  <ul class="nav nav-tabs">
+    <li ng-class="{active : items_out_display == 'main'}">
+      <a href ng-click="show_main_list(items_out_display=='alt')">
+        [% l('Items Checked Out') %] ({{main_list.length}})
+      </a>
+    </li>
+    <li ng-if="show_alt_circs" ng-class="{active : items_out_display == 'alt'}">
+      <a href ng-click="show_alt_list(items_out_display=='main')">
+        [% l('Other/Special Circulations') %] ({{alt_list.length}})
+      </a>
+    </li>
+    <li ng-class="{active : items_out_display == 'noncat'}">
+      <a href ng-click="show_noncat_list()">
+        [% l('Non-Cataloged Circulations') %] ({{noncat_list.length}})
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="tab-content">
+  <div class="tab-pane active">
+
+<eg-grid
+  ng-if="items_out_display == 'noncat'"
+  idl-class="ancc"
+  id-field="id"
+  features="clientsort,allowAll"
+  items-provider="gridDataProvider"
+  persist-key="circ.patron.items_out.noncat"
+  dateformat="{{$root.egDateAndTimeFormat}}">
+
+  <eg-grid-field label="[% l('Circ ID') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% l('Item Type') %]" path='item_type.name'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Library') %]" path='circ_lib.shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Date') %]" path='circ_time' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='duedate' dateformat="shortDate" datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Staff') %]" path='staff.usrname'></eg-grid-field>
+</eg-grid>
+
+<eg-grid
+  ng-if="items_out_display != 'noncat'"
+  idl-class="circ"
+  id-field="id"
+  features="clientsort,allowAll"
+  items-provider="gridDataProvider"
+  persist-key="circ.patron.items_out"
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  row-class="colorizeItemsOutList">
+
+  <eg-grid-action handler="print_receipt"
+    label="[% l('Print Item Receipt') %]"></eg-grid-action>
+  <eg-grid-action handler="edit_due_date"
+    label="[% l('Edit Due Date') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_damaged"
+    label="[% l('Mark Damaged') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_missing"
+    label="[% l('Mark Missing') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_lost"
+    label="[% l('Mark Lost (By Patron)') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_claims_returned"
+    label="[% l('Mark Claims Returned') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_claims_never_checked_out"
+    label="[% l('Mark Claims Never Checked Out') %]"></eg-grid-action>
+  <eg-grid-action handler="renew" label="[% l('Renew') %]"></eg-grid-action>
+  <eg-grid-action handler="renew_all" label="[% l('Renew All') %]"></eg-grid-action>
+  <eg-grid-action handler="renew_with_date" 
+    label="[% l('Renew With Specific Due Date') %]"></eg-grid-action>
+  <eg-grid-action handler="checkin" 
+    label="[% l('Check In') %]"></eg-grid-action>
+  <eg-grid-action handler="add_billing" 
+    label="[% l('Add Billing') %]"></eg-grid-action>
+  <eg-grid-action handler="show_recent_circs" 
+    label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
+  <eg-grid-action handler="show_triggered_events" 
+    label="[% l('Show Triggered Events') %]"></eg-grid-action>
+
+  <eg-grid-field label="[% l('Circ ID') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]" path='target_copy.barcode'>
+    <a href="./cat/item/{{item.target_copy().id()}}" target="_self">
+      {{item.target_copy().barcode()}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='due_date' datefilter="egDueDate" dateonlyinterval="duration" datecontext="circ_lib" datatype="timestamp" required></eg-grid-field>
+  <eg-grid-field label="[% l('Workstation') %]" path='workstation.name'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkin Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Circulation Library') %]" path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Age-based Hold Protection') %]" path='target_copy.age_protect.name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Floating Group') %]" path='target_copy.floating.name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Shelving Location') %]" path='target_copy.location.name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Owning Library') %]" path='target_copy.call_number.owning_lib.shortname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
+  <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
+  <eg-grid-field label="[% l('Title') %]" path="target_copy.call_number.record.wide_display_entry.title" name="title">
+    <a href="/eg2/staff/catalog/record/{{item.target_copy().call_number().record().id()}}">
+      {{item.target_copy().call_number().record().wide_display_entry().title()}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field path="*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.holds_count.count" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="target_copy.status.name" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.circ_modifier" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.prefix.label" label="[% l('CN Prefix') %]" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.suffix.label" label="[% l('CN Suffix') %]" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.record.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.record.wide_display_entry.*" hidden></eg-grid-field>
+  <eg-grid-field path="_parts" label="[% l('Monograph Part') %]" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Total Notices') %]" path='action_trigger_event_count'></eg-grid-field>
+  <eg-grid-field label="[% l('Last Notice') %]" path='action_trigger_latest_event_date' dateformat="short" datatype="timestamp"></eg-grid-field>
+</eg-grid>
+</div>
+
+  </div>
+</div>

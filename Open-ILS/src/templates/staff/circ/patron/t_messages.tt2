@@ -1,0 +1,61 @@
+
+<div class="strong-text-2">[% l('Penalties and Messages') %]</div>
+<div class="pad-vert"></div>
+<eg-grid
+  idl-class="ausp"
+  grid-controls="activeGridControls"
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  persist-key="circ.patron.staff_messages">
+
+  <eg-grid-menu-item handler="createPenalty"
+    label="[% l('Apply Penalty / Message') %]"></eg-grid-menu-item>
+
+  <eg-grid-action label="[% l('Remove Penalty / Message') %]" 
+    handler="removePenalty"></eg-grid-action>
+  <eg-grid-action label="[% l('Modify Penalty / Message') %]" 
+    handler="editPenalty"></eg-grid-action>
+  <eg-grid-action label="[% l('Archive Penalty / Message') %]" 
+    handler="archivePenalty"></eg-grid-action>
+
+  <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
+  <eg-grid-field path="standing_penalty.label"></eg-grid-field>
+  <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
+  <eg-grid-field path="note"></eg-grid-field>
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.block_list" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.*" hidden></eg-grid-field>
+
+</eg-grid>
+
+<div class="pad-vert"><hr/></div>
+
+<div class="pad-vert row padded">
+  <div class="col-md-4">
+    <div class="strong-text-2">[% l('Archived Penalties / Messages') %]</div>
+  </div>
+  <div class="col-md-4">
+    <label>[% l('Set Date Start:') %]</label>
+    <eg-date-input ng-model="dates.start_date"></eg-date-input>
+  </div>
+  <div class="col-md-4">
+    <label>[% l('Set Date End:') %]</label>
+    <eg-date-input ng-model="dates.end_date"></eg-date-input>
+  </div>
+</div>
+<eg-grid
+  idl-class="ausp"
+  grid-controls="archiveGridControls"
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  persist-key="circ.patron.archived_messages">
+
+  <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
+  <eg-grid-field path="standing_penalty.label"></eg-grid-field>
+  <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
+  <eg-grid-field path="note"></eg-grid-field>
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.block_list" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.*" hidden></eg-grid-field>
+
+</eg-grid>
+
+

@@ -1,0 +1,998 @@
+Evergreen 2.11 Release Notes
+============================
+:toc:
+:numbered:
+
+Evergreen 2.11.9
+----------------
+This release contains a bug fix improving on Evergreen 2.11.8.
+
+* The option to add a title to My List is removed from Group Formats and
+Editions searches where the option never worked correctly due to a bad id.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.9 point release of
+Evergreen:
+
+* Jane Sandberg
+* Cesar Velez
+
+
+Evergreen 2.11.8
+----------------
+This release contains several bug fixes improving on Evergreen 2.11.7.
+
+* Hides the _Hold is Behind Circ Desk_ checkbox in the XUL client's patron
+registration screen for those libraries that have not enabled Behind Desk Pickup 
+support via the Library Settings Editor
+* Adds a missing error string that appears when marking an item damaged from
+an aged circulation.
+* Changes the hold request form so that it no longer defaults to the first SMS
+carrier for text notifications.
+* Adds a requirement for users to enter a phone/SMS number when they have
+enabled that notification method on the hold request form.
+* Changes the URL pointing to catalog images, CSS and javascript files to a full
+absolute URL instead of the relative URL previously used. This change fixes an
+issue with the Open Graph image property, which requires a full URL.
+* Fixes an issue where payment amounts sent to Stripe can be one cent less than
+the actual Evergreen payment.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.8 point release of
+Evergreen:
+
+* Michele Morgan
+* Dan Scott
+* Chris Sharp
+* Josh Stompro
+* Cesar Velez
+
+
+Evergreen 2.11.7
+----------------
+Upgrade Note
+~~~~~~~~~~~~
+This release of Evergreen contains a fix to the _Hold/Copy Ratio per Bib
+and Pickup Library (and Descendants)_ data source. Report templates using
+this data source will need to be re-created to improve accuracy of the
+data reported from this source.
+
+Bug Fixes
+~~~~~~~~~
+This release contains several bug fixes improving on Evergreen 2.11.6
+
+* Improvements to CSS to silence some Mozilla extension warnings.
+* A fix to a failure to update targeted circulations when utilzing the recall
+functionality.
+* The addition of text wrapping in the copy details table on the bib
+record to prevent contents from falling off the page.
+* A fix to the adjust to zero option so that it can be applied correctly
+to multiple billings.
+* A fix to the "Hold/Copy Ratio per Bib and Pickup Library
+(and Descendants)" data source so that it will now include counts of eligible
+copies at locations that are not a pickup library for bib's holds.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.7 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Jason Etherige
+* Pasi Kallinen
+* Kathy Lussier
+* Mike Rylander
+* Dan Scott
+* Dan Wells
+
+
+Evergreen 2.11.6
+----------------
+This release contains several bug fixes improving on Evergreen 2.11.5.
+
+* Code to prevent a hold already on the Holds Shelf from being
+transferred to another title.
+* A fix to a bug that prevented users from scheduling reports with a
+relative month if the report template used a date that applied the Year +
+Month transform with the On or After (>=) operator.
+* A fix to a bug where the max fines threshold was reached prematurely
+due to the presence of account adjustments.
+* A check that prevents a SMS message from sending if the SMS carrier
+is null.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.6 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Kathy Lussier
+* Chris Sharp
+* Remington Steed
+* Dan Wells
+
+Evergreen 2.11.5
+----------------
+This release is a security release that also contains several other bug
+fixes improving on Evergreen 2.11.4.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/locale_picker.tt2`
+* `Open-ILS/src/templates/opac/parts/login/form.tt2`
+* `Open-ILS/src/templates/opac/parts/searchbar.tt2`
+
+Other Bugfixes
+~~~~~~~~~~~~~~
+* A fix to remove the Chilifresh patron reviews header for Evergreen sites
+that do not use Chilifresh.
+* A fix that marks acquisitions POs as received when all line items on the 
+PO are received or canceled.
+* A typo fix to the long overdue override permission that prevented staff
+from being able to override long overdue check ins.
+* A fix to use a library's configured currency in SIP patron responses
+instead of always using US dollars.
+* A fix to SIP timeouts caused by invalid sessions
+* A fix that allows boolean fields to be recognized in queries to the
+Z39.50 server.
+* A fix to use the correct method during adjust to zero on negative
+balances.
+* A correction to the datatype for the Vandelay Default Record Match Set
+setting.
+* The removal of the _Keep_ field from MARC Batch Import Item Attributes.
+The field was not previously implemented.
+* A fix to set the complete time value for grouped Action/Trigger events
+when an event's state reach complete, consistent with non-grouped events.
+* A fix to a bug in the rollover_phone_to_print.pl script that kept failed
+call files from being moved.
+* A new index for acq.edi_message that speeds up the check for duplicate
+EDI messages.
+* A fix that ensures JSON strings are converted to UTF8, ensuring that
+non-ASCII data display correctly.
+* A fix to avoid an erroneous unsaved data popup to appear during MARC
+record creation.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.5 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Jeff Godin
+* Blake Henderson
+* Linda Jansova
+* Kathy Lussier
+* Jillianne Presley
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Remington Steed
+
+
+Evergreen 2.11.4
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.11.3.
+
+* A fix to avoid fetching and creating EDI message entries that the
+system cannot parse.
+* A fix to prevent staff users from marking a long overdue item as lost 
+so that the patron will not be billed twice for the same item.
+* A fix to the link that is used on the catalog's Library Info page so
+that links with anchors can be successfully retrieved.
+* A replacement for the blank fallback image used when the catalog cannot
+retrieve an added content book cover.
+* An EDI fix that prevents EDI fetcher from crashing when the vendor
+supplies a zero-length file.
+* A fix to an issue where adjusting a bill to zero for a current checkout
+prematurely closes the transaction.
+* A fix to encoding problems in MODS output. These problems caused issues
+when using Zotero with records in the catalog.
+* A fix to Evergreen self-check to accept the user name value when a barcode
+regex has been configured for the system.
+* A fix to duplicate name checking in the patron registration screen so that
+clicking the "Found x patron(s) with same name" link will retrieve potential
+duplicate inactive patrons.
+* A fix to the bower install step used when installing the web staff client.
+* A fix that marks a hold as fulfilled when staff check out a hold-
+captured item for a hold whose expire time is in the past.
+* A change to the acquisitions funding source funds drop down menu so that
+the menu will now only display active funds and will also display the 
+year alongside the fund.
+* A fix to a problem where the Current Bills tab of the patron record
+showed duplicate charges when a check in was done from the Items Out tab.
+* A fix that hides the option to add to My Lists from the staff client since this functionality does not work as expected in the staff client.
+* A change to the fund year selectors in acq interfaces so that the years
+are sorted in descending order.
+* A fix to a billing issue where transactions were not re-opened after
+they acquired a non-zero balance at check in.
+* A change to the default pickup library when staff place a hold. The place hold
+screen will now default to the preferred pickup location for the patron. If the
+patron does not have a preferred pickup location, it will default to the
+patron's home library.
+* The ability to skip the XUL staff client build when in make_release.
+* A fix that silences a log warning that appears for every checkout where a hard
+due date is not used.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.4 point release of
+Evergreen:
+
+* Jason Boyer
+* Eva Cerniňáková
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Debbie Luchenbill
+* Kathy Lussier
+* Christine Morgan
+* Michele Morgan
+* Terran McCanna
+* Jane Sandberg
+* Jonathan Schatz
+* Dan Scott
+* Ben Shum
+* Jason Stephenson
+* Remington Steed
+* Josh Stompro
+* Dan Wells
+* Bob Wicksall
+
+
+Evergreen 2.11.3
+----------------
+This is a security release that also contains several other bugfixes improving
+on Evergreen 2.11.2.  All users of Evergreen 2.11.x are recommended to upgrade
+to 2.11.3 as soon as possible.
+
+Security Issue: Credit Processor Stripe Settings Permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unprivileged users can retrieve organizational unit setting values for
+setting types lacking a "view" permission.  When the feature adding
+Stripe credit card processing was added, the upgrade script neglected
+to add the VIEW_CREDIT_CARD_PROCESSING permission to the
+organizational unit setting type.  This means that anyone can retrieve
+and view the settings for Stripe credit card processing.
+
+Any system that upgraded from Evergreen version 2.5 to 2.6 is
+affected.  If you use Stripe for credit card processing, it is
+strongly recommended that you apply this upgrade.  Even if you do not
+use Stripe, applying this upgrade is still recommended.  If you did
+not upgrade from version 2.5 to 2.6 of Evergreen, but started with a
+later version, applying this upgrade is harmless.
+
+If you are not ready to perform a full upgrade, and if you use Stripe,
+you can protect the settings by running the following two SQL statements:
+
+[source,sql]
+----
+UPDATE config.org_unit_setting_type
+    SET view_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'VIEW_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor.stripe%' AND view_perm IS NULL;
+
+UPDATE config.org_unit_setting_type
+    SET update_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor.stripe%' AND update_perm IS NULL;
+----
+
+Missing Upgrade Script Notice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+It was recently discovered that the 2.11.2 tarball was missing the
+upgrade script for 2.11.1.  If you upgraded straight to 2.11.2 from
+2.11.0 or prior, please make sure to apply the
+2.11.0-2.11.1-upgrade-db.sql before moving on to the 2.11.3 script.
+
+Other Fixes
+~~~~~~~~~~~
+Evergreen 2.11.3 also contains the following bugfixes:
+
+* A fix to correctly apply floating group settings when performing
+no-op checkins.
+* An improvement to the speed of looking up patrons by their username;
+this is particularly important for large databases.
+* A fix to properly display the contents of temporary lists ('My List') in the
+public catalog, as well as a fix of the HTML coding of that page.
+* A fix to the Spanish translation of the public catalog that could
+cause catalog searches to fail.
+* A fix of a problem where certain kinds of requests of information
+about the organizational unit hierarchy to consume all available
+`open-ils.cstore` backends.
+* A fix to allow staff to use the 'place another hold' link without
+running into a user interface loop.
+* A fix to the 'Edit Due Date' form in the web staff client.
+* A fix to the definition of the stock 'Full Overlay' merge profile.
+* A fix to sort billing types in alphabetical order in the web staff
+client.
+* A fix to the display of the popularity score in the public catalog.
+* A fix to the 'return to grouped search results' link in the public
+catalog.
+* A fix to allow pre-cat checkouts in the web staff client without requiring
+a circulation modifier.
+* A fix to how Action/Trigger event definitions with nullable grouping
+fields handle null values.
+* Other typo and documentation fixes.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.3 point release of
+Evergreen:
+
+* Ben Shum
+* Bill Erickson
+* Blake Henderson
+* Chris Sharp
+* Christine Burns
+* Dan Wells
+* Galen Charlton
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeanette Lundgren
+* Josh Stompro
+* Kathy Lussier
+* Kyle Huckins
+* Mike Rylander
+
+Evergreen 2.11.2
+----------------
+
+This release contains several bugfixes improving on Evergreen 2.11.1
+
+* A fix to the web client patron interface that changed the holds count in the
+patron summary from total / available to available / total.
+* A fix to an issue where the Closed Dates Editor was displaying an extra day of
+ closure.
+* A fix to the Closed Dates Editor so that it now displays "All Day" when the
+library is closed for the entire day.
+* A fix to properly format LC Call numbers in spine label printing.
+* A fix to a bug that was causing intermittent search failures.
+* A fix to a bug that was causing search failures for Copy Location Group
+searches.
+* A fix to significant increased slowness with holds transfers.
+* The addition of an index to the action.aged_circulation table to resolve a 
+problem with long-running queries.
+* A fix to redirects that for one-hit metarecord searches for systems that
+have enabled the setting to immediately jump to a bib record on one-hit searches.
+* A fix to the new acquisitions cost field available in the copy editor to
+resolve an issue where accidentally clearing out the value in the field resulted
+in an error.
+* A fix to a bug that broke the Alternate Printable Hold Pull List and Vandelay
+uploads on systems that were running OpenSRF 2.5.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.1 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Kyle Huckins
+* Jeanette Lundgren
+* Michele Morgan
+* Dan Pearl
+* Michelle Purcell
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+
+Evergreen 2.11.1
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.11.0
+
+* A fix to that provides alphabetical sorting to the fund selector in
+the Acquisitions Selection List -> Copies interface.
+* A fix to the web client check in screen allowing users to click the
+title of the checked-in item to retrieve the bib record for that item.
+* The addition of a progress bar that displays when conducting a patron searchin the web client.
+* A fix to the web client patron interface so that total Items Out in the
+patron summary now includes overdue and long overdue items. It will also
+include Lost and Claims Returned items when the appropriate library
+setting is enabled.
+* A change to the public catalog My Account screen where the font for 
+leading articles will now be smaller when sorting a list by title. 
+* A fix to subject links in the catalog's record summary page so that
+periods are no longer stripped from resulting subject searches, leading
+to more accurate results when those links are clicked.
+* A fix to avoid unint warnings in the logs for prox_cache in
+open-ils.circ.hold.is_possible.
+* A fix to rounding errors that occurred when summing owed/paid totals
+for display in the catalog's credit card payment form.
+* A change to sort behavior in the My Account screens. Previously, a 
+third click on a column header returned the list to its original sort
+order. Clicking column headers will now simply toggle the sort
+between ascending and descending order. 
+* The Permalink option on the catalog's record summary page will now be
+hidden in the staff client because clicking the link in the client led
+to no discernible change for users.
+* A fix to the display of permanent lists in the catalog, which had broken
+in 2.11.0.
+* A fix to the text of a notice that displays when migrating circulation
+history during the upgrade to 2.10.
+* An improvement to the performance for the lookup of a user's circ
+history by adding an index on action.usr_circ_history(usr).
+* A fix so that when a bib record's fingerprint changes, it gets correctly
+moved to a different metarecord.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.1 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Blake Henderson
+* Jim Keenan
+* Kathy Lussier
+* Christine Morgan
+* Dan Scott
+* Ben Shum
+* Remington Steed
+* Josh Stompro
+* Dan Wells
+
+2.11.0 Upgrade notes
+--------------------
+
+
+Tablefunc Extension No Longer Required
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Changes in the behavior of the connectby function in PostgreSQL 9.5
+have prompted its removal from the database.  It is easier for
+Evergreen to maintain compatibility with previous versions of
+PostgreSQL without this function.
+
+By eliminating the use of the connectby function, we eliminate the
+requirement for the tablefunc database extension.  It is no longer
+installed when the database is created.  If you are upgrading and wish
+to remove it from your database, you may run the following statement
+in the database to drop it:
+
+ DROP EXTENSION tablefunc;
+
+
+
+
+
+2.11.0 New Features
+-------------------
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Add Date Header to Action Trigger Email/SMS Templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Date: header specified in RFC 2822 has been added to the seed data
+for the example Action Trigger email and SMS templates, but no attempt
+has been made to automatically modify existing templates. To add this
+header (and end any "Why are my library emails from 1969/70?" questions
+you may have heard) make sure the following lines are in all templates
+that use the SendEmail or SendSMS reactors:
+
+The first is already in most sample templates, but you may need to add
+it to the top of any custom templates:
+`[%- USE date -%]`
+
+And this line should be inserted into the header block of each template:
+`Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]`
+
+
+
+
+
+Support for Ubuntu 16.04
+^^^^^^^^^^^^^^^^^^^^^^^^
+Adds support for Ubuntu Xenial Xerus (16.04).
+
+
+
+
+
+Purge User Activity
+^^^^^^^^^^^^^^^^^^^
+
+User activity types are now set to transient by default for new
+Evergreen installs..  This means only the most recent activity entry per
+user per activity type is retained in the database.
+
+This change does not affect existing activity types, which were set to
+non-transient by default.  To make an activity type transient, modify the
+'Transient' field of the desired type in the staff client under Admin -> 
+Server Administration -> User Activity Types.
+
+Setting an activity type to transient means data for a given user will
+be cleaned up automatically if and when the user performs the activity
+in question.  However, administrators can also force an activity
+cleanup via SQL.  This is useful for ensuring that all old activity
+data is deleted and for controlling when the cleanup occurs, which 
+may be useful on very large actor.usr_activity tables.
+
+To force clean all activity types:
+
+[source,sql]
+------------------------------------------------------------
+SELECT actor.purge_usr_activity_by_type(etype.id)
+    FROM config.usr_activity_type etype;
+------------------------------------------------------------
+
+NOTE: This could take hours to run on a very large actor.usr_activity table.
+
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Authority Record Import Updates Editor, Edit Date.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Importing an authority record via MARC Batch Import/Export now causes the 
+authority record's editor and edit_date fields to be updated.  The editor
+value may come from the MARC 905u field or, if none is present, the user 
+performing the import.
+
+
+
+
+Authority Propagation Updates Bib Editor / Edit Date
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a bib record is automatically updated as a result of the
+modification of a linked authority record, the bib record's "Last Edit
+Date/Time" and "Last Editing User" fields will be updated to match the
+time of the update and the editor of the modified authority record.
+
+A new global flag is available to control this behavior called
+'ingest.disable_authority_auto_update_bib_meta' ("Authority Automation:
+Disable automatic authority updates from modifying bib record editor
+and edit_date").  When enabled, theses fields will not be updated.  By
+default, this setting is disabled.
+
+An additional speed improvement is included in this feature.  No attempt
+will be made to update linked bib records when the normalized heading of
+the modified authority record is unchanged by the authority record update.
+
+
+
+
+Bibliographic Record Source Now Copied to 901$s
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a bibliographic record has a source set, the name of that source
+is now copied to the 901$s whenever the record is created or updated.
+This allows the source to be used for record matching and MARC
+field queries.
+
+
+
+
+Option to Update Bib Source and Edit Details on Record Import
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When importing records through the client, users will now have the ability to
+define whether the bib source, last editor, and last edit date should be updated
+on a record merge/overlay.
+
+In MARC Batch Import / Export, select the _Merge / Overlay_ tab.  Each entry in
+the table has a value in the new _Update bib. source_ column. If that value is
+True, then the bib source, last editor, and last edit date will be updated.
+
+The two system-defined entries have been pre-set to appropriate values (Full
+Overlay = true; Match-Only Merge = false).
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Staff Client Honors Aged Circulations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The browser and XUL clients now better represent copy checkout history 
+by honoring and displaying information from aged circulations.  
+
+ * Browser client 'Recent Circ History' and the analogous XUL client 
+   'Circulation History' tabs show summary data for aged circulations
+   as well as regular/active circulations.  When aged circulation data
+   is displayed, any references to patron names are replaced by the string
+   "<Aged Circulation>".
+
+ * Browser client 'Circ History List' and the analogous XUL client 
+   'Last Few Circulations' tabs behave as above, plus their 'Add 
+   Billing' buttons are disabled when displaying aged circulation data.
+
+ * XUL client 'Retrieve Last Patron' actions from various UI's report, 
+   "Item XXX circulation is an aged circulation and has no linked user".
+   Browser client analog uses 'Circ History List' instead; no additional
+   changes required.
+
+
+
+
+
+"Canceled Transit" Item Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Previously, when a transit was aborted, the transited item would either go into
+"Reshelving" status or would return to whatever status it was in when it went
+into transit, even when the item itself was in a different status (including
+"Checked out").  Now, for most transits that get aborted, the item is put into a 
+new status, "Canceled Transit", which signals to staff the actual state of the
+item.  This feature only affects items with a status of "In transit" and does
+not affect items that were in the following statuses at the time they were sent
+into transit:
+
+* Bindery
+* Lost
+* Missing
+* On order
+* ILL
+* Damaged
+* Long Overdue
+* Lost and Paid
+* Any custom statuses
+
+This change should help clear up confusing situations caused by the previous
+"abort transit" behavior, such as items showing "Available" when they are actually
+en route, and patrons' items mysteriously disappearing from their accounts and
+showing "Available" at the item-owning library without evidence of check-in.
+
+
+
+
+Copy Status "Is Available" Flag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new boolean field is now available for copy statuses to indicate when copies
+having a given status should be considered available.  The field has 2 main
+effects:
+
+1. Checking out an "available" copy will no longer result in an override-able
+   "COPY_NOT_AVAILABLE" alert for staff.  The copy will checkout without 
+   status warnings.
+
+2. "Available" copies will appear in catalog searches where "limit to
+   available" is selected as a search filter.
+
+By default, the "Available" and "Reshelving" statuses have the "Is Available" 
+flag set.  The flag may be applied to local/custom statuses via the copy
+status admin interface.
+
+
+
+
+
+Email Checkout Receipts
+^^^^^^^^^^^^^^^^^^^^^^^
+This feature allows patrons to receive checkout receipts through email
+at the circulation desk in the web client and in the Evergreen self-checkout
+interface. Patrons need to opt in to receive
+email receipts by default and must have an email address associated with their
+ account. Opt in can be staff mediated at the time of account creation or in
+existing accounts. Patrons can also opt in directly in their OPAC account or
+through patron self-registration. This feature does not affect the behavior of
+checkouts from the XUL client or SIP2 devices.
+
+Patrons can opt in to receive email checkout receipts by default via
+a new _Email checkout receipts by default_ patron setting.
+
+This feature also enhances the patron staging tables so that patron
+settings can be chosen during self-registration.
+
+The web staff interface's checkout screen now includes a "Quick
+Receipt" button that allows staff members to generate a receipt
+at any time.
+
+
+
+
+Set Per-OU Limits on Allowed Payment Amounts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Two new settings have been added to prevent clerks from accidentally clearing
+all patron bills by scanning a barcode into the Payment Amount field, or
+accidentally entering the amount without a decimal point (such as you
+would when using a cash register).
+
+Both settings are available via the Library Settings Editor. The _Payment
+amount threshold for Are You Sure? dialog_ (ui.circ.billing.amount_warn)
+setting identifies the amount above
+which staff will be asked if they're sure they want to apply the payment.
+The _Maximum payment amount allowed_ (ui.circ.billing.amount_limit)
+setting identifies the maximum amount of
+money that can be accepted through the staff client.
+
+These settings only affect the staff client, not credit
+cards accepted through the OPAC, or direct API calls
+from third party tools.
+
+
+
+
+Client
+~~~~~~
+
+
+
+Additional Fields Available for Display in Some Interfaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The holds age protection field will now be available for display in the
+following interfaces:
+
+* Item status list view column picker
+* Item status alternate view
+* Holdings maintenance column picker
+
+The asset.copy.cost field, which records the amount paid for an item when
+an invoice is processed, will be available for display in the following
+interfaces:
+
+* Items status list view column picker
+* Item status alternate view
+* Copy editor
+
+
+
+
+
+OPAC
+~~~~
+
+
+
+Merge Notification Preferences Tables in TPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The patron notification preference page in the public catalog
+used to have two tables, separating notification settings
+based on their source. Since that distinction does not matter
+to patrons, and since the two tables aren't styled consistently,
+they are merged together.
+
+
+
+
+Improved Holds Screens in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The grids in the My Account _Items on Hold_ and _Holds History_ interfaces are
+simplified. Data previously contained in their own Activate, Active, and Date
+Fulfilled columns are now incorporated into the Status column. To further
+declutter the interface, the holds queue position will only show when the user
+most needs the information - before the hold has been captured. 
+
+Distinct CSS classes have also been added for each hold status and each date
+that could potentially display in these holds interfaces. A new default style
+highlights the _Available_ status in green and the _Suspended_ status
+in red.
+
+
+
+
+
+
+Popularity Boost for Ranking Search Results
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature uses factors such as  circulation and hold activity, record and item age, and item ownership counts to generate popularity badges for bibliographic
+records. Each badge will have a five-point scale, where more points indicates a more popular record.  The average of the badge points earned by each record will constitute a "popularity rating". The number and types of badges will break ties for average popularity, and relevance will sort items with like popularity. 
+
+A new sort axis of popularity is created to sort first on the weighted average popularity of each record, followed by the query-specific relevance available today.  A new option is created in the drop-down called _Most Popular_ that sorts on the combination of "activity metric" (aka badge ranking, aka popularity) first and then the existing, stock relevance ranking when those are equal.  For instance, given two records that both have a badge ranking of "4.5", they sort in the order of the query relevance ranking that is calculated today as a tie breaker.  Those two records will sort above other records with lower badge rankings regardless of what today's relevance ranking says about them.
+
+In addition, a new sort axis of _Popularity-Adjusted Relevance_ is created that augments the normal Relevance sort with a normalized popularity value by multiplying the base relevance by a value controlled by a new global flag, generally set to a decimal number between 1 and 2.
+
+Finally, there will continue to be a pure _Relevance_ sort option, which is the version that exists today.
+
+Administrators can comment out one of the available sort methods by editing the
+filtersort.tt2 file.A global flag will allow Evergreen sites to select a default sort method.
+
+Badge Configuration
++++++++++++++++++++
+
+Administrative interfaces to configure badges are only available in the web
+client. Administrators can also configure badges directly via the database. 	
+
+Available Popularity Parameters available for badges include:
+
+* Holds Filled Over Time
+* Holds Requested Over Time
+* Current Hold Count
+* Circulations Over Time
+* Current Circulation Count
+* Out/Total Ratio
+* Holds/Total Ratio
+* Holds/Holdable Ratio
+* Percent of Time Circulating
+* Bibliographic Record Age (days)
+* Publication Age (days)
+* Available On-Line (for e-books, etc)
+* Copy Count
+
+Badges can be configured to apply to a targeted group of bibliographic records
+based on the following available filters:
+
+* Record attribute
+* Bibliographic source
+* Circulation modifier
+* Copy location group
+
+Badges can also be be restricted to materials owned by a specific organizational
+unit.
+
+This new feature comes with a starter badge based on the top 97th percentile of
+holds requested over the past five years.
+
+Display in the OPAC
++++++++++++++++++++
+
+Ratings for records will be displayed in the catalog in the following ways:
+
+* On the record result page, the overall average popularity rating is displayed with a label of _Popularity_.
+
+* On the record detail page, each individual badge earned by the record is
+displayed with its rating. 
+
+New Global Flags
+++++++++++++++++
+* **OPAC Default Sort (opac.default_sort)**: Identifies the default sort method
+to be used in the catalog.
+
+* **Maximum popularity importance multiplier for popularity-adjusted relevance
+searches (search.max_popularity_importance_multiplier):** A multiplier identifying
+the importance of popularity in the Popularity-Adjusted Relevance ranked 
+searches. The number should be a decimal ranging between 1.0 and 2.0. The
+default value is 1.1.
+
+More detailed information is available in the TechRef docs directory of the
+Evergreen source code.
+
+
+
+
+Removal of Advanced Hold Options link when part holds are expected
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a user attempts to place a metarecord hold when all eligible copies
+contain parts, the hold will fail. To help prevent the user from reaching
+a dead end while placing holds, the *Advanced Hold Options* link is removed
+from the Place Hold page in cases where all copies on the record contain
+parts. The *Advanced Hold Options* link will remain for records that have
+a mix of parted and non-parted copies.
+
+
+
+
+
+SIP
+~~~
+
+
+
+SIP Renewals
+^^^^^^^^^^^^^
+Renewals attempted via SIP will now consider whether a penalty is configured
+to block renewals before blocking the renewal. Previously, any penalty, even
+if it wasn't set to block renewals, would prevent a renewal from succeeding
+via SIP. 
+
+
+
+
+
+Treat SIP Location Field as Login Workstation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When using a version of SIPServer that supports the feature,
+the Location (CP) field of the Login (93) message will be
+used as the workstation name if supplied. Blank or missing
+location fields will be ignored. This allows users or reports
+to determine which selfcheck performed a circulation.
+
+
+
+
+
+Translations
+~~~~~~~~~~~~
+
+
+
+Translation Updates
+^^^^^^^^^^^^^^^^^^^
+Translations in this release have been significantly increased.  In
+particular, Spanish has received a huge update with over 9,000 new
+translations, Czech has received a sizable update of over 800
+translations, and additional smaller updates have been added for
+Arabic, French (Canada), and Armenian.
+
+
+
+2.11.0 Acknowledgments
+----------------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+ * Bibliomation
+ * Georgia Public Library Service
+ * MassLNC
+ * Pennsylvania Integrated Library System
+ * Pioneer Library System
+
+We would also like to thank the following individuals who contributed
+code, management, translations, documentation patches and tests to this
+release of Evergreen:
+
+ * Jason Boyer
+ * Eva Cerninakova
+ * Galen Charlton
+ * Bill Erickson
+ * Blake Henderson
+ * Jeff Godin
+ * Kathy Lussier
+ * Michele Morgan
+ * Dan Pearl
+ * Dan Scott
+ * Chris Sharp
+ * Ben Shum
+ * Mike Rylander
+ * Jason Stephenson
+ * Anahi Valdez
+ * Dan Wells
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * Calvin College
+ * Central/Wester Massachusetts Automated Resource Sharing
+ * Equinox Software, Inc.
+ * Emerald Data Networks, Inc.
+ * Evergreen Indiana
+ * Georgia Public Library Service
+ * King County Library System
+ * Knihovna Jabok
+ * Laurentian University
+ * MassLNC
+ * MOBIUS
+ * North of Boston Library Exchange
+ * Traverse Area District Library
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

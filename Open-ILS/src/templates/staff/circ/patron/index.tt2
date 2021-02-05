@@ -1,0 +1,272 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Patron"); 
+  ctx.page_app = "egPatronApp";
+  ctx.page_ctrl = "PatronCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user-bucket.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/patrons.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
+[% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/patron_search.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/regctl.js"></script>
+
+<!-- load the rest on demand? -->
+
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/checkout.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/items_out.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/holds.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/bills.js"></script>
+
+<!-- TODO: APP_JS should really be called APP_ADDONS or some such.
+    It just means "load these things, too, and load them last" -->
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.ANNOTATE_PAYMENT_MSG = "[% l('Please annotate this payment') %]";
+  s.CONFIRM_ADJUST_TO_ZERO = 
+    "[% |l('{{xactIds}}') -%]Are you sure you would like to adjust to zero the balance on bills [_1]?[% END %]";
+  s.CONFIRM_VOID_BILLINGS = 
+    "[% l('Are you sure you would like to void $[_1] for these line-item billings? [_2]','{{amount|number:2}}','{{billIds}}') %]";
+  s.CONFIRM_REFUND_PAYMENT = 
+    "[% |l('{{xactIds}}') -%]Are you sure you would like to refund excess payment on bills [_1]?  This action will simply put the amount in the Payment Pending column as a negative value.  You must still select Apply Payment!  Certain types of payments may not be refunded.  The refund may be applied to checked transactions that follow the refunded transaction.[% END %]";
+  s.EDIT_BILL_PAY_NOTE = "[% l('Enter new note for #[_1]:','{{ids}}') %]";
+  s.GROUP_ADD_USER = "[% l('Enter the patron barcode') %]";
+  s.RENEW_ITEMS = "[% l('Renew Items?') %]";
+  s.RENEW_ALL_ITEMS = "[% l('Renew All Items?') %]";
+  s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
+  s.REG_INVALID_FIELDS = 
+    "[% l('Please enter valid values for all required fields.') %]"
+  s.PAYMENT_WARN_AMOUNT = "[% l('Are you sure you want to apply a payment of $[_1]?', '{{payment_amount}}') %]";
+  s.PAYMENT_WARN_AMOUNT_TITLE = "[% l('Verify Payment Amount') %]";
+  s.PAYMENT_OVER_MAX = "[% l('Payments over $[_1] are denied by policy.', '{{max_amount}}') %]";
+  s.PATRON_NOTE_DELETE_CONFIRM_TITLE = "[% l('Delete Note?') %]";
+  s.PATRON_NOTE_DELETE_CONFIRM = "[% l('Delete the note titled \"[_1]\" created on [_2]?', '{{note_title}}', '{{create_date | date}}') %]";
+  s.PATRON_PURGE_CONFIRM_TITLE = "[% l('Completely Purge Patron Account?') %]";
+  s.PATRON_PURGE_CONFIRM = "[% l('Completely OBLITERATE this patron account, including bills, payments, bookbags, etc? This is IRREVERSIBLE.') %]";
+  s.PATRON_PURGE_LAST_CHANCE = "[% l('Last chance, are you sure you want to completely delete this account?') %]";
+  s.PATRON_PURGE_STAFF_PROMPT = "[% l('The account you are attempting to delete has STAFF_LOGIN privileges. Please enter the barcode for a destination account to receive miscellaneous staff artifacts (reports, etc.) from the account to be deleted.') %]";
+  s.PATRON_PURGE_STAFF_BAD_BARCODE = "[% l('Could not retrieve a destination account with the barcode provided. Aborting the purge...') %]";
+  s.PATRON_PURGE_OVERRIDE_PROMPT = "[% l('The account has open transactions (circulations and/or unpaid bills). Purge anyway?') %]";
+  s.PATRON_EDIT_COLLISION = "[% l('Patron record was modified by another user while you were editing it. Your changes were not saved; please reapply them.') %]";
+  s.OPT_IN_DIALOG_TITLE = "[% l('Verify Permission to Share Personal Information') %]";
+  s.OPT_IN_DIALOG = "[% l('Does patron [_1], [_2] from [_3] ([_4]) consent to having their personal information shared with your library?', '{{family_name}}', '{{first_given_name}}', '{{org_name}}', '{{org_shortname}}') %]";
+  s.BUCKET_ADD_SUCCESS = "[% l('Successfully added [_1] users to bucket [_2].', '{{count}}', '{{name}}') %]";
+  s.BUCKET_ADD_FAIL = "[% l('Failed to add [_1] users to bucket [_2].', '{{count}}', '{{name}}') %]";
+  s.PAGE_TITLE_PATRON_SEARCH = "[% l('Patron Search') %]";
+  s.PAGE_TITLE_PATRON_NAME = "[% l('[_1], [_2] [_3]', '{{lname}}','{{fname}}','{{mname}}') %]";
+  s.PAGE_TITLE_PATRON_CHECKOUT = "[% l('Checkout') %]";
+  s.PAGE_TITLE_PATRON_MESSAGES = "[% l('Messages') %]";
+  /* TODO: The "Other" page title could be smarter.. */
+  s.PAGE_TITLE_PATRON_OTHER = "[% l('Other') %]";
+  s.PAGE_TITLE_PATRON_BILLS = "[% l('Bills') %]";
+  s.PAGE_TITLE_PATRON_HOLDS = "[% l('Holds') %]";
+  s.PAGE_TITLE_PATRON_ITEMS_OUT = "[% l('Items Out') %]";
+  s.PAGE_TITLE_PATRON_EDIT = "[% l('Edit') %]";
+  s.MERGE_SELF_NOT_ALLOWED = "[% l('Logged in account cannot be merged') %]";
+  s.TEST_NOTIFY_SUCCESS = "[% l('Test Notification sent') %]";
+  s.TEST_NOTIFY_FAIL = "[% l('Test Notification failed to send') %]"
+}]);
+</script>
+
+<!-- add room for the fixed navigation elements -->
+<style ng-if="is_patron_edit">
+  #top-content-container { padding-top: 120px; }
+</style>
+<style ng-if="!is_patron_edit">
+  #top-content-container { padding-top: 80px; }
+</style>
+
+[% END %]
+
+<div class="row" id="patron-fixed-tabs">
+  <div class="col-md-3 patron-name-header">
+    <div ng-show="patron()">
+      <h4 title="{{patron().id()}}">
+        <div class="flex-row">
+          <div class="flex-cell"
+          ng-class="{'patron-summary-alert' : hasAlerts()}">
+            [% l('[_1] [_2], [_3] [_4] [_5]', 
+                '{{patron().prefix()}}',
+                '{{patron().family_name()}}',
+                '{{patron().first_given_name()}}',
+                '{{patron().second_given_name()}}',
+                '{{patron().suffix()}}') %]
+               <span ng-if="patron().name_keywords()"> <a title="[% l('Name keywords: ') %]{{patron().name_keywords()}}" class="glyphicon glyphicon-tags"></a>
+          </div>
+
+          <p ng-show="patron().notes().length > 0"><a class='patron-summary-has-notes' href="./circ/patron/{{patron().id()}}/notes"><span class="label label-warning">Notes &nbsp;{{patron().notes().length}}</span></a></p>
+          <div ng-show="tab != 'search'">
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Collapse Patron Summary Display') %]"
+              ng-hide="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-small"></span>
+            </a>
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Expand Patron Summary Display') %]"
+              ng-show="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-full"></span>
+            </a>
+          </div>
+        </div>
+      </h4>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    <ul class="nav nav-pills nav-pills-like-tabs">
+      <li ng-class="{active : tab == 'checkout', disabled : !patron()}">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/checkout">[% l('Check Out') %]</a>
+      </li>
+      <li ng-class="{active : tab == 'items_out', disabled : !patron()}">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/items_out">
+          [% l('Items Out') %] 
+          <span ng-if="patron()"><!-- lack of space / newline below intentional -->
+          (<span ng-class="{'patron-summary-alert-small' : patron_stats().checkouts.overdue}">{{patron_stats().checkouts.total_out}}</span>)
+          </span>
+        </a>
+      </li>
+      <li ng-class="{active : tab == 'holds', disabled : !patron()}">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/holds">
+          [% l('Holds') %]
+          <span ng-if="patron()">
+            (<span>{{patron_stats().holds.ready}} / {{patron_stats().holds.total}}</span>)
+          </span>
+        </a>
+      </li>
+      <li ng-class="{active : tab == 'bills', disabled : !patron()}">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/bills">
+          [% l('Bills') %]
+          <span ng-if="patron()">
+            (<span ng-class="{'patron-summary-alert-small' : patron_stats().fines.balance_owed}">{{patron_stats().fines.balance_owed | currency}}</span>)
+          </span>
+        </a>
+      </li>
+      <li ng-class="{active : tab == 'messages', disabled : !patron()}">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/messages">[% l('Messages') %]</a>
+      </li>
+      <li ng-class="{active : tab == 'edit', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/edit">[% l('Edit') %]</a>
+      </li>
+      <li uib-dropdown ng-class="{active : tab == 'other', disabled : !patron()}">
+        <a a-disabled="!patron()" href uib-dropdown-toggle>
+            [% l('Other') %]
+            <b class="caret"></b>
+        </a>
+        <ul uib-dropdown-menu>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/alerts">
+              [% l('Display Alert and Messages') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/notes">
+              [% l('Notes') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/triggered_events">
+              [% l('Triggered Events / Notifications') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/message_center">
+              [% l('Message Center') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/stat_cats">
+              [% l('Statistical Categories') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/surveys">
+              [% l('Surveys') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/group">
+              [% l('Group Member Details') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/edit_perms">
+              [% l('User Permission Editor') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/credentials">
+              [% l('Test Password') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/requests/user/{{patron().id()}}" target="_top">
+              [% l('Acquisition Patron Requests') %]
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/booking/manage_reservations/by_patron/{{patron().id()}}" target="_top">
+              [% l('Booking: Manage Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/booking/create_reservation/for_patron/{{patron().id()}}" target="_top">
+              [% l('Booking: Create Reservation') %]
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/booking/pickup/by_patron/{{patron().id()}}" target="_top">
+              [% l('Booking: Pick Up Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/booking/return/by_patron/{{patron().id()}}" target="_top">
+              [% l('Booking: Return Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href ng-click="purge_account()" a-disabled="patron().super_user() == 't' || patron().id() == auth_user_id">
+              [% l('Completely Purge Account') %]
+            </a>
+          </li>
+       </ul>
+      </li>
+      <li ng-class="{active : tab == 'search'}" class="pull-right">
+        <a href="./circ/patron/search">[% l('Patron Search') %]</a>
+      </li>
+    </ul>
+    <div class="flex-row patron-reg-actions-bar" ng-if="is_patron_edit()">
+      [% INCLUDE 'staff/circ/patron/reg_actions.tt2' %]
+    </div>
+
+  </div><!-- col -->
+</div><!-- row -->
+
+<div class="row">
+  <div class="col-md-3" ng-hide="collapse_summary()">
+    [% INCLUDE 'staff/circ/patron/t_summary.tt2' %]
+  </div>
+  <div ng-class="{'col-md-12' : collapse_summary(),'col-md-9' : !collapse_summary()}">
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div ng-view></div>
+      </div>
+    </div>
+  </div><!-- col -->
+</div><!-- row -->
+
+[% END %]

@@ -1,0 +1,250 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* bootstrap CSS only -- JS bits come from ng-bootstrap */
+@import '~bootstrap-css-only/css/bootstrap.min.css';
+
+/* Locally served material icon fonts  */
+@import '~material-design-icons/iconfont/material-icons.css'; 
+
+/** BS default fonts are huge */
+body, .form-control, .btn, .input-group-text {
+  /* This more or less matches the font size of the angularjs client.
+   * The default BS4 font of 1rem is comically large.
+   */
+  font-size: .88rem;
+}
+h2 {
+  font-size: 1.25rem;
+  font-weight: 550;
+  color: #129a78; /* official color of the Evergreen logo */
+  text-decoration: underline #129a78;
+}
+h2.card-header {
+  text-decoration: none;
+}
+h3 {font-size: 1.15rem}
+h4 {font-size: 1.05rem}
+h5 {font-size: .95rem}
+
+.small-text-1 {font-size: 85%}
+
+
+/** Ang5 routes on clicks to href's with no values, so we can't have
+ * bare href's to force anchor styling.  Use this for anchors w/ no href.
+ * TODO: should we style all of them?  a:not([href]) ....
+ * */
+.no-href {
+  cursor: pointer;
+  color: #007bff;
+}
+
+
+/** BS has flex utility classes, but none for specifying flex widths.
+ *  BS class="col" is roughly equivelent to flex-1, but col-2 is not
+ *  equivalent to flex-2, since col-2 really means 2/12 width. */
+.flex-1 {flex: 1}
+.flex-2 {flex: 2}
+.flex-3 {flex: 3}
+.flex-4 {flex: 4}
+.flex-5 {flex: 5}
+
+/** BS deprecated the well, but it's replacement is not quite the same.
+ * Define our own version and expand it to a full "table".
+ * */
+.well-row {
+  display: flex;
+}
+.well-table .well-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  padding: 4px;
+  min-height: 40px;
+}
+
+.well-table .well-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+  padding: 4px;
+  margin: 4px;
+  min-height: 40px;
+}
+
+
+/* usefuf for mat-icon buttons without any background or borders */
+.material-icon-button {
+  /* Transparent background */
+  border: none;
+  background-color: rgba(0, 0, 0, 0.0);
+  padding-left: .25rem;
+  padding-right: .25rem; /* default .5rem */
+}
+
+.mat-icon-in-button {
+    line-height: inherit;
+}
+
+.mat-icon-shrunk-in-button {
+    line-height: inherit;
+    font-size: 18px;
+}
+
+.input-group .mat-icon-in-button {
+    font-size: .88rem !important; /* useful for buttons that cuddle up with inputs */
+}
+
+.material-icons {
+  /** default is 24px which is pretty chunky */
+  font-size: 22px;
+}
+
+/* allow spans/labels to vertically orient with material icons */
+.label-with-material-icon {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+}
+
+/* dropdown menu link/button with no downward carrot icon */
+.no-dropdown-caret::after {
+    display: none;
+}
+
+/* Default .card padding is extreme */
+.tight-card .card-body,
+.tight-card .list-group-item {
+  padding: .25rem;
+}
+.tight-card .card-header {
+  padding: .5rem;
+}
+
+@media all and (min-width: 800px) {
+    /* scrollable typeahead menus for full-size screens */
+    ngb-typeahead-window {
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
+}
+
+/* Limit size of dropdown menus and allow for scrolling */
+.scrollable-menu {
+  height: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 99%;
+}
+
+/* --------------------------------------------------------------------------
+/* Form Validation CSS - https://angular.io/guide/form-validation
+ * TODO: these colors don't fit the EG color scheme
+ * Required valid fields are left-border styled in green-ish.
+ * Invalid fields are left-border styled in red-ish.
+ */
+.form-validated .ng-valid[required], .form-validated .ng-valid.required, input[formcontrolname].ng-valid {
+  border-left: 5px solid #78FA89;
+}
+.form-validated .ng-invalid:not(form), input[formcontrolname].ng-invalid {
+  border-left: 5px solid #FA787E;
+}
+
+/* Typical form CSS.
+ * Brings font size down 5% to squeeze a bit more in.
+ * Bold labels
+ * Fixes some bootstrap margin funkiness with checkboxes for
+ * better vertical alignment.
+ * Optional faint odd or even row striping.
+ */
+.common-form {
+  font-size: 95%;
+}
+.common-form .row {
+  margin: 5px;
+  padding: 3px;
+}
+
+.common-form label {
+  font-weight: bold;
+}
+
+.common-form.striped-even .row:nth-child(even) {
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.common-form.striped-odd .row:nth-child(odd) {
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+
+/**
+ * Only display the print container when printing
+ */
+#eg-print-container {
+    display: none;
+}
+@media print {
+  head {display: none} /* just to be safe */
+  body div:not([id="eg-print-container"]) {display: none}
+  div {display: none}
+  #eg-print-container {display: block}
+  #eg-print-container div {display: block}
+  #eg-print-container pre {border: none}
+}
+
+/**
+ * Make sure that comboboxes (including org select
+ * are visible, even in nested modals.
+ *
+ * See https://github.com/ng-bootstrap/ng-bootstrap/issues/2505
+ * for the upstream issue that necessitates this.
+ */
+body>.dropdown-menu {z-index: 2100;}
+
+/* Styles for eg-daterange-select that don't work
+ * in the component's CSS file.
+ */
+.ngb-dp-day:not(.disabled) .daterange-day.focused {
+  background-color: #e6e6e6;
+}
+.ngb-dp-day:not(.disabled) .daterange-day.range, .ngb-dp-day:not(.disabled) .daterange-day:hover {
+  background-color: #129a78;
+  color: white;
+  font-size: 1.4em;
+}
+.ngb-dp-day:not(.disabled) .daterange-day.faded {
+  background-color: #c9efe4;
+  color: black;
+}
+
+/* Allow for larger XL dialogs */
+@media (min-width: 1300px) { .modal-xl { max-width: 1200px; } }
+@media (min-width: 1600px) { .modal-xl { max-width: 1500px; } }
+@media (min-width: 1700px) { .modal-xl { max-width: 1600px; } }
+
+/**
+ * Make the acquisitions search form's navigation tabs match
+ * those of the staff interface. This is a global rule because
+ * various approaches to doing it local to the acq search component
+ * don't work:
+ *
+ * 1. A rule bound to the container of the acq search tabset
+ *    would make the entire background be grey.
+ * 2. ":host ::ng-deep" for a local rule works, but depends on a
+ *    mechanism that is deprecated.
+ * 4. ng-tabset provides no hooks for custom styles for the nav-tab
+ *    background.
+ * 5. Turning off view encapsulation for the acq search component
+ *    breaks a lot of styles.
+ */
+#acq-search-page ngb-tabset .nav.nav-tabs {
+  background-color: rgb(247, 247, 247);
+}

@@ -1,0 +1,37 @@
+<form ng-submit="ok()" role="form">
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+      [% l('Exceptions occurred during checkout.') %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div ng-repeat="evt in events">
+      <div class="panel panel-danger">
+        <div class="panel-heading">{{evt.textcode}}</div>
+        <div class="panel-body">
+          <div ng-if="copy_barcode" class="strong-text-2">{{copy_barcode}}</div>
+          {{evt.desc}}
+          <div ng-if="evt.textcode == 'ITEM_ON_HOLDS_SHELF'"> 
+	       <a target="_blank" href="[% ctx.base_path %]/staff/circ/patron/{{patronID}}/checkout">{{patronName}}</a>.
+            <div>
+		<label><input type="checkbox" ng-model="formdata.clearHold"/> 
+		[% l('Cancel this hold upon checkout?') %]</label>
+	    </div>
+
+	  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <i ng-if="auto_override">[% |l %]If overridden, subsequent checkouts during this patron's 
+ session will auto-override this event[% END %]</i>
+    <br/><br/>
+    <input type="submit" class="btn btn-primary" 
+        value="[% l('Force Action?') %]"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel($event)">[% l('Cancel') %]</button>
+  </div>
+</form>

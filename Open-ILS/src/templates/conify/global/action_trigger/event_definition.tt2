@@ -1,0 +1,123 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Event Definitions') %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'></script>
+<script type="text/javascript">openils.Util.addOnLoad(loadEventDef)</script>
+
+<div class='hidden'>
+    <select dojoType='dijit.form.ComboBox' jsId='eventDefGranularity'>
+        <option value='hourly'>[% l('Hourly') %]</option>
+        <option value='daily'>[% l('Daily') %]</option>
+        <option value='weekly'>[% l('Weekly') %]</option>
+        <option value='monthly'>[% l('Monthly') %]</option>
+        <option value='yearly'>[% l('Yearly') %]</option>
+    </select>
+</div>
+
+
+<div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
+
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Event Definitions') %]' id='tab-atevdef'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+            <div>[% l('Trigger Event Definitions') %]</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showClonePane(cloneEventEnv)'>[% l('Clone Selected') %]</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+            </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:460px'>
+            <table  jsId="edGrid" 
+                    autoHeight='true'
+                    dojoType="openils.widget.AutoGrid" 
+                    fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'reactor', 'validator', 'repeat_delay']"
+                    suppressFields="['usr_field', 'opt_in_setting', 'max_delay', 'template','cleanup_failure', 'cleanup_success', 'message_title', 'message_template', 'message_library_path', 'message_usr_path']"
+                    query="{id: '*'}" 
+                    fmClass='atevdef'
+                    editStyle='pane'
+                    showPaginator='true'
+                    editOnEnter='true'>
+                <thead>
+                    <tr><th field='name' width='15%' get='getEventDefNameLink' formatter='formatEventDefNameLink'></th></tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Hooks') %]' id='tab-ath' style='height:100%;'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>[% l('Trigger Hooks') %]</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='thGrid.showCreateDialog()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='thGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+            </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
+            <table  jsId="thGrid" 
+                    autoHeight='true'
+                    dojoType="openils.widget.AutoGrid" 
+                    fieldOrder="['key', 'core_type', 'description', 'passive']"
+                    query="{key: '*'}" 
+                    fmClass='ath'
+                    defaultCellWidth='20'
+                    showPaginator='true'
+                    editOnEnter='true'>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Reactors') %]' id='tab-atreact'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>[% l('Trigger Reactors') %]</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='trGrid.showCreateDialog()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='trGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+            </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
+            <table  jsId="trGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    query="{module: '*'}" 
+                    fmClass='atreact'
+                    showPaginator='true'
+                    editOnEnter='true'>
+                <thead>
+                    <tr>
+                        <th field='module' width='200px;'></th>
+                        <th field='description' width='auto'></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='[% l('Validators') %]' id='tab-atval'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>[% l('Trigger Validators') %]</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='tvGrid.showCreateDialog()'>[% l('New') %]</button>
+                <button dojoType='dijit.form.Button' onClick='tvGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+            </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
+            <table  jsId="tvGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    query="{module: '*'}" 
+                    fmClass='atval'
+                    showPaginator='true'
+                    editOnEnter='true'>
+                <thead>
+                    <tr>
+                        <th field='module' width='200px'></th>
+                        <th field='description' width='auto'></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' indeterminate='true'></div>
+
+[% END %]
+

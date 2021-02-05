@@ -1,0 +1,36 @@
+<!--
+Template for printing a renewal receipt. Fields include:
+
+* circulations - list of renewals made during the session, including
+  for each renewal:
+
+  * renewal.title
+  * renewal.author
+  * renewal.circ.due_date
+  * renewal.circ.renewal_remaining
+  * renewal.circ.circ_lib
+  * renewal.circ.duration
+  * renewal.copy.barcode
+  * renewal.copy.circ_modifier
+  * renewal.copy.call_number.label
+  * renewal.copy.call_number.owning_lib.name
+  * renewal.copy.call_number.owning_lib.shortname
+
+-->
+<div>
+  <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
+  <div>[% l('You renewed the following items:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="renewal in circulations">
+      <div>{{renewal.title}}</div>
+      <div>[% l('Barcode: [_1] Due: [_2]', 
+        '{{renewal.copy.barcode}}',
+        '{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
+  <div>[% l('You were helped by [_1]', '{{staff.first_given_name}}') %]</div>
+<br/>
+

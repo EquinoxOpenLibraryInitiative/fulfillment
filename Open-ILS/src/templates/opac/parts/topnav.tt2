@@ -1,0 +1,99 @@
+[%- IF ctx.maintenance_message -%]
+<div id="maintenance_message">[% ctx.maintenance_message %]</div>
+[%- END -%]
+[% IF !ctx.is_staff && !ctx.readonly %]
+<div id="header-wrap">
+<div id="header">
+    <div class="float-left">
+        [% INCLUDE "opac/parts/topnav_logo.tt2" %]
+    </div>
+    <div class="float-right">
+        [% IF !ctx.user %]
+        <div id="your-acct-login">
+            <a href="[% mkurl(ctx.opac_root _ '/myopac/main') %]" 
+                class="opac-button opac-button-header" id="home_myopac_link">
+                [% l('My Account') %]
+            </a>
+        </div>
+        [% ELSE %]
+        <div id="dash_wrapper">
+            <div id="dash_identity">
+                <span id="dash_user">
+                    [%  l('[_1] [_2]', 
+                      (ctx.user.pref_first_given_name || ctx.user.first_given_name), 
+                      (ctx.user.pref_family_name || ctx.user.family_name)
+                    ) | html %]
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash_account_buttons">
+                <div id="dash_user_message_button_container">
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/messages', {}, ['single', 'message_id', 'hid']) %]" class="opac-button">
+                        [% l('Messages') %]
+                    </a>
+                    [% IF ctx.user_stats.messages.unread %]
+                        <div id="unread_message_count_floater">
+                            [%- ctx.user_stats.messages.unread -%]
+                            <span class="sr-only">[% l('unread') %]</a>
+                        </div>
+                    [% END %]
+                </div>
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type', 'hid']) %]"
+                    class="opac-button">[% l('My Account') %]</a>
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, ['single', 'message_id', 'hid', 'from_basket']) %]"
+                    class="opac-button">[% l('My Lists') %]</a>
+                <a href="[% mkurl(ctx.opac_root _ '/logout', {}, 1) %]"
+                    class="opac-button" id="logout_link">[% l('Logout') %]</a>
+                </span>
+            </div>
+            <div id="dashboard">
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/circs', {}, 
+                        ['limit','offset', 'single', 'message_id', 'sort','sort_type', 'hid'])
+                        %]"><span id="dash_checked">[% ctx.user_stats.checkouts.total_out
+                        %]</span> [% l("Checked Out") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/holds', {}, 
+                        ['available', 'single', 'message_id', 'sort','sort_type', 'hid'])
+                        %]"><span id="dash_holds">[% ctx.user_stats.holds.total
+                        %]</span> [% l("On Hold") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/holds',
+                        {available => 1}, ['single', 'message_id', 'sort','sort_type', 'hid']) %]"><span id="dash_pickup">[%
+                        ctx.user_stats.holds.ready %]</span> [% l("Ready for Pickup") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type', 'hid'])
+                        %]"><span id="dash_fines">[% money(ctx.user_stats.fines.balance_owed)
+                        %]</span> [% l("Charges") %]</a>
+                </span>
+            </div>
+            <div id="dashboard_e" class="hidden">
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_circs')
+                        %]"><span id="dash_e_checked">-</span> [% l("E-Items Checked Out") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds')
+                        %]"><span id="dash_e_holds">-</span> [% l("E-Items on Hold") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds_ready')
+                        %]"><span id="dash_e_pickup">-</span> [% l("E-Items Ready for Checkout") %]</a>
+                </span>
+            </div>
+        </div>
+        [% END %]
+    </div>
+    [%- INCLUDE "opac/parts/locale_picker.tt2" %]
+    <div class="common-no-pad"></div>
+</div>
+</div>
+[% INCLUDE "opac/parts/topnav_links.tt2" %]
+[% END %]

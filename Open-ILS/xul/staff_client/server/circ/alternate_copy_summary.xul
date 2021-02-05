@@ -1,0 +1,310 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Alternate Copy Summary -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/cat/bib_brief_overlay.xul"?>
+
+<window id="alt_copy_summary_win" 
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/cat/bib_brief.js"/>
+    <script type="text/javascript" src="alternate_copy_summary.js"/>
+
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
+
+    <groupbox flex="1" style="overflow:auto">
+
+        <caption label="&staff.circ.alternate_copy_summary.Alternate_View.label;" />
+
+        <!-- Most of this gets filled in by bib_brief_overlay.xul -->
+        <grid id="bib_brief_grid"> 
+            <rows id="bib_brief_grid_rows">
+                <row id="bib_brief_grid_row3">
+                    <label id="bib_call_number_label"/>
+                    <textbox id="bib_call_number"/>
+                    <hbox id="placeholder1" flex="1">
+                        <label value="&staff.circ.alternate_copy_summary.Call_Number.label;" accesskey="&staff.circ.alternate_copy_summary.Call_Number.accesskey;" control="call_number" class="emphasis"/>
+                    </hbox>
+                    <hbox id="placeholder2" flex="1">
+                        <textbox name="call_number" readonly="true" context="clipboard" class="plain"/>
+                    </hbox>
+                </row>
+            </rows>
+        </grid>
+
+        <tabbox flex="1">
+            <tabs>
+                <tab label="&staff.circ.alternate_copy_summary.Quick_Summary.label;" accesskey="&staff.circ.alternate_copy_summary.Quick_Summary.accesskey;" />
+                <tab label="&staff.circ.alternate_copy_summary.Circulation_History.label;" accesskey="&staff.circ.alternate_copy_summary.Circulation_History.accesskey;" />
+                <tab label="&staff.circ.alternate_copy_summary.Holds_Transit.label;" accesskey="&staff.circ.alternate_copy_summary.Holds_Transit.accesskey;" />
+                <tab label="&staff.circ.alternate_copy_summary.Cataloging_Info.label;" accesskey="&staff.circ.alternate_copy_summary.Cataloging_Info.accesskey;" />
+            </tabs>
+            <tabpanels flex="1">
+                <tabpanel orient="vertical"><!-- Quick Summary -->
+                    <grid id="grid1" flex="0">
+                        <columns>
+                            <column id="g1column1"/>
+                            <column />
+                            <column />
+                            <column />
+                            <column />
+                            <column />
+                            <column />
+                            <column />
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Barcode.label;" />
+                                <textbox name="barcode" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Circ_Library.label;" />
+                                <textbox name="copy_circ_lib" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Call_Number.label;" />
+                                <textbox name="call_number" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Status.label;" />
+                                <textbox name="copy_status" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Price.label;" />
+                                <textbox name="price" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Owning_Library.label;" />
+                                <textbox name="owning_lib" readonly="true" context="clipboard"/>
+                                <!--                                <spacer />
+                                <spacer /> -->
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Type.label;" />
+                                <textbox name="renewal_type" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Due_Date.label;" />
+                                <textbox name="due_date" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Cost.label;" />
+                                <textbox name="cost" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Copy_Location.label;" />
+                                <textbox name="location" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs.label;" />
+                                <textbox name="total_circ_count" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
+                                <textbox name="xact_start" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.ISBN.label;" />
+                                <textbox name="isbn" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Loan_Duration.label;" />
+                                <textbox name="loan_duration" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label;" />
+                                <textbox name="total_circ_count_curr_year" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
+                                <textbox name="checkout_workstation" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Date_Created.label;" />
+                                <textbox name="copy_create_date" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Fine_Level.label;" />
+                                <textbox name="fine_level" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label;" />
+                                <textbox name="total_circ_count_prev_year" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Duration_Rule.label;" />
+                                <textbox name="duration_rule" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Date_Active.label;" />
+                                <textbox name="copy_active_date" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Reference.label;" />
+                                <textbox name="ref" readonly="true" context="clipboard"/>
+                                <!--
+                                <label value="&staff.circ.alternate_copy_summary.Rolling_Counter.label;" />
+                                <textbox name="rolling_counter" readonly="true" context="clipboard"/>
+                                -->
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="renewal_workstation" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Recurring_Fine_Rule.label;" />
+                                <textbox name="recurring_fine_rule" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Status_Changed_Time.label;" />
+                                <textbox name="status_changed_time" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.OPAC_Visible.label;" />
+                                <textbox name="opac_visible" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Remaining_Renewals.label;" />
+                                <textbox name="renewal_remaining" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Max_Fine_Rule.label;" />
+                                <textbox name="max_fine_rule" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Copy_ID.label;" />
+                                <textbox name="copy_id" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Holdable.label;" />
+                                <textbox name="holdable" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Age_Protect.label;" />
+                                <textbox name="age_protect" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="checkin_time" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.TCN.label;" />
+                                <textbox name="tcn" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Circulate.label;" />
+                                <textbox name="circulate" readonly="true" context="clipboard"/>
+                                <!--
+                                <label value="&staff.circ.alternate_copy_summary.Hold_Shelf_Location.label;" />
+                                <textbox name="hold_shelf_loc" readonly="true" context="clipboard"/>
+                                -->
+                                <spacer /><spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Floating.label;" />
+                                <textbox name="floating" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Circ_Modifier.label;" />
+                                <textbox name="circ_modifier" readonly="true" context="clipboard"/>
+                                <spacer /><spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation.label;" />
+                                <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
+                            </row>
+                        </rows>
+                    </grid>
+                    <grid id="grid2" flex="1">
+                        <columns>
+                            <column id="g2column1" />
+                            <column flex="1" />
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="&staff.circ.alternate_copy_summary.Alert.label;" />
+                                <textbox name="alert_message" multiline="true"  context="clipboard"/>
+                            </row>
+                        </rows>
+                    </grid>
+                </tabpanel>
+                <tabpanel><!-- Circulation History -->
+                    <grid>
+                        <columns>
+                            <column/>
+                            <column/>
+                            <column flex="1"/>
+                            <column/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <label class="header1" value="&staff.circ.alternate_copy_summary.Previous_Circ_Group.label;" />
+                                <spacer />
+                                <spacer />
+                                <label class="header1" value="&staff.circ.alternate_copy_summary.Most_Recent_Circ_Group.label;" />
+                                <spacer />
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Patron_Name.label;" />
+                                <button id="prev_patron_name" name="prev_patron_name" readonly="true" />
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Patron_Name.label;" />
+                                <button id="patron_name" name="patron_name" readonly="true" />
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label;" />
+                                <textbox name="prev_num_circs" readonly="true"  context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label;" />
+                                <textbox name="num_circs" readonly="true"  context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
+                                <textbox name="prev_xact_start" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
+                                <textbox name="xact_start" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
+                                <textbox name="prev_checkout_workstation" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
+                                <textbox name="checkout_workstation" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Time.label;" />
+                                <textbox name="prev_renewal_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Time.label;" />
+                                <textbox name="renewal_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="prev_renewal_workstation" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="renewal_workstation" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines.label;" />
+                                <textbox name="prev_stop_fines" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines.label;" />
+                                <textbox name="stop_fines" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines_Time.label;" />
+                                <textbox name="prev_stop_fines_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines_Time.label;" />
+                                <textbox name="stop_fines_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="prev_last_checkin_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="last_checkin_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="prev_last_checkin_scan_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="last_checkin_scan_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation.label;" />
+                                <textbox name="prev_checkin_workstation" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation.label;" />
+                                <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
+                            </row>
+                        </rows>
+                    </grid>
+                </tabpanel>
+                <tabpanel orient="vertical"><!-- Hold/Transit -->
+                    <groupbox flex="1" id="holds" style="overflow: hidden; min-height: 120px;" oils_persist="height">
+                        <caption id="hold_caption" label="&staff.circ.copy_details.hold_caption;"/>
+                        <label id="hold_patron_name" class="patronNameLarge click_link"/>
+                        <tree id="hold" flex="1" enableColumnDrag="true"/>
+                        <spacer FIXME="label and tree get swapped without this"/>
+                    </groupbox>
+                    <splitter id="splitter" oils_persist="state hidden" oils_persist_peers="holds transits"><grippy/></splitter>
+                    <groupbox flex="1" id="transits" style="overflow: hidden; min-height: 80px;" oils_persist="height">
+                        <caption id="transit_caption" label="&staff.circ.copy_details.transit_caption;"/>
+                        <tree id="transit" flex="1" enableColumnDrag="true"/>
+                    </groupbox>
+                </tabpanel>
+                <tabpanel><!-- Cataloging Info -->
+                    <deck id="cat_deck" flex="1"/>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+    </groupbox>
+
+</window>
+

@@ -1,0 +1,3 @@
+= Introduction =
+:toc:
+This part describes cataloging in Evergreen.

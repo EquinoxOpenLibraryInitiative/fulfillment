@@ -1,0 +1,59 @@
+[%
+  WRAPPER "ffstaff/t_base.tt2";
+  ctx.page_title = l("FulfILLment"); 
+  ctx.page_app = "ffMain";
+  ctx.page_ctrl = "FFMainCtrl";
+  ctx.page_no_navbar = 1;
+%]
+
+[% BLOCK APP_CSS %]
+<link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/ffstaff/fulfillment.css" />
+[% END %]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/list.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/ffstaff/fulfillment/app.js"></script>
+[% END %]
+
+<div id="wrap"> 
+  <div id="mainhead"> 
+    <a href="http://fulfillment-ill.org" target="_blank">
+      <img src="/images/FulfillmentHomePageBanner.png" border="0" 
+        alt="[% l('Open Source Integrated Interlibrary Lending System') %]" /></a> 
+  </div> 
+
+  <div id="subhead" style='width:100%'> 
+    <div style='float:left'>
+      <a href="./fulfillment/pending" class="thispage mainNav">[% l('Manage ILL') %]</a> 
+      <a href="./fulfillment/records" class="thispage mainNav" hidden>[% l('Manage Bibliographic Records') %]</a> 
+    </div>
+    <div style='float:left'>
+      <div class="dropdown" ng-cloak>
+        <a href="javascript:;" 
+          class="dropdown-toggle mainNav thispage" data-toggle="dropdown">
+          [% l('Location: {{orgSelector.current().shortname()}}') %]
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+          <li role="presentation" ng-repeat="org in orgSelector.all()">
+            <a role="menuitem" tabindex="-1" ng-click="selectOrg(org.id())">
+              <div style="padding-left:{{org.ou_type().depth() * 10}}px">
+                {{org.shortname()}}
+              </div>
+            </a>
+         </li>
+        </ul>
+      </div>
+    </div>
+    <div style='float:right'>
+      <a href="/eg/opac" target="_blank" class="mainNav thispage">[% l('Catalog') %]</a> 
+      <a href="./login" target="_self" ng-click="logout()" class="mainNav thispage">Log Out</a> 
+    </div>
+  </div> 
+
+  <div ng-view></div>
+</div>
+
+[% END %]

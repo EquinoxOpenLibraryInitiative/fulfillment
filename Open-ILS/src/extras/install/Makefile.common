@@ -1,0 +1,47 @@
+# Functions used by all installers
+
+# Install the CPAN modules
+install_cpan:
+	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_cpan_force:
+	for m in $(CPAN_MODULES_FORCE); do \
+		echo "force install $$m" | perl -MCPAN -e shell ;\
+	done
+
+install_cpan_pgsql:
+	for m in $(CPAN_MODULES_PGSQL); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_net_z3950_simpleserver:
+	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; \
+		then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; \
+	fi;
+	tar -zxf $(LIBNET_Z3950_SIMPLESERVER).tar.gz
+	cd $(LIBNET_Z3950_SIMPLESERVER) && \
+		perl Makefile.PL && make && make test && make install
+
+# Install libdbi and the postgres drivers
+install_libdbi:
+	if [ ! -d $(LIBDBI) ]; then wget $(LIBDBI_HOST)/$(LIBDBI).tar.gz; fi;
+	if [ ! -d $(LIBDBI_DRIVERS) ]; then wget $(LIBDBI_HOST)/$(LIBDBI_DRIVERS).tar.gz; fi;
+	tar -zxf $(LIBDBI).tar.gz
+	tar -zxf $(LIBDBI_DRIVERS).tar.gz
+	cd $(LIBDBI) && ./configure --disable-docs && make all install
+	cd $(LIBDBI_DRIVERS) && ./configure --disable-docs --enable-libdbi \
+		--with-pgsql --with-pgsql-incdir=$$(pg_config --includedir) \
+		--with-pgsql-libdir=$$(pg_config --libdir) && make all install  
+
+# NOTE: Use the NodeJS Binary
+# ALSO NOTE: the version of angular/cli should be kept in sync with
+#            what's specified in Open-ILS/src/eg2/package.json
+install_nodejs_from_source:
+	wget -N $(NODEJS_BINARY)
+	tar -C /usr/local --strip-components 1 -xJf $(NODEJS_TARBIN)
+	npm update
+	npm install -g @angular/cli@^10.0.0
+
+clean:
+	make -C $(LIBDBI) clean
+	make -C $(LIBDBI_DRIVERS) clean
+
+# vim:noet:sw=4:ts=4:

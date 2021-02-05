@@ -1,0 +1,55 @@
+<div>
+  <div class="row">
+    <div class="col-md-4">[% l('007 Value') %]</div>
+    <div class="col-md-4"><pre ng-bind-html="highlightedFieldData()"></pre></div>
+  </div>
+  <div class="row"><div class="col-md-12 pad-vert"><hr/></div></div>
+  <div class="row">
+    <div ng-if="step == 0">
+      <div class="col-md-4">[% l('Category of Material') %]</div>
+      <div class="col-md-4">
+        <div class="btn-group" uib-dropdown>
+          <button type="button" class="btn btn-default" uib-dropdown-toggle>
+           <span style="padding-right: 5px;" ng-if="selected_option">[% l('[_1]: [_2]', '{{selected_option.ptype_key()}}', '{{selected_option.label()}}') %]</span>
+           <span style="padding-right: 5px;" ng-if="!selected_option">[% l('<unset>') | html %]</span>
+           <span class="caret"></span>
+         </button>
+         <ul uib-dropdown-menu>
+           <li ng-repeat="option in values_for_step">
+             <a href ng-click="change_ptype(option)">
+              [% l('[_1]: [_2]', '{{option.ptype_key()}}', '{{option.label()}}') %]
+             </a>
+           </li>
+         </ul>
+        </div>
+      </div>
+    </div>
+    <div ng-if="step != 0">
+      <div class="col-md-4">{{label_for_step}}</div>
+      <div class="col-md-6">
+        <div class="btn-group" uib-dropdown>
+          <button type="button" class="btn btn-default" uib-dropdown-toggle>
+           <span style="padding-right: 5px;" ng-if="selected_option">[% l('[_1]: [_2]', '{{selected_option.value()}}', '{{selected_option.label()}}') %]</span>
+           <span style="padding-right: 5px;" ng-if="!selected_option">[% l('<unset>') | html %]</span>
+           <span class="caret"></span>
+         </button>
+         <ul uib-dropdown-menu>
+           <li ng-repeat="option in values_for_step">
+             <a href ng-click="change_option(option)">
+              [% l('[_1]: [_2]', '{{option.value()}}', '{{option.label()}}') %]
+             </a>
+           </li>
+         </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 pull-right">
+      <button class="btn btn-default" ng-click="prev_step()" 
+        ng-class="{disabled : !step}">[% l('Previous') %]</button>
+      <button class="btn btn-default" ng-click="next_step()"
+        ng-class="{disabled : is_last_step()}">[% l('Next') %]</button>
+    </div>
+  </div>
+</div>

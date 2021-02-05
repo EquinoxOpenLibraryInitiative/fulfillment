@@ -1,0 +1,18 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Edit Lead Record') %]</h4>
+  </div>
+  <div class="modal-body">
+    <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
+                         in-place-mode="true" on-save="on_save"
+                         record-type="bre">
+    </eg-marc-edit-record>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok()"
+        class="btn btn-primary" value="[% l('Done') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

@@ -1,0 +1,179 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Item Status"); 
+  ctx.page_app = "egItemStatus";
+  ctx.page_ctrl = "SearchCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/item/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_COPIES_VOLUMES =
+      "[% l('Permanently delete selected items and/or call numbers from catalog?') %]";
+    s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
+      "[% l('Will delete {{copies}} items and {{volumes}} call numbers') %]";
+    s.CONFIRM_DELETE_PEERS =
+      "[% l('Unlink selected conjoined items?') %]";
+    s.CONFIRM_DELETE_PEERS_MESSAGE =
+      "[% l('Will unlink {{peers}} items') %]";
+    s.CONFIRM_TRANSFER_COPIES_TO_MARKED_VOLUME =
+      "[% l('Are you sure you want to transfer selected items to the marked call number?') %]";
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE =
+      "[% l('One or more items could not be transferred. Override?') %]";
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+    s.SUCCESS_UPDATE_INVENTORY =
+      "[% l('Updated most recent inventory data for selected items.') %]";
+    s.FAIL_UPDATE_INVENTORY =
+      "[% l('Failed to update recent inventory data for selected items.')%]";
+    s.ITEM_SUCCESSFULLY_MODIFIED =
+      "[% l('Item successfully modified') %]";
+    s.ITEMS_SUCCESSFULLY_MODIFIED =
+      "[% l('Item(s) successfully modified') %]";
+    s.SUCCESS_HOLD_REQUEST =
+      "[% l('Hold successfully requested') %]";
+    s.FAILURE_HOLD_REQUEST =
+      "[% l('Hold not successfully requested') %]";
+
+  }])
+</script>
+[% END %]
+
+<style>
+  /* FIXME: MOVE ME */
+  #item-status-barcode {width: 16em;}
+  #item-status-form { 
+    margin-bottom: 20px; 
+  }
+</style>
+
+<h1 class="sr-only">[% l('Item Status Display') %]</h1>
+
+<h2>[% l('Scan Item') %]</h2>
+
+<form id="item-status-form" ng-submit="context.search(args)" role="form">
+  <!-- the upload button drops down to the line below when it sits in the
+    same col-md-x as the text input and submit.  avoid by using a flex-row -->
+  <div class="flex-row">
+    <div class="input-group">
+      <input type="text" id="item-status-barcode" class="form-control"
+        select-me="context.selectBarcode" ng-model="args.barcode"
+        aria-label="[% l('Scan Item') %]">
+      <input class="btn btn-default" 
+        type="submit" value="[% l('Submit') %]"/>
+      <eg-help-popover help-text="[% l('Single barcode or list of barcodes separated with commas.') %]">
+    </div>
+    <!-- give the upload container div some padding to prevent force the
+        upload widget into the vertical middle of the row -->
+    <div class="btn-pad" style="padding:4px;">
+      <div class="flex-row">
+        <div class="strong-text">[% l('OR') %]</div>
+        <div class="btn-pad">
+          <input type="file" eg-file-reader 
+            container="barcodesFromFile" value="[% l('Upload from File') %]">
+        </div>
+        <eg-help-popover help-text="[% l('File Format: One barcode per line. All whitespace and commas will be removed before processing.') %]">
+      </div>
+    </div>
+    <div class="flex-cell"></div><!-- force the final divs to the right -->
+    <div ng-show="context.page == 'detail'" uib-dropdown>
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
+        <span>[% l('Actions') %]</span><span class="caret"></span>
+      </button>
+      <ul uib-dropdown-menu class="scrollable-menu dropdown-menu-right">
+        <li><a href ng-click="add_copies_to_bucket()">[% l('Add to Item Bucket') %]</a></li>
+        <li><a href ng-click="add_records_to_bucket()">[% l('Add to Record Bucket') %]</a></li>
+        <li><a href ng-click="show_in_catalog()">[% l('Show in Catalog') %]</a></li>
+        <li><a href ng-click="make_copies_bookable()">[% l('Make Items Bookable') %]</a></li>
+        <li><a href ng-click="book_copies_now()">[% l('Book Item Now') %]</a></li>
+        <li><a href ng-click="manage_reservations()">[% l('Manage Reservations') %]</a></li>
+        <li><a href ng-click="requestItems()">[% l('Request Items') %]</a></li>
+        <li><a href ng-click="attach_to_peer_bib()">[% l('Link as Conjoined to Previously Marked Bib Record') %]</a></li>
+        <li><a href ng-click="selectedHoldingsCopyDelete()">[% l('Delete Items') %]</a></li>
+        <li><a href ng-click="checkin()">[% l('Check In Items') %]</a></li>
+        <li><a href ng-click="renew()">[% l('Renew Items') %]</a></li>
+        <li><a href ng-click="cancel_transit()">[% l('Cancel Transit') %]</a></li>
+        <li><a href ng-click="update_inventory()">[% l('Update Inventory') %]</a></li>
+
+        <p><b>[% l('Show') %]</b></p>
+        <li><a href ng-click="show_triggered_events()">[% l('Show Triggered Events') %]</a></li>
+        <li><a href ng-click="show_item_holds()">[% l('Show Item Holds') %]</a></li>
+        <li><a href ng-click="show_record_holds()">[% l('Show Record Holds') %]</a></li>
+        <li><a href ng-click="print_labels()">[% l('Print Labels') %]</a></li>
+        <li><a href ng-click="findAcquisition()">[% l('Originating Acquisition') %]</a></li>
+
+        <p><b>[% l('Mark') %]</b></p>    
+        <li><a href ng-click="selectedHoldingsDamaged()">[% l('Item as Damaged') %]</a></li>
+        <li><a href ng-click="selectedHoldingsDiscard()">[% l('Item as Discard/Weed') %]</a></li>
+        <li><a href ng-click="selectedHoldingsMissing()">[% l('Item as Missing') %]</a></li>
+    
+        <p><b>[% l('Add') %]</b></p>    
+        <li><a href ng-click="selectedHoldingsCopyAdd()">[% l('Add Items') %]</a></li>
+        <li><a href ng-click="selectedHoldingsVolCopyAdd()">[% l('Add Call Numbers and Items') %]</a></li>
+        <li><a href ng-click="add_item_alerts()">[% l('Add Item Alerts') %]</a></li>
+
+        <p><b>[% l('Edit') %]</b></p>    
+        <li><a href ng-click="selectedHoldingsVolEdit()">[% l('Call Numbers') %]</a></li>
+        <li><a href ng-click="selectedHoldingsCopyEdit()">[% l('Items') %]</a></li>
+        <li><a href ng-click="selectedHoldingsVolCopyEdit()">[% l('Call Numbers and Items') %]</a></li>
+        <li><a href ng-click="replaceBarcodes()">[% l('Replace Barcodes') %]</a></li>
+        <li><a href ng-click="manage_item_alerts()">[% l('Manage Item Alerts') %]</a></li>
+
+        <p><b>[% l('Transfer') %]</b></p>    
+        <li><a href ng-click="changeItemOwningLib()">[% l('Items to Previously Marked Library') %]</a></li>
+        <li><a href ng-click="transferItems()">[% l('Items to Previously Marked Call Number') %]</a></li>
+      </ul>
+    </div>
+    <div>
+      <button class="btn btn-default" ng-click="toggleView($event)">
+        <span ng-show="context.page == 'list'">[% l('Detail View') %]</span>
+        <span ng-show="context.page == 'detail'">[% l('List View') %]</span>
+      </button>
+    </div>
+  </div><!-- flex row -->
+</form>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div ng-show="context.itemNotFound" class="alert alert-danger">
+      [% l('Item Not Found') %]
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div ng-show="context.itemsNotFound.length" class="alert alert-danger" role="alert">
+      <h3>[% l('The following barcodes are incorrect or deleted') %]</h3>
+      <ul>
+        <li ng-repeat="badBarcode in context.itemsNotFound">{{badBarcode}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-3" ng-show="context.fileDoneLoading">
+    <div ng-show="context.itemsNotFound.length" class="alert alert-info" role="alert">
+      <h3>[% l('Summary of file load') %]</h3>
+      <ul>
+        <li>[% l('[_1] valid barcodes', '{{context.numBarcodesInFile - context.itemsNotFound.length}}') %]</li>
+        <li>[% l('[_1] invalid barcodes', '{{context.itemsNotFound.length}}') %]</li>
+        <li>[% l('[_1] total barcodes', '{{context.numBarcodesInFile}}') %]</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div ng-view></div>
+
+[% END %]
+

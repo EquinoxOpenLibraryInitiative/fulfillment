@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<overlay id="eg_firefox_browser" 
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="evergreen_entry_tools" insertbefore="devToolsSeparator" label="Evergreen Client"
+      oncommand="try {
+          Components.classes['@open-ils.org/openils_data_cache;1'].getService().wrappedJSObject.openMainEGWindow();
+        } catch(E) { alert(E); }
+      "/>
+  </menupopup>
+  <vbox id="appmenuPrimaryPane">
+    <menuitem id="evergreen_entry_primary" insertafter="appmenu_webDeveloper" label="Evergreen Client"
+      oncommand="try {
+          Components.classes['@open-ils.org/openils_data_cache;1'].getService().wrappedJSObject.openMainEGWindow();
+        } catch(E) { alert(E); }
+      "/>
+  </vbox>
+</overlay>

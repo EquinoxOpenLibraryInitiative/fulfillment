@@ -1,0 +1,1875 @@
+# Czech translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-09-16 22:23+0000\n"
+"PO-Revision-Date: 2020-09-28 12:11+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2020-09-29 04:37+0000\n"
+"X-Generator: Launchpad (build d685c0a40836eb9844ed835c9700f20633c1d7af)\n"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
+msgid " Invoice "
+msgstr " Faktura "
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:39
+msgid " Select All"
+msgstr " Vybrat vše"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:90
+msgid "# Invoiced / # Paid"
+msgstr "# Fakturováno / # Zaplaceno"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:7
+msgid "#x2196; Return"
+msgstr "#x2196; Zpět"
+
+#. ("<span id=\"acq-po-view-total-estimated\"></span>")
+#. ("<span id=\"acq-po-view-total-enc\"></span>")
+#. ("<span id=\"acq-po-view-total-spent\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:106 ../../Open-ILS/src/templates/acq/po/view.tt2:65 ../../Open-ILS/src/templates/acq/po/view.tt2:74
+msgid "$%1"
+msgstr "$%1"
+
+#. ("<span id=\"records-up\">0</span>")
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:99
+msgid "%1 term(s) prepared for search"
+msgstr "%1 položek připraveno pro vyhledání"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:59
+msgid "&#171; Previous"
+msgstr "&#171; Předchozí"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:285 ../../Open-ILS/src/templates/acq/common/li_table.tt2:398 ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:12
+msgid "&#x2196; Return"
+msgstr "&#x2196; Zpět"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:283
+msgid "&#x2196; Return To Invoice"
+msgstr "&#x2196; Zpět na fakturu"
+
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:20 ../../Open-ILS/src/templates/acq/po/view.tt2:133
+msgid "&#x2196; Return to Invoice"
+msgstr "&#x2196; Zpět na fakturu"
+
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:17 ../../Open-ILS/src/templates/acq/po/view.tt2:130
+msgid "&#x2196; Return to Search"
+msgstr "&#x2196; Zpět na hledání"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
+msgid "&#x270D; worksheet"
+msgstr "&#x270D; pracovní list"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
+msgid "&#x279F; catalog"
+msgstr "&#x279F; katalog"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
+msgid "&#x27AC; queue"
+msgstr "&#x27AC; fronta"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
+msgid "&#x27BE; link to catalog"
+msgstr "&#x27BE; odkaz do katalogu"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:220
+msgid "(building the results list progressively)"
+msgstr "(postupné sestavení výsledků vyhledávání)"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:207
+msgid "-- Actions --"
+msgstr "-- Akce --"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:30
+msgid "----PO----"
+msgstr "----OBJ----"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:23
+msgid "--Actions--"
+msgstr "--Akce--"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:82
+msgid "ACQ Copies Processed"
+msgstr "Akviziční exempláře zpracovány"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:62
+msgid "ALL of the following terms match"
+msgstr "Shoda u VŠECH následujících položek"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:55
+msgid "ANY of the following terms match"
+msgstr "Shoda u LIBOVOLNÉ z následujících položek"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:2
+msgid "Acquisitions Invoice Receiving"
+msgstr "Příjem akviziční faktury"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:11 ../../Open-ILS/src/templates/acq/search/unified.tt2:2
+msgid "Acquisitions Search"
+msgstr "Vyhledávání v akvizici"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:130
+msgid "Actions"
+msgstr "Akce"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:26
+msgid "Activatable?"
+msgstr "Lze aktivovat?"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:20 ../../Open-ILS/src/templates/acq/po/view.tt2:31
+msgid "Activate Order"
+msgstr "Aktivovat objednávku"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:16
+msgid "Activate Purchase Order"
+msgstr "Aktivovat objednávku"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:35
+msgid "Activate Without Loading Items"
+msgstr "Aktivovat bez zavedení exemplářů"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:62
+msgid "Actual Price"
+msgstr "Aktuální cena"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:28
+msgid "Add Brief Record"
+msgstr "Přidat stručný záznam"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:145
+msgid "Add Charge..."
+msgstr "Přidat poplatek ..."
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:340
+msgid "Add New Items"
+msgstr "Přidat nové položky"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:262 ../../Open-ILS/src/templates/acq/search/unified.tt2:83
+msgid "Add Search Term"
+msgstr "Přidat vyhledávací termín"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:268
+msgid "Add Selected Items to Invoice"
+msgstr "Přidat vybrané položky na fakturu"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:236
+msgid "Add Tag"
+msgstr "Přidat tag"
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:10
+msgid "Add To Selection List"
+msgstr "Přidat do akvizičního seznamu"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:102
+msgid "Add file"
+msgstr "Přidat soubor"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:75
+msgid "Add more search terms"
+msgstr "Přidat více termínů pro vyhledávání"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:32 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:44
+msgid "Add to Purchase Order"
+msgstr "Přidat k objednávce"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/related.tt2:41 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:30 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:68
+msgid "Add to Selection List"
+msgstr "Přidat do akvizičního seznamu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:524
+msgid "Add to Selection List: "
+msgstr "Přidat do akvizičního seznamu: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:274
+msgid "Add/Edit Items"
+msgstr "Přidat/upravit položky"
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:14
+msgid "Adding to Purchase Order"
+msgstr "Přidávám do objednávky"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:31
+msgid "Additional comments"
+msgstr "Doplňující poznámky"
+
+#. ("<span id=\"acq-lit-li-claim-dia-li-title\"></span>", "<span id=\"acq-lit-li-claim-dia-li-id\"></span>")
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:6
+msgid "Against item: %1 (%2)"
+msgstr "Proti položce: %1 (%2)"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:484
+msgid "All Line Items"
+msgstr "Všechny položky"
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:36
+msgid "Allocate to Fund"
+msgstr "Přidělit do  fondu"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:179 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:128
+msgid "Allocations"
+msgstr "Přidělené prostředky"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:136
+msgid "Allow activation with <br/> zero-copy lineitems"
+msgstr "Povolit aktivaci s  <br/> nulovým počtem položek"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:82
+msgid "Amount to transfer from"
+msgstr "Částka k přesunu z"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:33 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:16 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:46
+msgid "Amount: "
+msgstr "Částka: "
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:61 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:29 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:72 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:40
+msgid "Apply"
+msgstr "Použít"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:37
+msgid "Apply Claim Policy to Selected Line Items"
+msgstr "Použít reklamační politiku na vybrané položky"
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:12
+msgid "Apply Credit"
+msgstr "Použít kredit"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:112
+msgid "Apply to Selected"
+msgstr "Použít na vybrané"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:138
+msgid "Approve Selected Titles"
+msgstr "Odslouhlasit zvolené tituly"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:218
+msgid "Approved"
+msgstr "Odsouhlaseno"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:59 ../../Open-ILS/src/templates/acq/po/item_table.tt2:9
+msgid "Author"
+msgstr "Autor"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:165 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:94 ../../Open-ILS/src/templates/acq/invoice/view.tt2:162
+msgid "Balance"
+msgstr "Zůstatek"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:122 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:95 ../../Open-ILS/src/templates/acq/common/li_table.tt2:232 ../../Open-ILS/src/templates/acq/common/li_table.tt2:365 ../../Open-ILS/src/templates/acq/common/li_table.tt2:416 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:47
+msgid "Barcode"
+msgstr "Čárový kód"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:350
+msgid "Batch Update"
+msgstr "Dávková aktualizace"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:555
+msgid "Batch Update Funds"
+msgstr "Dávková aktualizace fondu"
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:17
+msgid "Begin a new search"
+msgstr "Začít nové hledání"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:39
+msgid "Best/Single Match Minimum Quality Ratio"
+msgstr "Shoda poměru minimální kvality Nejlepší/jediný"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:78
+msgid "Bib Records Merged/Imported"
+msgstr "Bibliografický záznam byl sloučen/importován"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:81
+msgid "Bibliographic Items"
+msgstr "Bibliografické jednotky"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:125 ../../Open-ILS/src/templates/acq/invoice/view.tt2:91
+msgid "Billed"
+msgstr "Naúčtováno"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:119 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:91 ../../Open-ILS/src/templates/acq/common/li_table.tt2:231
+msgid "Branch"
+msgstr "Pobočka"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:123 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:99 ../../Open-ILS/src/templates/acq/common/li_table.tt2:233
+msgid "Call Number"
+msgstr "Signatura"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:337 ../../Open-ILS/src/templates/acq/common/li_table.tt2:364 ../../Open-ILS/src/templates/acq/common/li_table.tt2:415 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:46
+msgid "Callnumber"
+msgstr "Signatura"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382 ../../Open-ILS/src/templates/acq/common/li_table.tt2:500 ../../Open-ILS/src/templates/acq/common/li_table.tt2:571 ../../Open-ILS/src/templates/acq/common/li_table.tt2:590 ../../Open-ILS/src/templates/acq/invoice/view.tt2:338
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:541
+msgid "Cancel Copy"
+msgstr "Zrušit exempláře"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:49
+msgid "Cancel Line Items"
+msgstr "Zrušit položky"
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:71 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:79
+msgid "Cancel Request"
+msgstr "Zrušit žádost"
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:9
+msgid "Cancel Selected"
+msgstr "Zrušit vybrané"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:36
+msgid "Cancel Selected Line Items"
+msgstr "Zrušit vybrané položky"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:112 ../../Open-ILS/src/templates/acq/po/view.tt2:120
+msgid "Cancel order"
+msgstr "Zrušit objednávku"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:222
+msgid "Canceled"
+msgstr "Zrušeno"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:122 ../../Open-ILS/src/templates/acq/po/item_table.tt2:6
+msgid "Charge Type"
+msgstr "Účtovaný typ"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:27
+msgid "Choose alert code "
+msgstr "Zvolte kód varování "
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:3
+msgid "Choose invoice"
+msgstr "Zvolte fakturu"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:53 ../../Open-ILS/src/templates/acq/search/unified.tt2:171
+msgid "Choose the Lead Selection List:"
+msgstr "Zvolte řídící akviziční seznam"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:236 ../../Open-ILS/src/templates/acq/common/li_table.tt2:336 ../../Open-ILS/src/templates/acq/common/li_table.tt2:363 ../../Open-ILS/src/templates/acq/common/li_table.tt2:414 ../../Open-ILS/src/templates/acq/common/li_table.tt2:85 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:44
+msgid "Circ Modifier"
+msgstr "Modifikátor výpůjčky"
+
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:6 ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
+msgid "Claim"
+msgstr "Reklamace"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:544
+msgid "Claim policy:"
+msgstr "Reklamační politika"
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:58
+msgid "Claim selected"
+msgstr "Reklamovat vybrané"
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:16 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:46
+msgid "Claim selected items"
+msgstr "Reklamovat vybrané položky"
+
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:2
+msgid "Claim type:"
+msgstr "Typ reklamace"
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:5 ../../Open-ILS/src/templates/acq/common/li_table.tt2:210
+msgid "Claims"
+msgstr "Reklamace"
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:44
+msgid "Clear Form"
+msgstr "Vymazat formulář"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:104
+msgid "Clear loaded search terms"
+msgstr "Vymazat nahrané vyhledávací termíni"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:41 ../../Open-ILS/src/templates/acq/search/unified.tt2:155
+msgid "Clone"
+msgstr "Klonovat"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:32 ../../Open-ILS/src/templates/acq/search/unified.tt2:143
+msgid "Clone Selected"
+msgstr "Klonovat vybrané"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:175
+msgid "Close"
+msgstr "Zavřít"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:162 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:93 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:50
+msgid "Code"
+msgstr "Kód"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:10
+msgid "Code:"
+msgstr "Kód:"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:237 ../../Open-ILS/src/templates/acq/common/li_table.tt2:334 ../../Open-ILS/src/templates/acq/common/li_table.tt2:361 ../../Open-ILS/src/templates/acq/common/li_table.tt2:79 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:43
+msgid "Collection Code"
+msgstr "Kód sbírky"
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:34
+msgid "Consider individual copies for claiming"
+msgstr "Pro reklamaci brát zřetel na jednotlivé kopie"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:126 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:26 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:13 ../../Open-ILS/src/templates/acq/po/events.tt2:23
+msgid "Context Org Unit"
+msgstr "Související organizační jednotka"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:91
+msgid "Context Org Unit:"
+msgstr "Související organizační jednotka:"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:392 ../../Open-ILS/src/templates/acq/common/li_table.tt2:70
+msgid "Copies"
+msgstr "Exempláře"
+
+#. ("<span name=\"count\">0</span>")
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "Copies(%1)"
+msgstr "Exempláře (%1)"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:235 ../../Open-ILS/src/templates/acq/common/li_table.tt2:333 ../../Open-ILS/src/templates/acq/common/li_table.tt2:360 ../../Open-ILS/src/templates/acq/common/li_table.tt2:413 ../../Open-ILS/src/templates/acq/common/li_table.tt2:76 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:42
+msgid "Copy Location"
+msgstr "Umístění"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:184 ../../Open-ILS/src/templates/acq/common/notes.tt2:19 ../../Open-ILS/src/templates/acq/common/notes.tt2:34 ../../Open-ILS/src/templates/acq/picklist/list.tt2:24 ../../Open-ILS/src/templates/acq/search/unified.tt2:136
+msgid "Create"
+msgstr "Vytvořit"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:11
+msgid "Create Allocation"
+msgstr "Vytvořit přidělení"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:84
+msgid "Create Invoice"
+msgstr "Vytvořit fakturu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:40
+msgid "Create Invoice From Selected Line Items"
+msgstr "Vytvořit fakturu z označených položek"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:31 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:47 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:10 ../../Open-ILS/src/templates/acq/po/create.tt2:2 ../../Open-ILS/src/templates/acq/po/create.tt2:3
+msgid "Create Purchase Order"
+msgstr "Vytvořit objednávku"
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:39
+msgid "Create Request"
+msgstr "Vytvořit požadavek"
+
+#. ("<span id=\"oils-acq-picklist-attr-cdate\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:9
+msgid "Create date: %1"
+msgstr "Datum vytvoření: %1"
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:106
+msgid "Credits"
+msgstr "Příspěvky"
+
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:3 ../../Open-ILS/src/templates/acq/fund/view.tt2:163 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:97
+msgid "Currency Type"
+msgstr "Typ měny"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:207
+msgid "Debits"
+msgstr "Dluh"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:86
+msgid "Debits Encumbered"
+msgstr "Zatížení"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:55 ../../Open-ILS/src/templates/acq/invoice/view.tt2:128 ../../Open-ILS/src/templates/acq/invoice/view.tt2:139
+msgid "Delete"
+msgstr "Smazat"
+
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:6 ../../Open-ILS/src/templates/acq/fund/list.tt2:42 ../../Open-ILS/src/templates/acq/funding_source/list.tt2:27 ../../Open-ILS/src/templates/acq/picklist/list.tt2:64 ../../Open-ILS/src/templates/acq/search/unified.tt2:186
+msgid "Delete Selected"
+msgstr "Smazat vybrané"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:192
+msgid "Delete Selected Copy"
+msgstr "Smazat vybrané exempláře"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:27
+msgid "Delete Selected Items"
+msgstr "Smazat vybrané položky"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:51
+msgid "Description"
+msgstr "Popis"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:14
+msgid "Description: "
+msgstr "Popis: "
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:106
+msgid "Destination amount"
+msgstr "Cílová částka"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:96
+msgid "Destination fund"
+msgstr "Cílový fond"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:109 ../../Open-ILS/src/templates/acq/invoice/view.tt2:94
+msgid "Detach"
+msgstr "Odpojit"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:115 ../../Open-ILS/src/templates/acq/po/item_table.tt2:2
+msgid "Direct Charges, Taxes, Fees, etc."
+msgstr "Přímé platby, daně, poplatky apod."
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:88
+msgid "Distribution Formula"
+msgstr "Distribuční vzorec"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:308
+msgid "Distribution Formulas"
+msgstr "Distribuční vzorce"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:318
+msgid "Distribution formulas applied to this lineitem:"
+msgstr "Distribuční vzorce použité na tuto položku"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:99
+msgid "Dry Run: "
+msgstr "Testovací běh: "
+
+#: ../../Open-ILS/src/templates/acq/po/edi_messages.tt2:2 ../../Open-ILS/src/templates/acq/po/edi_messages.tt2:6 ../../Open-ILS/src/templates/acq/po/view.tt2:57
+msgid "EDI Messages"
+msgstr "EDI zprávy"
+
+#. (ctx.page_args.0)
+#: ../../Open-ILS/src/templates/acq/po/edi_messages.tt2:4
+msgid "EDI Messages (Purchase Order %1)"
+msgstr "EDI Zprávy (objednávka %1)"
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:26
+msgid "Edit MARC"
+msgstr "Editace MARCu"
+
+#: ../../Open-ILS/src/templates/acq/common/info.tt2:19
+msgid "Edit MARC Order Record"
+msgstr "Editovat  MARC v záznamu objednávky"
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:38
+msgid "End Date Range"
+msgstr "Rozsah data ukončení"
+
+#: ../../Open-ILS/src/templates/acq/common/add_to_po.tt2:45
+msgid "Enter the PO Name: "
+msgstr "Zadejte jméno objednávky: "
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:84 ../../Open-ILS/src/templates/acq/search/unified.tt2:205
+msgid "Entry Count"
+msgstr "Počet položek"
+
+#. ("<span id=\"oils-acq-picklist-attr-count\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:12
+msgid "Entry Count: %1"
+msgstr "Počet položek: %1"
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:11
+msgid "Estimated Cost"
+msgstr "Odhadované náklady"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:68 ../../Open-ILS/src/templates/acq/common/li_table.tt2:132
+msgid "Estimated Price"
+msgstr "Odhadovaná cena"
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:21
+msgid "Evergreen Catalog"
+msgstr "Katalog Evergreen"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:199
+msgid "Expand"
+msgstr "Rozbalit"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:126
+msgid "Expand All"
+msgstr "Rozbalit vše"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:27
+msgid "Expected Cost: "
+msgstr "Očekávané náklady: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:45
+msgid "Export List"
+msgstr "Exportovat seznam"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:29
+msgid "Export Single Attribute List"
+msgstr "Exportovat seznam jedinečných atributů"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:330
+msgid "Extra Items"
+msgstr "Zvláštní  položky"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:29
+msgid "False"
+msgstr "Nepravda"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:52
+msgid "File to Upload:"
+msgstr "Soubor k nahrání"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:53
+msgid "Final invoice for Blanket order?"
+msgstr "Konečná faktura pro paušální objednávku?"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:40
+msgid "Finalize Blanket Order"
+msgstr "Ukončit paušální objednávku"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:36
+msgid "Fiscal Year"
+msgstr "Fiskální rok"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:116 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:87 ../../Open-ILS/src/templates/acq/common/li_table.tt2:234 ../../Open-ILS/src/templates/acq/common/li_table.tt2:335 ../../Open-ILS/src/templates/acq/common/li_table.tt2:362 ../../Open-ILS/src/templates/acq/common/li_table.tt2:82 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:45 ../../Open-ILS/src/templates/acq/invoice/view.tt2:123 ../../Open-ILS/src/templates/acq/po/item_table.tt2:7
+msgid "Fund"
+msgstr "Finanční fond"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:5
+msgid "Fund Details"
+msgstr "Detaily fondu"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:45
+msgid "Fund Propagation &amp; Rollover"
+msgstr "Fund Propagation &amp; Rollover"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:166 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:40
+msgid "Fund: "
+msgstr "Finanční fond: "
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:5
+msgid "Funding Source Details"
+msgstr "Detaily finančního zdroje"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:25
+msgid "Funding Source: "
+msgstr "Finanční zdroj: "
+
+#: ../../Open-ILS/src/templates/acq/funding_source/list.tt2:24
+msgid "Funding Sources"
+msgstr "Finanční zdroje"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:2 ../../Open-ILS/src/templates/acq/fund/list.tt2:38
+msgid "Funds"
+msgstr "Fond financí"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
+msgid "Generate Worksheet"
+msgstr "Generovat pracovní list"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:66
+msgid "Generated Attributes"
+msgstr "Generované atributy"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:290 ../../Open-ILS/src/templates/acq/common/li_table.tt2:591
+msgid "Go"
+msgstr "Potvrdit"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:65
+msgid "Hide"
+msgstr "Skrýt"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:36
+msgid "Hide Details"
+msgstr "Skrýt podrobnosti"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:14
+msgid "Hide Search Form"
+msgstr "Skrýt vyhledávací formulář"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:66
+msgid "History"
+msgstr "Historie"
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:35
+msgid "Hits Per Source"
+msgstr "Počet úspěšných na zdroj"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:209
+msgid "Holdings Maint."
+msgstr "Správa exemplářů"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:115 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:57 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:86 ../../Open-ILS/src/templates/acq/fund/view.tt2:160 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:91 ../../Open-ILS/src/templates/acq/po/search.tt2:39 ../../Open-ILS/src/templates/acq/po/search.tt2:99 ../../Open-ILS/src/templates/acq/po/view.tt2:13 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:49
+msgid "ID"
+msgstr "ID"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:60 ../../Open-ILS/src/templates/acq/common/li_table.tt2:168
+msgid "ISBN"
+msgstr "ISBN"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:170
+msgid "ISSN"
+msgstr "ISSN"
+
+#: ../../Open-ILS/src/templates/acq/receiving/process.tt2:11 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:54
+msgid "Identifier"
+msgstr "Identifikátor"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:26
+msgid "Identifier Field?: "
+msgstr "Pole identifikátoru?: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:492
+msgid "Import Bibs and Create Copies"
+msgstr "Importovat bib. záznamy a vytvořit exempláře"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:22
+msgid "Import Non-Matching Records"
+msgstr "Importovat záznamy, které nemají shodu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
+msgid "Import Queue"
+msgstr "Fronta importu"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:56
+msgid "In Process"
+msgstr "Zpracovává se"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:95
+msgid "Include Funds for Descendant Org Units:"
+msgstr "Zahrnout fondy pro podřízené organizační jednotky"
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:27
+msgid "Initiate New Claims"
+msgstr "Zahájit nové reklamace"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:46
+msgid "Insufficient Quality Fall-Through Profile"
+msgstr "Profil pro propadnutí nedostatečné kvality"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:68
+msgid "Invoice"
+msgstr "Faktura"
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:8
+msgid "Invoice #"
+msgstr "Faktura č."
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:2 ../../Open-ILS/src/templates/acq/po/view.tt2:75
+msgid "Invoicing"
+msgstr "Fakturace"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:287
+msgid "Item Count: "
+msgstr "Počet položek: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:128 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:22
+msgid "Items"
+msgstr "Exempláře"
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:2 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:5
+msgid "Items Eligible For Claiming"
+msgstr "Jednotky k reklamaci"
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:2
+msgid "Items by Bibliographic ID"
+msgstr "Jednotky podle ID bib. záznamu"
+
+#. ("<span id=\"oils-acq-picklist-attr-edate\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:10
+msgid "Last updated: %1"
+msgstr "Naposledy aktualizováno: %1"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:76
+msgid "Limit Fiscal Year Close-out Operation to Encumbrances: "
+msgstr "Omezit operace uzavírající fiskální rok na zatížení: "
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:282
+msgid "Limit to Invoiceable Items"
+msgstr "Omezit na fakturovatelné položky"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:122
+msgid "Line Items"
+msgstr "Položky"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:5
+msgid "Lineitem Attribute Attribute"
+msgstr "Atribut atributu položky"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/history.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/history.tt2:3
+msgid "Lineitem History"
+msgstr "Historie položky"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/search.tt2:5
+msgid "Lineitem Search"
+msgstr "Hledání položky"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:11 ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:2
+msgid "Lineitem Worksheet"
+msgstr "Pracovní list položky"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:15
+msgid "Lineitem state"
+msgstr "Stav položky"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:70
+msgid "Lineitems Processed"
+msgstr "Položka zpracována"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:25
+msgid "Lineitems: "
+msgstr "Položky: "
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:27
+msgid "Link"
+msgstr "Připojit"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:87
+msgid "Link Invoice"
+msgstr "Připojit fakturu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:41
+msgid "Link Selected Line Items to Invoice"
+msgstr "Připojit vybrané položky na fakturu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
+msgid "Link To Catalog Record"
+msgstr "Napojit na bibliografiký záznam"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:35
+msgid "Load Bibs and Items"
+msgstr "Zavést bibliografikcé  záznamy a exempláře"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:60
+msgid "Load Items for Imported Records"
+msgstr "Nahrát jednotky pro importované záznamy"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:16
+msgid "Loading Worksheet..."
+msgstr "Nahrávám pracovní list"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:2
+msgid "Locate Bib Record"
+msgstr "Lokalizovat bibliografický záznam"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:173
+msgid "Location: "
+msgstr "Umístění: "
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:61
+msgid "MARC Attributes"
+msgstr "Atributy MARC"
+
+#: ../../Open-ILS/src/templates/acq/common/info.tt2:17
+msgid "MARC ILS Record"
+msgstr "Záznamy MARC v knihovním systému"
+
+#: ../../Open-ILS/src/templates/acq/common/info.tt2:16
+msgid "MARC Order Record"
+msgstr "MARC záznamy objednávky"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:26
+msgid "Mark Ready for Order"
+msgstr "Označit jako připravené k objednání"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:25
+msgid "Mark Ready for Selector"
+msgstr "Označit jako připravené pro výběr"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:195
+msgid "Mark Selected Copies Received"
+msgstr "Označit vybrané exempláře jako přijaté"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:38
+msgid "Mark Selected Line Items as Received"
+msgstr "Označit vybrané položky jako přijaté"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:585
+msgid "Mark all"
+msgstr "Označit vše"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:583
+msgid "Mark selected"
+msgstr "Označit vybrané"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
+msgid "Mark&nbsp;Received"
+msgstr "Označit&nbsp;Přijaté"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:58 ../../Open-ILS/src/templates/acq/search/unified.tt2:179
+msgid "Merge"
+msgstr "Sloučit"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:35
+msgid "Merge On Best Match"
+msgstr "Sloučit při nejlepší shodě"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:27
+msgid "Merge On Exact Match (901c)"
+msgstr "Sloučit při přesné shodě (901c)"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:31
+msgid "Merge On Single Match"
+msgstr "sloučit při prosté shodě"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:18
+msgid "Merge Profile"
+msgstr "Profil pro sloučení"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:49 ../../Open-ILS/src/templates/acq/search/unified.tt2:162
+msgid "Merge Selected"
+msgstr "Sloučit vybrané"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
+msgid "Move Items To Selection List"
+msgstr "Přesunout položky do akvizičního seznamu"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:7
+msgid "My Selection Lists"
+msgstr "Moje akviziční seznamy"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:161 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:92 ../../Open-ILS/src/templates/acq/po/view.tt2:18 ../../Open-ILS/src/templates/acq/search/unified.tt2:111 ../../Open-ILS/src/templates/acq/search/unified.tt2:202
+msgid "Name"
+msgstr "Název"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:468
+msgid "Name (optional)"
+msgstr "Název  (nepovinné)"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:19 ../../Open-ILS/src/templates/acq/search/unified.tt2:129
+msgid "Name:"
+msgstr "Název:"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:215 ../../Open-ILS/src/templates/acq/po/search.tt2:55
+msgid "New"
+msgstr "Nový"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:24
+msgid "New Alert"
+msgstr "Nové upozorňění"
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:2
+msgid "New Brief Record"
+msgstr "Vytvořit předběžný  záznam"
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:31
+msgid "New Charge"
+msgstr "Nový poplatek"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:158
+msgid "New Copy"
+msgstr "Nový exemplář"
+
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:5
+msgid "New Currency Type"
+msgstr "Nový typ měny"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:41
+msgid "New Fund"
+msgstr "Nový fond"
+
+#: ../../Open-ILS/src/templates/acq/funding_source/list.tt2:26
+msgid "New Funding Source"
+msgstr "Nový finanční zdroj"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:36 ../../Open-ILS/src/templates/acq/search/unified.tt2:148
+msgid "New Name:"
+msgstr "Nový název:"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:11
+msgid "New Note"
+msgstr "Nová poznámka"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:42
+msgid "New Record Quality / Quality of Best Match"
+msgstr "Nová kvalita  záznamu / kvalita nejlepší shody"
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:59
+msgid "New Search"
+msgstr "Nové hledání"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:15 ../../Open-ILS/src/templates/acq/search/unified.tt2:124
+msgid "New Selection List"
+msgstr "Nový akviziční seznam"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:80
+msgid "New brief record like this"
+msgstr "Nový předběžný záznam jako tento"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table_pager.tt2:15 ../../Open-ILS/src/templates/acq/invoice/view.tt2:274
+msgid "Next"
+msgstr "Další"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:60
+msgid "Next &#187;"
+msgstr "Další &#187;"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:253
+msgid "No Copies"
+msgstr "Žádné exempláře"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:290
+msgid "No Results"
+msgstr "Žádné výsledky"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:33
+msgid "No further attributes to search by"
+msgstr "Žádné další atributy pro hledání"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:78
+msgid "No. Copies"
+msgstr "Č.  exemplářů"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:238 ../../Open-ILS/src/templates/acq/fund/view.tt2:127 ../../Open-ILS/src/templates/acq/po/item_table.tt2:10
+msgid "Note"
+msgstr "Poznámka"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:16
+msgid "Note is vendor-public"
+msgstr "Poznámka je viditelná pro dodavatele"
+
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:4
+msgid "Note:"
+msgstr "Poznámka:"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:54 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:22 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:65
+msgid "Note: "
+msgstr "Poznámka: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:129 ../../Open-ILS/src/templates/acq/common/li_table.tt2:366 ../../Open-ILS/src/templates/acq/po/view.tt2:48
+msgid "Notes"
+msgstr "Poznámky"
+
+#. ("<span name=\"notes_count\">0</span>")
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:203
+msgid "Notes(%1)"
+msgstr "Poznámky(%1)"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:58
+msgid "On order"
+msgstr "Objednáno"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:220
+msgid "On-Order"
+msgstr "Objednáno"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:9
+msgid "Or create a new queue"
+msgstr "Nebo vytvořit novou frontu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:165
+msgid "Order Identifier"
+msgstr "Identifikátor objednávky"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:217
+msgid "Order-Ready"
+msgstr "Připraveno k objednání"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:464 ../../Open-ILS/src/templates/acq/po/search.tt2:71
+msgid "Ordering Agency"
+msgstr "Objednávající agentura"
+
+#: ../../Open-ILS/src/templates/acq/receiving/process.tt2:17
+msgid "Ordering Agency:"
+msgstr "Objednávající agentura:"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:164 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:98 ../../Open-ILS/src/templates/acq/search/unified.tt2:204
+msgid "Owner"
+msgstr "Vlastník"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:332 ../../Open-ILS/src/templates/acq/common/li_table.tt2:359 ../../Open-ILS/src/templates/acq/common/li_table.tt2:412 ../../Open-ILS/src/templates/acq/common/li_table.tt2:73 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:41
+msgid "Owning Branch"
+msgstr "Vlastnící knihovna"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:80
+msgid "PO"
+msgstr "OBJ"
+
+#: ../../Open-ILS/src/templates/acq/po/history.tt2:2
+msgid "PO History"
+msgstr "Historie bojednávky"
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:31
+msgid "PO Line Item"
+msgstr "Položka objednávky"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:10
+msgid "PO Search"
+msgstr "Vyhledávání objednávky"
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:7
+msgid "PO Triggered Events"
+msgstr "Spuštěné události objednávky"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:22
+msgid "PO name already in use: "
+msgstr "Název objednávky již existuje: "
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:23
+msgid "PO ordering agency"
+msgstr "Objednávající agentura"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:191 ../../Open-ILS/src/templates/acq/invoice/view.tt2:127 ../../Open-ILS/src/templates/acq/invoice/view.tt2:93
+msgid "Paid"
+msgstr "Zaplaceno"
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:65
+msgid "Patron Request"
+msgstr "Požadavek čtenáře"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:2
+msgid "Patron Requests"
+msgstr "Požadavky čtenářů"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:57
+msgid "Pending"
+msgstr "Čeká na zpracování"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:219
+msgid "Pending-Order"
+msgstr "OBJ-nevyřízená"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:92
+msgid "Per Copy"
+msgstr "Na exempláře"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:41 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:53
+msgid "Percent: "
+msgstr "Procent: "
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:59
+msgid "Perform Fiscal Year Close-out Operation: "
+msgstr "Provést operace uzavírající fiskální rok: "
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:46 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:58
+msgid "Please enter an amount between 0 and 100"
+msgstr "Prosím, vložte"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:480
+msgid "Prepayment Required"
+msgstr "Požadována platba předem"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:14
+msgid "Prepayment Required?"
+msgstr "Požadována platba předem?"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table_pager.tt2:5
+msgid "Prev"
+msgstr "Předchozí"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:271
+msgid "Previous"
+msgstr "Předchozí"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:33
+msgid "Print Purchase Order"
+msgstr "Vytisknout objednávku"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:216
+msgid "Print Selected Invoices"
+msgstr "Vytisknout  vybrané faktury"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:115
+msgid "Process"
+msgstr "Zpracovat"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:51
+msgid ""
+"Propagation creates new funds for the subsequent fiscal year based on the "
+"funds for the selected fiscal year.  Only funds with the propagate setting "
+"enabled will be affected.  No money or encumbrances are altered during this "
+"process."
+msgstr ""
+"Přenesení vytvoří nový fond pro následující fiskální rok založený na fondu "
+"zvoleného fiskálního roku. Ovlivněny budou pouze fondy, které mají Přenesení "
+"aktivováno. Během procesu přenesení nebudou změněny peníze ani zatížení."
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:173
+msgid "Prorate"
+msgstr "úměrně rozdělit"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:91
+msgid "Provide a file of search terms"
+msgstr "Zadejte soubor nebo termín pro vyhledávání"
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:5
+msgid ""
+"Provide one or more CSV files whose first columns contain Evergreen "
+"bibliographic record IDs."
+msgstr ""
+"Zadejte jeden nebo více CSV souborů, jejeichž provní sloupec obsahuje ID "
+"bibliografických záznamů v Evergreenu."
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:18 ../../Open-ILS/src/templates/acq/common/li_table.tt2:189 ../../Open-ILS/src/templates/acq/common/li_table.tt2:476 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:22 ../../Open-ILS/src/templates/acq/po/search.tt2:42 ../../Open-ILS/src/templates/acq/po/view.tt2:46
+msgid "Provider"
+msgstr "Dodavatel"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:61
+msgid "Pubdate"
+msgstr "Datum vydání"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:185 ../../Open-ILS/src/templates/acq/po/events.tt2:55 ../../Open-ILS/src/templates/acq/po/view.tt2:2
+msgid "Purchase Order"
+msgstr "Objednávka"
+
+#. ("<span id=\"acq-po-view-state\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:8
+msgid "Purchase Order (%1)"
+msgstr "Objednávka (%1)"
+
+#: ../../Open-ILS/src/templates/acq/po/history.tt2:3
+msgid "Purchase Order History"
+msgstr "Historie objednávek"
+
+#. ("<a attr=\"name\"></a>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:14
+msgid "Purchase Order: %1"
+msgstr "Objednávka: %1"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:2
+msgid "Purchase Orders"
+msgstr "Objednávky"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:90
+msgid "Real Copies Processed"
+msgstr "Skutečně zpracované exempláře"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:538 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:74 ../../Open-ILS/src/templates/acq/po/view.tt2:115
+msgid "Reason:"
+msgstr "Důvod:"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:8
+msgid "Receive Items"
+msgstr "Přijmout jednotky"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:32 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:54
+msgid "Receive Selected Copies"
+msgstr "Přijmout vybrané exempláře"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:107
+msgid "Receive Time"
+msgstr "Čas přijetí"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:221
+msgid "Received"
+msgstr "Přijato"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:367
+msgid "Receiver"
+msgstr "Přijal(a)"
+
+#: ../../Open-ILS/src/templates/acq/receiving/process.tt2:2
+msgid "Receiving Processing"
+msgstr "Zpracování příjmu"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:14
+msgid "Record Match Set"
+msgstr "Sada shody záznamu"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:24
+msgid "Record Source"
+msgstr "Zdroj záznamu"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:141
+msgid "Refresh"
+msgstr "Obnovit"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:211 ../../Open-ILS/src/templates/acq/search/unified.tt2:121 ../../Open-ILS/src/templates/acq/search/unified.tt2:213 ../../Open-ILS/src/templates/acq/search/unified.tt2:94
+msgid "Refresh Grid"
+msgstr "Obnovit tabulku"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/related.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:4
+msgid "Related Lineitems"
+msgstr "Související položky"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:50
+msgid "Remove MARC Field Groups"
+msgstr "Odebrat skupiny polí MARC"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:141
+msgid "Remove Selected Titles"
+msgstr "Odebrat vybrané tituly"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:68
+msgid "Remove this row"
+msgstr "Odstranit řádek"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:178
+msgid "Reopen"
+msgstr "Znovu otevřít"
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:10
+msgid "Reset Selected"
+msgstr "Resetovat vybrané"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:112
+msgid "Results Summary"
+msgstr "Přehled výsledků"
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:12
+msgid "Retrieve records"
+msgstr "Načíst záznamy"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:61
+msgid "Return to Invoice"
+msgstr "Zpět k faktuře"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:18
+msgid "Reveal Search Form"
+msgstr "Zobrazit vyhledávání"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:115
+msgid "Same as source amount?"
+msgstr "Stejné jako výše zdroje:"
+
+#: ../../Open-ILS/src/templates/acq/common/add_to_po.tt2:55 ../../Open-ILS/src/templates/acq/common/li_table.tt2:531 ../../Open-ILS/src/templates/acq/common/li_table.tt2:547 ../../Open-ILS/src/templates/acq/invoice/view.tt2:169
+msgid "Save"
+msgstr "Uložit"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:171
+msgid "Save &amp; Clear"
+msgstr "Uložit &amp; Vyčistit"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:293 ../../Open-ILS/src/templates/acq/common/li_table.tt2:402
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:32
+msgid "Save New Charges"
+msgstr "Uložit nové výlohy"
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:24
+msgid "Save Record"
+msgstr "Uložit záznam"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:515
+msgid "Save all"
+msgstr "Uložit vše"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:520
+msgid "Save as Selection List: "
+msgstr "Uložit jako akviziční seznam: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:513
+msgid "Save selected"
+msgstr "Uložit vybrané"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:191 ../../Open-ILS/src/templates/acq/invoice/view.tt2:266 ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:14 ../../Open-ILS/src/templates/acq/lineitem/search.tt2:109 ../../Open-ILS/src/templates/acq/po/events.tt2:44 ../../Open-ILS/src/templates/acq/po/search.tt2:74 ../../Open-ILS/src/templates/acq/receiving/process.tt2:24 ../../Open-ILS/src/templates/acq/search/unified.tt2:87
+msgid "Search"
+msgstr "Hledat"
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:25
+msgid "Search Fields"
+msgstr "Pole pro vyhledávání"
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:54
+msgid "Search Results"
+msgstr "Výsledky vyhledávání"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:45
+msgid "Search by attribute values"
+msgstr "Hledat podle hodnoty atributu"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:206 ../../Open-ILS/src/templates/acq/search/unified.tt2:25
+msgid "Search for"
+msgstr "Vyhledat"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:70
+msgid "Searching...."
+msgstr "Vyhledávám...."
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:32
+msgid "Select"
+msgstr "Vybrat"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:287
+msgid "Select All"
+msgstr "Vybrat vše"
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:39
+msgid "Select Claim Action"
+msgstr "Zvolte akci pro reklamaci"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:184
+msgid "Select List"
+msgstr "Zvolte seznam"
+
+#. ("<div id=\"acq-invoice-extra-copies-fund\"></div>")
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:334
+msgid "Select a fund for the new items: %1"
+msgstr "vyberte fond pro nové položky: %1"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:564
+msgid "Select a new fund:"
+msgstr "Vyberte nový fond"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:488
+msgid "Selected Line Items"
+msgstr "Vyberte položky"
+
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:2
+msgid "Selection List"
+msgstr "Akviziční seznam"
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:2
+msgid "Selection Lists"
+msgstr "Akviziční seznamy"
+
+#. ("<span id=\"oils-acq-picklist-name\"> </span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:7
+msgid "Selection list %1"
+msgstr "Akviziční seznam  %1"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:216
+msgid "Selector-Ready"
+msgstr "Připraveno pro provedení výběru"
+
+#. ("<span id=\"oils-acq-picklist-attr-owner\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:11
+msgid "Selector: %1"
+msgstr "Vybírající:  %1"
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:69
+msgid "Set No Hold"
+msgstr "Nastavena žádná rezervace"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:103 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:124
+msgid "Shelving Location"
+msgstr "Umístění"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:41
+msgid "Show Details"
+msgstr "Zobrazit podrobnosti"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
+msgid "Show In Catalog"
+msgstr "Zobrazit v katalogu"
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:19
+msgid "Show Voucher"
+msgstr "Sobrazit doklad o reklamaci"
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:7
+msgid "Show items ready to claim for:"
+msgstr "Zobrazit položkyk připravené k rezervaci pro:"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:79
+msgid "Show results as a virtual combined PO"
+msgstr "Zobrazit výsledky jako virtuální kombinovanou objednávku"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:49
+msgid "Show results for which:"
+msgstr "Zobrazit výsledky, pro které:"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:279
+msgid "Sort by title"
+msgstr "Podle názvu"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:81
+msgid "Source amount"
+msgstr "Částka ze zdroje"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:167
+msgid "Spent Balance"
+msgstr "Bilance útraty"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:143
+msgid "Split Order by Lineitems"
+msgstr "Rozdělit objednávku na jednotlivé položky"
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:31
+msgid "Start Date Range"
+msgstr "Rozpětí data začátku"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:79 ../../Open-ILS/src/templates/acq/po/events.tt2:15 ../../Open-ILS/src/templates/acq/po/search.tt2:45
+msgid "State"
+msgstr "Stav"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:131
+msgid "Status"
+msgstr "Status"
+
+#. ("<span attr=\"state\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:19
+msgid "Status: %1"
+msgstr "Status: %1"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:53
+msgid "Subfield"
+msgstr "Podpole"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:22
+msgid "Subfield: "
+msgstr "Podpole: "
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:448 ../../Open-ILS/src/templates/acq/common/li_table.tt2:497 ../../Open-ILS/src/templates/acq/common/li_table.tt2:572 ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:43
+msgid "Submit"
+msgstr "Potvrdit"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:153 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:83
+msgid "Summary"
+msgstr "Souhrn"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:52
+msgid "Tag"
+msgstr "Tag"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:18
+msgid "Tag: "
+msgstr "Tag: "
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:229
+msgid "Tags"
+msgstr "Tagy"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:26
+msgid "The remaining are listed below."
+msgstr "Zbývající jsou zobrazeny níže"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:67
+msgid ""
+"The year end close out operation moves encumbrances from the selected fiscal "
+"year to the analogous funds in the subsequent fiscal year and it deactivates "
+"funds for the selected fiscal year.  Additionally, for all funds that have "
+"the \"Rollover\" setting enabled, this process will move all unspent money "
+"to the analogous fund in the subsequent fiscal year."
+msgstr ""
+"Operace uzavírající konec roku přesunou závazky  zvoleného fiskálního roku "
+"do analogických fonků následujícího fiskálního roku a deaktivují fondy "
+"zvoleného finančního roku. Zároveň u všech fondů, kde je aktivováno "
+"nastavení \"Překlopit\", přesune neutracené peníze do analogických fondů "
+"následného fiskálního roku"
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:28
+msgid "There are no miscellanea attached to this purchase order."
+msgstr "K této objednávce nejsou připojeny  'různé'"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:237
+msgid "There are no results from your search."
+msgstr "Vašemu hledání neodpovídají žádné výsledky"
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:40
+msgid "There were no items matching your search."
+msgstr "Vašemu hledání neodpovídají žádné položky"
+
+#. ("<span class=\"oils-notify-text\">", "</span>")
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:149
+msgid "These changes have %1not%2 been committed yet."
+msgstr "Tyto změny  %1not%2 ještě nebyly potvrzeny"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:58
+msgid "This invoice has no more copies to receive."
+msgstr "Pro tuto fakturu nejsou  žádné exempláře k přijetí."
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:84
+msgid ""
+"This modifies the above described Close-out Operation, causing funds to be "
+"transfered into the void (that is, entirely removed) instead of being "
+"transfered to the analogous funds in the subsequent fiscal year."
+msgstr ""
+"Toto změní výše popsané operace k uzavření roku tak, že fond bude anulován "
+"(tj. zcela odstraněn) , namísto toho, aby byl převeden do obdobných fondů "
+"následujícího účetního roku."
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:472
+msgid "This name is used by another PO"
+msgstr "Toto jméno je používáno pro jinou objednávku"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:558
+msgid "This will also update any existing encumbered or spent debits."
+msgstr "Toto také aktualizuje jakékoliv existující závazky nebo útratu"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:557
+msgid "This will update the fund for all copies attached to these lineitems."
+msgstr "Tato akce změní  fond  všem exemplářům připojeným k těmto položkám."
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:58
+msgid "Title"
+msgstr "Název"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:124
+msgid "Title / Description"
+msgstr "Název / popis"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:89
+msgid "Title Details"
+msgstr "Informace o titulu"
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:8
+msgid "Title/Description"
+msgstr "Název/popis"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:159 ../../Open-ILS/src/templates/acq/invoice/view.tt2:161
+msgid "Total"
+msgstr "Celkem"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:166
+msgid "Total Allocated"
+msgstr "Celkem přiděleno"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:125
+msgid "Total Copies:"
+msgstr "Celkový počet exemplářů"
+
+#. ("<span attr=\"copies\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:18
+msgid "Total Copies: %1"
+msgstr "Celkový počet exemplářů: %1"
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:95
+msgid "Total Credits"
+msgstr "Získáno celkem"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:168 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:96
+msgid "Total Debits"
+msgstr "Zaúčtováno celkem"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:170 ../../Open-ILS/src/templates/acq/po/view.tt2:73
+msgid "Total Encumbered"
+msgstr "Závazky celkem"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:129
+msgid "Total Encumbered:"
+msgstr "Závazky celkem:"
+
+#. ("<span attr=\"amount_encumbered\">")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:16
+msgid "Total Encumbered: $%1"
+msgstr "Závazky celkem: $%1"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:64
+msgid "Total Estimated"
+msgstr "Celkový odhad"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:55
+msgid "Total Lineitems"
+msgstr "Celkový počet položek"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:121
+msgid "Total Lineitems:"
+msgstr "Celkový počet položek:"
+
+#. ("<span attr=\"lineitem_count\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:15
+msgid "Total Lineitems: %1"
+msgstr "Celkový počet položek: %1"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:117
+msgid "Total Purchase Orders:"
+msgstr "Celkový počet objednávek:"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:169 ../../Open-ILS/src/templates/acq/po/view.tt2:105
+msgid "Total Spent"
+msgstr "Celkem utraceno"
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:133
+msgid "Total Spent:"
+msgstr "Celkem utraceno:"
+
+#. ("<span attr=\"amount_spent\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:17
+msgid "Total Spent: $%1"
+msgstr "Celkem utraceno: $%1"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:138
+msgid "Transfer"
+msgstr "Přesunout"
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:68
+msgid "Transfer Money"
+msgstr "Přesunout peníze"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:30
+msgid "True"
+msgstr "Pravda"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:169
+msgid "UPC"
+msgstr "Univerzální kód výrobků (UPC)"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
+msgid "Un-Receive"
+msgstr "Nastavit jako nepřijaté"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:39
+msgid "Un-Receive Selected Line Items"
+msgstr "Nastavit zvolené položky jako nepřijaté"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:208
+msgid "Update Barcodes"
+msgstr "Změnit čárové kódy"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:4 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:54
+msgid "Upload"
+msgstr "Nahrát"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:69
+msgid "Upload Complete!"
+msgstr "Nahrávání bylo dokončeno"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:6
+msgid "Upload to Queue"
+msgstr "Nahrát do fronty"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:28
+msgid "Use List Mode"
+msgstr "Zobrazit formou seznamu"
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:29
+msgid "Use Numeric Mode"
+msgstr "Zobrazit formou výčtu"
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:22
+msgid "User"
+msgstr "Uživatel"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:74
+msgid "Vandelay Records Processed"
+msgstr "Záznamy Vandelay byly zpracovány"
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:74
+msgid "Vendor"
+msgstr "Dodavatel"
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:69
+msgid "View"
+msgstr "Zobrazit"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:211
+msgid "View History"
+msgstr "Zobrazit historii"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:72
+msgid "View Import Queue"
+msgstr "Zobrazit frontu pro import"
+
+#. ("<span id=\"acq-po-view-invoice-count\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:79
+msgid "View Invoices (%1)"
+msgstr "Zobrazit faktury (%1)"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:31
+msgid "View MARC"
+msgstr "Zobrazit formát MARC"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:473 ../../Open-ILS/src/templates/acq/po/view.tt2:23
+msgid "View PO"
+msgstr "Zobrazit objednávku"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:34
+msgid "View PO History"
+msgstr "Zobrazit historii objednávky"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:70
+msgid "View Purchase Order"
+msgstr "Zobrazit objednávku"
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:71 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:68
+msgid "View Selection List"
+msgstr "Zobrazit akviziční seznam"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "View copy information"
+msgstr "Zobrazit informace o exempláři"
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
+msgid ""
+"When Dry Run is selected, the system will generate a summary of the changes "
+"that would occur during the selected operation(s). No data will be changed."
+msgstr ""
+"Pokud je vybrán Chod naprázdno, systém vygeneruje seznam změn, které by "
+"nastaly během vybrané operace/operací. Nedojde k žádným změnám dat."
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:55
+msgid "XPath"
+msgstr "XPath"
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:35
+msgid "XPath (advanced): "
+msgstr "XPath (pokročilé): "
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:134
+msgid "Year"
+msgstr "Rok"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:212 ../../Open-ILS/src/templates/acq/search/unified.tt2:37
+msgid "all"
+msgstr "vše"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:213 ../../Open-ILS/src/templates/acq/search/unified.tt2:38
+msgid "any"
+msgstr "jakémukoliv"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:188
+msgid "claim policy:"
+msgstr "reklamační politika:"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:236 ../../Open-ILS/src/templates/acq/search/unified.tt2:57
+msgid "contains"
+msgstr "obsahuje"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:240 ../../Open-ILS/src/templates/acq/search/unified.tt2:61
+msgid "does NOT contain"
+msgstr "neobsahuje"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:33
+msgid "invoices"
+msgstr "faktury"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:233 ../../Open-ILS/src/templates/acq/search/unified.tt2:54
+msgid "is"
+msgstr "je"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:234 ../../Open-ILS/src/templates/acq/search/unified.tt2:55
+msgid "is NOT"
+msgstr "není"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:246 ../../Open-ILS/src/templates/acq/search/unified.tt2:67
+msgid "is on or AFTER"
+msgstr "je v/ nebo po"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:243 ../../Open-ILS/src/templates/acq/search/unified.tt2:64
+msgid "is on or BEFORE"
+msgstr "je v/ nebo před"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:208 ../../Open-ILS/src/templates/acq/search/unified.tt2:27
+msgid "line items"
+msgstr "Položky"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:29
+msgid "line items &amp; catalog records"
+msgstr "položky akvizice &amp; záznamy katalogu"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:249 ../../Open-ILS/src/templates/acq/search/unified.tt2:70
+msgid "matches a term from a file"
+msgstr "odpovídá výrazu ze souboru"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:210 ../../Open-ILS/src/templates/acq/search/unified.tt2:35
+msgid "matching"
+msgstr "které odpovídají"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:216
+msgid "of the following terms"
+msgstr "zadaným termínům"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:41
+msgid "of the following terms:"
+msgstr "zadaným termínům"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:32
+msgid "purchase orders"
+msgstr "objednávky"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186
+msgid "requests"
+msgstr "požadavky"
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:31
+msgid "selection lists"
+msgstr "akviziční seznamy"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:187
+msgid "view invoice(s)"
+msgstr "zobrazit fakturu/faktury"
+
+#~ msgid "Save Items To Selection List"
+#~ msgstr "Uložit položky do akvizičního seznamu"

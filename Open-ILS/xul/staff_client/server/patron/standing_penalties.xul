@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Apply/Remove Standing Penalties to Patron -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="penalty_win" onload="try { penalty_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onunload="try { penalty_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;</script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="standing_penalties.js"/>
+
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+
+    <commandset id="penalty_cmds">
+        <command id="cmd_apply_penalty" />
+        <command id="cmd_remove_penalty" disabled="true"/>
+        <command id="cmd_edit_penalty" disabled="true"/>
+        <command id="cmd_archive_penalty" disabled="true"/>
+        <command id="cmd_retrieve_archived_penalties" />
+        <command id="cmd_show_all" />
+        <command id="cmd_show_note" />
+        <command id="cmd_show_alert" />
+        <command id="cmd_show_block" />
+    </commandset>
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- CONTENT -->
+    <groupbox id="penalty_groupbox" flex="1" class="my_overflow" oils_persist="height">
+        <caption id="penalty_caption" label="&staff.patron_display.penalty.caption;"/>
+        <vbox flex="0">
+            <hbox flex="1">
+                <toolbox flex="1">
+                    <toolbar>
+                        <toolbarbutton id="apply_btn" 
+                            command="cmd_apply_penalty" 
+                            label="&staff.patron_display.penalty.menu.apply.label;" 
+                            accesskey="&staff.patron_display.penalty.menu.apply.accesskey;" 
+                            style="-moz-user-focus: normal" />
+                        <toolbarseparator />
+                        <!--
+                        <toolbarbutton command="cmd_show_all" label="All" accesskey="A" type="radio" group="radio" style="-moz-user-focus: normal" checked="true"/>
+                        <toolbarbutton command="cmd_show_note" label="Note" accesskey="N" type="radio" group="radio" style="-moz-user-focus: normal"/>
+                        <toolbarbutton command="cmd_show_alert" label="Alert" accesskey="t" type="radio" group="radio" style="-moz-user-focus: normal"/>
+                        <toolbarbutton command="cmd_show_block" label="Block" accesskey="k" type="radio" group="radio" style="-moz-user-focus: normal"/>
+                        <toolbarseparator />
+                        -->
+                        <toolbarspring />
+                        <toolbaritem>
+                            <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
+                        </toolbaritem>
+                        <toolbarbutton 
+                            label="&staff.patron_display.penalty.menu.actions.label;" 
+                            accesskey="&staff.patron_display.penalty.menu.actions.accesskey;" 
+                            type="menu" style="-moz-user-focus: normal" 
+                            oncommand="this.focus(); this.firstChild.showPopup()">
+                            <menupopup>
+                                <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron_display.menu.actions.remove.accesskey;"/>
+                                <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron_display.menu.actions.edit.accesskey;"/>
+                                <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron_display.menu.actions.archive.accesskey;"/>
+                            </menupopup>
+                        </toolbarbutton>
+                    </toolbar>
+                </toolbox>
+            </hbox>
+        </vbox>
+        <tree id="ausp_list" flex="1" enableColumnDrag="true" context="ausp_actions" />
+    </groupbox>
+    <splitter id="list_splitter" collapse="after" oils_persist="state hidden" oils_persist_peers="penalty_groupbox archived_penalty_groupbox"><grippy id="splitter_grippy"/></splitter>
+    <groupbox id="archived_penalty_groupbox" flex="1" class="my_overflow" oils_persist="height">
+        <caption id="penalty_caption" label="&staff.patron_display.archived_penalty.caption;"/>
+        <vbox flex="0">
+            <toolbox flex="1">
+                <toolbar>
+                    <toolbarspring/>
+                    <toolbaritem>
+                        <progressmeter id="archived_progress" flex="1" hidden="true" mode="undetermined"/>
+                    </toolbaritem>
+                    <toolbaritem>
+                        <label value="&staff.patron_display.archived_penalty.start_date.label;" accesskey="&staff.patron_display.archived_penalty.start_date.accesskey;" control="date1"/>
+                        <datepicker id="date1" type="popup" />
+                        <label value="&staff.patron_display.archived_penalty.end_date.label;" accesskey="&staff.patron_display.archived_penalty.end_date.accesskey;" control="date2"/>
+                        <datepicker id="date2" type="popup" />
+                    </toolbaritem>
+                    <toolbarbutton id="retrieve_btn" 
+                        label="&staff.patron_display.archived_penalty.retrieve.label;" 
+                        accesskey="&staff.patron_display.archived_penalty.retrieve.accesskey;" 
+                        command="cmd_retrieve_archived_penalties"
+                        style="-moz-user-focus: normal" />
+                </toolbar>
+            </toolbox>
+        </vbox>
+        <tree id="archived_ausp_list" flex="1" enableColumnDrag="true" />
+    </groupbox>
+
+    <popupset id="csp_popupset">
+        <menupopup id="ausp_actions" position="at_pointer">
+            <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron_display.menu.actions.remove.accesskey;"/>
+            <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron_display.menu.actions.edit.accesskey;"/>
+            <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron_display.menu.actions.archive.accesskey;"/>
+        </menupopup>
+    </popupset>
+
+</window>
+

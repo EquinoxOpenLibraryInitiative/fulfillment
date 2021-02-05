@@ -1,0 +1,185 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "circ_history"
+    parent="circs";
+    limit = ctx.circ_history_limit;
+    offset = ctx.circ_history_offset;
+%]
+<h3>[% l('History of Checked Out Items') %]</h3>
+<div style="padding:0px;">
+    [%
+    # In the sorting case, the size is the size of ALL the circ items.  In the non-sorting case,
+    # the size is simply the size of the chunk passed in.  See the TODO below for the still-lingering
+    # bug.
+    sort_field = CGI.param('sort');
+    IF (sort_field);
+        no_next = ctx.circs.size - offset <= limit;
+    ELSE;
+        no_next = ctx.circs.size < limit;
+    END;
+    %]
+<div>
+
+
+    [% IF ctx.circs.size < 1 %]
+    <div class="warning_box">[% l('There are no items in your circulation history.') %]</div>
+    [% ELSE %]
+
+        <form method="post" id="circ-form">
+
+        <div class="row">
+        <div class="col-3 text-left">[% IF offset != 0 %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset - limit)}) %]'
+                 class="btn btn-action mr-3" ><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>[% END %]
+                 <button name="action" class="btn btn-deny my-2" id="delete" value="delete" type="submit" onclick="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
+            <i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Selected</button>
+            </div>
+        <div class="col-6 text-center"></div>
+        <div class="col-3 text-right">[% IF !no_next %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
+               class="btn btn-action" >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>[% END %] </div>
+    </div>
+    <div id='checked_main'>
+     <div class="d-block d-md-none">
+
+
+            <input id="check_all_circ_hist" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+
+            <label for="check_all_circ_hist">[% l('Check/Uncheck All') %]</label>
+        </div>
+        <table title="[% l('History of Items Checked Out') %]" id="acct_checked_hist_header" class="table table-hover table-bordered miniTable circHistTable my-3">
+            <thead>
+                <tr>
+                    <td class="checkCell">
+                        <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}" aria-label="[% l('Click to (un)select all items') %]"/>
+                    </td>
+                    <th>[% sort_head("sort_title", l("Title")) %]</th>
+                    <th>[% sort_head("author", l("Author")) %]</th>
+                    <th>[% sort_head("callnum", l("Call Number")) %]</th>
+                    <th>[% sort_head("checkout", l("Checkout Date")) %]</th>
+                    <th>[% sort_head("due", l("Due Date")) %]</th>
+                    <th>[% sort_head("returned", l("Date Returned")) %]</th>
+                    <th>[% sort_head("barcode", l("Barcode")) %]</th>
+                </tr>
+            </thead>
+            <tbody>
+                [%# Copy the ctx.circs into a local array, then add a SORT field
+                    that contains the value to sort on.  Since we need the item attrs,
+                    invoke it and save the result in ATTRS.
+        %]
+        [%
+                circ_items = ctx.circs;  # Array assignment
+
+                FOR circ IN circ_items;
+                    circ.ATTRS = {marc_xml => circ.marc_xml};
+                    PROCESS get_marc_attrs args=circ.ATTRS;
+
+                    SWITCH sort_field;
+
+                    CASE "sort_title";
+                        circ.SORTING = circ.ATTRS.sort_title;
+
+                    CASE "author";
+                        circ.SORTING = circ.ATTRS.author;
+
+                    CASE "checkout";
+                        circ.SORTING = circ.circ.xact_start;
+
+                    CASE "due";
+                        circ.SORTING = circ.circ.due_date;
+
+                    CASE "returned";
+                        circ.SORTING = circ.circ.checkin_time;
+
+                    CASE "barcode";
+                        circ.SORTING = circ.circ.target_copy.barcode;
+
+                    CASE "callnum";
+                        circ.SORTING = circ.circ.target_copy.call_number.label;
+
+                    CASE;
+                        sort_field = "";
+                    END; # SWITCH
+                END; #FOR circ
+
+                IF (sort_field != "sort_title");
+                deemphasize_class = "";
+                ELSE;
+                deemphasize_class = " class=\"sort_deemphasize\"";
+                END;
+
+                # Apply sorting to circ_items
+                IF (sort_field);
+                circ_items = circ_items.sort("SORTING");
+                IF (CGI.param("sort_type") == "desc");
+                    circ_items = circ_items.reverse;
+                END;
+
+                # Shorten the circ_items list per offset/limit/cout
+                hi = offset + limit - 1;
+                hi = hi > circ_items.max ? circ_items.max : hi;
+
+                circ_items = circ_items.slice(offset, hi);
+                END;
+
+                # circ_items list is now sorted.  Traverse and dump the information.
+
+                FOR circ IN circ_items; %]
+                    <tr>
+            <td class="checkbox_column">
+                <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" aria-label="Select Item"/>
+            </td>
+                        <td>
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _
+                                circ.circ.target_copy.call_number.record.id, {}, 1) %]">
+                                <span[%- deemphasize_class -%]>
+                                [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
+                                [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
+                        </td>
+                        <td>
+                            [% IF circ.ATTRS.author %]
+                            <a href="[% mkurl(ctx.opac_root _ '/results',
+                                {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
+                                1
+                            ) %]">[% circ.ATTRS.author | html %]</a>
+                            [%END; %]
+                        </td>
+                        <td>[% circ.circ.target_copy.call_number.label | html %]</td>
+                        <td>
+                            [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
+                        </td>
+                        <td>
+                            [% IF circ.circ.source_circ;
+                                date.format(ctx.parse_datetime(circ.circ.due_date, circ.circ.source_circ.circ_lib),DATE_FORMAT);
+                               ELSE;
+                                date.format(ctx.parse_datetime(circ.circ.due_date, ctx.user.home_ou),DATE_FORMAT);
+                               END;
+                            %]
+                        </td>
+                        <td>
+                            [% IF circ.circ.checkin_time;
+                                    date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT);
+                                ELSE; %]
+                                <span style='color:blue;'>Not Returned</span><!-- meh -->
+                            [% END %]
+                        </td>
+                        <td>[% circ.circ.target_copy.barcode | html %]</td>
+
+                    </tr>
+                [% END %]
+            </tbody>
+        </table>
+    </div>
+    </form>
+    <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="post">
+                <div>
+                    [%- INCLUDE "opac/parts/preserve_params.tt2" %]
+                    [% IF ctx.circs.size > 0 %]
+                    <input type="hidden" name="filename" value="[% l('circ_history.csv') %]"/>
+                    <button type="submit" class="btn btn-action"><i class="fas fa-file-download" aria-hidden="true"></i> [% l('Download CSV') %]</button>
+                    [% END %]
+                </div>
+            </form>
+    [% END %]
+</div></div>
+[% END %]

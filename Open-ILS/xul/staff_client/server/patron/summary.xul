@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_summary.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="patron_summary_win" 
+    onload="try { font_helper(); my_init(); persist_helper(); } catch(E) { alert(E); }" 
+    onunload="try { my_cleanup(); persist_helper_cleanup(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
+        
+        var observer;
+        function myObserver() { this.register(); }
+        myObserver.prototype = {
+            register: function() {
+                var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+                observerService.addObserver(this, "xul-overlay-merged", false);
+            },
+            unregister: function() {
+                var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+                observerService.removeObserver(this, "xul-overlay-merged");
+            },
+            observe: function(subject,topic,data) {
+                dump('observe: <'+subject+','+topic+','+data+'>\n');
+                // setTimeout is needed here for xulrunner 1.8
+                setTimeout( function() { try { persist_helper(); post_overlay(); } catch(E) { alert(E); } }, 0 );
+            }
+        }
+                
+        function my_init() {
+            try {
+                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for patron_summary.xul');
+                
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+                
+                var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+                var url = horizontal_interface ? '/xul/server/patron/summary_overlay_horiz.xul' : '/xul/server/patron/summary_overlay.xul';
+                
+                observer = new myObserver();
+                document.loadOverlay(location.protocol + '//' + location.hostname + url,observer)
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/summary.xul:my_init()', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function my_cleanup() {
+            try {
+                observer.unregister();
+                g.summary.cleanup();
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/summary.xul:my_init()', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+
+        function export_address(ev) {
+            var action = ev.originalTarget.id;
+            var a;
+            var p = g.summary.patron;
+            switch(document.popupNode.id) {
+                case 'addr_export_mailing':
+                    a = g.summary.patron.mailing_address();
+                break;
+                case 'addr_export_physical':
+                    a = g.summary.patron.billing_address();
+                break;
+            };
+
+            var parts = [
+                p.first_given_name(), p.second_given_name(), p.family_name(),
+                a.street1(), a.street2(), a.city(), a.county(),
+                a.state(), a.post_code(), a.country()
+            ];
+            for (var i = 0; i < parts.length; i++)
+                if (parts[i] == null) parts[i] = "";
+
+            var s = $("patronStrings").getFormattedString(
+                'staff.patron.mailable_address_format', parts
+            );
+
+            switch(action) {
+                case 'addr_export_copy':
+                    // Replace literal instances of '\n' and excessive whitespace.
+                    s = s.replace(/(\\n)+/g, "\r\n").replace(/ {2,}/g, " ");
+                    copy_to_clipboard(s);
+                break;
+                case 'addr_export_print':
+                    // Replace literal instances of '\n' and excessive whitespace.
+                    s = s.replace(/(\\n)+/g, "<br/>").replace(/ {2,}/g, " ");
+                    JSAN.use('util.print'); var print = new util.print('mail'); print.simple(s);
+                break;
+            };
+        }
+    
+        function post_overlay() {
+            try {
+                var patron_id = xul_param('id'); 
+                var patron_bc = xul_param('barcode'); 
+
+                JSAN.use('patron.summary'); g.summary = new patron.summary();
+                g.summary.init( { 
+                    'barcode' : patron_bc,
+                    'id' : patron_id,
+                    'show_name' : xul_param('show_name'),
+                } );
+
+                window.refresh = function () { g.summary.retrieve(); }
+                font_helper();
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/summary.xul:post_overlay()', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
+    ]]>
+    </script>
+    
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="offlineStrings" src="/xul/server/locale/<!--#echo var='locale'-->/offline.properties"/>
+
+    <commandset id="patron_summary_cmds" />
+    <popupset id="patron_summary_popups" />
+
+    <box id="patron_summary_main" />
+
+</window>
+

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="patron_display_overlay" 
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading patron/display_overlay.xul\n');</script>
+
+<commandset id="patron_display_cmds" />
+
+<box id="patron_display_main" flex="1" orient="vertical">
+<vbox id="pdm2" flex="1">
+    <hbox id="pdm2hb1">
+        <hbox>
+            <label id="patron_name" class="patronNameLarge" value="&staff.patron.display_overlay.none_selected.value;" flex="1"/>
+        </hbox>
+        <deck id="PatronNavBar" flex="1" class="my_overflow" />
+    </hbox>
+    <hbox id="pdm2hb1a">
+        <label class="hideme barred_indicator" value="&staff.patron.display_overlay.barred.value;" command="cmd_patron_edit"/>
+        <label class="hideme expired_indicator" value="&staff.patron.display_overlay.expired.value;" command="cmd_patron_edit"/>
+        <label class="hideme inactive_indicator" value="&staff.patron.display_overlay.inactive.value;" command="cmd_patron_edit"/>
+        <label class="hideme juvenile_indicator" value="&staff.patron.display_overlay.juvenile.value;" command="cmd_patron_edit"/>
+        <label class="hideme alert_indicator" value="&staff.patron.display_overlay.alert.value;" command="cmd_patron_edit"/>
+        <label class="hideme note_indicator" value="&staff.patron.display_overlay.see_notes.value;" command="cmd_patron_info_notes"/>
+        <label class="hideme max_bills_indicator" value="&staff.patron.display_overlay.max_bills.value;" command="cmd_patron_bills"/>
+        <label class="hideme max_overdues_indicator" value="&staff.patron.display_overlay.max_overdues.value;" command="cmd_patron_items"/>
+        <label class="hideme max_out_indicator" value="&staff.patron.display_overlay.max_checked_out.value;" command="cmd_patron_items"/>
+        <label class="hideme bills_indicator" value="&staff.patron.display_overlay.has_bills.value;" command="cmd_patron_bills"/>
+        <label class="hideme overdues_indicator" value="&staff.patron.display_overlay.has_overdues.value;" command="cmd_patron_items"/>
+        <label class="hideme max_lost_indicator" value="&staff.patron.display_overlay.max_lost.value;" command="cmd_patron_items"/>
+        <label class="hideme lost_indicator" value="&staff.patron.display_overlay.has_lost.value;" command="cmd_patron_items"/>
+        <label class="hideme invalid_dob_indicator" value="&staff.patron.display_overlay.invalid_dob.value;" command="cmd_patron_edit"/>
+        <label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;" command="cmd_patron_edit"/>
+        <label class="hideme invalid_email_indicator" value="&staff.patron.display_overlay.invalid_email.value;" command="cmd_patron_edit"/>
+        <label class="hideme invalid_phone_indicator" value="&staff.patron.display_overlay.invalid_phone.value;" command="cmd_patron_edit"/>
+    </hbox>
+    <vbox id="PatronNotNavBar" flex="1" class="my_bg">
+        <hbox id="left_deck_vbox" flex="1" oils_persist="height"> 
+            <deck id="patron_left_deck" oils_persist="height"/>
+        </hbox>
+        <splitter id="deck_splitter" collapse="before" oils_persist="state hidden" oils_persist_peers="left_deck_vbox right_deck_vbox"><grippy id="splitter_grippy"/></splitter>
+        <hbox id="right_deck_vbox" flex="3" oils_persist="height">
+            <deck id="patron_right_deck" oils_persist="height"/>
+        </hbox>
+    </vbox>
+</vbox>
+</box>
+
+<deck id="patron_right_deck" flex="1">
+</deck>
+
+<deck id="patron_left_deck" flex="1">
+</deck>
+
+<deck id="PatronNavBar">
+    <hbox id="PatronNavBar0" flex="1"/>
+    <hbox id="PatronNavBar1" flex="1"/>
+</deck>
+
+<hbox id="PatronNavBar1" flex="1">
+    <vbox flex="1">
+        <hbox flex="1">
+            <spacer flex="1"/>
+            <arrowscrollbox id="PatronNavBarScrollbox" orient="horizontal" flex="1">
+                <spacer flex="1"/>
+                <grid>
+                    <columns>
+                        <column/>
+                        <column/>
+                        <column/>
+                        <column/>
+                        <column/>
+                        <column/>
+                        <column/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <button id="PatronNavBar_refresh" command="cmd_patron_refresh" class="nav"
+                                label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
+                            <button id="PatronNavBar_checkout" command="cmd_patron_checkout" class="nav"
+                                label="&staff.patron_navbar.checkout;" accesskey="&staff.patron_navbar.checkout.accesskey;"/>
+                            <button id="PatronNavBar_items" command="cmd_patron_items" class="nav"
+                                label="&staff.patron_navbar.items;" accesskey="&staff.patron_navbar.items.accesskey;"/>
+                            <button id="PatronNavBar_holds" command="cmd_patron_holds" class="nav"
+                                label="&staff.patron_navbar.holds;" accesskey="&staff.patron_navbar.holds.accesskey;"/>
+                            <button id="PatronNavBar_bills" command="cmd_patron_bills" class="nav"
+                                label="&staff.patron_navbar.bills;" accesskey="&staff.patron_navbar.bills.accesskey;"/>
+                            <button id="PatronNavBar_edit" command="cmd_patron_edit" class="nav"
+                                label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
+                            <button id="PatronNavBar_messages" label="&staff.patron_navbar.actions.menu.standing_penalties.label;" accesskey="&staff.patron_navbar.actions.menu.standing_penalties.accesskey;" command="cmd_standing_penalties" class="nav"/>
+                            <button id="PatronNavBar_other" command="cmd_patron_other" class="nav" label="&staff.patron_navbar.other;" accesskey="&staff.patron_navbar.other.accesskey;" type="menu">
+                                <menupopup>
+                                    <menuitem label="&staff.patron_navbar.alert;" accesskey="&staff.patron_navbar.alert.accesskey;" command="cmd_patron_alert"/>
+                                    <menuitem label="&staff.patron.info.notes.label;" accesskey="&staff.patron.info.notes.accesskey;" command="cmd_patron_info_notes"/>
+                                    <menuitem label="&staff.patron.info.triggered_events.label;" accesskey="&staff.patron.info.triggered_events.accesskey;" command="cmd_patron_info_triggered_events"/>
+                                    <menuitem label="&staff.patron.message_center.label;" accesskey="&staff.patron.message_center.accesskey;" command="cmd_patron_message_center"/>
+                                    <menuitem label="&staff.patron.info.stat_cats.label;" accesskey="&staff.patron.info.stat_cats.accesskey;" command="cmd_patron_info_stats"/>
+                                    <menu id="PatronNavBar_other_booking" label="&staff.main.menu.booking.label;" accesskey="&staff.main.menu.booking.accesskey;">
+                                        <menupopup id="PatronNavBar_other_booking_popup">
+                                            <menuitem label="&staff.main.menu.booking.reservation.label_alt;" accesskey="&staff.main.menu.booking.reservation.accesskey;" command="cmd_patron_reservation" />
+                                            <menuitem label="&staff.main.menu.booking.reservation_pickup.label;" accesskey="&staff.main.menu.booking.reservation_pickup.accesskey;" command="cmd_patron_reservation_pickup" />
+                                            <menuitem label="&staff.main.menu.booking.reservation_return.label;" accesskey="&staff.main.menu.booking.reservation_return.accesskey;" command="cmd_patron_reservation_return" />
+                                        </menupopup>
+                                    </menu>
+                                    <menuitem label="&staff.patron.info.surveys.label;" accesskey="&staff.patron.info.surveys.accesskey;" command="cmd_patron_info_surveys"/>
+                                    <menuitem label="&staff.patron.info.acq_requests.label;" accesskey="&staff.patron.info.acq_requests.accesskey;" command="cmd_patron_info_acq_requests"/>
+                                    <menuitem label="&staff.patron.info.group.label;" accesskey="&staff.patron.info.group.accesskey;" command="cmd_patron_info_groups"/>
+                                    <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
+                                    <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>
+                                    <menuitem label="&staff.patron_display.toggle_summary.label;" accesskey="&staff.patron_display.toggle_summary.accesskey;" command="cmd_patron_toggle_summary"/>
+                                    <menuitem label="&staff.patron_display.delete_patron.label;" accesskey="&staff.patron_display.delete_patron.accesskey;" command="cmd_patron_delete"/>
+                                    <menuitem label="&staff.patron.display_overlay.exit.label;" accesskey="&staff.patron.display_overlay.exit.accesskey;" command="cmd_patron_exit"/>
+                                </menupopup>
+                            </button>
+                        </row>
+                        <row>
+                            <label id="under_refresh"/>
+                            <label id="under_checkout"/>
+                            <label id="under_items"/>
+                            <label id="under_holds"/>
+                            <label id="under_bills"/>
+                            <label id="under_edit"/>
+                            <label id="under_info"/>
+                            <label id="under_edit"/>
+                        </row>
+                    </rows>
+                </grid>
+            </arrowscrollbox>
+        </hbox>
+    </vbox>
+</hbox>
+
+<hbox id="PatronNavBar0" flex="1">
+    <vbox flex="1">
+        <hbox flex="1">
+            <spacer flex="1"/>
+            <button id="pnb1b2" label="&staff.patron.display_overlay.merge_patrons.label;" accesskey="&staff.patron.display_overlay.merge_patrons.accesskey;" command="cmd_patron_merge"/>
+            <button id="pnb1b0" label="&staff.patron.display_overlay.search_form.label;" accesskey="&staff.patron.display_overlay.search_form.accesskey;" command="cmd_search_form"/>
+            <button id="pnb1b1" label="&staff.patron.display_overlay.retrieve_patron.label;" accesskey="&staff.patron.display_overlay.retrieve_patron.accesskey;" command="cmd_patron_retrieve"/>
+        </hbox>
+        <label value=" "/>
+    </vbox>
+</hbox>
+
+</overlay>

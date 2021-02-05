@@ -1,0 +1,7 @@
+= Specific fields =
+:toc:
+
+== 264 ==
+
+The Public Catalog displays tag 264 information for Publisher, Producer, Distributor, Manufacturer,
+and Copyright within a full bib record's summary.

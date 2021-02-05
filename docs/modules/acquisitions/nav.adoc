@@ -1,0 +1,9 @@
+* xref:acquisitions:introduction.adoc[Acquisitions]
+** xref:acquisitions:acquisitions_search.adoc[Acquisitions Search]
+** xref:acquisitions:selection_lists_po.adoc[Selection Lists and Purchase Orders]
+** xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records]
+** xref:acquisitions:invoices.adoc[Invoices]
+** xref:acquisitions:purchase_requests_management.adoc[Managing patron purchase requests]
+** xref:acquisitions:purchase_requests_patron_view.adoc[Placing purchase requests from a patron record]
+** xref:acquisitions:blanket.adoc["Blanket" Orders]
+

@@ -1,0 +1,94 @@
+<style>
+  /* TODO: move me */
+  .print-template-text {
+    height: 36em;
+    width: 100%;
+  }
+</style>
+
+<h2>[% l('Print Templates') %]</h2>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-inline">
+      <div class="form-group">
+        <label for="print_tempate_name">[% l('Template Name') %]</label>
+        <select id="print_template_name" class="form-control" ng-model="print.template_name" ng-change="template_changed()">
+          <option value="bills_current">[% l('Bills, Current') %]</option>
+          <option value="bills_historical">[% l('Bills, Historical') %]</option>
+          <option value="bill_payment">[% l('Bills, Payment') %]</option>
+          <option value="checkin">[% l('Checkin') %]</option>
+          <option value="checkout">[% l('Checkout') %]</option>
+          <option value="hold_transit_slip">[% l('Hold Transit Slip') %]</option>
+          <option value="hold_shelf_slip">[% l('Hold Shelf Slip') %]</option>
+          <option value="holds_for_bib">[% l('Holds for Bib Record') %]</option>
+          <option value="holds_for_patron">[% l('Holds for Patron') %]</option>
+          <option value="hold_pull_list">[% l('Hold Pull List') %]</option>
+          <option value="hold_shelf_list">[% l('Hold Shelf List') %]</option>
+          <option value="in_house_use_list">[% l('In-House Use List') %]</option>
+          <option value="item_status">[% l('Item Status') %]</option>
+          <option value="items_out">[% l('Items Out') %]</option>
+          <option value="patron_address">[% l('Patron Address') %]</option>
+          <option value="patron_data">[% l('Patron Data') %]</option>
+          <option value="patron_note">[% l('Patron Note') %]</option>
+          <option value="renew">[% l('Renew') %]</option>
+          <option value="transit_list">[% l('Transit List') %]</option>
+          <option value="transit_slip">[% l('Transit Slip') %]</option>
+          <option value="offline_checkout">[% l('Offline Checkout') %]</option>
+          <option value="offline_renew">[% l('Offline Renew') %]</option>
+          <option value="offline_checkin">[% l('Offline Checkin') %]</option>
+          <option value="offline_in_house_use">[% l('Offline In-house Use') %]</option>
+        </select>
+        <label for="print_context">[% l('Force Printer Context') %]</label>
+        <select class="form-control" ng-model="print.template_context">
+          <option value="default">[% l('Default') %]</option>
+          <option value="receipt">[% l('Receipt') %]</option>
+          <option value="label">[% l('Label') %]</option>
+          <option value="mail">[% l('Mail') %]</option>
+          <option value="offline">[% l('Offline') %]</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <button class="btn btn-default pull-left" ng-click="reset_to_default()">[% l('Reset to Default') %]</button>
+    <button class="btn btn-default pull-left" ng-click="save_locally()">[% l('Save Locally') %]</button>
+    <div class="btn-group pull-right">
+      <span class="btn btn-default btn-file">
+        [% l('Import') %]
+        <input type="file" eg-file-reader container="imported_print_templates.data">
+      </span>
+      <label class="btn btn-default"
+          eg-json-exporter generator="exportable_templates"
+          default-file-name="'[% l('print_templates.json') %]'">
+          [% l('Export Customized Templates') %]
+      </label>
+    </div>
+  </div>
+  <!-- other stuff -->
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-5">
+    <h3>[% l('Preview') %]</h3>
+    <div eg-print-template-output 
+      content="print.template_content" 
+      context="preview_scope"></div>
+  </div>
+  <div class="col-md-7">
+    <h3>[% l('Template') %]</h3>
+    <div ng-if="print.load_failed" class="alert alert-danger">
+      [% l(
+        "Unable to load template '[_1]'.  The web server returned an error.", 
+        '{{print.template_name}}') 
+      %]
+    </div>
+    <div>
+      <textarea ng-model="print.template_content" class="print-template-text">
+      </textarea>
+    </div>
+  </div> <!-- col -->
+</div>
+ 

@@ -1,0 +1,93 @@
+<!--
+Template for printing a list of current bills. Data specific
+to this template includes:
+
+* today - Today's date and time
+* current_location - the current library
+    current_location.name - Current location's name
+    current_location.shortname - Current location's shortname
+* patron - the patron who was billed, which contains:
+    patron.prefix - Prefix of the patron
+    patron.first_given_name - First given name of the patron
+    patron.second_given_name - Second given name of the patron
+    patron.family_name - Family name of the patron
+    patron.suffix - Suffix of the patron
+    patron.card - The patron's barcode number
+    patron.expire_date - The patron's expiration date
+    patron.alias - The patron's alias
+    patron.has_email - Whether or not the patron has an email address
+    patron.has_phone - Whether or not the patron has a phone number
+    pref_ versions of all name fields (e.g. pref_family_name);
+* transasctions - a list of transactions, each of which
+  contains:
+    xact.id - Bill unique id
+    xact.title - Copy title
+    xact.copy_barcode - Copy barcode
+    xact.xact_finish - Billing finish date and time
+    xact.xact_start - Billing start date and time
+    xact.summary - information about the transaction
+    xact.summary.balance_owed - Balance owed
+    xact.summary.last_billing_note - Last billing note
+    xact.summary.last_billing_type - Last billing type
+    xact.summary.last_payment_note - Last payment note
+    xact.summary.last_payment_ts - Last payment date and time
+    xact.summary.last_payment_type - Last payment type
+    xact.summary.total_owed - Total billed
+    xact.summary.total_paid - Total paid
+    xact.summary.xact_type - Billing type
+    xact.call_number - Information about the copy
+    xact.call_number.label - Copy call number
+    xact.call_number.prefix - Copy call number prefix
+    xact.call_number.suffix - Copy call number suffix
+    xact.call_number.owning_lib.name - The owning library's name
+    xact.call_number.owning_lib.shortname - The owning library's shortname
+-->
+Welcome to {{current_location.name}}!<br/>
+You have the following bills:
+<hr/>
+<dl>
+  <div ng-repeat="xact in transactions">
+    <dt><b>Bill #{{xact.id}}</b></dt>
+    <dd>
+    <table>
+      <tr valign="top">
+        <td>[% l('Date:') %]</td>
+        <td>{{xact.xact_start | date:$root.egDateAndTimeFormat}}</td>
+      </tr>
+      <tr valign="top">
+        <td>[% l('Type') %]:</td>
+        <td>{{xact.summary.xact_type}}</td>
+      </tr>
+      <tr valign="top">
+        <td>[% l('Last Billing') %]:</td>
+        <td>{{xact.summary.last_billing_type}}<br/>
+            {{xact.summary.last_billing_note}}
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>[% l('Total Billed') %]:</td>
+        <td>{{xact.summary.total_owed | currency}}</td>
+      </tr>
+      <tr valign="top">
+        <td>[% l('Last Payment') %]:</td>
+        <td>{{xact.summary.last_payment_type}}<br/>
+            {{xact.summary.last_payment_note}}
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>[% l('Total Paid') %]:</td>
+        <td>{{xact.summary.total_paid | currency}}</td>
+      </tr>
+      <tr valign="top">
+        <td><b>[% l('Balance') %]:</b></td>
+        <td><b>{{xact.summary.balance_owed | currency}}</b></td>
+      </tr>
+    </table>
+    </dd>
+    <br/>
+  </div><!-- ng-repeat -->
+</dl>
+<hr/>
+{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}
+<br/><br/>
+

@@ -1,0 +1,22 @@
+<div ng-controller="TransitsCtrl">
+  <br/>
+  <div class="row command-bar">
+    <div class="col-lg-6">
+      <ul class="nav nav-pills">
+        <li ng-class="{active : orientation_lender}">
+          <a  href="./fulfillment/lender/{{tabname}}">[% l('ILLs to Other Libraries') %]</a>
+        </li>
+        <li ng-class="{active : orientation_borrower}">
+          <a  href="./fulfillment/borrower/{{tabname}}">[% l('Returns to Other Libraries') %]</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-6 text-right">
+      <div ng-include="'./fulfillment/t_actions'"></div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div ng-include="'./fulfillment/t_item_table'"></div>
+</div>

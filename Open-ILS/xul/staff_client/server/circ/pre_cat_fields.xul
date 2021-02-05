@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+<!--
+ vim:noet:sw=4:ts=4:
+-->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="pre_cat_fields" title="&staff.circ.pre_cat.window.title;"
+    orient="vertical" style="overflow: auto" oils_persist="height width sizemode"
+    onload="try{ my_init(); font_helper(); persist_helper(); }catch(E){alert(E);}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+
+    <script>
+    <![CDATA[
+
+        function my_init() {
+            if (typeof JSAN == 'undefined') {
+                throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+            }
+            JSAN.errorLevel = "die"; // none, warn, or die
+            JSAN.addRepository('/xul/server/');
+            JSAN.use('util.error'); g.error = new util.error();
+            g.error.sdump('D_TRACE','my_init() for pre_cat_fields.xul');
+            JSAN.use('OpenILS.data'); g.data = new OpenILS.data();
+            g.data.init({'via':'stash'});
+
+            g.data.precat_dummy_title = '';
+            g.data.precat_dummy_author = '';
+            g.data.precat_dummy_isbn = '';
+            g.data.precat_submit = 'cancel';
+            g.data.stash('precat_submit');
+
+            JSAN.use('util.widgets'); JSAN.use('util.functional');
+            var x = util.widgets.make_menulist( 
+                [ [ $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"), "<HACK:KLUDGE:NULL>" ] ].concat( 
+                    util.functional.map_list(
+                        g.data.list.ccm,
+                        function(obj) {
+                            return [
+                                document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[obj.code(),obj.name(),obj.description()]),
+                                obj.code()
+                            ];
+                        }
+                    ).sort() 
+                ) 
+            );
+            x.setAttribute('id','dummy_circ_modifier');
+            document.getElementById('placeholder').appendChild(x);
+            if (g.data.precat_circ_modifier) {
+                x.setAttribute('value', g.data.precat_circ_modifier);
+                x.value = g.data.precat_circ_modifier;
+            }
+            document.getElementById('dummy_title').focus();
+        }
+
+        function my_finish() {
+            g.data.precat_dummy_title = document.getElementById('dummy_title').value;
+            g.data.precat_dummy_author = document.getElementById('dummy_author').value;
+            g.data.precat_dummy_isbn = document.getElementById('dummy_isbn').value;
+            var cm = document.getElementById('dummy_circ_modifier').value;
+            if (cm == '<HACK:KLUDGE:NULL>') cm = null;
+            g.data.precat_circ_modifier = cm;
+            g.data.precat_submit = 'go';
+            g.data.stash('precat_dummy_title','precat_dummy_author','precat_dummy_isbn','precat_circ_modifier','precat_submit');
+            window.close();
+        }
+
+    ]]>
+    </script>
+
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+
+    <groupbox flex="1" style="overflow: auto">
+        <caption label="&staff.circ.pre_cat.caption.label;"/>
+        <grid>
+            <columns><column /><column flex="1"/></columns>
+            <rows>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_title.label;" accesskey="&staff.circ.pre_cat.dummy_title.accesskey;" control="dummy_title"/>
+                    <textbox id="dummy_title" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_author.label;" accesskey="&staff.circ.pre_cat.dummy_author.accesskey;" control="dummy_author"/>
+                    <textbox id="dummy_author" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_isbn.label;" accesskey="&staff.circ.pre_cat.dummy_isbn.accesskey;" control="dummy_isbn"/>
+                    <textbox id="dummy_isbn" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_circ_modifier.label;" accesskey="&staff.circ.pre_cat.dummy_circ_modifier.accesskey;" control="dummy_circ_modifier"/>
+                    <box id="placeholder" />
+                </row>
+            </rows>
+        </grid>
+        <hbox>
+            <spacer flex="1"/>
+            <button label="&staff.circ.pre_cat.cancel.label;" oncommand="window.close()" accesskey="&staff.circ.pre_cat.cancel.accesskey;"/>
+            <button label="&staff.circ.pre_cat.checkout.label;" oncommand="my_finish();" accesskey="&staff.circ.pre_cat.checkout.accesskey;"/>
+        </hbox>
+    </groupbox>
+
+</window>
+
+

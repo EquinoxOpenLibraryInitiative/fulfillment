@@ -1,0 +1,39 @@
+<div dojoType="dijit.layout.ContentPane" layout="top"
+    class="oils-header-panel lesser">
+    <div>[% l('Distributions') %]</div>
+    <div style="margin-right: 16px;">
+        <span dojoType="dijit.form.Button"
+            onClick="open_notes('dist', dist_grid);">[% l('View/Edit Notes') %]</span>
+        <span dojoType="dijit.form.Button"
+            onClick="dist_grid.refresh();">[% l('Refresh Grid') %]</span>
+        <span dojoType="dijit.form.Button"
+            onClick="if (cgi.param('context') != 'scv') sub_grid._fresh = false; dist_grid.showCreateDialog();">
+            [% l('New Distribution') %]
+        </span>
+        <span dojoType="dijit.form.Button"
+            onClick="if (cgi.param('context') != 'scv') sub_grid._fresh = false; dist_grid.deleteSelected();">
+            [% l('Delete Selected') %]
+        </span>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layout="top">
+    <table
+        jsId="dist_grid"
+        dojoType="openils.widget.AutoGrid"
+        style="height: 550px;"
+        fieldOrder="['subscription','label','holding_lib']"
+        suppressFields="['subscription','receive_call_number','bind_call_number','bind_unit_template']"
+        suppressEditFields="['receive_call_number','bind_call_number','bind_unit_template']"
+        onPostSubmit="attempt_reload_opac"
+        fmClass="sdist"
+        query="{id: '*'}"
+        editOnEnter="true"
+        showPaginator="true">
+        <thead>
+            <tr>
+                <th field="label" width="35%"
+                    get="get_id_and_label" formatter="format_sdist_label"></th>
+            </tr>
+        </thead>
+    </table>
+</div>

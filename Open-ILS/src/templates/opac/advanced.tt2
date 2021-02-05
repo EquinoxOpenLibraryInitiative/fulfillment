@@ -1,0 +1,53 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Advanced Search");
+    pane = CGI.param("pane") || "advanced";
+    loc = ctx.search_ou;
+
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
+-%]
+    <h2 class="sr-only">[% l('Advanced Search') %]</h2>
+    <div id="search-wrapper">
+        <div id="search-box">
+            <span class="search_catalog_lbl mobile_hide">[% l('Search the Catalog') %]</span>
+            <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home') %]"
+                    id="home_adv_search_link">[%l('Basic Search')%]</a></span>
+
+            <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse') %]">[%
+                    l('Browse the Catalog')%]</a></span>
+            [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+                <span class="search_courses_label"><a href="[% mkurl(ctx.opac_root _ '/course_search') %]">[% l('Search for Courses') %]</a></span>
+                <span class="search_courses_label"><a href="[% mkurl(ctx.opac_root _ '/course_browse') %]">[% l('Browse for Courses') %]</a></span>
+            [% END %]
+            [% INCLUDE 'opac/parts/cart.tt2' %]
+        </div>
+        <div id="adv_search_parent">
+            <div id="adv_search_tabs">
+                <a href="[% mkurl('', {pane => 'advanced'}) %]"
+                    [% IF pane == 'advanced' %]class="on" [% END %]
+                    id="adv_search">[% l('Advanced Search') %]</a>
+                <a href="[% mkurl('', {pane => 'numeric'}) %]"
+                    [% IF pane == 'numeric' %]class="on" [% END %]
+                    id="num_search">[% l('Numeric Search') %]</a>
+                <a href="[% mkurl('', {pane => 'expert'}) %]"
+                    [% IF pane == 'expert' %]class="on" [% END %]
+                    id="expert_search">[% l('Expert Search') %]</a>
+            </div>
+        </div>
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div class="advanced_div">
+            [% IF pane == 'advanced' %]
+            [% INCLUDE "opac/parts/advanced/search.tt2" %]
+            [% ELSIF pane == 'numeric' %]
+            [% INCLUDE "opac/parts/advanced/numeric.tt2" %]
+            [% ELSIF pane == 'expert' %]
+            [% INCLUDE "opac/parts/advanced/expert.tt2" %]
+            [% END %]
+            </div>
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[% END %]

@@ -1,0 +1,76 @@
+[%# Strings for circ/services/circ.js %]
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+s.PATRON_CARD_INACTIVE =
+  "[% l('The card used to retrieve this account is inactive and may not be used to circulate items.') %]";
+s.PATRON_INACTIVE =
+  "[% l('This account is inactive and may not circulate items.') %]";
+s.PATRON_ACCOUNT_EXPIRED =
+  "[% l('This account has expired and may not circulate items.') %]";
+s.CIRC_CLAIMS_RETURNED = 
+  '[% l('Item "[_1]" is marked as Claims Returned', '{{barcode}}') %]';
+s.CHECKOUT_FAILED_GENERIC =
+  '[% l('Unable to checkout item "[_1]" : [_2]', '{{barcode}}', '{{textcode}}') %]';
+s.EMAILED_CHECKOUT_RECEIPT =
+  "[% l('Emailed checkout receipt') %]";
+s.COPY_ALERT_MSG_DIALOG_TITLE =
+  '[% l('Item Alert Message for "[_1]"', '{{copy_barcode}}') %]';
+s.UNCAT_ALERT_DIALOG =
+  '[% l('Item "[_1]" was mis-scanned or is not cataloged', '{{copy_barcode}}') %]';
+s.PERMISSION_DENIED = 
+  '[% l('Permission Denied : [_1]', '{{permission}}') %]';
+s.PRECAT_CHECKIN_MSG = 
+  '[% l("This item needs to be routed to CATALOGING") %]';
+s.LOCATION_ALERT_MSG =
+  '[% l("Item [_1] needs to be routed to [_2]", 
+    "{{copy.barcode()}}","{{copy.location().name()}}") %]';
+s.MARK_DAMAGED_CONFIRM = '[% l("Mark {{num_items}} items as DAMAGED?") %]';
+s.MARK_MISSING_CONFIRM = '[% l("Mark {{num_items}} items as MISSING?") %]';
+s.MARK_DISCARD_CONFIRM = '[% l("Mark {{num_items}} items as DISCARD/WEED?") %]';
+s.MARK_ITEM_CHECKED_OUT = '[% l("Item {{barcode}} is checked out.") %]';
+s.MARK_ITEM_IN_TRANSIT = '[% l("Item {{barcode}} is in transit.") %]';
+s.MARK_ITEM_RESTRICT_DELETE = '[% l("Item {{barcode}} is in a status with a copy delete warning.") %]';
+s.MARK_ITEM_LAST_HOLD_COPY = '[% l("Item {{barcode}} is the last item to fill a hold.") %]';
+s.MARK_ITEM_CONTINUE = '[% l("Do you wish to continue marking it {{status}}?") %]';
+s.MARK_ITEM_CHECKIN_CONTINUE = '[% l("Do you wish to check it in and continue marking it {{status}}?") %]';
+s.MARK_ITEM_ABORT_CONTINUE = '[% l("Do you wish to abort the transit and continue marking it {{status}}?") %]';
+s.MARK_ITEM_FAILURE = '[% l("Marking of item {{barcode}} with status {{status}} failed: {{textcode}}") %]'
+s.ABORT_TRANSIT_CONFIRM = '[% l("Cancel {{num_transits}} transits?") %]';
+s.ROUTE_TO_HOLDS_SHELF = '[% l("Holds Shelf") %]';
+s.ROUTE_TO_CATALOGING = '[% l("Cataloging") %]';
+s.COPY_IN_TRANSIT = '[% l("Item is In-Transit") %]';
+s.TOO_MANY_CLAIMS_RETURNED = 
+  '[% l("Patron exceeds claims returned count.  Force this action?") %]';
+s.MARK_NEVER_CHECKED_OUT = 
+  '[% l("Mark Never Checked Out: [_1]", "{{barcodes.toString()}}") %]';
+s.ON_DEMAND_COPY_ALERT = {
+    'CHECKIN': {
+        'NORMAL' : '[% l("Normal checkin") %]',
+        'LOST' : '[% l("Item was marked lost") %]',
+        'LOST_AND_PAID' : '[% l("Item was marked lost and paid for") %]',
+        'MISSING' : '[% l("Item was marked missing") %]',
+        'DAMAGED' : '[% l("Item was marked damaged") %]',
+        'CLAIMSRETURNED' : '[% l("Item was marked claims returned") %]',
+        'LONGOVERDUE' : '[% l("Item was marked long overdue") %]',
+        'CLAIMSNEVERCHECKEDOUT' : '[% l("Item was marked claims never checked out") %]'
+    },
+    'CHECKOUT': {
+        'NORMAL' : '[% l("Normal checkout") %]',
+        'LOST' : '[% l("Item was marked lost") %]',
+        'LOST_AND_PAID' : '[% l("Item was marked lost and paid for") %]',
+        'MISSING' : '[% l("Item was marked missing") %]',
+        'DAMAGED' : '[% l("Item was marked damaged") %]',
+        'CLAIMSRETURNED' : '[% l("Item was marked claims returned") %]',
+        'LONGOVERDUE' : '[% l("Item was marked long overdue") %]',
+        'CLAIMSNEVERCHECKEDOUT' : '[% l("Item was marked claims never checked out") %]'
+    }
+};
+s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE =
+  "[% l('One or more items could not be deleted. Override?') %]";
+s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY =
+  "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+}]);
+</script>
+
+

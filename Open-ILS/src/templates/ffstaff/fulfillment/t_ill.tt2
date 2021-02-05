@@ -1,0 +1,55 @@
+<ul class="nav nav-tabs">
+  <li ng-class="{active : tab_singlescan}">
+    <a href="./fulfillment/singlescan">[% l('Single Scan') %]</a></li>
+  <li ng-class="{active : tab_pending}">
+    <a href="./fulfillment/borrower/pending">[% l('Pending Requests') %]</a></li>
+  <li ng-class="{active : tab_inbound}">
+    <a href="./fulfillment/borrower/inbound">[% l('Inbound Transits') %]</a></li>
+  <li ng-class="{active : tab_outbound}">
+    <!-- only one where default view is lender - could be confusing? -->
+    <a href="./fulfillment/lender/outbound">[% l('Outbound Transits') %]</a></li>
+  <li ng-class="{active : tab_onshelf}">
+    <a href="./fulfillment/borrower/onshelf">[% l('On Shelf') %]</a></li>
+  <li ng-class="{active : tab_circulating}">
+    <a href="./fulfillment/borrower/circulating">[% l('Currently Circulating') %]</a></li>
+  <li ng-class="{active : tab_status}" class="pull-right">
+    <a href="./fulfillment/status">[% l('Item Status') %]</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane" ng-class="{active : tab_singlescan}">
+    <div ng-if="tab_singlescan">
+      <div ng-include="'./fulfillment/t_singlescan'"></div>
+    </div>
+  </div>
+  <div class="tab-pane" ng-class="{active : tab_pending}">
+    <div ng-if="tab_pending">
+      <div ng-include="'./fulfillment/t_pending'"></div>
+    </div>
+  </div>
+  <div class="tab-pane" ng-class="{active : tab_inbound}">
+    <div ng-if="tab_inbound">
+      <div ng-include="'./fulfillment/t_inbound'"></div>
+    </div>
+  </div>
+  <div class="tab-pane" ng-class="{active : tab_outbound}">
+    <div ng-if="tab_outbound">
+      <div ng-include="'./fulfillment/t_outbound'"></div>
+    </div>
+  </div>
+  <div class="tab-pane" ng-class="{active : tab_onshelf}">
+    <div ng-if="tab_onshelf">
+      <div ng-include="'./fulfillment/t_onshelf'"></div>
+    </div>
+  </div>
+  <div class="tab-pane" ng-class="{active : tab_circulating}">
+    <div ng-if="tab_circulating">
+      <div ng-include="'./fulfillment/t_circulating'"></div>
+    </div>
+  </div>
+  <div class="tab-pane" ng-class="{active : tab_status}">
+    <div ng-if="tab_status">
+      <div ng-include="'./fulfillment/t_status'"></div>
+    </div>
+  </div>
+</div>
+

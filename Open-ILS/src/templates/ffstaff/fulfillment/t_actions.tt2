@@ -1,0 +1,57 @@
+<div class="btn-group text-left">
+
+  <!-- first page -->
+  <button type="button" class="btn btn-default" 
+    ng-class="{disabled : action_pending}"
+    ng-show="itemList.offset" ng-click="firstPage()">[% l('Start') %]</button>
+
+  <!-- previous page -->
+  <button type="button" class="btn btn-default" 
+    ng-class="{disabled : action_pending}"
+    ng-show="itemList.offset" ng-click="prevPage()">&laquo;</button>
+
+  <!-- next page -->
+  <!-- todo: paging needs a total count value to be fully functional -->
+  <button type="button" class="btn btn-default" 
+    ng-class="{disabled : action_pending}"
+    ng-show="itemList.hasNextPage()"
+    ng-click="nextPage()">&raquo;</button>
+
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" 
+        ng-class="{disabled : action_pending}" data-toggle="dropdown">
+      [% l('Actions') %] <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu pull-right">
+      <li><a href="javascript:;" ng-click="checkin()"
+        ng-show="tab_pending && orientation_lender">[% l('Capture Item') %]</a></li>
+      <li><a href="/xul/server/admin/hold_pull_list.xhtml?ses={{authtoken}}" target="_blank"
+        ng-show="tab_pending && orientation_lender">[% l('Printable Pull List') %]</a></li>
+      <li><a href="javascript:;" ng-click="retarget()"
+        ng-show="tab_pending">[% l('Retarget Request') %]</a></li>
+      <li><a href="javascript:;" ng-click="activate_hold()"
+        ng-show="tab_pending">[% l('Activate Request') %]</a></li>
+      <li><a href="javascript:;" ng-click="suspend_hold()"
+        ng-show="tab_pending">[% l('Suspend Request') %]</a></li>
+      <li><a href="javascript:;" ng-click="cancel()"
+        ng-show="(tab_pending || tab_inbound) && orientation_borrower">[% l('Cancel Request') %]</a></li>
+      <li><a href="javascript:;" ng-click="abort_transit()"
+        ng-show="tab_inbound || tab_outbound">[% l('Abort Transit') %]</a></li>
+      <li><a href="javascript:;" ng-click="checkin()"
+        ng-show="tab_inbound">[% l('Receive Item') %]</a></li>
+      <li><a href="javascript:;" ng-click="checkin()"
+        ng-show="tab_circulating && orientation_borrower">[% l('Check In') %]</a></li>
+      <li><a href="javascript:;" ng-click="checkout()"
+        ng-show="tab_onshelf">[% l('Check Out') %]</a></li>
+      <li><a href="javascript:;" ng-click="mark_lost()"
+        ng-show="tab_circulating && orientation_borrower">[% l('Mark Lost') %]</a></li>
+      <li><a href="javascript:;" ng-click="popup_block_ill()"
+        ng-show="tab_pending && orientation_lender">[% l('Disallow item for requests') %]</a></li>
+      <li><a href="javascript:;" ng-click="popup_abort_block_ill()"
+        ng-show="tab_outbound && orientation_lender">[% l('Disallow item for requests') %]</a></li>
+      <!-- <li><a href="javascript:;" ng-click="block_all()"
+        ng-show="tab_pending && orientation_lender">[% l('Disallow item for ALL requests') %]</a></li> -->
+      <li><a href="javascript:;" ng-click="print()">[% l('Print') %]</a></li>
+    </ul>
+  </div>
+</div>

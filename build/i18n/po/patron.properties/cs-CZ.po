@@ -1,0 +1,2089 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-25 00:15-0400\n"
+"PO-Revision-Date: 2018-02-18 14:22+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:01+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: staff.patron.barcode_entry.user_permission_editor
+msgid "User Permission Editor"
+msgstr "Editor uživatelských oprávnění"
+
+#: staff.patron.barcode_entry.check_out
+msgid "Check Out"
+msgstr "Půjčit"
+
+#: staff.patron.barcode_entry.no_barcode
+msgid "No barcode entered."
+msgstr "Nebyl zadán čárový kód."
+
+#: staff.patron.barcode_entry.barcode_retrieval_problem
+msgid ""
+"Problem retrieving %1$s.  Please report this message: \n"
+"%2$s"
+msgstr ""
+"Problém s vyhledáním %1$s. Ohlaste prosím tuto zprávu: \n"
+"%2$s"
+
+#: staff.patron.barcode_entry.barcode_not_found
+msgid "Barcode %1$s not found."
+msgstr "Čárový kód %1$s nenalezen."
+
+#: staff.patron.barcode_entry.opt_in_restricted
+msgid "This patron's record is not viewable at your library."
+msgstr "Údaje o tomto čtenáři nelze ve Vaší knihovně zobrazit"
+
+#: staff.patron.barcode_entry.consent_from_patron
+msgid ""
+"Does patron %1$s, %2$s from %3$s (%4$s) consent to having their personal "
+"information shared with your library?"
+msgstr ""
+"Souhlasí čtenář %1$s, %2$s z %3$s (%4$s) s poskytnutím osobních údajů této "
+"knihovně?"
+
+#: staff.patron.barcode_entry.patron_consent_title
+msgid "Patron/Library Opt-In Confirmation"
+msgstr "Potvrzení Opt-In čtenářem / knihovnou"
+
+#: staff.patron.barcode_entry.patron_consent_accept
+msgid "Accept"
+msgstr "Přijmout"
+
+#: staff.patron.barcode_entry.patron_consent_deny
+msgid "Deny"
+msgstr "Zamítnout"
+
+#: staff.patron.barcode_entry.patron_consent_confirm
+msgctxt "staff.patron.barcode_entry.patron_consent_confirm"
+msgid "Check here to confirm this message"
+msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#: staff.patron.barcode_entry.patron_display_error
+msgid "spawning patron display"
+msgstr "spouštění zobrazení čtenáře"
+
+#: staff.patron.barcode_entry.user_perm_display_error
+msgid "spawning user perm editor"
+msgstr "spouštění editace uživatelských oprávnění"
+
+#: staff.patron.bill_interface.payment_pending.column_header
+msgid "Payment Pending"
+msgstr "Nevyřízená platba"
+
+#: staff.patron.bill_cc_info.need_cc_number
+msgid "You must provide a credit card number"
+msgstr "Musíte zadat číslo kreditní karty"
+
+#: staff.patron.bill_cc_info.need_approval_code
+msgid "You must provide an approval code or an imprint slip number"
+msgstr "Musíte zadat ověřovací kód nebo vložit číslo účtu"
+
+#: staff.patron.bill_details.my_init.error
+msgid "bill_details.xul, my_init:"
+msgstr "bill_details.xul, my_init:"
+
+#: staff.patron.bill_details.my_cleanup.error
+msgid "bill_details.xul, my_cleanup:"
+msgstr "bill_details.xul, my_cleanup:"
+
+#: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
+msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
+msgid "Replacement Note"
+msgstr "Poznámka k nahrazení"
+
+#: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
+msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
+msgid "Enter new note:"
+msgstr "Vložit novou poznámku:"
+
+#: staff.patron.bill_details.handle_edit_bill_note.failure
+msgid "Note for selected bills not likely updated."
+msgstr "Poznámka k vybranému poplatku pravděpobně nebyla aktualizována"
+
+#: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgid "Replacement Note"
+msgstr "Poznámka k nahrazení"
+
+#: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgid "Enter new note:"
+msgstr "Vložit novou poznámku:"
+
+#: staff.patron.bill_details.handle_edit_payment_note.failure
+msgid "Note for selected payments not likely updated."
+msgstr "Poznámka k vybrané platbě pravděpodobně nebyla aktualizována."
+
+#: staff.patron.bill_details.handle_void.voided_billings.alert
+msgid "All selected billings have already voided."
+msgstr "Všechny vybrané poplatky již byly  zrušeny."
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr "Opravdu chcete zrušit naúčtované poplatky v hodnotě $%1$s?"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_title
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_title"
+msgid "Voiding Bills"
+msgstr "Rušení naúčtovaných poplatků"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_yes
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_no
+msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
+msgctxt ""
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#: staff.patron.bill_details.handle_void.voiding_error
+msgctxt "staff.patron.bill_details.handle_void.voiding_error"
+msgid "Error voiding bills."
+msgstr "Chyba při rušení naúčtovaných poplatků"
+
+#: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
+msgid "Please close this window and try again."
+msgstr "Zavřete prosím toto okno a zkuste to znovu."
+
+#: staff.patron.bill_history.my_init.current_bills
+msgid "Current Bills"
+msgstr "Aktuální poplatky"
+
+#: staff.patron.bill_history.my_init.bill_history
+msgid "Bill History"
+msgstr "Historie účtu"
+
+#: staff.patron.bill_history.handle_add.message_plural
+msgid "Are you sure you would like to add a billing to bills %1$s?"
+msgstr "Opravdu chcete přidat poplatek k naúčovaným poplatkům  %1$s?"
+
+#: staff.patron.bill_history.handle_add.message_singular
+msgid "Are you sure you would like to add a billing to bill %1$s?"
+msgstr "Opravdu chcete přidat poplatek k naúčovanému poplatku %1$s?"
+
+#: staff.patron.bill_history.handle_add.title
+msgid "Bill Patron"
+msgstr "Naúčtovat poplatek"
+
+#: staff.patron.bill_history.handle_add.btn_yes
+msgctxt "staff.patron.bill_history.handle_add.btn_yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bill_history.handle_add.btn_no
+msgctxt "staff.patron.bill_history.handle_add.btn_no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.patron.bill_history.handle_add.confirm_message
+msgctxt "staff.patron.bill_history.handle_add.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#: staff.patron.bill_history.handle_void.message_plural
+msgid "Are you sure you would like to void all billings on bills %1$s?"
+msgstr "Opravdu chcete zrušit všechny poplatky na účtech %1$s?"
+
+#: staff.patron.bill_history.handle_void.message_singular
+msgid "Are you sure you would like to void all billings on bill %1$s?"
+msgstr "Opravdu chcete zrušit všechny poplatky na účtu %1$s?"
+
+#: staff.patron.bill_history.handle_void.title
+msgctxt "staff.patron.bill_history.handle_void.title"
+msgid "Void All Billings"
+msgstr "Zrušit všechny poplatky"
+
+#: staff.patron.bill_history.handle_void.btn_yes
+msgctxt "staff.patron.bill_history.handle_void.btn_yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bill_history.handle_void.btn_no
+msgctxt "staff.patron.bill_history.handle_void.btn_no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.patron.bill_history.handle_void.confirm_message
+msgctxt "staff.patron.bill_history.handle_void.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#: staff.patron.bills.handle_refund.message_plural
+msgid ""
+"Are you sure you would like to refund excess payment on bills %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+"Opravdu chcete refundovat přebytek platby na účtech %1$s? Tím pouze "
+"převedete částku ve sloupci nevyřízené platby na negativní hodnotu. Musíte i "
+"tak provést platbu. Některé typy plateb nelze refundovat. Refundace může být "
+"aplikována na vybrané transakce, které následují za refundovanou transakcí."
+
+#: staff.patron.bills.handle_refund.message_singular
+msgid ""
+"Are you sure you would like to refund excess payment on bill %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+"Opravdu chcete refundovat přebytek platby na účtu %1$s? Tím  pouze převedete "
+"částku ve sloupci nevyřízené platby na negativní hodnotu. Musíte i tak "
+"provést platbu. Některé typy plateb nelze refundovat. Refundace může být "
+"aplikována na vybrané transakce, které následují za refundovanou transakcí."
+
+#: staff.patron.bills.handle_refund.title
+msgid "Refund Excess Payment"
+msgstr "Vrátit přeplatek"
+
+#: staff.patron.bills.handle_refund.btn_yes
+msgctxt "staff.patron.bills.handle_refund.btn_yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bills.handle_refund.btn_no
+msgctxt "staff.patron.bills.handle_refund.btn_no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.patron.bills.handle_adjust_to_zero.message_plural
+msgid ""
+"Are you sure you would like to adjust to zero the balance on bills %1$s?"
+msgstr "Opravdu chcete zůstatek  poplatků %1$s natavit na nulu ?"
+
+#: staff.patron.bills.handle_adjust_to_zero.message_singular
+msgid ""
+"Are you sure you would like to adjust to zero the balance on bill %1$s?"
+msgstr "Opravdu chcete zůstatek poplatku  %1$s nastavit na nulu?"
+
+#: staff.patron.bills.handle_adjust_to_zero.title
+msgid "Adjust to Zero"
+msgstr "Nastavit na nulu"
+
+#: staff.patron.bills.handle_adjust_to_zero.btn_yes
+msgctxt "staff.patron.bills.handle_adjust_to_zero.btn_yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bills.handle_adjust_to_zero.btn_no
+msgctxt "staff.patron.bills.handle_adjust_to_zero.btn_no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.patron.bill_history.print_bills.print_error
+msgid "printing bills"
+msgstr "Tisk platebních dokladů"
+
+#: staff.patron.bill_history.column.xact_type.label
+msgid "Transaction Type"
+msgstr "Typ transakce"
+
+#: staff.patron.bill_history.column.last_billing_type.label
+msgid "Last Billing Type"
+msgstr "Typ poplatku"
+
+#: staff.patron.bill_history.column.title.label
+msgctxt "staff.patron.bill_history.column.title.label"
+msgid "Title"
+msgstr "Název"
+
+#: staff.patron.bills.init_controller.money_summary_label
+msgid "Money Summary"
+msgstr "Souhrn hotovosti"
+
+#: staff.patron.bills.bill_payment_amount.credit_amount
+msgid "Patron only has %1$s in credit."
+msgstr "Záloha čtenáře činí  pouze %1$s."
+
+#: staff.patron.bills.bill_change_amount.greedy
+msgid "Someone wanted more money than they deserved"
+msgstr "Někdo požadoval větší částku, než na jakou měl nárok."
+
+#: staff.patron.bills.apply_payment.nothing_applied
+msgid "No payments or patron credit applied."
+msgstr "Neproběhly žádné platby, ani nebyla použita čtenářova záloha."
+
+#: staff.patron.bills.pay.annotate_payment
+msgid "Please annotate this payment:"
+msgstr "Přidejte prosím komentář k této platbě"
+
+#: staff.patron.bills.pay.annotate_payment.title
+msgid "Annotate Payment"
+msgstr "Přidat komentář k platbě"
+
+#: staff.patron.bills.pay.refund_exceeds_desk_payment
+msgid ""
+"%1$s\n"
+"\n"
+"Another way to \"zero\" this transaction is to use Add Billing and add a "
+"miscellaneous bill to counter the negative balance."
+msgstr ""
+"%1$s\n"
+"\n"
+"Tuto transakci můžete vynulovat také použitím volby \"Přidat poplatek\" a "
+"poté naúčtovat takovou částu, aby byl srovnán negativní stav účtu."
+
+#: staff.patron.bills.pay.invalid_user_xact_id
+msgid ""
+"%1$s\n"
+"\n"
+"This patron data is stale.  Refreshing patron data.  You should re-attempt "
+"the payment."
+msgstr ""
+"%1$s\n"
+"\n"
+"Údaje  toho uživatele nejsou aktuální. Probíhá aktualizace dat. Bude nutné "
+"znovu provést platbu."
+
+#: staff.patron.bills.pay.payment_failed
+msgid "Bill payment likely failed"
+msgstr "Platba polatku pravděpodobně selhala."
+
+#: staff.patron.bills.pay.over_warn_limit.title
+msgid "Verify Payment Amount"
+msgstr "Potvrdit výši platby"
+
+#: staff.patron.bills.pay.over_warn_limit
+msgid "Are you sure you want to apply a payment of $%1$s?"
+msgstr "Opravdu chcete provést platbu  $%1$s?"
+
+#: staff.patron.bills.pay.over_limit
+msgid "Payments over $%1$s are denied by policy."
+msgstr "Pravidla nepovolují platby přesahující  $%1$s."
+
+#: staff.patron.bills.info_box.label_value.reservation
+msgid "Reservation"
+msgstr "Rezervace zdrojů"
+
+#. # 1 - Resource Barcode  2 - Resource Type Name
+#: staff.patron.bills.info_box.value_format.reservation
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+#: staff.patron.bills.info_box.label_value.title
+msgctxt "staff.patron.bills.info_box.label_value.title"
+msgid "Title"
+msgstr "Název"
+
+#: staff.patron.bills.info_box.label_value.type
+msgid "Type"
+msgstr "Typ"
+
+#: staff.patron.bills.info_box.label_value.last_billing
+msgid "Last Billing:"
+msgstr "Naúčtovaný poplatek:"
+
+#: staff.patron.bills.info_box.label_value.add_billing
+msgid "Add Billing"
+msgstr "Přidat poplatek"
+
+#: staff.patron.bills.info_box.label_value.refund
+msgid "Refund"
+msgstr "Refundovat"
+
+#: staff.patron.bills.info_box.label_value.void_all_billings
+msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
+msgid "Void All Billings"
+msgstr "Zrušit všechny poplatky"
+
+#: staff.patron.bills.info_box.label_value.full_details
+msgid "Full Details"
+msgstr "Zobrazení detailů"
+
+#: staff.patron.bills.void_all_billings.all_voided
+msgid "All billings already voided on this bill."
+msgstr "Všechny poplatky na tomto účtu již byly zrušeny."
+
+#: staff.patron.bills.void_all_billings.void.message
+msgctxt "staff.patron.bills.void_all_billings.void.message"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr "Opravdu chcete zrušit naúčtované poplatky v hodnotě $%1$s?"
+
+#: staff.patron.bills.void_all_billings.void.title
+msgctxt "staff.patron.bills.void_all_billings.void.title"
+msgid "Voiding Bills"
+msgstr "Rušení naúčtovaných poplatků"
+
+#: staff.patron.bills.void_all_billings.void.yes
+msgctxt "staff.patron.bills.void_all_billings.void.yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bills.void_all_billings.void.no
+msgctxt "staff.patron.bills.void_all_billings.void.no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.patron.bills.void_all_billings.void.confirm_message
+msgctxt "staff.patron.bills.void_all_billings.void.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#: staff.patron.bills.void_all_billings.error_voiding_bills
+msgctxt "staff.patron.bills.void_all_billings.error_voiding_bills"
+msgid "Error voiding bills."
+msgstr "Chyba při rušení naúčtovaných poplatků"
+
+#: staff.patron.bills.void_all_billings.billings_voided
+msgid "Billings voided."
+msgstr "Poplatky byly zrušeny"
+
+#: staff.patron.bills.void_warning.title
+msgid "Void Policy Warning"
+msgstr "Warování - pravidla pro zrušení"
+
+#: staff.patron.bills.void_warning.message
+msgid ""
+"WARNING: Voiding these bills may violate local policy.  Are you sure you "
+"wish to continue?"
+msgstr ""
+"VAROVÁNÍ: zrušení těchto poplatků může být v rozporu s nastavenými pravidly "
+"knihovny. Opravdu chcete pokračovat?"
+
+#: staff.patron.bill_wizard.patron_bill_finish.billing_added
+msgid "Billing added."
+msgstr "Poplatky byly přidány"
+
+#: staff.patron.display.cmd_search_form.no_patron
+msgid "No Patron Selected"
+msgstr "Nebyl vybrán žádný čtenář"
+
+#: staff.patron.display.cmd_patron_delete.dialog.title
+msgid "Delete Patron Account"
+msgstr "Smazat čtenářský účet"
+
+#: staff.patron.display.cmd_patron_delete.dialog.message
+msgid ""
+"Completely OBLITERATE this patron account, including bills, payments, "
+"bookbags, etc?  This is IRREVERSIBLE."
+msgstr ""
+"Zcela ZRUŠIT tento čtenářský  účet, včetně naúčtovaných poplatků, plateb, "
+"seznamů knih atd.? Tato operace je NEVRATNÁ."
+
+#: staff.patron.display.cmd_patron_delete.dialog.confirmation
+msgid "Check here to confirm this action."
+msgstr "Zaškrtnutím potvrďte tuto akci"
+
+#: staff.patron.display.cmd_patron_delete.dialog.cancel
+msgid "Cancel Deletion"
+msgstr "Zrušit smazání"
+
+#: staff.patron.display.cmd_patron_delete.dialog.okay
+msgid "Delete Account"
+msgstr "Smazat účet"
+
+#: staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user
+msgid "You may not delete a super user through this interface."
+msgstr "V tomto rozhraní nelze smazat superuživatele."
+
+#: staff.patron.display.cmd_patron_delete.deny_deletion_of_self
+msgid "You may not delete your own account."
+msgstr "Nemůžete smazat vlastní účet."
+
+#: staff.patron.display.cmd_patron_delete.dest_user.prompt
+msgid ""
+"The user you're attempting to delete has STAFF_LOGIN priviledges.  Please "
+"enter the barcode for a destination user to receive the deleted user's "
+"miscellaneous staff artifacts (reports, etc.):"
+msgstr ""
+"Uživatel, kterého se pokoušíte smazat, ma právo STAFF_LOGIN (přihlášení "
+"zaměstnance). Prosím zadejte čárový kód cílového uživatele, abyste získali "
+"výsledky práce smazaného uživatele (zprávy atd.):"
+
+#: staff.patron.display.cmd_patron_delete.dest_user.title
+msgid "Destination User"
+msgstr "Cílový uživatel"
+
+#: staff.patron.display.cmd_patron_delete.dest_user.failure
+msgid "Failed to retrieve destination user.  User deletion aborted."
+msgstr ""
+"Nastala chyba při načtení cílového uživatele. Mazaní uživatele bylo zrušeno."
+
+#: staff.patron.display.cmd_patron_delete.dest_user.self_reference_failure
+msgid ""
+"Cannot specify the deleted user as the destination user.  User deletion "
+"aborted."
+msgstr ""
+"Nelze označit uživatele určeného ke smazání jako cílového uživatele. Mazaní "
+"uživatele bylo zrušeno."
+
+#: staff.patron.display.cmd_patron_delete.override_prompt
+msgid "Override patron deletion failure?"
+msgstr "Obejít chybu při mazání čtenáře?"
+
+#: staff.patron.display.cmd_patron_delete.success_message
+msgid "Patron deleted. Please close tab."
+msgstr "Čtenář byl smazán. Zavřete prosím  tento panel."
+
+#: staff.patron.display.spawn_editor.editing_related_patron
+msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
+msgid "Editing Related Patron"
+msgstr "Editace údajů dotyčného čtenáře"
+
+#: staff.patron.display.init.retrieving_patron
+msgid "Retrieving Patron..."
+msgstr "Načítání čtenáře"
+
+#: staff.patron.display.init.retrieving
+msgid "Retrieving..."
+msgstr "Načítání..."
+
+#: staff.patron.display.init.network_request.alert_message
+msgid "Alert message: \"%1$s\""
+msgstr "Upozornění:  \"%1$s\""
+
+#: staff.patron.display.init.network_request.inactive_card
+msgid "Patron account retrieved with an INACTIVE card."
+msgstr "Čtenářské konto bylo načteno NEAKTIVNÍM průkazem."
+
+#: staff.patron.display.init.network_request.account_barred
+msgid "Patron account is BARRED."
+msgstr "Čtenářské konto je BLOKOVÁNO."
+
+#: staff.patron.display.init.network_request.account_inactive
+msgid "Patron account is INACTIVE."
+msgstr "Čtenářské konto je NEAKTIVNÍ"
+
+#: staff.patron.display.init.network_request.account_expire_soon
+msgid "Patron account will expire soon.  Please renew."
+msgstr ""
+"Platnost čtenářské registrace brzy vyprší.  Je nutné obnovit registraci."
+
+#: staff.patron.display.init.network_request.account_expired
+msgid "Patron account is EXPIRED."
+msgstr "Platnost čtenářské registrace SKONČILA"
+
+#: staff.patron.display.init.holds_ready
+msgid "Holds available: %1$s"
+msgstr "Dostupné rezervace: %1$s"
+
+#: staff.patron.display.init.network_request.window_title
+msgid "Alert"
+msgstr "Upozornění"
+
+#: staff.patron.display.init.network_request.window_message
+msgid ""
+"Press a navigation button above (for example, Check Out) to clear this alert."
+msgstr ""
+"Klikněte na navigační tlačítko vhodné karty (například Vypůjčit) pro "
+"vyjasnění tohoto upozornění."
+
+#: staff.patron.display.init.network_request.dump_error_message
+msgid "Not re-displaying this alert message: %1$s"
+msgstr "Nezobrazovat znovu totoupozornění: %1$s"
+
+#: staff.patron.display.init.network_request.error_showing_alert
+msgid "Error showing patron alert and holds availability."
+msgstr ""
+"Chyba při  zobrazení upozornění a informací o dostupnosti rezervací pro "
+"čtenáře."
+
+#: staff.patron.display.render_search_form.patron_search
+msgid "Patron Search"
+msgstr "Vyhledat čtenáře"
+
+#: staff.patron.display.tab_name
+msgid "Patron:"
+msgstr "Čtenář:"
+
+#: staff.patron.display.no_alerts_or_messages
+msgid "No Alerts, Blocks, or Messages"
+msgstr "Žádná varování, blokace nebo zprávy"
+
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date, Field 3 = actor.usr.last_update_time
+#: staff.patron.display.db_data
+msgid "Database ID: %1$s Create Date: %2$s Last Updated: %3$s"
+msgstr "Databázové ID: %1$s Datum vytvoření: %2$s Naposledy editováno: %3$s"
+
+#: staff.patron.hold_notices.tooltiptext
+msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
+msgstr ""
+"ID: %1$s ID rezervace: %2$s  ID zaměstnance, který vytvořil upozornění: %3$s"
+
+#: staff.patron.hold_notices.new_notification_record
+msgid "New Notification Record"
+msgstr "Nové oznámení"
+
+#: staff.patron.hold_notices.method
+msgid "Method"
+msgstr "Metoda"
+
+#: staff.patron.hold_notices.note
+msgctxt "staff.patron.hold_notices.note"
+msgid "Note"
+msgstr "Poznámka"
+
+#: staff.patron.hold_notices.cancel
+msgctxt "staff.patron.hold_notices.cancel"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.hold_notices.cancel_accesskey
+msgctxt "staff.patron.hold_notices.cancel_accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.hold_notices.add_notif_record
+msgid "Add Notification Record"
+msgstr "Přidat upozornění"
+
+#: staff.patron.hold_notices.add_notif_record_accesskey
+msgctxt "staff.patron.hold_notices.add_notif_record_accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.patron.hold_notices.new_notification.not_created
+msgid "The notification was not likely created."
+msgstr "Upozornění pravděpodobně nebylo vytvořeno."
+
+#: staff.patron.hold_notes.tooltiptext
+msgid "ID: %1$s Hold ID: %2$s Staff ID: %3$s"
+msgstr "ID: %1$s ID rezervace: %2$s ID zaměstnance: %3$s"
+
+#: staff.patron.hold_notes.new_note
+msgctxt "staff.patron.hold_notes.new_note"
+msgid "New Note"
+msgstr "Nová poznámka"
+
+#: staff.patron.hold_notes.title
+msgctxt "staff.patron.hold_notes.title"
+msgid "Title"
+msgstr "Název"
+
+#: staff.patron.hold_notes.body
+msgctxt "staff.patron.hold_notes.body"
+msgid "Note"
+msgstr "Poznámka"
+
+#: staff.patron.hold_notes.public
+msgid "Public"
+msgstr "Veřejné"
+
+#: staff.patron.hold_notes.private
+msgid "Private"
+msgstr "Neveřejná"
+
+#: staff.patron.hold_notes.print_on_slip
+msgid "Print on Slip"
+msgstr "Vytisknout na průvodku"
+
+#: staff.patron.hold_notes.no_print_on_slip
+msgid "No print on Slip"
+msgstr "Netisknout na průvodku"
+
+#: staff.patron.hold_notes.by_staff
+msgid "By Staff"
+msgstr "Personálem"
+
+#: staff.patron.hold_notes.by_patron
+msgid "By Patron "
+msgstr "Čtenářem "
+
+#: staff.patron.hold_notes.new_note.public
+msgid "Public?"
+msgstr "Veřejné?"
+
+#: staff.patron.hold_notes.new_note.slip
+msgid "Print on slip?"
+msgstr "Vytisknout na průvodku?"
+
+#: staff.patron.hold_notes.cancel
+msgctxt "staff.patron.hold_notes.cancel"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.hold_notes.cancel_accesskey
+msgctxt "staff.patron.hold_notes.cancel_accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.hold_notes.add_note
+msgctxt "staff.patron.hold_notes.add_note"
+msgid "Add Note"
+msgstr "Přidat poznámku"
+
+#: staff.patron.hold_notes.add_note.accesskey
+msgctxt "staff.patron.hold_notes.add_note.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.patron.hold_notes.new_note.not_created
+msgctxt "staff.patron.hold_notes.new_note.not_created"
+msgid "The note was not likely created."
+msgstr "Poznámka pravděpodobně nebyla vytvořena."
+
+#: staff.patron.holds.init.hold_num_error
+msgid "Error retrieving details for hold #%1$s"
+msgstr "Při načítání detailů pro rezervaci #%1$s došlo k chybě."
+
+#: staff.patron.holds.show_notifications.error_rendering_notifs
+msgid "Error rendering or retrieving hold notifications."
+msgstr "Chyba ve vytváření nebo obdržení upozornění na rezervaci."
+
+#: staff.patron.holds.total_count
+msgid "Total Holds: %1$s"
+msgstr "Celkový počet rezervací: %1$s"
+
+#: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
+msgid "Please choose a Hold Range:"
+msgstr "Vyberte prosím oblast pro získání rezervace:"
+
+#: staff.patron.holds.holds_edit_selection_depth.done.label
+msgctxt "staff.patron.holds.holds_edit_selection_depth.done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_selection_depth.done.accesskey
+msgctxt "staff.patron.holds.holds_edit_selection_depth.done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_selection_depth.cancel.label
+msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_edit_selection_depth.cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.holds.holds_edit_selection_depth.choose_library
+msgctxt "staff.patron.holds.holds_edit_selection_depth.choose_library"
+msgid "Choose a Pick Up Library"
+msgstr "Vyberte knihovnu pro vyzvednutí"
+
+#: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
+msgid ""
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
+msgstr "Opravdu chcete změnit pořadí rezervace %1$s na \"%2$s\"?;"
+
+#: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
+msgid ""
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
+msgstr "Opravdu chcet zeměnit oblast pro rezervace  %1$s na \"%2$s\"?;"
+
+#: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
+msgctxt "staff.patron.holds.holds_edit_selection_depth.modify_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_not_modified
+msgid "Holds not likely modified."
+msgstr "Rezervace pravděpodobně nebyly upraveny."
+
+#: staff.patron.holds.holds_edit_pickup_lib.new_pickup_lib.description
+msgid "Please choose a new Pickup Library:"
+msgstr "Vyberte prosím novou knihovnu pro vyzvednutí rezervace:"
+
+#: staff.patron.holds.holds_edit_pickup_lib.done.label
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_pickup_lib.done.accesskey
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_pickup_lib.cancel.label
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.holds.holds_edit_pickup_lib.choose_lib
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.choose_lib"
+msgid "Choose a Pick Up Library"
+msgstr "Vyberte knihovnu pro vyzvednutí"
+
+#: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
+msgid ""
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
+msgstr ""
+"Opravdu chcete změnit knihovnu pro vyzvednutí rezervace %1$s na %2$s?"
+
+#: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
+msgid ""
+"Are you sure you would like to change the Pick Up Library for holds %1$s to "
+"%2$s?"
+msgstr ""
+"Opravdu chcete změnit knihovnu pro vyzvednutí rezervací %1$s na %2$s?"
+
+#: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_edit_phone_notify.new_phone_number
+msgid ""
+"Please enter a new phone number for hold notification (leave the field empty "
+"to disable phone notification):"
+msgstr ""
+"Vložte prosím nové telefonní číslo pro upozornění o splněné rezervaci "
+"(nechte pole prázdné, pokud si telefonické vyrozumění nepřejete):"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.holds.holds_edit_phone_notify.choose_phone_number
+msgid "Choose a Hold Notification Phone Number"
+msgstr "Vyberte telefonní číslo pro vyrozumění o splnění rezervace."
+
+#: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Phone Number for hold "
+"%1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit telefonní číslo pro vyrozumění o splnění rezervace?"
+
+#: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Phone Number for "
+"holds %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit telefonní číslo pro vyrozumění o splění rezervace %1$s "
+"- \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_edit_sms_notify.new_phone_number
+msgid ""
+"Please enter a new mobile number for hold notification via text (leave the "
+"field empty to disable):"
+msgstr ""
+"Zadejte prosím nové číslo obilního telefonu pro oznámení o rezervacích "
+"prostřednictvím SMS (pro vypnutí volby nechte pole prázdné):"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "S"
+
+#: staff.patron.holds.holds_edit_sms_notify.choose_phone_number
+msgid "Choose a Hold Notification Mobile Text Number"
+msgstr "Vyberte číslo mobilního telefonu pro SMS oznámení o rezevaci"
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit číslo pro telefonické/SMS oznámení pro rezervaci %1$s "
+"na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Number "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit číslo pro telefonické/SMS oznámení pro rezervace %1$s "
+"na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_notify.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_notify.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_edit_sms_carrier.new_carrier
+msgid "Please select a new mobile carrier for hold notification via text:"
+msgstr ""
+"Zadejte prosím nového mobilního operátora pro oznámení o rezervacích "
+"prostředncitvím SMS:"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
+msgid "C"
+msgstr "S"
+
+#: staff.patron.holds.holds_edit_sms_carrier.choose_carrier
+msgid "Select a Hold Notification Mobile Text Carrier"
+msgstr "Vyberte mobilního operátora pro SMS oznámení o rezervacích"
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.singular
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for hold %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit mobilního operátora pro telefonické / SMS oznámení pro "
+"rezervaci %1$s na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.plural
+msgid ""
+"Are you sure you would like to change the Notification Mobile/Text Carrier "
+"for holds %1$s to \"%2$s\"?"
+msgstr ""
+"Opravdu chcete změnit mobilního operátora pro telefonické / SMS oznámení pro "
+"rezervace %1$s na \"%2$s\"?"
+
+#: staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_edit_email_notify.description
+msgid ""
+"Send email notifications (when appropriate)?  The email address used is "
+"found in the hold recipient account."
+msgstr ""
+"Zaslat upozornění e-mailem? Použitá e-mailová adresa se nachází v účtu "
+"příjemce."
+
+#: staff.patron.holds.holds_edit_email_notify.btn_email.label
+msgid "Email"
+msgstr "E-mail"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_email.accesskey
+msgid "E"
+msgstr "E"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_no_email.label
+msgid "No Email"
+msgstr "Není zadán e-mail"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey"
+msgid "N"
+msgstr "Ž"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.holds.holds_edit_email_notify.set_notifs
+msgid "Set Email Notification for Holds"
+msgstr "Nastavit emailové vyrozumění o rezervacích"
+
+#: staff.patron.holds.holds_edit_email_notify.enable_email.singular
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
+msgstr ""
+"Opravdu chcete povolit e-mailovové vyrozumění o splnění rezervace %1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.enable_email.plural
+msgid ""
+"Are you sure you would like to enable email notification for holds %1$s?"
+msgstr ""
+"Opravdu chcete povolit e-mailovové vyrozumění o splnění rezervací %1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.disable_email.singular
+msgid ""
+"Are you sure you would like to disable email notification for hold %1$s?"
+msgstr ""
+"Opravdu  chcete zakázat e-mailovové vyrozumění o splnění rezervace %1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.disable_email.plural
+msgid ""
+"Are you sure you would like to disable email notification for holds %1$s?"
+msgstr ""
+"Opravdu chcete zrušit zaslání e-mailového upozornění o splnění rezervací "
+"%1$s?"
+
+#: staff.patron.holds.holds_edit_email_notify.mod_holds_title
+msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_cut_in_line.description
+msgid ""
+"Move to the front of the holds queue above other holds that are not likewise "
+"flagged Top of Queue?"
+msgstr ""
+"Přesunout na začátek fronty rezervací před ostatní rezervace, které "
+"pravděpodobně nejsou označeny jako začátek fronty?"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cut.label
+msgid "Top of Queue"
+msgstr "Začátek fronty"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cut.accesskey
+msgid "T"
+msgstr "T"
+
+#: staff.patron.holds.holds_cut_in_line.btn_no_cut.label
+msgid "No Top of Queue"
+msgstr "Není začátkem fronty"
+
+#: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
+msgid "N"
+msgstr "N"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cancel.label
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.holds.holds_cut_in_line.set_notifs
+msgid "Set Top of Queue (Force to Front) for Holds"
+msgstr ""
+"Nastavit na začátek fronty rezervací (vynutnit přeskočení ostatních)?"
+
+#: staff.patron.holds.holds_cut_in_line.enable_cut.singular
+msgid "Are you sure you would like to enable Top of Queue for hold %1$s?"
+msgstr "Opravdu chcete přesunout rezervaci %1$s na začátek fronty?"
+
+#: staff.patron.holds.holds_cut_in_line.enable_cut.plural
+msgid "Are you sure you would like to enable Top of Queue for holds %1$s?"
+msgstr "Opravdu chcete přesunout rezervace %1$s na začátek fronty?"
+
+#: staff.patron.holds.holds_cut_in_line.disable_cut.singular
+msgid "Are you sure you would like to disable Top of Queue for hold %1$s?"
+msgstr "Opravdu chcete zrušit nastavení rezervace %1$s jako začátku fronty?"
+
+#: staff.patron.holds.holds_cut_in_line.disable_cut.plural
+msgid "Are you sure you would like to disable Top of Queue for holds %1$s?"
+msgstr "Opravdu chcete zrušit nastavení rezervací %1$s jako začátku fronty?"
+
+#: staff.patron.holds.holds_cut_in_line.mod_holds_title
+msgctxt "staff.patron.holds.holds_cut_in_line.mod_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_desire_mint_condition.description
+msgid "Accept only \"good condition\" copies?"
+msgstr "Přijmout pouze exempláře v \"dobrém stavu\"?"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_good.label
+msgid "Good Condition"
+msgstr "V dobrém stavu"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_good.accesskey
+msgid "G"
+msgstr "G"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.label
+msgid "Any Condition"
+msgstr "V jakémkoli stavu"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
+msgctxt ""
+"staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_cancel.label
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.holds.holds_desire_mint_condition.set_notifs
+msgid "Set Desired Copy Quality for Holds"
+msgstr "Nastavit požadovanou kvalitu exemplářů pro rezervace"
+
+#: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
+msgid ""
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
+msgstr ""
+"Opravdu chcete omezit rezervaci %1$s pouze na exempláře  v Dbrém stavu?"
+
+#: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
+msgid ""
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
+msgstr ""
+"Opravdu chcete omezit rezervace %1$s pouze na exempláře v Dobrém stavu?"
+
+#: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
+msgid ""
+"Are you sure you would like to NOT restrict to Good Condition copies for "
+"hold %1$s?"
+msgstr ""
+"Opravdu NECHCETE omezit rezervaci %1$s pouze na exempláře v Dobrém stavu?"
+
+#: staff.patron.holds.holds_desire_mint_condition.disable_good.plural
+msgid ""
+"Are you sure you would like to NOT restrict to Good Condition copies for "
+"holds %1$s?"
+msgstr ""
+"Opravdu NECHCETE  omezit rezervace %1$s pouze na exempláře v Dobrém stavu?"
+
+#: staff.patron.holds.holds_desire_mint_condition.mod_holds_title
+msgctxt "staff.patron.holds.holds_desire_mint_condition.mod_holds_title"
+msgid "Modifying Holds"
+msgstr "Úprava rezervací"
+
+#: staff.patron.holds.holds_retarget.reset_hold_message.singular
+msgid "Are you sure you would like to reset hold %1$s?"
+msgstr "Opravdu chcete znovu nastavit rezervaci %1$s?"
+
+#: staff.patron.holds.holds_retarget.reset_hold_message.plural
+msgid "Are you sure you would like to reset holds %1$s?"
+msgstr "Opravdu chcete znovu nastavit rezervace %1$s?"
+
+#: staff.patron.holds.holds_retarget.reset_hold_title
+msgid "Resetting Holds"
+msgstr "Přenastavení rezervací"
+
+#: staff.patron.holds.holds_retarget.holds_not_reset
+msgid "Holds not likely reset."
+msgstr "Rezervace pravděpodobně nebyla znovu nastavena."
+
+#: staff.patron.holds.holds_cancel.cancel_hold_message.singular
+msgid "Are you sure you would like to cancel hold %1$s?"
+msgstr "Opravdu chcete zrušit rezervaci %1$s?"
+
+#: staff.patron.holds.holds_cancel.cancel_hold_message.plural
+msgid "Are you sure you would like to cancel holds %1$s?"
+msgstr "Opravdu chcete zrušit rezervace %1$s?"
+
+#: staff.patron.holds.holds_cancel.cancel_hold_title
+msgid "Cancelling Holds"
+msgstr "Rušení rezervací"
+
+#: staff.patron.holds.holds_cancel.cancel_for_barcodes
+msgid "For barcodes %1$s, should the associated transits also be cancelled?"
+msgstr ""
+"Má se pro  exempláře s čárovými kódy %1$s zrušit také související přeprava?"
+
+#: staff.patron.holds.holds_cancel.cancel_for_barcodes.title
+msgid "Cancelling Transits"
+msgstr "Zrušení přepravy"
+
+#: staff.patron.holds.holds_cancel.hold_transits_not_cancelled
+msgid "Hold transits not likely cancelled."
+msgstr "Přeprava rezervovaných exemplářů pravděpodobně nebyla zrušena."
+
+#: staff.patron.holds.holds_cancel.hold_not_cancelled
+msgid "Holds not likely cancelled."
+msgstr "Rezervace pravděpodobně nebyly zrušeny."
+
+#: staff.patron.holds.holds_uncancel.hold_not_uncancelled
+msgid "Holds not likely un-cancelled."
+msgstr "Pravděpobně nedošlo k obnovení zrušené rezervace"
+
+#: staff.patron.holds.show_catalog.unknown_htype
+msgid ""
+"I do not understand the hold type of %1$s so I can not display the "
+"appropriate record in the catalog."
+msgstr ""
+"Není jasné, o jaký typ rezervace se jedná v případě %1$s, proto nelze "
+"zobrazit  vhodný záznam v katalogu."
+
+#: staff.patron.holds.show_catalog.retrieving_title
+msgctxt "staff.patron.holds.show_catalog.retrieving_title"
+msgid "Retrieving title..."
+msgstr "Načítání záznamu..."
+
+#: staff.patron.holds.lib_menus.missing_library_list
+msgctxt "staff.patron.holds.lib_menus.missing_library_list"
+msgid "Missing library list."
+msgstr "Chybí seznam knihoven."
+
+#: staff.patron.info_group.retrieve_group_members.failure
+msgid "Failed to retrieve all the group members."
+msgstr "Načtení  všech členů skupiny se nezdařilo."
+
+#: staff.patron.info_group.retrieve_patron.tab_name
+msgid "Retrieving Patron.."
+msgstr "Načítání čtenáře"
+
+#: staff.patron.info_group.retrieve_patron.failed_retrieving_patron
+msgid "Failed to retrieve patron."
+msgstr "Načtení čtenáře se nezdařilo."
+
+#: staff.patron.info_group.retrieve_patron.failed_retrieving_patrons
+msgid "Failed to retrieve patrons."
+msgstr "Načtení čtenářů se nezdařilo."
+
+#: staff.patron.info_group.merge_patrons.failed_merging_patrons
+msgid "Failed merging patrons."
+msgstr "Spojení čtenářů se nezdařilo."
+
+#: staff.patron.info_group.clone_patron.register_clone.tab_name
+msgid "Register Patron Clone for Group"
+msgstr "Registrovat klon čtenáře do skupiny"
+
+#: staff.patron.info_group.clone_patron.error_spawning_editors
+msgid "error spawning user editors"
+msgstr "chyba spouštění uživatelských editorů"
+
+#: staff.patron.info_group.spawn_editor.editing_patron
+msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
+msgid "Editing Related Patron"
+msgstr "Editace údajů dotyčného čtenáře"
+
+#: staff.patron.info_group.spawn_search
+msgid "spawn search"
+msgstr "hromadné hledání"
+
+#: staff.patron.info_group.remove_patron.warning_message
+msgid ""
+"WARNING: If you remove the currently displayed patron, a NEW group will be "
+"displayed in this interface."
+msgstr ""
+"VAROVÁNÍ: Pokud odstraníte čtenáře, který je nyní zobrazen, bude v tomto "
+"rozhraní zobrazena NOVÁ skupina."
+
+#: staff.patron.info_group.remove_patron.warning_message_confirm
+msgid "Remove selected patrons from this group?  %1$s"
+msgstr "Odstranit vybraného čtenáře z této skupiny?  %1$s"
+
+#: staff.patron.info_group.remove_patron.error_removing_patron
+msgid "error removing patron (ID=%1$s) from usergroup"
+msgstr "Při odstraňování čtenáře (ID=%1$s) ze skupiny se vyskytla chyba"
+
+#: staff.patron.info_group.remove_patron.patrons_removed_from_group
+msgid "Patrons removed from group."
+msgstr "Čtenář byl odstraněn ze skupiny."
+
+#: staff.patron.info_group.remove_patron.patrons_not_removed_from_group
+msgid "Patron not removed from group."
+msgstr "Čtenář nebyl odstraněn ze skupiny."
+
+#: staff.patron.info_group.link_patron.null_not_allowed
+msgid "null parameter not allowed"
+msgstr "nulový parametr nepovolen"
+
+#: staff.patron.info_group.link_patron.invalid_parameter
+msgid "Invalid parameter.  Expected boolean."
+msgstr "Neplatný parametr. Byl očekáván booleovský."
+
+#: staff.patron.info_group.link_patron.scan_patron_barcode
+msgid "Please scan a patron barcode:"
+msgstr "Načtěte prosím čárový kód čtenáře."
+
+#: staff.patron.info_group.link_patron.move_patron_to_new_usergroup
+msgid "Move patron %1$s into patron %2$s's usergroup..."
+msgstr "Přesunout čtenáře  %1$s do uživatelské skupiny %2$s's..."
+
+#: staff.patron.info_group.link_patron.move.label
+msgid "Move"
+msgstr "Přesunout"
+
+#: staff.patron.info_group.link_patron.move.accesskey
+msgid "M"
+msgstr "P"
+
+#: staff.patron.info_group.link_patron.done.label
+msgctxt "staff.patron.info_group.link_patron.done.label"
+msgid "Done"
+msgstr "Hotovo"
+
+#: staff.patron.info_group.link_patron.done.accesskey
+msgctxt "staff.patron.info_group.link_patron.done.accesskey"
+msgid "D"
+msgstr "H"
+
+#: staff.patron.info_group.link_patron.move_patron_to_usergroup
+msgid "Move Patron into a Usergroup"
+msgstr "Přesunout čtenáře do uživatelské skupiny"
+
+#: staff.patron.info_group.link_patron.error_linking_patron
+msgid "error linking patron (ID=%1$s)"
+msgstr "chyba v připojení čtenáře (ID=%1$s)"
+
+#: staff.patron.info_group.link_patron.usergroups_updated
+msgid "User groups updated."
+msgstr "Uživatelská skupina byla aktualizována."
+
+#: staff.patron.info_group.link_patron.error_linking_patrons
+msgid "error linking patrons"
+msgstr "chyba v připojení čtenářů"
+
+#: staff.patron.info_group.column.circs_out.label
+msgid "Items Out"
+msgstr "Výpůjčky"
+
+#: staff.patron.info_group.column.circs_overdue.label
+msgid "Items Overdue"
+msgstr "Překročena výpůjční lhůta"
+
+#: staff.patron.info_group.column.circs_claimed_returned.label
+msgid "Items Claimed Returned"
+msgstr "Exemplář údajně vrácen"
+
+#: staff.patron.info_group.column.circs_long_overdue.label
+msgid "Items Long Overdue"
+msgstr "Dlouhodobě nevráceno"
+
+#: staff.patron.info_group.column.circs_lost.label
+msgid "Items Lost"
+msgstr "Ztraceno"
+
+#: staff.patron.info_group.total_owed.label
+msgid "Total Owed: %1$s"
+msgstr "Dluh celkem %1$s"
+
+#: staff.patron.info_group.total_out.label
+msgid "Total Items Out: %1$s"
+msgstr "Vypůjčeno celkem %1$s položek"
+
+#: staff.patron.info_group.total_overdue.label
+msgid "Total Items Overdue: %1$s"
+msgstr "Celkem jednotek s překročenou lhůtou:  %1$s"
+
+#: staff.patron.info_notes.render_notes.add_new_note.label
+msgid "Add New Note"
+msgstr "Přidat novou poznámku"
+
+#: staff.patron.info_notes.render_notes.add_new_note.accesskey
+msgctxt "staff.patron.info_notes.render_notes.add_new_note.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.patron.info_notes.render_notes.tooltiptext
+msgid "Note ID: %1$s Creator ID: %2$s"
+msgstr "ID poznámky: %1$s ID uživatele: %2$s"
+
+#: staff.patron.info_notes.render_notes.pub.patron_visible
+msgid "Patron Visible"
+msgstr "Viditelné pro čtenáře"
+
+#: staff.patron.info_notes.render_notes.pub.staff_only
+msgid "Staff Only"
+msgstr "Pouze personál"
+
+#: staff.patron.info_notes.render_notes.delete_note_message
+msgid "Delete the note titled \"%1$s\" created on %2$s?"
+msgstr "Vymazat poznámku \"%1$s\" vytvořenou %2$s?"
+
+#: staff.patron.info_notes.render_notes.delete_note_title
+msgid "Delete Note"
+msgstr "Smazat poznámku"
+
+#: staff.patron.info_notes.render_notes.btn1.delete_note.label
+msgid "Delete This Note"
+msgstr "Smazat tuto poznámku"
+
+#: staff.patron.info_notes.render_notes.note_deleted
+msgid "Note deleted."
+msgstr "Poznámka smazána."
+
+#: staff.patron.info_notes.render_notes.pertaining_to
+msgid "Pertaining to"
+msgstr "Náležící do"
+
+#: staff.patron.info_notes.render_notes.created_on
+msgid "created on"
+msgstr "vytvořeno"
+
+#: staff.patron.info_notes.render_notes.printing_note_num
+msgid "printing note #%1$s"
+msgstr "poznámka při tisku #%1$s"
+
+#: staff.patron.info_notes.render_notes.btn2.print_note.label
+msgid "Print"
+msgstr "Tisk"
+
+#: staff.patron.info_notes.new_note.label
+msgctxt "staff.patron.info_notes.new_note.label"
+msgid "New Note"
+msgstr "Nová poznámka"
+
+#: staff.patron.info_notes.new_note.patron_visible.value
+msgid "Patron Visible?"
+msgstr "Viditelná pro čtenáře?"
+
+#: staff.patron.info_notes.new_note.title.value
+msgctxt "staff.patron.info_notes.new_note.title.value"
+msgid "Title"
+msgstr "Název"
+
+#: staff.patron.info_notes.new_note.note.value
+msgctxt "staff.patron.info_notes.new_note.note.value"
+msgid "Note"
+msgstr "Poznámka"
+
+#: staff.patron.info_notes.new_note.initials.value
+msgid "Initials"
+msgstr "Iniciály"
+
+#: staff.patron.info_notes.new_note.cancel.label
+msgctxt "staff.patron.info_notes.new_note.cancel.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.info_notes.new_note.cancel.accesskey
+msgctxt "staff.patron.info_notes.new_note.cancel.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.info_notes.new_note.add.label
+msgctxt "staff.patron.info_notes.new_note.add.label"
+msgid "Add Note"
+msgstr "Přidat poznámku"
+
+#: staff.patron.info_notes.new_note.add.accesskey
+msgctxt "staff.patron.info_notes.new_note.add.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.patron.info_notes.new_note.add_note_title
+msgctxt "staff.patron.info_notes.new_note.add_note_title"
+msgid "Add Note"
+msgstr "Přidat poznámku"
+
+#: staff.patron.info_notes.new_note.note_not_created
+msgctxt "staff.patron.info_notes.new_note.note_not_created"
+msgid "The note was not likely created."
+msgstr "Poznámka pravděpodobně nebyla vytvořena."
+
+#: staff.patron.info_stat_cats.retrieve_fleshed_patron.failed
+msgid "Failed to retrieve patron stat cats."
+msgstr "Nepodařilo se načíst statistické kategorie čtenáře"
+
+#: staff.patron.info_stat_cats.render_stat_cats.opac_visible
+msgid "OPAC Visible"
+msgstr "Zobrazit v OPACu"
+
+#: staff.patron.info_stat_cats.render_stat_cats.not_opac_visible
+msgid "Not OPAC Visible"
+msgstr "Neviditelné v OPACu"
+
+#: staff.patron.info_stat_cats.render_stat_cats.rendering_exception
+msgid "rendering or retrieving stat cat"
+msgstr "výpis nebo načítání statistických kategorií"
+
+#: staff.patron.info_surveys.retrieve_surveys.failed
+msgid "Failed to retrieve all the survey responses."
+msgstr "Nepodařilo se načíst všechny odpovědi z průzkumu."
+
+#: staff.patron.info_surveys.render_surveys.required
+msgid "Required"
+msgstr "Povinný údaj"
+
+#: staff.patron.info_surveys.render_surveys.not_required
+msgid "Not Required"
+msgstr "Nepovinný údaj"
+
+#: staff.patron.items.show_noncats.14_days
+msgid "14 days"
+msgstr "14 dní"
+
+#: staff.patron.items.show_noncats.err_showing_noncat
+msgid "Error showing NonCat #%1$s"
+msgstr "Chyba  při zobrazení nekatalogizovaných #%1$s"
+
+#: staff.patron.items.show_noncats.err_showing_circulations
+msgid "Error showing NonCat circulations"
+msgstr "Chyba při zobrazení nekatalogizovaných výpůjček"
+
+#: staff.patron.items.items_renew_all.list_is_busy
+msgid ""
+"This is list is busy retrieving or rendering rows for a prior action.  Abort "
+"the prior action and proceed?"
+msgstr ""
+"Tento seznam je zaneprázdněn načítáním nebo vypisováním řádků týkajících se "
+"předchozí akce. Chcete zrušit předchozí akci a pokračovat?"
+
+#: staff.patron.items.items_renew_all.renew_items_in_list
+msgid "Renew all the items in this list?"
+msgstr "Prodloužit  všechny exempláře v tomto seznamu?"
+
+#: staff.patron.items.items_renew_all.items_not_renewed
+msgid "All items were not likely renewed (%1$s)"
+msgstr "Pravděpodobně nebyly prodlouženy  všechny exempláře (%1$s)"
+
+#: staff.patron.items.items_renew.renew_item_singular
+msgid "Are you sure you would like to renew item %1$s?"
+msgstr "Opravdu chcete prodloužit exemplář %1$s?"
+
+#: staff.patron.items.items_renew.renew_item_plural
+msgid "Are you sure you would like to renew items %1$s?"
+msgstr "Opravdu chcete prodloužit exempláře %1$s?"
+
+#: staff.patron.items.items_renew.renewing
+msgid "Renewing %1$s"
+msgstr "Prodlužován %1$s"
+
+#: staff.patron.items.items_renew.renewed
+msgid "%1$s renewed."
+msgstr "%1$s prodlouženo"
+
+#: staff.patron.items.items_renew.not_renewed
+msgid ""
+"%1$s not renewed.\n"
+"%2$s"
+msgstr ""
+"%1$s nebylo prodlouženo.\n"
+"%2$s"
+
+#: staff.patron.items.items_renew.err_in_renew_via_barcode
+msgid ""
+"Error in renew_via_barcode callback\n"
+"Renew probably did not happen for barcode %1$s"
+msgstr ""
+"Chyba v renew_via_barcode\n"
+"Prodloužení pro čárový kód %1$s pravděpodobně neproběhlo."
+
+#: staff.patron.items.items_renew.no_renew_for_barcode
+msgid "Renew probably did not happen for barcode %1$s"
+msgstr "Prodloužení týkající se čárového kódu %1$s pravděpodobně neproběhlo."
+
+#: staff.patron.items.items_renew.no_renew
+msgid "Renew probably did not happen."
+msgstr "K prodloužení pravděpodobně nedošlo."
+
+#: staff.patron.items.items_edit.renew_with_date.title
+msgctxt "staff.patron.items.items_edit.renew_with_date.title"
+msgid "Renew with Due Date"
+msgstr "Prodloužit s datem vrácení"
+
+#: staff.patron.items.items_edit.renew_with_date.description
+msgctxt "staff.patron.items.items_edit.renew_with_date.description"
+msgid "Renew with Due Date"
+msgstr "Prodloužit s datem vrácení"
+
+#: staff.patron.items.items_edit.renew_with_date.prompt
+msgid "Enter a new due date for these items to be renewed: %1$s"
+msgstr "Zadejte nové datum vrácení pro prodloužení exempláře: %1$s"
+
+#: staff.patron.items.items_edit.edit_due_date.singular
+msgid "Edit Due Date"
+msgstr "Změnit datum vrácení"
+
+#: staff.patron.items.items_edit.edit_due_date.plural
+msgid "Edit Due Dates"
+msgstr "Změnit data vrácení"
+
+#: staff.patron.items.items_edit.edit_due_date.description
+msgid "Due Date"
+msgstr "K vrácení dne"
+
+#: staff.patron.items.items_edit.new_due_date
+msgid "Enter a new due date for these items: %1$s"
+msgstr "Zadejte nové datum vrácení pro tyto exempláře: %1$s"
+
+#: staff.patron.items.items_edit.dates_not_modified
+msgid "The due dates were not likely modified."
+msgstr "Data vrácení pravděpodobně nebyla změněna."
+
+#: staff.patron.items.items_edit.mark_barcode_lost
+msgid "Mark barcode lost = %1$s"
+msgstr "Označit  čárový kód jako ztracený = %1$s"
+
+#: staff.patron.items.items_edit.item_barcode
+msgid ""
+"Item Barcode %1$s\n"
+"%2$s"
+msgstr ""
+"Čárový kód exempláře %1$s\n"
+"%2$s"
+
+#: staff.patron.items.items_edit.items_not_marked_lost
+msgid "The items were not likely marked lost."
+msgstr "Exempláře pravděpodobně nebyly označeny jako ztracené."
+
+#: staff.patron.items.items_claimed_returned.claimed_returned
+msgid "Claimed Returned"
+msgstr "Údajně vráceno"
+
+#: staff.patron.items.items_claimed_returned.claimed_returned.description
+msgid "Date Claimed"
+msgstr "Datum oznámení o údajném vrácení"
+
+#: staff.patron.items.items_claimed_returned.enter_returned_date
+msgid "Enter a claimed returned date for these items: %1$s"
+msgstr "Zadejte datum oznámení o údajném vrácení pro tyto exempláře: %1$s"
+
+#: staff.patron.items.items_claimed_returned.not_marked_claimed_returned
+msgid "The items were not likely marked Claimed Returned."
+msgstr "Exempláře pravděpodobně nebyly označeny jako Údajně vrácené."
+
+#: staff.patron.items.set_claim_returned_failure
+msgid "Override set claimed returned failure?"
+msgstr "Obejít selhání nastavení Údajně vráceno?"
+
+#: staff.patron.items.items_checkin.confirm_item_check_in.singular
+msgid "Are you sure you would like to check in item %1$s?"
+msgstr "Opravdu chcete vrátit exemplář %1$s?"
+
+#: staff.patron.items.items_checkin.confirm_item_check_in.plural
+msgid "Are you sure you would like to check in items %1$s?"
+msgstr "Opravdu chcete vrátit exempláře  %1$s?"
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.singular
+msgid ""
+"Are you sure you would like to mark this item as Claimed Never Checked Out? "
+"%1$s"
+msgstr ""
+"Opravdu chcete označit tento exemplář jako Údajně nebylo nikdy nevypůjčeno?  "
+"%1$s"
+
+#: staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.plural
+msgid ""
+"Are you sure you would like to mark these items as Claimed Never Checked "
+"Out? %1$s"
+msgstr ""
+"Opravdu chcete označit tyto exempláře jako Údajně nebylo nikdy vypůjčeno?  "
+"%1$s"
+
+#: staff.patron.items.items_checkin.no_checkin
+msgid "Checkin probably did not happen."
+msgstr "Vrácení pravděpodobně neproběhlo."
+
+#: staff.patron.items.show_catalog.barcode_not_cataloged
+msgid "%1$s is not cataloged"
+msgstr "%1$s není zkatalogizováno"
+
+#: staff.patron.items.show_catalog.retrieving_title
+msgctxt "staff.patron.items.show_catalog.retrieving_title"
+msgid "Retrieving title..."
+msgstr "Načítání záznamu..."
+
+#: staff.patron.items.retrieve_row.callback_error
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgstr ""
+"Chyba zpětného volání FM_CIRC_DETAILS.authoritative v patron/items.js"
+
+#: staff.patron.items.retrieve_row.error_in_retrieve_row
+msgid "error in patron/items.js retrieve_row():"
+msgstr "Chyba v patron/items.js retrieve_row():"
+
+#: staff.patron.items.refresh.error_refreshing_row2
+msgid ""
+"2 Error refreshing row in list\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+msgstr ""
+"2 Chyba při obnovení řádku v seznamu\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+
+#: staff.patron.items.refresh.error_refreshing_row
+msgid ""
+"Error refreshing row in list\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+msgstr ""
+"Chyba při obnovení řádku v seznamu\n"
+"circ_id = %1$s\n"
+"nparams = %2$s"
+
+#: staff.patron.items.retrieve.err_retrieving_circulations
+msgid "Error retrieving circulations."
+msgstr "Chyba při načítání vypůjček."
+
+#: staff.patron.items.gen_list_append.error
+msgid "patron/items.js: error in gen_list_append"
+msgstr "patron/items.js: error in gen_list_append"
+
+#: staff.patron.search_result.search.no_patrons_found
+msgid "No patrons found matching search criteria."
+msgstr "Uživatel splňující zadaná kritéria nebyl nalezen."
+
+#: staff.patron.search_result.search.capped_results
+msgid "Results capped at %1$s patrons."
+msgstr "Výsledky uzavřeny u uživatelů %1$s."
+
+#: staff.patron.search_result.search.enter_search_terms
+msgid "Please enter some search terms."
+msgstr "Zadejte prosím termíny pro vyhledávání."
+
+#: staff.patron.search_result.init.typeof_params
+msgid "typeof params.on_retrieve == %1$s"
+msgstr "typeof params.on_retrieve == %1$s"
+
+#: staff.patron.search_result.init.search_print
+msgid "patron search print"
+msgstr "tisk hledání uživatele"
+
+#: staff.patron.search_result.init.search_clipboard
+msgid "patron search clipboard"
+msgstr "zkopírování hledání  uživatele do schránky"
+
+#: staff.patron.search_result.init.search_saving_columns
+msgid "patron search saving columns"
+msgstr "uložení sloupců hledání uživatele"
+
+#: staff.patron.search_result.mailing_address_column_label_prefix
+msgid "Mailing Addr: "
+msgstr "Kontaktní adresa: "
+
+#: staff.patron.search_result.billing_address_column_label_prefix
+msgid "Billing Addr: "
+msgstr "Adresa trvalého bydliště "
+
+#: staff.patron.summary.patron_bill.money
+msgid "$ %1$s"
+msgstr "$ %1$s"
+
+#: staff.patron.summary.retrieve.no_barcode
+msgid "summary: No barcode or ID"
+msgstr "souhrn: Žádný čárový kód nebo ID"
+
+#: staff.patron.summary.patron_net_access
+msgid "Internet"
+msgstr "Internet"
+
+#: staff.patron.summary.create_date
+msgid "Account created on"
+msgstr "Účet vytvořen"
+
+#: staff.patron.summary.expires_on
+msgid "Expires on"
+msgstr "Platnost vyprší"
+
+#: staff.patron.summary.last_activity
+msgid "Last Activity"
+msgstr "Poslední aktivita"
+
+#: staff.patron.summary.updated_on
+msgid "Last updated on"
+msgstr "Naposledy aktualizováno"
+
+#: staff.patron.summary.standing_penalty.remove
+msgid "Remove"
+msgstr "Odebrat"
+
+#: staff.patron.summary.standing_penalty.none
+msgid "No Blocks/Penalties"
+msgstr "Žádné blokace / pokuty"
+
+#: staff.patron.summary.group_list.column.family_name.label
+msgid "Family Name"
+msgstr "Příjmení"
+
+#: staff.patron.summary.group_list.column.first_given_name.label
+msgid "First Name"
+msgstr "Křestní jméno"
+
+#: staff.patron.summary.group_list.column.second_given_name.label
+msgid "Middle Name"
+msgstr "Prostřední jméno"
+
+#: staff.patron.summary.group_list.column.home_ou.label
+msgid "Home Lib"
+msgstr "Domovská knihovna"
+
+#: staff.patron.summary.group_list.column.balance_owed.label
+msgid "Balance Owed"
+msgstr "Dlužná částka"
+
+#: staff.patron.summary.tab.group_list_with_total_owed.label
+msgid "Group: %1$s"
+msgstr "Skupina: %1$s"
+
+#: staff.patron.staged.register_patron
+msgid "Registering Pending Patron: %1$s"
+msgstr "Registrace nevyřízeného čtenáře %1$s"
+
+#: staff.patron.staged.confirm_patron_delete
+msgid "Delete the selected patrons?"
+msgstr "Smazat vybrané čtenáře?"
+
+#: staff.patron.staged.error_on_delete
+msgid "Error deleting pending patron with row_id = %1$s"
+msgstr "Chyba při mazání nevyřízeného čtenáře row_id = %1$s"
+
+#: staff.patron.staged.lib_menus.missing_library_list
+msgctxt "staff.patron.staged.lib_menus.missing_library_list"
+msgid "Missing library list."
+msgstr "Chybí seznam knihoven."
+
+#: staff.patron.standing_penalty.apply_error
+msgid "Error applying %1$s block/standing penalty."
+msgstr "Chyba při aplikaci  %1$s blokace/pokuty."
+
+#: staff.patron.standing_penalty.remove_error
+msgid "Error removing %1$s block/standing penalty."
+msgstr "Chyba při odstranění   %1$s blokace/pokuty."
+
+#: staff.patron.standing_penalty.update_error
+msgid "Error updating block/standing penalty."
+msgstr "Chyba při aktualizaci blokace/pokuty."
+
+#: staff.patron.standing_penalty.retrieve_error
+msgid "Error retrieving block/standing penalty."
+msgstr "Chyba při načítání blokace/pokuty."
+
+#: staff.patron.ue.uEditInit.session_no_defined
+msgctxt "staff.patron.ue.uEditInit.session_no_defined"
+msgid "User session is not defined"
+msgstr "Uživatelská relace není definována"
+
+#: staff.patron.ue.uEditSaveuser.error_creating_note
+msgid "Error creating patron guardian or parent note"
+msgstr ""
+"Při zápisu poznámky o rodiči / zákonném zástupci čtenáře došlo k chybě."
+
+#: staff.patron.ue.uEditShowSearch.search
+msgctxt "staff.patron.ue.uEditShowSearch.search"
+msgid ""
+"Search would be:\n"
+"%1$s"
+msgstr ""
+"Vyhledávání by bylo:\n"
+"%1$s"
+
+#: staff.patron.user_buckets.tab_name
+msgid "User Buckets"
+msgstr "Skupiny uživatelů"
+
+#: staff.patron.user_edit.save_user.depth_required
+msgid "Depth is required on the %1$s permission."
+msgstr "Pro oprávění 1$s je povinná hloubka."
+
+#: staff.patron.user_edit.save_user.user_modified_successfully
+msgid ""
+"User %1$s [%2$s] successfully modified.\n"
+"%3$s permissions and %4$s work locations updated."
+msgstr "Byla aktualizována %3$s oprávnění a %4$s pracovní knihovny."
+
+#: staff.patron.user_edit.display_perm.select_one
+msgid "-- Select One --"
+msgstr "--Vyberte jeden --"
+
+#: staff.patron.cmd_verify_credentials.correct_credentials
+msgid "Success testing credentials!"
+msgstr "Uživatel úspěšně ověřen"
+
+#: staff.patron.cmd_verify_credentials.incorrect_credentials
+msgid "Failure testing credentials!"
+msgstr "Ověření uživatele selhalo"
+
+#: staff.patron.cmd_verify_credentials.name_feedback
+msgid "Username: <%1$s>"
+msgstr "Jméno uživatele: <%1$s>"
+
+#: staff.patron.cmd_verify_credentials.barcode_feedback
+msgid "Barcode: <%1$s>"
+msgstr "Čárový kód: <%1$s>"
+
+#: staff.patron.usr_buckets.merge_records.merge_lead
+msgid "Merge these records? (Select the \"lead\" record first)"
+msgstr "Sloučit tyto záznamy? (Vyberte nejprve \"řídící\" záznam)"
+
+#: staff.patron.usr_buckets.merge_records.button.label
+msgid "Merge"
+msgstr "Sloučit"
+
+#: staff.patron.usr_buckets.merge_records.cancel_button.label
+msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: staff.patron.usr_buckets.merge_records.cancel_button.accesskey
+msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.accesskey"
+msgid "C"
+msgstr "Z"
+
+#: staff.patron.usr_buckets.merge_records.lead_record_number
+msgid "Lead Record? # %1$s"
+msgstr "Řídící záznam? # %1$s"
+
+#: staff.patron.usr_buckets.merge_records.lead
+msgid "Lead"
+msgstr "Řídící záznam"
+
+#: staff.patron.usr_buckets.merge_records.fancy_prompt_title
+msgid "Record Merging"
+msgstr "Sloučení záznamů"
+
+#: staff.patron.usr_buckets.merge_records.fancy_prompt.alert
+msgid "Merge Aborted"
+msgstr "Sloučení zrušeno"
+
+#: staff.patron.usr_buckets.merge_records.success
+msgid "Records were successfully merged."
+msgstr "Záznamy byly úspěšně sloučeny."
+
+#: staff.patron.usr_buckets.merge_records.catch.std_unex_error
+msgid "Records were not likely merged."
+msgstr "Záznamy pravděpodobně nebyly sloučeny."
+
+#. # The < and > highlight that the value is hidden from immediate display; translate Hidden and change the delimiters as needed
+#: staff.patron.field.hidden
+msgid "<Hidden>"
+msgstr "<Nezobrazeno>"
+
+#. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
+#: staff.patron.field.unset
+msgid "<Unset>"
+msgstr "<Nenastaveno>"
+
+#. # Unused by default but available: %7 is county; %10 is country.
+#: staff.patron.mailable_address_format
+msgid ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
+msgstr ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
+
+#: web.staff.patron.ue.session_no_defined
+msgctxt "web.staff.patron.ue.session_no_defined"
+msgid "User session is not defined"
+msgstr "Uživatelská relace není definována"
+
+#: web.staff.patron.ue.uedit_show_search.search_would_be
+msgctxt "web.staff.patron.ue.uedit_show_search.search_would_be"
+msgid ""
+"Search would be:\n"
+"%1$s"
+msgstr ""
+"Vyhledávání by bylo:\n"
+"%1$s"
+
+#: web.staff.patron.ue.uedit_show_addr_replacement
+msgid ""
+"<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
+msgstr ""
+"<div>Nahrazuje adresu<b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
+#: staff.circ.work_log_patron_edit.message
+msgid "%1$s edited %3$s (%2$s)"
+msgstr "%3$s (%2$s) editován(a) pracovníkem %1$s"
+
+#. # 1 - Number of hold requests created
+#: staff.item.batch.hold.x_holds_created
+msgid "%1$s holds created."
+msgstr "Vytvořeno %1$s rezervací."
+
+#. # 1 - Number of holds not created for a given reason  2 - the reason for failure
+#: staff.item.batch.hold.x_failed_holds
+msgid "%1$s failed for %2$s"
+msgstr "%1$s rezervací nevytvořeno kvůli %2$s"
+
+#: staff.item.batch.hold.tab_name
+msgid "Item Hold/Recall/Force"
+msgstr "Rezervace / znovuvyvolání /vynucení exempláře"
+
+#: staff.item.batch.hold.retry_btn_label
+msgid "Retry"
+msgstr "Zkusit znovu"
+
+#: staff.item.batch.hold.override_btn_label
+msgid "Override"
+msgstr "Přesto pokračovat"
+
+#: staff.item.batch.hold.user_not_found
+msgid "User Not Found"
+msgstr "Uživatel nenalezen"
+
+#. # hold count tooltip labels
+#: staff.patron.summary.hold_counts_behind_desk
+msgid "Available / Total (Behind Desk)"
+msgstr "Dostupné / Celkem (u výpůjčního pultu)"
+
+#: staff.patron.summary.hold_counts
+msgid "Available / Total"
+msgstr "Dostuné / Celkem"
+
+#~ msgid "Record ID: %1$s Create Date: %2$s "
+#~ msgstr "ID záznamu: %1$s Datum vytvoření: %2$s "
+
+#~ msgctxt "staff.patron.bills.handle_refund.confirm_message"
+#~ msgid "Check here to confirm this message"
+#~ msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#~ msgid "Patron account is INACTIVE.<br/><br/>"
+#~ msgstr "Čtenářský účet je NEAKTIVNÍ.<br/><br/>"
+
+#~ msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
+#~ msgstr "Byl načten čtenář s NEAKTIVNÍM průkazem"
+
+#~ msgid "Alert message: \"%1$s\"<br/><br/>"
+#~ msgstr "Upozornění: \"%1$s\"<br/><br/>"
+
+#~ msgid "Patron account is BARRED.<br/><br/>"
+#~ msgstr "Čtenářský účet má OMEZENÉ TRANSAKCE.<br/><br/>"
+
+#~ msgid "Patron account is EXPIRED.<br/><br/>"
+#~ msgstr "Platnost registrace čtenářského účtu VYPRŠELA. </br></br>"

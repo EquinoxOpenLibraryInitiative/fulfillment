@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Subscription Editor Overlay -->
+
+<!-- LOCALIZATION -->
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<overlay id="serial_ssub_editor_panel_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <vbox flex="1" id="serial_ssub_editor_panel" class="my_overflow">
+        <iframe flex="1" id="alt_ssub_editor" name="alt_ssub_editor"/>
+    </vbox>
+
+</overlay>
+

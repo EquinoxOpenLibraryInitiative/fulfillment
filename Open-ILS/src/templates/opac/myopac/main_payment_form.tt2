@@ -1,0 +1,33 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/main_base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "payment_form";
+
+    last_chance = CGI.param("last_chance");
+
+    IF myopac_main_page == "payment_form" AND
+        ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'Stripe';
+        ctx.use_stripe = 1;
+    END %]
+
+<a name="payment"> </a>    
+<h3 class="sr-only">[% l('Pay Charges') %]</h3>
+[% IF ctx.fines.balance_owed <= 0 %]
+<div>
+    [% l("The minimum amount you can pay is \$0.01.") %]
+</div>
+[% ELSE %]
+<div id="pay_fines_now">
+    [% IF last_chance %]
+        [% PROCESS "opac/myopac/last_chance_form.tt2"; %]
+    [% ELSE %]
+        [% IF ctx.use_stripe %]
+            [% PROCESS "opac/myopac/stripe_payment_form.tt2"; %]
+        [% ELSE %]
+            [% PROCESS "opac/myopac/generic_payment_form.tt2"; %]
+        [% END %] <!-- of IF ctx.use_stripe -->
+    [% END %]
+</div>
+[% END %] <!-- of IF ctx.fines.balance_owed <= 0 -->
+[% END %] <!-- of.. something in one of the PROCESS or WRAPPER blocks? -->

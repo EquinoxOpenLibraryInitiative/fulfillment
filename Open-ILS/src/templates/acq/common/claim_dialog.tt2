@@ -1,0 +1,60 @@
+<div style="width: 300px; height: 300px; overflow: auto;">
+    <script
+        src="[% ctx.media_prefix %]/js/ui/default/acq/common/claim_dialog.js">
+    </script>
+    <div><big>[% l('Claims') %]</big></div>
+    <div>[% l('Against item: [_1] ([_2])',
+        '<span id="acq-lit-li-claim-dia-li-title"></span>',
+        '<span id="acq-lit-li-claim-dia-li-id"></span>') %]
+    </div>
+    <div id="acq-lit-li-claim-dia-show" class="hidden">
+        <ul id="acq-lit-li-claim-dia-lid-list">
+            <li name="lid">
+                <span name="barcode"></span> /
+                <span name="recvd"></span>
+                <ul name="claims">
+                    <li name="claim">
+                        <span name="type"></span>
+                        <a name="voucher"
+                            href="javascript:void(0);">[% l('Show Voucher') %]</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr />
+    </div>
+    <div id="acq-lit-li-claim-dia-initiate" class="hidden">
+        <div><big>[% l('Initiate New Claims') %]</big></div>
+        <div id="acq-lit-li-claim-dia-lid-list-init">
+            <div name="lid_to_claim">
+                <input type="checkbox" name="claimable_lid" />
+                <label name="claimable_lid_label">
+                    <span name="barcode"></span> /
+                    <span name="recvd"></span>
+                </label>
+            </div>
+        </div>
+        <hr />
+        <div id="acqclet-display" class="hidden">
+            <div><big>[% l('Select Claim Action') %]</big></div>
+            <table>
+                <tbody id="acqclet-tbody">
+                    <tr name="acqclet-template">
+                        <td>
+                            <input type="checkbox" name="acqclet-checkbox" />
+                        </td>
+                        <td style="padding-left: 1em;">
+                            <label name="acqclet-label">
+                                (${ou}) ${code} <em>${description}</em>
+                                <span style="color: #069;">
+                                    ${library_initiated}</span>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
+        </div>
+        <button id="acq-lit-li-claim-dia-claim">[% l('Claim selected') %]</button>
+    </div>
+</div>

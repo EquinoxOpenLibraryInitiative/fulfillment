@@ -1,0 +1,45 @@
+<eg-grid
+  ng-hide="forbidden"
+  id-field="id"
+  idl-class="rmsr"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.record.view">
+
+  [% INCLUDE 'staff/cat/bucket/record/t_grid_menu.tt2' %]
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Show Selected Records in Catalog') %]"
+    handler="showRecords"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Remove Selected Records from Bucket') %]" 
+    handler="detachRecords"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Move Selected Records to Pending Records') %]" 
+    handler="moveToPending"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Delete Selected Records from Catalog') %]" 
+    handler="deleteRecordsFromCatalog"></eg-grid-action>
+
+  <eg-grid-action handler="transfer_holds_to_marked"
+    label="[% l('Transfer Title Holds') %]"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Merge Selected Records') %]" 
+    disabled="need_multiple_selected"
+    handler="openRecordMergeDialog"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Export Records') %]" 
+    handler="openExportBucketDialog"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]" path="title">
+    <a href="/eg2/staff/catalog/record/{{item.id}}">
+      {{item.title}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Deleted?') %]" path="biblio_record.deleted"></eg-grid-field>
+
+</eg-grid>

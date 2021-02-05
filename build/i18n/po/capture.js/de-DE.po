@@ -1,0 +1,140 @@
+# German translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"PO-Revision-Date: 2016-11-25 23:24+0000\n"
+"Last-Translator: Denis Graipel <Unknown>\n"
+"Language-Team: German <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+
+#: capture.js:AUTO_ATTR_VALUE_capture
+msgid "Capture"
+msgstr "Erfassen"
+
+#: capture.js:SLIP_DATE
+msgid "Slip date"
+msgstr ""
+
+#: capture.js:CAPTURED_NOTHING
+msgid "Didn't capture anything."
+msgstr "Es wurde nichts erfasst."
+
+#: capture.js:AUTHOR
+msgid "Author"
+msgstr "Autor"
+
+#: capture.js:CAPTURE_BRESV_DATES
+msgid "Reservation time:"
+msgstr "Datum der Vormerkung:"
+
+#: capture.js:CAPTURE_INFO
+msgid "Capture Information"
+msgstr ""
+
+#: capture.js:HERES_WHAT_WE_KNOW
+msgid "The following information is available about the failed capture:"
+msgstr ""
+
+#: capture.js:AT
+msgid "at"
+msgstr "auf"
+
+#: capture.js:RESERVED
+msgid "Reserved for patron"
+msgstr "Für Kunde Vorgemerkt"
+
+#: capture.js:CAPTURE_CAUSES_TRANSIT
+msgid "This item is now in transit!"
+msgstr ""
+
+#: capture.js:TITLE
+msgid "Title"
+msgstr "Titel"
+
+#: capture.js:UNKNOWN_PROBLEM
+msgid "An unknown problem occurred during capture attempt."
+msgstr ""
+
+#: capture.js:PRINTED_BY
+msgid "Printed by"
+msgstr "Gedruckt von"
+
+#: capture.js:NO_PAYLOAD
+msgid ""
+"We did not receive further information from the server about this attempt to "
+"capture."
+msgstr ""
+
+#: capture.js:CAPTURE_TRANSIT_SOURCE
+msgid "From:"
+msgstr "Von:"
+
+#: capture.js:CAPTURE_TRANSIT_DEST
+msgid "To:"
+msgstr "An:"
+
+#: capture.js:FAILURE
+msgid "Capture failed"
+msgstr "Aufnahme fehlgeschlagen"
+
+#: capture.js:RESERVATION_SHELF
+msgid "RESERVATION SHELF"
+msgstr ""
+
+#: capture.js:SUCCESS
+msgid "Capture succeeded"
+msgstr "Aufnahme erfolgreich"
+
+#: capture.js:PRINT_ACCESSKEY
+msgid "P"
+msgstr "P"
+
+#: capture.js:CAPTURE_BRESV_BRSRC
+msgid "Resource barcode:"
+msgstr "Quelle für den Barcode"
+
+#: capture.js:DURATION
+msgid "Reserved from"
+msgstr "Reserviert von"
+
+#: capture.js:PRINT
+msgid "<u>P</u>rint"
+msgstr ""
+
+#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
+msgid "Pickup library:"
+msgstr ""
+
+#: capture.js:NEEDS_ROUTED_TO
+msgid "This item need to be routed to"
+msgstr ""
+
+#: capture.js:BARCODE
+msgid "Barcode"
+msgstr "Strichcode"
+
+#: capture.js:REQUEST
+msgid "Request time"
+msgstr ""
+
+#: capture.js:TRANSIT
+msgid "*** TRANSIT ***"
+msgstr ""
+
+#: capture.js:AUTO_resource_barcode
+msgid "Enter barcode:"
+msgstr "Barcode eingeben:"
+
+#: capture.js:AUTO_capture_heading
+msgid "Capture Reserved Resources"
+msgstr ""

@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- 
+# Copyright (C) 2008  Georgia Public Library Service
+# Bill Erickson <erickson@esilibrary.com>
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+-->
+
+<!DOCTYPE html PUBLIC 
+    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<html xmlns='http://www.w3.org/1999/xhtml'>
+    <head>
+        <title>&staff.server.admin.org_unit_settings.title;</title>
+        <link type='text/css' rel='stylesheet' href='admin.css' />
+        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous,csg,coustl' />
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js" />
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/openils_dojo.js" />
+        <script type="text/javascript" src='org_unit_settings.js' />
+        <script type="text/javascript" src="/xul/server/util/clipboard.js" />
+        <style type="text/css">
+            h2 {
+                display:inline;
+                padding:5px;
+            } 
+            
+            .form_table textarea {
+                width:500px;
+                height:15em;
+            }
+            
+            #searchform {
+                display:inline;
+            }
+            
+            .message {
+                float:left;
+                left:-50%;
+                text-align:center;
+                
+                padding:5px;
+                
+                position:relative;
+                background-color:#D9E8F9;
+                
+                /*Standards compliant*/
+                border-bottom-left-radius:5px;
+                border-bottom-right-radius:5px;
+            }
+            
+            .message_container {
+                float:left;
+                left:50%;
+                top:0%;
+                position: absolute;
+                opacity:0;
+            }
+            
+        </style>
+    </head>
+
+    <body class='tundra tall'>
+        <div dojoType='dijit.layout.LayoutContainer' orientation='vertical' class='tall'>
+            <div dojoType='dijit.layout.ContentPane' layoutAlign='top'>
+                <div id="toolbar1" dojoType="dijit.Toolbar">
+                    <h2>&staff.server.admin.org_unit_settings.title;</h2>
+                    
+                    <span dojoType="dijit.ToolbarSeparator" ></span>
+                    
+                    <span>&staff.server.admin.org_unit_settings.context_loc;</span>
+                    <select dojoType='openils.widget.OrgUnitFilteringSelect' jsId='osContextSelector'
+                            searchAttr='shortname' autocomplete='true' labelAttr='shortname' onchange='osChangeContext();' />
+                    
+                    <span dojoType="dijit.ToolbarSeparator" ></span>
+                    
+                    <form id='searchform' onSubmit='return doSearch()'>
+                            <input type='text' dojoType='dijit.form.TextBox' id='searchBox' onkeypress='osSearchChange();' />
+                            <input type='hidden' dojoType='dijit.form.TextBox' id='isFiltered' value='false' />
+                            <button type='submit' dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
+                            <button dojoType='dijit.form.Button' onClick='clearSearch();'>&staff.server.admin.org_unit_settings.clear_filter;</button>
+                    </form>
+                    
+                    <span dojoType="dijit.ToolbarSeparator" ></span>
+
+                    <button dojoType='dijit.form.Button' onClick='osToJson();'>&staff.server.admin.org_unit_settings.export;</button>
+                    <button dojoType='dijit.form.Button' onClick='osFromJson();'>&staff.server.admin.org_unit_settings.import;</button>
+                </div>
+                <span>&staff.server.admin.org_unit_settings.uninherited;</span>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+                <div class='hide_me' id='no-perms'><b>&staff.server.admin.org_unit_settings.no_perms;</b></div>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='tall'>
+                <script>
+                    var osGridLayout = [{
+                        defaultCell: {styles: 'text-align: center;'},
+                        cells : [[
+                            {   name: '&staff.server.admin.org_unit_settings.edit;', 
+                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>&staff.server.admin.org_unit_settings.edit;&lt;/a>',
+                                get: osGetEditLink, 
+                                formatter : osFormatEditLink
+                            },
+                            {   name: '&staff.server.admin.org_unit_settings.history;', 
+                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchHistory(\'SETTING\');&quot;>&staff.server.admin.org_unit_settings.history;&lt;/a>',
+                                get: osGetHistoryLink, 
+                                formatter : osFormatHistoryLink
+                            },
+                            {name: '&staff.server.admin.org_unit_settings.group;', get: osGetGridData, field:'grp'},
+                            {name: '&staff.server.admin.org_unit_settings.setting;', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
+                            {name: '&staff.server.admin.org_unit_settings.context;', get: osGetGridData, field:'context'},
+                            {name: '&staff.server.admin.org_unit_settings.value;', get: osGetGridData, field:'value'},
+                        ]]
+                    }];
+                </script>
+                <div dojoType='dojox.Grid' jsId='osGrid' ></div>
+            </div>
+        </div>
+
+        <!-- edit dialog -->
+        <div dojoType="dijit.Dialog" jsId='osEditDialog' title="&staff.server.admin.org_unit_settings.edit_setting;">
+            <table class='form_table'>
+                <thead>
+                    <tr><td colspan='2' align='center'><div id='os-edit-name'></div></td></tr>
+                    <tr><td colspan='2' align='center'><div id='os-edit-desc' style='max-width:600px;'></div></td></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>&staff.server.admin.org_unit_settings.context;</td>
+                        <td> 
+                            <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osEditContextSelector'
+                                searchAttr="shortname" autocomplete="true" labelAttr='shortname' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&staff.server.admin.org_unit_settings.value;</td>
+                        <td>
+                            <input dojoType='dijit.form.TextBox' jsId='osEditTextBox'/>
+                            <input dojoType='dijit.form.CurrencyTextBox' jsId='osEditCurrencyTextBox'/>
+                            <input dojoType='dijit.form.NumberTextBox' jsId='osEditNumberTextBox'/>
+                            <select dojoType='dijit.form.FilteringSelect' jsId='osEditBoolSelect'>
+                                <option value='true'>&common.true;</option>
+                                <option value='false'>&common.false;</option>
+                            </select>
+                            <div id='os-edit-auto-widget'></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting(true);'>&staff.server.admin.org_unit_settings.delete_setting;</button>
+                        </td>
+                        <td> 
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting();'>&staff.server.admin.org_unit_settings.update_setting;</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- /edit dialog -->
+        
+        <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true" ></div>
+        
+        <!--i18n, use the &translation; here, then grab innerHTML in JS later.-->
+        <div id='proci18n' class='hidden'>&staff.server.admin.org_unit_settings.processing;</div>
+        <div id='noresults' class='hidden'>&staff.server.admin.org_unit_settings.no_results;</div>
+        <span id='os-true' class='hidden'>&common.true;</span>
+        <span id='os-false' class='hidden'>&common.false;</span>
+        <span id='os-copy' class='hidden'>&staff.server.admin.org_unit_settings.copy;</span>
+        <span id='os-revert' class='hidden'>&staff.server.admin.org_unit_settings.history_revert;</span>
+        <span id='os-not-chosen' class='hidden'>&staff.server.admin.org_unit_settings.not_chosen;</span>
+        
+        <!--Export Dialog-->
+        <div id='jsonOutputDialog' dojoType='dijit.Dialog' jsId='osJSONOutDialog' title='&staff.server.admin.org_unit_settings.export;'>
+            <table class='form_table'>
+                <tr><td>&staff.server.admin.org_unit_settings.export_copy_label;</td></tr>
+                <tr><td><textarea id='jsonOutput' /></td></tr>
+                <tr><td><button dojoType='dijit.form.Button' onclick='osJsonOutputCopy();'>&staff.server.admin.org_unit_settings.copy;</button></td></tr>
+            </table>
+        </div>
+        
+        <!--Import Dialog-->
+        <div id='jsonInputDialog' dojoType='dijit.Dialog' jsId='osJSONInDialog' title='&staff.server.admin.org_unit_settings.import;'>
+            <table class='form_table'>
+                <tr><td>&staff.server.admin.org_unit_settings.import_paste_label;</td></tr>
+                <tr><td><textarea id='jsonInput' /></td></tr>
+                <tr><td><button dojoType='dijit.form.Button' onclick='osJsonInputPaste();'>&staff.server.admin.org_unit_settings.paste;</button><button type='submit'  dojoType='dijit.form.Button' onclick='osFromJsonSubmit();'>&staff.server.admin.org_unit_settings.submit;</button></td></tr>
+            </table>
+        </div>
+        
+        <!--History Dialog-->
+        <div id="historyDialog" dojoType="dijit.Dialog" jsId="osHistDialog" title="&staff.server.admin.org_unit_settings.history;">
+            <span id='osHistName' ></span>
+            
+            <!--Headers grabbed from this table are put in the next one by the js.-->
+            <table id="histTitle" class="hidden">
+                <tr>
+                    <td>&staff.server.admin.org_unit_settings.history_date;</td>
+                    <td>&staff.server.admin.org_unit_settings.history_unit;</td>
+                    <td>&staff.server.admin.org_unit_settings.history_orig;</td>
+                    <td>&staff.server.admin.org_unit_settings.history_new;</td>
+                </tr>
+            </table>
+            
+            <table class="form_table" id="historyData" />
+        </div>
+        
+        <!--Displays alerts at the top of the screen, much nicer than alert() or dojo equiv.-->
+        <div class="message_container" id="msgCont">
+            <div class="message" id='msgInner' ></div>
+        </div>
+    </body>
+</html>

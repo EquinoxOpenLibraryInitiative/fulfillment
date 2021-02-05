@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<acsconfig xmlns="http://openncip.org/acs-config/1.0/">
+
+	<error-detect enabled="true" />
+
+  <!-- Set Net::Server::PreFork runtime parameters -->
+	<!--  <server-params
+           min_servers='1'
+           min_spare_servers='0' /> -->
+  
+  
+	<listeners>
+		<service
+			port="0:8080/tcp"
+			transport="http"
+			protocol="NCIP/1.0" />
+
+		<service
+			port="8023/tcp"
+			transport="telnet"
+			protocol="SIP/1.00"
+			timeout="60" />
+
+		<service
+			port="127.0.0.1:6001/tcp"
+			transport="RAW" 
+			protocol="SIP/2.00"
+			timeout="60" />
+	</listeners>
+
+	<accounts>
+		<!--
+		Fine Item Detail returned by the Patron Information Request is
+		manufacturer-specific.  We support the following formats:
+		3m,  Swyer_A, Swyer_B, and EG_Legacy (default).
+		Specify which treatment you want in the av_format attribute.
+		For example: <login id="sc" password="pwd" institution="main" av_format="3m">
+		-->
+		<!--
+		The login attribute patron_status_always_permit_loans specifies whether
+		the charge privileges denied, renewal privilges denied, and
+		card reported lost flags in the patron status block should be
+		coerced to permissive values regardless of the actual state
+		of the patron record. Turning this on works around an issue
+		where a 2019-12 change by the Hoopla SIP2 client takes those flag
+		fields into account, but some libraries may not wish those
+		to block a patron's access to online resources that use
+		SIP2 to authenticate. This setting can also be set as
+		an implementation_config option; note that if it is set to
+		'true' or 'false' as a login attribute, the login attribute will
+		override whatever is set in the implementation_config.
+		-->
+		<login id="scclient" password="clientpwd" institution="gapines"/>
+	</accounts>
+
+	<!-- Institution tags will hold stuff used to interface to -->
+	<!-- the rest of the ILS: authentication parameters, etc.  I -->
+	<!-- don't know what yet, so it'll just be blank.  But there -->
+	<!-- needs to be one institution stanza for each institution -->
+	<!-- named in the accounts above. -->
+	<institutions>
+
+
+		<institution id="gapines" implementation="OpenILS::SIP">
+
+			<!-- This defines what actions we want to allow 
+				remote clients (self-check machines) to perform -->
+			<policy 
+				checkin="true" 
+				checkout="true" 
+				renewal="true" 
+				status_update="false" 
+				offline="false" 
+				timeout="600" 
+				retries="3"/>
+	
+			<!-- The default encoding defined in the SIP specification is -->
+			<!-- ASCII, which isn't great for French, Spanish, Armenian. -->
+			<!-- You can specify a different encoding here, based on the -->
+			<!-- encodings supported by your SIP client and your Encode -->
+			<!-- module; run the following command to get a list of supported -->
+			<!-- encodings: -->
+			<!--   perl -MEncode -le "print for Encode->encodings(':all')" -->
+
+			<!-- UTF-8 is the recommended encoding if your SIP client supports it -->
+			<encoding>ascii</encoding>
+
+			<!-- implementation specific config options go here -->
+			<implementation_config>
+				<bootstrap>SYSCONFDIR/opensrf_core.xml</bootstrap>
+				<currency>USD</currency>
+
+				<!-- These defines what this SIP code has the ability to support -->
+				<supports>
+					<item name='magnetic media' value='true'/>
+					<item name='security inhibit' value='false'/>
+					<item name='offline operation' value='false'/>
+					<item name='patron status request' value='true'/>
+					<item name='checkout' value='true'/>
+					<item name='checkin' value='true'/>
+					<item name='block patron' value='true'/>
+					<item name='acs status' value='true'/>
+					<item name='login' value='true'/>
+					<item name='patron information' value='true'/>
+					<item name='end patron session' value='true'/>
+					<item name='fee paid' value='true'/>
+					<item name='item information' value='true'/>
+					<item name='item status update' value='false'/>
+					<item name='patron enable' value='false'/>
+					<item name='hold' value='false'/>
+					<item name='renew' value='true'/>
+					<item name='renew all' value='true'/>
+				</supports>
+				<options>
+					<!-- msg64, the patron information request can be
+					  made to return item barcodes by setting
+					  the option 'msg64_summary_datatype' to 'barcode'
+					  as below. Any other value, or no value at all
+					  will cause OpenILS::SIP to return the title
+					  in response to a message 64 request, which was the
+					  default behaviour in previous versions of Evergreen.
+					-->
+					<option name='msg64_summary_datatype' value='barcode' />
+
+
+                    <!--
+                        When set, holds will be returned to the SIP client as copy
+                        barcodes instead of title strings.  This is useful, in 
+                        particular, for making subsequent calls for hold cancellation.  
+                    -->
+                    <!--
+                    <option name='msg64_hold_datatype' value='barcode' />
+                    -->
+
+                    <!--
+                        When set, hold items details will return only available holds to the SIP client.
+                    -->
+                    <!--
+                    <option name='msg64_hold_items_available' value='true' />
+                    -->
+
+					<!--
+						If enabled, the PC field in patron-info requests will return the non-translated profile name
+					<option name='patron_type_uses_code' value='true' />
+					-->
+
+                    <!--
+                        By default, most dates use the SIP date format.  Some,
+                        like circulation due dates, use the ISO8601 date format 
+                        instead.  If this setting is set to true, all dates will
+                        use the SIP date format.
+                    <option name='use_sip_date_format' value='true' />
+                    -->
+
+					<!--
+						If enabled, return the calculated value for the recall
+						flag instead of always returning not-OK
+					<option name='patron_calculate_recal_ok' value='true' />
+					-->
+
+					<!-- see description of patron_status_always_permit_loans in the login section -->
+					<!--
+					<option name='patron_status_always_permit_loans' value='false' />
+					-->
+
+					<!--
+						Allow patrons to connect to SIP services using their
+						username in addition to their barcode.  See the
+						org unit setting 'opac.barcode_regex' for configuring
+						what constitutes a barcode vs a username.
+					<option name='support_patron_username_login' value='false' />
+					-->
+
+				</options>
+
+                <checkin_override>
+                    <event>COPY_ALERT_MESSAGE</event>
+                    <event>COPY_BAD_STATUS</event>
+                    <event>COPY_STATUS_MISSING</event>
+                    <!--
+                    <event>COPY_STATUS_LOST</event>
+                    -->
+                </checkin_override>
+
+                <checkout_override>
+                    <event>COPY_ALERT_MESSAGE</event>
+                </checkout_override>
+
+                <!-- If uncommented, SIP2 checkins will capture local holds as transits, instead of marking as ready for pickup. -->
+                <!--
+                <checkin_hold_as_transit>1</checkin_hold_as_transit>
+                -->
+
+			</implementation_config>
+	
+		</institution>
+	
+	</institutions>
+</acsconfig>
+
+<!-- vim:noet:ts=4:sw=4: -->

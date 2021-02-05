@@ -1,0 +1,42 @@
+<h2>[% l('Bill History') %]</h2>
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : bill_tab == 'transactions'}">
+    <a href="./circ/patron/{{patron().id()}}/bill_history/transactions">
+        [% l('Transactions') %]
+    </a>
+  </li>
+  <li ng-class="{active : bill_tab == 'payments'}">
+    <a href="./circ/patron/{{patron().id()}}/bill_history/payments">
+        [% l('Payments') %]
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active">
+
+    <div class="row padded">
+      <div class="col-md-2">
+        <span ng-if="bill_tab == 'transactions'">
+            <label>[% l('Selected Billed:') %]</label>
+            {{totals.selected_billed() | currency}}
+            <br/>
+        </span>
+        <label>[% l('Selected Paid:') %]</label>
+        <span>{{totals.selected_paid() | currency}}</span>
+      </div>
+      <div class="col-md-4 flex-row padded">
+        <label>[% l('Start Date:') %]</label>
+        <div><eg-date-input ng-model="dates.xact_start"></eg-date-input></div>
+      </div>
+      <div class="col-md-4 flex-row padded">
+        <label>[% l('End Date:') %]</label>
+        <div><eg-date-input ng-model="dates.xact_finish"></eg-date-input></div>
+      </div>
+    </div><!-- top row -->
+    <hr/>
+    [% INCLUDE 'staff/circ/patron/t_bill_history_xacts.tt2' %]
+    [% INCLUDE 'staff/circ/patron/t_bill_history_payments.tt2' %]
+  </div>
+</div>
+

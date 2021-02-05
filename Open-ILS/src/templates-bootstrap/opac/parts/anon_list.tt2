@@ -1,0 +1,118 @@
+        [% IF ctx.mylist.size %]
+        <div>
+        <hr>
+        <h3>[% l('Basket') %]</h3>
+
+        <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="post">
+        <input type="hidden" name="orig_referrer" value="[% CGI.referer | html %]" />
+        <input type="hidden" name="redirect_to" value="[% mkurl('', {}, ['list_none_selected', 'cart_none_selected']) %]" />
+        <div class="bbag-action" style="clear:both;">
+        <div class="input-group my-3">
+
+            <button class="btn btn-success m-1" name="action" value="place_hold" id="place_hold" type="submit"><i class="fas fa-book" aria-hidden="true"></i> Place Hold</button>
+            <button class="btn btn-danger m-1" name="action" value="delete" id="delete" type="submit"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
+            <button class="btn btn-action m-1" name="action" value="print" id="print" type="submit"><i class="fas fa-print" aria-hidden="true"></i> Print Details</button>
+            <button class="btn btn-action m-1" name="action" value="email" id="email" type="submit"><i class="fas fa-envelope-open-text" aria-hidden="true"></i> Email Details</button>
+
+            <button class="btn btn-action m-1" name="action" value="new_list" id="new_list" type="submit"><i class="fas fa-plus" aria-hidden="true"></i> Add to New List</button>
+            <div class="dropdown show m-1">
+                [% IF ctx.user AND ctx.bookbags.size %]
+                 <a class="btn btn-action dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <i class="fas fa-truck-moving" aria-hidden="true"></i> [% l('Move selected items to list:') %]
+                 </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    [% FOR bbag IN ctx.bookbags %]
+                         <button name="action" class="dropdown-item" href="#" type="submit" value="[% bbag.id %]"> [% bbag.name | html %]</button>
+                    [% END %]
+                [% END %]
+                </div>
+            </div>
+        </div>
+           <div class="form-check m-2">
+                <input class="form-check-input" type="checkbox" value="" id="clear_cart">
+                <label class="form-check-label" for="clear_cart">
+                   [% l('Clear entire basket when the above action is complete.') %]
+                </label>
+            </div>
+</div>
+
+
+
+
+            [% IF CGI.param('cart_none_selected') %]
+                <span class="error">[% l('No items were selected') %]</span>
+            [% END %]
+        </div>
+        <div class="bbag-content">
+
+
+            <div class="d-block d-md-none">
+                <input id="all_check" checked="checked"
+                type="checkbox" onclick="var inputs=document.getElementsByTagName('input');
+                                for (i = 0; i < inputs.length; i++) {
+                                    if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"
+                aria-label="[% l('Check/Uncheck All') %]" />
+                <label for="all_check">[% l('Check/Uncheck All') %]</label>
+            </div>
+            <table class="container-fluid table table-hover table-bordered mt-4 miniTable bucketTable">
+                <thead id="acct_list_header_anon">
+                    <tr>
+                        <th class='list_checkbox'>
+                            <input type="checkbox" checked="checked"
+                            aria-label="[% l('Select all records') %]" onclick="
+                                var inputs=document.getElementsByTagName('input');
+                                for (i = 0; i < inputs.length; i++) {
+                                    if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                        </th>
+                        <th><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></th>
+                        <th><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></th>
+                        <th>[% l('Local Call Number') %]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    [% FOR item IN ctx.mylist;
+                        attrs = {marc_xml => ctx.mylist_marc_xml.$item};
+                        PROCESS get_marc_attrs args=attrs %]
+                    <tr>
+                        <td class="list_checkbox">
+                            <input type="checkbox" checked="checked" name="record" value="[% item %]" aria-label="[% l('Select record') %]" />
+                        </td>
+                        <td class="list_entry" data-label="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td class="list_entry" data-label="[% l('Author(s)') %]"><a href="[%-
+                            authorquery = attrs.author | replace('[,\.:;]', '');
+                            mkurl(
+                                ctx.opac_root _ '/results',
+                                {qtype => 'author', query => authorquery},
+                                ['page', 'id', 'edit_notes']
+                            )
+                        -%]">[% attrs.author | html %]</a></td>
+                        <td class="list_entry" data-label="[% l('Local Call Number') %]">
+                        [%
+                            copy = attrs.holdings.0;
+                            IF copy;
+                                copy_org = ctx.get_aou_by_shortname(copy.owner);
+                                FOR ctx_org IN [ctx.pref_ou, ctx.search_ou, ctx.home_ou, ctx.physical_loc];
+                                    NEXT UNLESS ctx_org;
+                                    ctx_org = ctx.get_aou(ctx_org);
+                                    IF ctx.org_within_scope(ctx_org, copy_org, ctx_org.ou_type.depth);
+                                        l('[_1] ([_2])', copy.label, copy_org.name) | html;
+                                        LAST;
+                                    END;
+                                END;
+                            END;
+                        %]
+                        </td>
+                    </tr>
+                    [% END %]
+                </tbody>
+            </table>
+
+
+
+
+            <br /><br />
+        </div>
+        </form>
+        </div>
+        [% END %]

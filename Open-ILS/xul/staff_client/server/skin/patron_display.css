@@ -1,0 +1,116 @@
+@import url("patron_display_custom.css");
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
+@namespace html url("http://www.w3.org/TR/REC-html40"); 
+
+.change_to_credit { text-decoration: line-through; }
+
+hbox#PatronNotNavBar { border-top: solid thin black; }
+deck#patron_deck { border-left: solid thin black; }
+.patronNameLarge { font-weight: bold; }
+
+row#row_billing_first { padding-top: 10px; }
+row#row_billing_zip { padding-bottom: 10px; }
+
+/* To keep the size consistent. Other CSS rules for this need only change border-color.
+   This helps keep things like patron search from being "jumpy" */
+.patronNameLarge { border: solid thick transparent; padding: 10px; }
+
+/* This also helps keep things from being "jumpy" by ensuring that the expired/alert/whatever
+   notice area always takes up space, even when empty. Otherwise things popping into and out of
+   existence when you select/update patrons can cause it to come and go, bouncing other parts
+   of the screen up and down. */
+#pdm2hb1a { min-height: 1.5em; }
+
+.NO_PENALTIES .patronNameLarge { border-color: lime; }
+.ONE_PENALTY .patronNameLarge { border-color: #66FFFF; }
+.MULTIPLE_PENALTIES .patronNameLarge { border-color: #FF6633; }
+
+.PATRON_HAS_STAFF_ALERT .patronNameLarge { border-color: blue; }
+
+.PATRON_HAS_BILLS .patronNameLarge { border-color: #FFC266; }
+.PATRON_HAS_BILLS label.bill { color: #AA4400; }
+/* .PATRON_HAS_BILLS label.bill.label { text-decoration: underline; } */
+.PATRON_HAS_BILLS label.bill.value { }
+.PATRON_HAS_BILLS label.bills_indicator { display: inline; color: #AA4400; }
+
+.PATRON_HAS_OVERDUES .patronNameLarge { border-color: #FFC266; }
+.PATRON_HAS_OVERDUES label.items_overdue { color: #AA4400; }
+/* .PATRON_HAS_OVERDUES label.items_overdue.label { text-decoration: underline; } */
+.PATRON_HAS_OVERDUES label.items_overdue.value { }
+.PATRON_HAS_OVERDUES label.overdues_indicator { display: inline; color: #AA4400; }
+.PATRON_HAS_OVERDUES label#under_items { color: red; }
+
+.PATRON_HAS_LOST .patronNameLarge { border-color: #FFC266; }
+.PATRON_HAS_LOST label.items_lost { color: #AA4400; }
+.PATRON_HAS_LOST label.items_lost.value { }
+.PATRON_HAS_LOST label.lost_indicator { display: inline; color: #AA4400; }
+
+.PATRON_HAS_LOST_AND_COUNTED label#under_items { color: red; }
+
+.PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { border-color: #C99DFF; }
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: purple; }
+/* .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; } */
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.value { }
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.max_out_indicator { display: inline; color: purple; }
+
+.PATRON_EXCEEDS_OVERDUE_COUNT .patronNameLarge { border-color: #C99DFF; }
+.PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue { color: purple; }
+/* .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.label { text-decoration: underline; } */
+.PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.value { }
+.PATRON_EXCEEDS_OVERDUE_COUNT label.max_overdues_indicator { display: inline; color: purple; }
+
+.PATRON_EXCEEDS_LOST_COUNT .patronNameLarge { border-color: #C99DFF; }
+.PATRON_EXCEEDS_LOST_COUNT label.items_lost { color: purple; }
+.PATRON_EXCEEDS_LOST_COUNT label.items_lost.value { }
+.PATRON_EXCEEDS_LOST_COUNT label.max_lost_indicator { display: inline; color: purple; }
+
+.PATRON_EXCEEDS_FINES .patronNameLarge { border-color: #C99DFF; }
+.PATRON_EXCEEDS_FINES label.bill { color: purple; }
+/* .PATRON_EXCEEDS_FINES label.bill.label { text-decoration: underline; } */
+.PATRON_EXCEEDS_FINES label.bill.value { }
+.PATRON_EXCEEDS_FINES label.max_bills_indicator { display: inline; color: purple; }
+.PATRON_EXCEEDS_FINES label#under_bills { color: red; }
+
+.PATRON_HAS_INVALID_DOB .dob { color: purple; }
+.PATRON_HAS_INVALID_DOB label.invalid_dob_indicator { display: inline; color: purple }
+
+.PATRON_HAS_INVALID_ADDRESS label.invalid_address_indicator { display: inline; color: #CC3300 }
+
+.INVALID_PATRON_EMAIL_ADDRESS label.invalid_email_indicator { display: inline; color: #003399 }
+.INVALID_PATRON_DAY_PHONE label.invalid_phone_indicator { display: inline; color: #003399 }
+.INVALID_PATRON_EVENING_PHONE label.invalid_phone_indicator { display: inline; color: #003399 }
+.INVALID_PATRON_OTHER_PHONE label.invalid_phone_indicator { display: inline; color: #003399 }
+
+.PATRON_HAS_ALERT .patronNameLarge { border-color: yellow; }
+.PATRON_HAS_ALERT groupbox.alert { background-color: yellow; color: black; }
+.PATRON_HAS_ALERT [id^=patron_alert] { background: yellow; color: black; }
+.PATRON_HAS_ALERT label.alert_indicator { display: inline; color: #AA4400 }
+
+.PATRON_HAS_NOTES label.note_indicator { display: inline; color: #AA4400 }
+
+.PATRON_INACTIVE .patronNameLarge { border-color: #333333; }
+.PATRON_INACTIVE label.inactive_indicator { display: inline; color: black; }
+
+.PATRON_EXPIRED .patronNameLarge { border-color: #666666; }
+.PATRON_EXPIRED label.expired_indicator { display: inline; color: black; }
+.PATRON_EXPIRED label.expire_date { background-color: #666666; color: white }
+
+.PATRON_BARRED .patronNameLarge { border-color: #CC3300; }
+.PATRON_BARRED label.barred_indicator { display: inline; color: #CC3300; }
+
+.PATRON_NET_ACCESS_1 .net_access { color: #AA4400; } /* Filtered */
+.PATRON_NET_ACCESS_2 .net_access { color: green; } /* Unfiltered */
+.PATRON_NET_ACCESS_3 .net_access { color: #CC3300; } /* No Access */
+
+.bad_barcode { color: red; }
+.line_item { font-family: monospace; }
+.checking_barcode { color: orange; text-decoration: blink; }
+
+.PATRON_JUVENILE .dob { color: purple; }
+.PATRON_JUVENILE label.juvenile_indicator { display: inline; color: purple; }
+
+
+/* New user perm editor stuff */
+row.odd { background-color: lightcyan; }
+rows#work_ous row, rows#permissions row { border-top: 1px solid #444444; }

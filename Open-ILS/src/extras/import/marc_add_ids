@@ -1,0 +1,109 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use MARC::Record;
+use MARC::Charset;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use Error qw/:try/;
+
+MARC::Charset->assume_unicode(1);
+MARC::Charset->ignore_errors(1);
+
+binmode(STDIN, ':utf8');
+binmode(STDOUT, ':utf8');
+
+$| = 1;
+
+my ($delim, @fields) = (' \| ');
+my $quiet = 0;
+my $set_001_003 = 0;
+my $repository_code = 'Evergreen';
+my $set_as_deleted = 0;
+GetOptions(
+	'quiet'	=> \$quiet,
+	'delimiter=s'	=> \$delim,
+	'field=s'	=> \@fields,
+    'set_001_003'   => \$set_001_003,
+    'repository_code=s'   => \$repository_code,
+    'set_as_deleted'   => \$set_as_deleted,
+);
+
+my %partmap;
+my $partcount = 0;
+for (@fields) {
+	$partmap{$_} = $partcount;
+	$partcount++;
+}
+
+print '<collection xmlns="http://www.loc.gov/MARC21/slim">';
+
+my $count = 0;
+while (<>) {
+	chomp;
+	my @values = split $delim;
+
+	my %partlist;
+	for my $part (keys %partmap) {
+		($partlist{tcn_value} = $values[ $partmap{tcn_value}]) =~ s/^\s*//o if ($part eq 'tcn_value');
+		($partlist{tcn_source} = $values[ $partmap{tcn_source}]) =~ s/^\s*//o if ($part eq 'tcn_source');
+		($partlist{id} = $values[ $partmap{id}]) =~ s/^\s*//o if ($part eq 'id');
+		($partlist{deleted} = $values[ $partmap{deleted}]) =~ s/^\s*//o if ($part eq 'deleted');
+		$partlist{marc} = $values[ $partmap{marc}] if ($part eq 'marc');
+
+		$partlist{tcn_value} =~ s/\s*$//o if ($part eq 'tcn_value');
+		$partlist{tcn_source} =~ s/\s*$//o if ($part eq 'tcn_source');
+		$partlist{id} =~ s/\s*$//o if ($part eq 'id');
+	}
+
+	next unless ($partlist{marc});
+    next unless ($partlist{id} =~ /^\d+$/);
+    $partlist{marc} =~ s/<(\/?)marc:/<$1/go;
+
+	try {
+		my $r = MARC::Record->new_from_xml($partlist{marc});
+
+
+        # XXX the following wil likely be subsumed by an in-db process, as the 901 was
+        if ($set_001_003) {
+            my $old_001 = $r->field('001');
+            if ($old_001) {
+                $old_001->update($partlist{id});
+            } else {
+                my $new_001 = new MARC::Field('001',$partlist{id});
+                $r->insert_fields_ordered($new_001);
+            } 
+            my $old_003 = $r->field('003');
+            if ($old_003) {
+                $old_003->update($repository_code);
+            } else {
+                my $new_003 = new MARC::Field('003',$repository_code);
+                $r->insert_fields_ordered($new_003);
+            } 
+        }
+
+        if ($set_as_deleted && $partlist{deleted} eq 't') {
+            my $leader = $r->leader();
+            if (length($leader)>4) {
+                substr($leader,5,1,"d");
+                $r->leader($leader);
+            }
+        }
+
+		my $x = $r->as_xml_record;
+        $x =~ s/\n//gso;
+        $x =~ s/^<[^>]>//o;
+        print $x."\n";
+        $count++;
+        print STDERR "\r$count" unless ($quiet || $count % 100);
+
+	} otherwise {
+		warn "failed on record $., $partlist{marc}, for $@\n" if (!$quiet);
+		import MARC::File::XML; # reset SAX parser
+	};
+}
+
+print '</collection>';
+

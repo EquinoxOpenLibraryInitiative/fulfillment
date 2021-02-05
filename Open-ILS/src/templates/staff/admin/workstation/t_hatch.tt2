@@ -1,0 +1,27 @@
+<div class="container admin-splash-container">
+
+  <h2>[% l('Print Service ("Hatch")') %]</h2>
+
+  <div class="alert alert-success" ng-if="hatch_available">
+    [% l("Hatch is Available") %]
+    <span class="glyphicon glyphicon-thumbs-up"></span>
+  </div>
+
+  <div class="alert alert-danger" ng-if="!hatch_available">
+    [% l("Hatch is Not Installed In This Browser") %]
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" 
+            ng-model="hatch_printing">
+            [% l('Use Hatch For Printing') %]
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+

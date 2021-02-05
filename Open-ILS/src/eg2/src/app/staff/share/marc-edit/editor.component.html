@@ -1,0 +1,110 @@
+
+<eg-confirm-dialog #confirmDelete
+  i18n-dialogTitle dialogTitle="Confirm Delete"
+  i18n-dialogBody dialogBody="Delete Record ID {{record ? record.id : ''}}?">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #confirmUndelete
+  i18n-dialogTitle dialogTitle="Confirm Undelete"
+  i18n-dialogBody dialogBody="Undelete Record ID {{record ? record.id : ''}}?">
+</eg-confirm-dialog>
+
+<eg-alert-dialog #cannotDelete
+  i18n-dialogBody 
+  dialogBody="Records with holdings attached cannot be deleted.">
+</eg-alert-dialog>
+
+<eg-string #successMsg i18n-text text="Record successfully updated"></eg-string>
+<eg-string #failMsg i18n-text text="Record failed to update"></eg-string>
+
+<div class="row d-flex p-2 m-2">
+
+  <ng-container *ngIf="recordType === 'biblio'">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox"
+        [(ngModel)]="showFastAdd" id="fast-add-item"/>
+      <label class="form-check-label" for="fast-add-item">
+        Add Item
+      </label>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showFastAdd">
+    <div class="form-inline">
+      <input type="text" class="form-control ml-2" 
+        [(ngModel)]="fastItemLabel" placeholder="Call Number" i18n-placeholder/>
+      <input type="text" class="form-control ml-2" 
+        [(ngModel)]="fastItemBarcode" placeholder="Barcode" i18n-placeholder/>
+    </div>
+  </ng-container>
+
+  <div class="flex-1"></div>
+
+  <h3 class="mr-2">
+    <span class="badge badge-light p-2" i18n>
+      Record Type {{record ? record.recordType() : ''}}
+    </span>
+  </h3>
+    
+  <ng-container *ngIf="recordType === 'biblio'">
+    <div class="mr-2">
+      <eg-combobox #sourceSelector
+        [entries]="sources"
+        placeholder="Select a Source..."
+        i18n-placeholder>
+      </eg-combobox>
+    </div>
+  </ng-container>
+
+  <div class="pr-3 mr-3 border-right">
+    <button class="btn btn-success" (click)="saveRecord()"
+      [disabled]="record && record.deleted" i18n>Save Changes</button>
+  </div>
+
+  <ng-container *ngIf="record && record.id">
+    <button *ngIf="!record.deleted" class="btn btn-warning" 
+      [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
+    <button *ngIf="record.deleted" class="btn btn-info" 
+      [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
+  </ng-container>
+</div>
+
+<ng-container *ngIf="dataSaving">
+  <div class="row mt-5">
+    <div class="offset-lg-3 col-lg-6">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
+  </div>
+</ng-container>
+
+<div *ngIf="!dataSaving" class="row">
+  <div class="col-lg-12">
+    <ul ngbNav #editorNav="ngbNav" class="nav-tabs"
+      [activeId]="editorTab" (navChange)="tabChange($event)">
+      <li [ngbNavItem]="'rich'">
+        <a ngbNavLink i18n>Enhanced MARC Editor</a>
+        <ng-template ngbNavContent>
+          <ng-container *ngIf="context && context.record">
+            <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
+          </ng-container>
+        </ng-template>
+      </li>
+      <li ngbNavItem="flat">
+        <a ngbNavLink i18n>Flat Text Editor</a>
+        <ng-template ngbNavContent>
+          <ng-container *ngIf="context && context.record">
+            <eg-marc-flat-editor [context]="context"></eg-marc-flat-editor>
+          </ng-container>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="editorNav"></div>
+  </div>
+</div>
+
+<div class="row d-flex p-2 m-2 flex-row-reverse">
+  <button class="btn btn-success" (click)="saveRecord()"
+    [disabled]="record && record.deleted" i18n>Save Changes</button>
+</div>
+
+

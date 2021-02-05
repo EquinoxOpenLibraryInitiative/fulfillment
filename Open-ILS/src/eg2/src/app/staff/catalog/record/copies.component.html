@@ -1,0 +1,82 @@
+<ng-template #cnTemplate let-copy="row">
+  {{copy.call_number_prefix_label}}
+  {{copy.call_number_label}}
+  {{copy.call_number_suffix_label}}
+</ng-template>
+
+<ng-template #barcodeTemplate let-copy="row">
+  <div>{{copy.barcode}}</div>
+  <div>
+  <a class="pl-1" target="_blank" 
+    href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
+  | 
+  <a class="pl-1" target="_blank"
+    href="/eg/staff/cat/item/{{copy.id}}/edit" i18n>Edit</a>
+  </div>
+</ng-template>
+
+<ng-template #holdableTemplate let-copy="row" let-context="userContext">
+  <span *ngIf="context.holdable(copy)">
+    <div class="border-bottom">
+      <a routerLink="/staff/catalog/hold/C"
+        [queryParams]="{target: copy.id}"
+        queryParamsHandling="merge" i18n>
+        Item Hold
+      </a>
+    </div>
+    <div>
+      <a routerLink="/staff/catalog/hold/V"
+        [queryParams]="{target: copy.call_number}"
+        queryParamsHandling="merge" i18n>
+        Call Number Hold
+      </a>
+    </div>
+  </span>
+  <span *ngIf="!context.holdable(copy)" i18n>No</span>
+</ng-template>
+
+<ng-template #courseTemplate let-copy="row">
+  <div *ngFor="let course of copy._courses">
+    <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
+      {{course.course_number()}}
+    </a>
+  </div>
+</ng-template>
+
+<div class='eg-copies w-100 mt-3'>
+  <eg-grid #copyGrid [dataSource]="gridDataSource" 
+    [disableSelect]="true" [cellTextGenerator]="cellTextGenerator"
+    [sortable]="false" persistKey="catalog.record.copies">
+    <eg-grid-column i18n-label label="Item ID" path="id" 
+      [hidden]="true" [index]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Location" path="circ_lib" datatype="org_unit">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Call Number / Item Notes" name="callnumber" 
+      [cellTemplate]="cnTemplate">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Barcode" name="barcode"
+      [cellTemplate]="barcodeTemplate">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Shelving Location" path="copy_location">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circulation Modifier" path="circ_modifier">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Age Hold Protection" path="age_protect">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Active/Create Date" 
+      path="active_date" datatype="timestamp">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Holdable?" name="holdable" 
+      [cellTemplate]="holdableTemplate" [cellContext]="copyContext">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Course" name="course"
+      [cellTemplate]="courseTemplate" *ngIf="usingCourseModule">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Status" path="copy_status">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Due Date" path="due_date" datatype="timestamp">
+    </eg-grid-column>
+  </eg-grid>
+</div>
+

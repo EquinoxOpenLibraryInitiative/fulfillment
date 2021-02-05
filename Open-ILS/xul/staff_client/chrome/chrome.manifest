@@ -1,0 +1,6 @@
+content open_ils_staff_client content/
+locale open_ils_staff_client en-US locale/en-US/
+skin open_ils_staff_client open_ils_staff_client skin/
+locale branding en-US branding/locale/en-US/
+
+overlay chrome://browser/content/browser.xul chrome://open_ils_staff_client/content/firefox/overlay.xul

@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Invoice Payment Methods') %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+    <div>[% l('Invoice Payment Methods') %]</div>
+    <div>
+        <button dojoType="dijit.form.Button" onClick="acqipmGrid.showCreateDialog();">[% l('New Invoice Payment Method') %]</button>
+        <button dojoType="dijit.form.Button" onClick="acqipmGrid.deleteSelected();">[% l('Delete Selected') %]</button>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="acqipmGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['code', 'name']"
+            defaultCellWidth="'auto'"
+            query="{id: '*'}"
+            fmClass="acqipm"
+            editOnEnter="true">
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("dijit.form.FilteringSelect");
+    openils.Util.addOnLoad(
+        function() { acqipmGrid.loadAll({"order_by": {"acqipm": "name"}}); }
+    );
+</script>
+[% END %]

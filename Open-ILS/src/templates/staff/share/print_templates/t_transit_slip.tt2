@@ -1,0 +1,42 @@
+<!--
+Template for printing a transit slip. Fields include:
+
+* dest_location.name - name of destination library
+* dest_location.shortname
+* dest_address.street1
+* dest_address.street2
+* dest_address.city
+* dest_address.state
+* dest_address.post_code
+* dest_courier_code - from lib.courier_code library setting
+* copy.barcode
+* copy.status.name - Copy status
+* title
+* author
+-->
+<div>
+  <div>[% l('This item needs to be routed to [_1]', '<b>{{dest_location.shortname}}</b>') %]</div>
+  <div>{{dest_location.name}}</div>
+  <div ng-if="dest_address">
+    <div>{{dest_address.street1}}</div>
+    <div>{{dest_address.street2}}</div>
+    <div>{{dest_address.city}},
+        {{dest_address.state}}
+        {{dest_address.post_code}}</div>
+  </div>
+  <div ng-if="!dest_address">
+    [% l('We do not have a holds address for this library.') %]
+  </div>
+  <br/>
+
+ [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
+ [% l('Title: [_1]', '{{title}}') %]</div>
+ [% l('Author: [_1]', '{{author}}') %]</div>
+
+  <br/>
+
+  <div>[% l('Slip Date: [_1]', '{{today | date:$root.egDateAndTimeFormat}}') %]</div>
+  <div>[% l('Printed by [_1] at [_2]', 
+    '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
+
+</div>

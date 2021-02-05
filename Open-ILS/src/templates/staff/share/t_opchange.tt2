@@ -1,0 +1,56 @@
+<!--
+  Username/password prompt for operator change
+-->
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title alert alert-info">{{title}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row pad-all-min" ng-if="message">
+      <div class="col-md-12">
+        <p>{{message}}</p>
+      </div>
+    </div>
+    <div class="row pad-all-min">
+      <div class="col-md-4">
+        [% l('Username:') %]
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-7">
+        <input ng-keyup="$event.keyCode == 13 ? ok() : null" type='text'
+          ng-model="args.username" class="form-control" focus-me="focus"/>
+      </div>
+    </div>
+    <div class="row pad-all-min">
+      <div class="col-md-4">
+        [% l('Password:') %]
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-7">
+        <input ng-keyup="$event.keyCode == 13 ? ok() : null" type='password'
+          ng-model="args.password" class="form-control"/>
+      </div>
+    </div>
+    <div class="row pad-all-min" ng-if="displayTypeField == true">
+      <div class="col-md-4">
+        [% l('Login Type:') %]
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-7">
+        <select class="form-control" required ng-model="args.type">
+          <option value="temp">[% l('Temporary') %]</option>
+          <option value="staff" selected>[% l('Staff') %]</option>
+          <option value="persist" selected>[% l('Persistent') %]</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    [% dialog_footer %]
+    <input type="submit" class="btn btn-primary" 
+      ng-click="ok()" value="[% l('OK/Continue') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

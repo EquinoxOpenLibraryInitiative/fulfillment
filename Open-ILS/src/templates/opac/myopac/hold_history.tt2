@@ -1,0 +1,120 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "holds";
+    limit = ctx.hold_history_limit;
+    offset = ctx.hold_history_offset;
+    count = ctx.hold_history_ids.size;
+%]
+
+<h3 class="sr-only">[% l('Holds History') %]</h3>
+<div id='myopac_holds_div'>
+
+    <div id="acct_holds_tabs">
+        <div class="align">
+            <a href='[% mkurl('holds',{},['limit','offset']) %]'>[% l("Items on Hold") %]</a>
+        </div>
+        [% IF ctx.curbside_pickup_libs.size %]
+        <div class="align">
+            <a href='[% mkurl('holds_curbside',{},['limit','offset']) %]'>[% l("Curbside Pickup") %]</a>
+        </div>
+        [% END %]
+        [% IF ebook_api.enabled == 'true' %]
+        <div class="align">
+            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items on Hold") %]</a>
+        </div>
+        <div class="align">
+            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items Ready for Checkout") %]</a>
+        </div>
+        [% END %]
+        <div class="align selected">
+            <a href="#">[% l("Holds History") %]</a>
+        </div>
+    </div>
+
+    <div class="header_middle">
+        <span style="float:left;">[% l("Previously Held Items") %]</span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='[% mkurl('hold_history', {limit => limit,offset => (offset - limit)}) %]'
+                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [% IF offset > 0 || count > limit;
+                curpage = 0;
+                WHILE curpage * limit < count;
+                    IF curpage * limit == offset;
+            %]
+            [% curpage + 1 %]
+                    [%- ELSE %]
+            <a href='[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+                    [%- END;
+                    curpage = curpage + 1;
+                END;
+            END %]
+            <a href='[% mkurl('hold_history', {limit => limit, offset => (offset + limit)}) %]'
+               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+        <span style="float:right;">
+            <a class="hide_me" href="#">[% l('Export List') %]</a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+
+    <div id='holds_main'>
+        [% IF ctx.holds.size && ctx.holds.size < 1 %]
+        <div class="warning_box">
+            <big><strong>[% l('No holds found.') %]</strong></big>
+        </div>
+        [% ELSE %]
+        <table id='acct_holds_hist_header' class='table_no_border_space table_no_cell_pad' title="[% l('History of items on hold') %]">
+            <thead>
+                <tr>
+                    <td><span>[% l('Title') %]</span></td>
+                    <td><span>[% l('Author') %]</span></td>
+                    <td> <span>[% l('Format') %]</span></td>
+                    <td><span>[% l('Pickup Location') %]</span> </td>
+                    <td><span>[% l('Status') %]</span></td>
+                </tr>
+            </thead>
+            <tbody id='holds_temp_parent'>
+                [% FOR hold IN ctx.holds;
+                    attrs = {marc_xml => hold.marc_xml};
+                    PROCESS get_marc_attrs args=attrs;
+                    ahr = hold.hold.hold %]
+
+                <tr name="acct_holds_temp" class="acct_holds_temp">
+
+                    <td>
+                        <div>
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% attrs.title | html %]</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <a href="[% mkurl(ctx.opac_root _ '/results',
+                                {qtype => author, query => attrs.author.replace('[,\.:;]', '')}
+                            ) %]">[% attrs.author | html %]</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class='format_icon'>
+                            [% IF attrs.format_icon %]
+                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %][% ctx.cache_key %]" />
+                            [% END %]
+                        </div>
+                    </td>
+                    <td>
+                        [% ctx.get_aou(ahr.pickup_lib).name | html %]
+                    </td>
+                    <td>
+                        <div name="acct_holds_status">
+                            [% PROCESS get_hold_status hold=hold; %]
+                        </div>
+                    </td>
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+        [% END %]
+    </div>
+</div>
+[% END %]

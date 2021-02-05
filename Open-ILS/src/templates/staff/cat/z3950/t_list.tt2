@@ -1,0 +1,134 @@
+<div class="row">
+  <a class="pull-right" href ng-click="toggle_search_form()"
+    title="[% l('Hide Search Form') %]"
+    ng-show="show_search_form()">
+    <span class="glyphicon glyphicon-resize-small"></span>
+  </a>
+  <a class="pull-right" href ng-click="toggle_search_form()"
+    title="[% l('Show Search Form') %]"
+    ng-hide="show_search_form()">
+    <span class="glyphicon glyphicon-resize-full"></span>
+  </a>
+</div>
+
+<div class="row">
+    <div class="col-xs-6">
+        <strong>[% l('Query') %]</strong>
+        <form ng-keyup="$event.keyCode == 13 && search()">
+        <eg-z3950-search-field-list ng-show="show_search_form()"></eg-z3950-search-field-list>
+        </form>
+    </div>
+    <div class="col-xs-6">
+        <strong>[% l('Service and Credentials') %]</strong>
+        <eg-z3950-target-list ng-show="show_search_form()"></eg-z3950-target-list>
+        <div class="button-group">
+            <button class="btn btn-default" ng-click="saveDefaultZ3950Targets()">
+                [% l('Save as Default') %]
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="z3950-search-form-row" ng-show="show_search_form()">
+    <form ng-submit="search()" id="z3950-search-form"
+        role="form" class="form-inline">
+        <div class="button-group">
+                <input type="submit" class="btn btn-primary" value="[% l('Search') %]"/>
+
+                <input type="reset" class="btn btn-primary" ng-click="clearForm()"
+                value="[% l('Clear Form') %]"/>
+                <button class="btn btn-default" ng-click="showRawSearchForm()"
+                        ng-disabled="raw_search_impossible()">
+                    [% l('Raw Search') %]
+                </button>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-default" ng-show="field_strip_groups.length">
+  <div class="panel-heading">[% l('Remove Fields on Import') %]</div>
+  <div class="panel-body">
+    <ul class="row list-unstyled">
+        <li class="col-sm-3" ng-repeat="grp in field_strip_groups">
+            <label>
+            <input id='strip-grp-{{grp.id()}}' ng-model="grp.selected" type="checkbox"/>{{grp.label()}}</label>
+        </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row" ng-show="searchInProgress">
+  <div class="col-md-6">
+    <div class="progress progress-striped active">
+        <div class="progress-bar"  role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">[% l('Searching...') %]</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        [% l('Total hits: [_1]', '{{total_hits}}') %]
+    </div>
+    <div class="col-md-6 text-right" ng-if="local_overlay_target">
+        [% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]
+    </div>
+    <div class="col-md-6 text-right" ng-if="!local_overlay_target">
+        [% l('No record marked for overlay.') %]
+    </div>
+</div>
+
+
+<eg-grid
+  id-field="index"
+  idl-class="mvr"
+  features="-display,-sort,-multisort,-multiselect"
+  items-provider="z3950SearchGridProvider"
+  grid-controls="gridControls"
+  persist-key="cat.z3950_results"
+  dateformat="{{$root.egDateAndTimeFormat}}">
+
+  <eg-grid-menu-item handler="showInCatalog" disabled="cant_showInCatalog"
+    label="[% l('Show in Catalog') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="import" disabled="need_one_selected"
+    label="[% l('Import') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="spawn_editor" disabled="need_one_selected"
+    label="[% l('Edit then Import') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="view_marc" disabled="need_one_selected"
+    label="[% l('View MARC') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="mark_as_overlay_target" disabled="cant_showInCatalog"
+    label="[% l('Mark Local Result As Overlay Target') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="overlay_record" disabled="cant_overlay"
+    label="[% l('Overlay') %]"></eg-grid-menu-item>
+
+  <eg-grid-action handler="showInCatalog" disabled="cant_showInCatalog"
+    label="[% l('Show in Catalog') %]"></eg-grid-action>
+  <eg-grid-action handler="import" disabled="need_one_selected"
+    label="[% l('Import') %]"></eg-grid-action>
+  <eg-grid-action handler="spawn_editor" disabled="need_one_selected"
+    label="[% l('Edit then Import') %]"></eg-grid-action>
+  <eg-grid-action handler="view_marc" disabled="need_one_selected"
+    label="[% l('View MARC') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_as_overlay_target" disabled="cant_showInCatalog"
+    label="[% l('Mark Local Result As Overlay Target') %]"></eg-grid-action>
+  <eg-grid-action handler="overlay_record" disabled="cant_overlay"
+    label="[% l('Overlay') %]"></eg-grid-action>
+
+    <!-- 
+      FIXME: it would be nice to make this column link
+      to record display page when the service is
+      'native-evergreen-catalog', but can't do ng-if
+      inside of column value templates at the moment
+    -->
+    <eg-grid-field label="[% l('Title') %]" path="title" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Author') %]" path="author" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Edition') %]" path="edition" visible></eg-grid-field>
+    <eg-grid-field label="[% l('ISBN') %]" path="isbn" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Publication Date') %]" path="pubdate" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Publisher') %]" path="publisher" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Service') %]" path="service" visible></eg-grid-field>
+    <eg-grid-field label="[% l('TCN') %]" path="tcn" visible></eg-grid-field>
+    <eg-grid-field path="*" hidden></eg-grid-field>
+</eg-grid>

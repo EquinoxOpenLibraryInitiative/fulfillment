@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="openils_util_overlay"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script>dump('Loading OpenILS/util_overlay.xul for ' + location.href + '\n');</script>
+    <scripts id="openils_util_scripts">
+        <script>
+        <![CDATA[
+        var _dump_level = 2; // 0 None, 1 Error, 2 Warning, 3 Info, 4 debug
+        if (!_original_dump) {
+            var _original_dump = window.dump;
+            window.dump = function (msg,level) {
+                try {
+                    if (typeof level == 'undefined') { level = 4; }
+                    if (level > _dump_level) { return; }
+                    if (typeof _dump_prefix != 'undefined') {
+                        _original_dump(_dump_prefix + ' ');
+                    }
+                    switch(level) {
+                        case 1: case 'error': _original_dump('error: '); break;
+                        case 2: case 'warn': _original_dump('warn: '); break;
+                        case 3: case 'info': _original_dump('info: '); break;
+                        case 4: case 'debug': _original_dump('debug: '); break;
+                    }
+                    _original_dump(msg);
+                } catch(E) {
+                    alert('error in dump: ' + E + '\nmsg = ' + msg + '\nlevel = ' + level + '\n');
+                }
+            };
+        }
+        ]]>
+        </script>
+        <script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
+        <script type="text/javascript" src="/IDL2js" />
+        <script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
+        <script>try { dojo.require('dojo.date.locale'); } catch(E) { alert(E); }</script>
+        <script>try { dojo.require('dojo.date.stamp'); } catch(E) { alert(E); }</script>
+        <script type="text/javascript" src="/xul/server/main/constants.js" />
+        <script type="text/javascript" src="/xul/server/OpenILS/data.js" />
+        <script type="text/javascript" src="/xul/server/util/barcode.js" />
+        <script type="text/javascript" src="/xul/server/util/browser.js" />
+        <script type="text/javascript" src="/xul/server/util/clipboard.js" />
+        <script type="text/javascript" src="/xul/server/util/controller.js" />
+        <script type="text/javascript" src="/xul/server/util/date.js" />
+        <script type="text/javascript" src="/xul/server/util/deck.js" />
+        <script type="text/javascript" src="/xul/server/util/error.js" />
+        <script type="text/javascript" src="/xul/server/util/exec.js" />
+        <script type="text/javascript" src="/xul/server/util/file.js" />
+        <script type="text/javascript" src="/xul/server/util/fm_utils.js" />
+        <script type="text/javascript" src="/xul/server/util/functional.js" />
+        <script type="text/javascript" src="/xul/server/util/list.js" />
+        <script type="text/javascript" src="/xul/server/util/money.js" />
+        <script type="text/javascript" src="/xul/server/util/mozilla.js" />
+        <script type="text/javascript" src="/xul/server/util/network.js" />
+        <script type="text/javascript" src="/xul/server/util/print.js" />
+        <script type="text/javascript" src="/xul/server/util/sort.js" />
+        <script type="text/javascript" src="/xul/server/util/sound.js" />
+        <script type="text/javascript" src="/xul/server/util/text.js" />
+        <script type="text/javascript" src="/xul/server/util/widgets.js" />
+        <script type="text/javascript" src="/xul/server/util/hide.js" />
+        <script type="text/javascript" src="/xul/server/util/window.js" />
+        <script type="text/javascript" src="/xul/server/circ/util.js" />
+        <script type="text/javascript" src="/xul/server/cat/util.js" />
+        <script type="text/javascript" src="/xul/server/patron/util.js" />
+        <script type="text/javascript" src="/opac/common/js/utils.js" />
+        <script type="text/javascript" src="/opac/common/js/CGI.js" />
+        <script type="text/javascript" src="/opac/common/js/md5.js" />
+        <script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
+        <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js' />
+        <script type="text/javascript" src="/opac/common/js/org_utils.js" />   
+        <script type="text/javascript" src="global_util.js" />   
+        <script type="text/javascript" src="event_util.js" />   
+        <menupopup id="clipboard">
+            <menuitem label="&common.textbox.cut;" oncommand="util.clipboard.cut()" />
+            <menuitem label="&common.textbox.copy;" oncommand="util.clipboard.copy()" />
+            <menuitem label="&common.textbox.paste;" oncommand="util.clipboard.paste()" />
+            <menuitem label="&common.textbox.delete;" oncommand="document.popupNode.value = ''" />
+            <menuitem label="&common.textbox.select_all;" oncommand="document.popupNode.select()" />
+        </menupopup>
+        <menupopup id="column_sort_menu">
+            <menuitem label="&common.sort.first.ascending;" oncommand="util.sort.dispatch('first','asc');"/>
+            <menuitem label="&common.sort.first.descending;" oncommand="util.sort.dispatch('first','desc');"/>
+            <menuitem label="&common.sort.next.ascending;" oncommand="util.sort.dispatch('next','asc');"/>
+            <menuitem label="&common.sort.next.descending;" oncommand="util.sort.dispatch('next','desc');"/>
+        </menupopup>
+        <messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
+        <messagecatalog id="offlineStrings" src='/xul/server/locale/<!--#echo var="locale"-->/offline.properties'/>
+        <messagecatalog id="authStrings" src='/xul/server/locale/<!--#echo var="locale"-->/auth.properties'/>
+        <hbox id="debug_box" hidden="true" flex="1" style="border: red thin dashed">
+            <label value="&common.debug.label;" />
+            <textbox id="debug_tb" flex="1"/>
+            <button label="&common.debug.btn.execute;" oncommand="try { var dtb = document.getElementById('debug_tb'); alert( eval( dtb.value ) ); } catch(E) { alert(E); }; dtb.focus();"/>
+            <button label="&common.debug.btn.inspect;" oncommand="try { var dtb = document.getElementById('debug_tb'); var dx = eval( dtb.value ); var ds = ''; for (var di in dx) { ds += di + '=' + dx[di] + '\r\n'; }; window.open('data:text/plain;charset=UTF-8,'+window.encodeURIComponent(ds),'debug_win','chrome,resizable,modal'); } catch(E) { alert(E); }; dtb.focus();"/>
+            <button label="&common.debug.btn.js2JSON;" oncommand="try { var dtb = document.getElementById('debug_tb'); alert( js2JSON( eval( dtb.value ) ) ); } catch(E) { alert(E); }; dtb.focus();"/>
+        </hbox>
+        <keyset><key id="debug_box_key" keycode="VK_F7" modifiers="control,shift" oncommand="JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'}); var dtb = document.getElementById('debug_tb'); var dx = document.getElementById('debug_box'); if(data.enable_debug || !dx.hidden) { dx.hidden = !dx.hidden; if(!dx.hidden) dtb.focus();}"/></keyset>
+        <script type="text/javascript" src="/xul/server/skin/custom.js" />
+        <script>dump('finished openils_util_overlay\n');</script>
+    </scripts>
+
+</overlay>
+
