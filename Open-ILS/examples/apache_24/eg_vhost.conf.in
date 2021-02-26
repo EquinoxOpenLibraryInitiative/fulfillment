@@ -12,6 +12,8 @@ RewriteRule ^/$ %{REQUEST_SCHEME}://%{HTTP_HOST}/eg/opac/home [R=301,L]
 # Redirect staff to the correct URL if they forget to include the final /
 # ----------------------------------------------------------------------------------
 RewriteRule ^/eg/staff$ https://%{HTTP_HOST}/eg/staff/ [R=301,L]
+RewriteRule ^/eg/ffstaff$ https://%{HTTP_HOST}/eg/ffstaff/fulfillment [R=301,L]
+RewriteRule ^/eg/ffstaff/$ https://%{HTTP_HOST}/eg/ffstaff/fulfillment [R=301,L]
 
 # ----------------------------------------------------------------------------------
 # Point / to the IP address redirector
