@@ -154,7 +154,8 @@ BEGIN
             -- RAISE NOTICE 'UPDATEing for %', existing_bib.id;
             UPDATE  biblio.record_entry
               SET   marc = p_marc,
-                    last_xact_id = EXTRACT(EPOCH FROM now())
+                    last_xact_id = EXTRACT(EPOCH FROM now()),
+                    edit_date = now()
               WHERE id = existing_bib.id;
         ELSE
             DELETE FROM biblio.record_entry WHERE id = existing_bib.id;
