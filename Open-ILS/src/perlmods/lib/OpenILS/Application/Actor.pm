@@ -231,7 +231,6 @@ sub remote_auth_complete {
         
             # Set up all of the virtual IDs, isnew, etc.
             $patron->isnew(1);
-            $patron->id(-1);
             $patron->card(-1);
         
             $card->isnew(1);
@@ -251,18 +250,18 @@ sub remote_auth_complete {
             # do a dance to get the password hashed securely
             my $saved_password = $patron->passwd;
             $patron->passwd('');
-            $e->create_actor_user($patron) or return (undef, $e->die_event);
-            modify_migrated_user_password($e, $patron->id, $saved_password);
+            my $new_patron = $e->create_actor_user($patron) or return $e->die_event;
+            modify_migrated_user_password($e, $new_patron->id, $saved_password);
 
-            my $id = $patron->id; # added by CStoreEditor
+            my $id = $new_patron->id; # added by CStoreEditor
 
             $logger->info("Successfully created new user [$id] in DB");
-            my $new_patron = $e->retrieve_actor_user($id);
+            $new_patron = $e->retrieve_actor_user($id);
 
             # unflesh the real items on the patron
             $patron->card( $patron->card->id ) if(ref($patron->card));
 
-            ( $new_patron, $evt ) = _add_update_cards($e, $patron, $new_patron);
+            ( $new_patron, $evt ) = _add_update_cards($e, $patron, $new_patron, 1);
             return $evt if $evt;
 
             # re-update the patron
@@ -1198,6 +1197,7 @@ sub _add_update_cards {
     my $e = shift;
     my $patron = shift;
     my $new_patron = shift;
+    my $isnew = shift;
 
     my $evt;
 
@@ -1230,7 +1230,7 @@ sub _add_update_cards {
     }
 
     $U->create_events_for_hook('au.barcode_changed', $new_patron, $e->requestor->ws_ou)
-        if $card_changed;
+        if $card_changed && !$isnew;
 
     return ( $new_patron, undef );
 }
