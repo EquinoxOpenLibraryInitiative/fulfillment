@@ -171,7 +171,7 @@ sub remote_auth_complete {
         $ugroup = 1;
     }
 
-    my $e = new_editor();
+    my $e = new_editor(xact => 1);
     my $user = $e->search_actor_user({
         usrname => "$$args{username}:$$args{home}", 
         home_ou => $$args{home}
@@ -242,36 +242,37 @@ sub remote_auth_complete {
 
             $patron->cards([$card]);
 
-            my $session = $apputils->start_db_session();
             $logger->info("Creating new remote-proxy patron...");
 
             # $new_patron is the patron in progress.  $patron is the original patron
             # passed in with the method.  new_patron will change as the components
             # of patron are added/updated.
 
-            my $new_patron;
+            # do a dance to get the password hashed securely
+            my $saved_password = $patron->passwd;
+            $patron->passwd('');
+            $e->create_actor_user($patron) or return (undef, $e->die_event);
+            modify_migrated_user_password($e, $patron->id, $saved_password);
+
+            my $id = $patron->id; # added by CStoreEditor
+
+            $logger->info("Successfully created new user [$id] in DB");
+            my $new_patron = $e->retrieve_actor_user($id);
 
             # unflesh the real items on the patron
             $patron->card( $patron->card->id ) if(ref($patron->card));
 
-            # create the patron first so we can use his id
-           	my $id = $session->request( "open-ils.storage.direct.actor.user.create", $patron)->gather(1);
-            return $U->DB_UPDATE_FAILED($patron) unless $id;
-
-            $logger->info("Successfully created new user [$id] in DB");
-
-            $new_patron = $session->request( "open-ils.storage.direct.actor.user.retrieve", $id)->gather(1);
-
-            ( $new_patron, $evt ) = _add_update_cards($session, $patron, $new_patron);
+            ( $new_patron, $evt ) = _add_update_cards($e, $patron, $new_patron);
             return $evt if $evt;
 
             # re-update the patron
-            ( $new_patron, $evt ) = _update_patron($session, $new_patron, undef, 1);
-            return $evt if $evt;
+            $e->update_actor_user($new_patron) or return $e->die_event;
 
-            $apputils->commit_db_session($session);
+            $e->commit();
         }
     }
+
+    $e->rollback(); # we've already committed, or we should release the editor
 
     $$args{username} = "$$args{username}:$$args{home}";
 
