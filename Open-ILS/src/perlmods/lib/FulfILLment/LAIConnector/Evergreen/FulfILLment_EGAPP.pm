@@ -416,6 +416,12 @@ sub create_borrower_copy {
         ->run(@$auth) if ref $auth;
 
     my $e = new_editor(authtoken => $auth, xact => 1);
+    my $circ_lib = $e->search_actor_org_unit({shortname => $ou_code});
+    if (!@$circ_lib) {
+        $logger->error("Unable to locate org unit '$ou_code'");
+        $e->rollback;
+        return;
+    }
 
     my $e_copy = $e->search_asset_copy(
         {deleted => 'f', barcode => $barcode})->[0];
@@ -436,16 +442,25 @@ sub create_borrower_copy {
         }
 
         if ($ok_copy) {
-            $e->rollback;
+            $ok_copy->circ_lib($circ_lib->[0]->id);
+            $ok_copy->dummy_title($args->{title} || "");
+            $ok_copy->dummy_author($args->{author} || "");
+            $ok_copy->dummy_isbn($args->{isbn} || "");
+
+            $ok_copy->call_number(OILS_PRECAT_CALL_NUMBER);
+            $ok_copy->loan_duration(OILS_PRECAT_COPY_LOAN_DURATION);
+            $ok_copy->fine_level(OILS_PRECAT_COPY_FINE_LEVEL);
+            $ok_copy->status(7); # reshelving
+
+            unless ($e->update_asset_copy($ok_copy)) {
+                $logger->error("error updating FF precat copy");
+                $e->rollback;
+                return;
+            }
+
+            $e->commit;
             return recursive_hash($ok_copy);
         }
-    }
-
-    my $circ_lib = $e->search_actor_org_unit({shortname => $ou_code});
-    if (!@$circ_lib) {
-        $logger->error("Unable to locate org unit '$ou_code'");
-        $e->rollback;
-        return;
     }
 
     my $copy = Fieldmapper::asset::copy->new;
