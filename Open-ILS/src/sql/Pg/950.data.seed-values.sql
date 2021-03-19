@@ -17500,7 +17500,7 @@ INSERT INTO actor.org_unit_setting (org_unit, name, value)
 insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
     'ff.remote.item_cache.threshold',
     oils_i18n_gettext( 'ff.remote.item_cache.threshold', 'LAI: minimum percentage of bibs to match profile for import', 'coust', 'label'),
-    oils_i18n_gettext( 'ff.remote.item_cache.threshold', 'LAI: minimum percentage of bibs to match porfile for import', 'coust', 'description'),
+    oils_i18n_gettext( 'ff.remote.item_cache.threshold', 'LAI: minimum percentage of bibs to match profile for import', 'coust', 'description'),
     'string'
 );
 
@@ -17623,6 +17623,20 @@ insert into config.org_unit_setting_type (name,label,description,datatype) VALUE
     oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.location_prefix', 'LAI: prefix to identify copy lib', 'coust', 'label'),
     oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.location_prefix', 'LAI: prefix to isolate copy lib from copy location for III', 'coust', 'description'),
     'string'
+);
+
+insert into config.org_unit_setting_type (name,label,description,datatype) VALUES (
+    'ff.remote.item_cache.embedded.asset.bib_purge',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.bib_purge', 'interval used for deleting bibs that have not been updated for the org unit', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.bib_purge', 'interval used for deleting bibs that have not been updated for the org unit', 'coust', 'description'),
+    'interval'
+);
+
+insert into config.org_unit_setting_type (name,label,description,datatype) VALUES (
+    'ff.remote.item_cache.embedded.asset.bib_purge_threshold',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.bib_purge_threshold', 'maximum percentage of bibs that will be deleted in a single pass', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.bib_purge_threshold', 'maximum percentage of bibs that will be deleted in a single pass', 'coust', 'description'),
+    'integer'
 );
 
 INSERT INTO actor.org_unit_setting (org_unit,name,value) VALUES
