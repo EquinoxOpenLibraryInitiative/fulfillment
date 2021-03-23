@@ -69,7 +69,7 @@
               </span>
             </td>
           </tr>
-          <tr><td>Owning Lib:</td><td>{{item.source_lib}}</td></tr>
+          <tr><td>Owning Lib:</td><td>{{item.circ_lib}}</td></tr>
           <tr><td>Title:</td><td>{{item.title}}</td></tr>
           <tr><td>Author:</td><td>{{item.author}}</td></tr>
           <tr><td>Call Number:</td><td>{{item.call_number}}</td></tr>
