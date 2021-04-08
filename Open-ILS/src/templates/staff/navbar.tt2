@@ -358,6 +358,7 @@
       </li>
 
       <!-- acquisitions -->
+      <!-- Hide in FF for now
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Acquisitions') %]<b class="caret" 
           aria-hidden="true"></b>
@@ -446,8 +447,10 @@
           </li>
        </ul>
       </li>
+      -->
 
       <!-- booking -->
+      <!-- Hide in FF for now
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Booking') %]<b class="caret" 
           aria-hidden="true"></b>
@@ -491,6 +494,7 @@
           </li>
         </ul>
       </li>
+      -->
 
       <!-- admin -->
       <li class="dropdown" uib-dropdown>
@@ -522,6 +526,7 @@
               [% l('Local Administration') %]
             </a>
           </li>
+          <!-- Hide in FF for now
           <li>
             <a href="/eg2/staff/admin/acq/splash">
               <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
@@ -540,6 +545,7 @@
               [% l('Booking Administration') %]
             </a>
           </li>
+          -->
           <li>
             <a href="./reporter/legacy/main" target="_self">
               <span class="glyphicon glyphicon-object-align-bottom" 
