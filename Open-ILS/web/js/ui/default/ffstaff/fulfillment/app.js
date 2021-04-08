@@ -228,6 +228,7 @@ function ($scope,  $q,  $compile,  $timeout,  $rootScope, $location, $modal,
             checkin_time : 'checkin_time'
         },
         atc : {
+            cancel_time : 'cancel_time',
             id : 'id',
             transit_id : 'id',
             hold_id : 'hold_transit_copy.hold.id',
@@ -704,6 +705,7 @@ function ($scope,  $q,  egPCRUD,  orgSelector) {
         
     var query = {
         dest_recv_time : null,
+        cancel_time : null,
         dest : dest,
 	source : source,
         target_copy : {
@@ -900,7 +902,7 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
             item.transit_routing_code = transit.dest().routing_code();
             item.transit_time = transit.source_send_time();
             item.transit_recv_time = transit.dest_recv_time();
-            item.open_transit = !Boolean(transit.dest_recv_time());
+            item.open_transit = !Boolean(transit.dest_recv_time() || transit.cancel_time());
         }
 
         if (circ) {
@@ -1068,7 +1070,7 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
             item.transit_routing_code = transit.dest().routing_code();
             item.transit_time = transit.source_send_time();
             item.transit_recv_time = transit.dest_recv_time();
-            item.open_transit = !Boolean(transit.dest_recv_time());
+            item.open_transit = !Boolean(transit.dest_recv_time() || transit.cancel_time());
         }
 
         if (circ) {

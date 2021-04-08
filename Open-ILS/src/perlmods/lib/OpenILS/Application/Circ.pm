@@ -2377,6 +2377,7 @@ sub collect_copy_transactions {
 
     if ($hold) {
         $hold = $e->retrieve_action_hold_request([ $hold->id, $hold_flesh ]);
+	$hold->clear_transit if ($hold->transit and $hold->transit->cancel_time);
 
         if ($local) {
             $next_action = 'ill-home-capture' unless $hold->capture_time;
@@ -2433,6 +2434,7 @@ sub collect_copy_transactions {
     my $transit = $e->search_action_transit_copy([{
         target_copy => $copy_id,
         dest_recv_time => undef,
+        cancel_time => undef,
         %transit_filter
     }, $transit_flesh])->[0];
 
