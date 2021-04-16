@@ -84,24 +84,37 @@ sub hold_targeter {
     for my $hold_id (@hold_ids) {
         $count++;
 
-        my $single = 
-            OpenILS::Utils::HoldTargeter::Single->new(parent => $targeter);
+        # XXX Use the old hold targeter for now.
 
-        # Don't let an explosion on a single hold stop processing
-        eval { $single->target($hold_id) };
+        # my $single = 
+        #     OpenILS::Utils::HoldTargeter::Single->new(parent => $targeter);
+        # 
+        # # Don't let an explosion on a single hold stop processing
+        # eval { $single->target($hold_id) };
+        # 
+        # if ($@) {
+        #     my $msg = "Targeter failed processing hold: $hold_id : $@";
+        #     $single->error(1);
+        #     $logger->error($msg);
+        #     $single->message($msg) unless $single->message;
+        # }
+        #
 
-        if ($@) {
-            my $msg = "Targeter failed processing hold: $hold_id : $@";
-            $single->error(1);
-            $logger->error($msg);
-            $single->message($msg) unless $single->message;
-        }
+        my $result = $self->simplereq(
+            'open-ils.storage',
+            'open-ils.storage.action.hold_request.copy_targeter',
+            $args->{retarget_interval},
+            $hold_id
+        );
 
         if (($count % $throttle) == 0) { 
             # Time to reply to the caller.  Return either the number
             # processed thus far or the most recent summary object.
 
-            my $res = $args->{return_count} ? $count : $single->result;
+            # XXX modified for use with the old hold targeter
+            # my $res = $args->{return_count} ? $count : $single->result;
+
+            my $res = $args->{return_count} ? $count : $$result[0];
             $client->respond($res);
 
             $logger->info("targeted $count of $total holds");
