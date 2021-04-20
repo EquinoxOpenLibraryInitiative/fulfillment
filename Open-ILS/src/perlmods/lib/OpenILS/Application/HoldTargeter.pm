@@ -5,6 +5,8 @@ use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Utils::HoldTargeter;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenILS::Application::AppUtils;
+my $apputils = "OpenILS::Application::AppUtils";
 
 __PACKAGE__->register_method(
     method    => 'hold_targeter',
@@ -100,7 +102,7 @@ sub hold_targeter {
         # }
         #
 
-        my $result = $self->simplereq(
+        my $result = $apputils->simplereq(
             'open-ils.storage',
             'open-ils.storage.action.hold_request.copy_targeter',
             $args->{retarget_interval},
