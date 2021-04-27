@@ -350,7 +350,7 @@ ctx.metalinks.push('
                 %]
                 
                     <a class="btn btn-action" role="button" href="[% mkurl(ctx.opac_root _ '/place_hold',
-                    {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]"
+                    {hold_target => ctx.mmr_id, hold_type => 'M', hold_source_page => mkurl()}, stop_parms) %]"
                         class="no-dec">
                         <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold') %]</span></a>
               
