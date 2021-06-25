@@ -22,7 +22,7 @@ sub gateway {
         'https://%s/osrf-gateway-v1?service=%s&method=%s',
         $self->{host}, $service, $method
     );
-    $url .= '&param=' . uri_escape($json->encode($_)) for (@args);
+    $url .= '&param=' . uri_escape_utf8($json->encode($_)) for (@args);
 
     $logger->info("FF Evergreen gateway request => $url");
 
