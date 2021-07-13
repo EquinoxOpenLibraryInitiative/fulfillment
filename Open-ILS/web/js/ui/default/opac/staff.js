@@ -83,8 +83,8 @@ function staff_hold_usr_barcode_changed(isload) {
     }
     if(barcode == cur_hold_barcode)
         return;
-    // No submitting until we think the barcode is valid
-    document.getElementById('place_hold_submit').disabled = true;
+    // Allow submitting, trust the staff to enter the right barcode
+    document.getElementById('place_hold_submit').disabled = false;
 
     if (window.IAMBROWSER) {
         // Browser client operates asynchronously

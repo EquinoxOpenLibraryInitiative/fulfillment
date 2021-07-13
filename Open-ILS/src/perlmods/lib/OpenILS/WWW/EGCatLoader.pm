@@ -550,14 +550,7 @@ sub load_login {
     # initial log form only
     return Apache2::Const::OK unless $username and $password;
 
-    my $auth_proxy_enabled = 0; # default false
-    try { # if the service is not running, just let this fail silently
-        $auth_proxy_enabled = $U->simplereq(
-            'open-ils.auth_proxy',
-            'open-ils.auth_proxy.enabled');
-    } catch Error with {};
-
-    $self->timelog("Checked for auth proxy: $auth_proxy_enabled; org = $org_unit; username = $username");
+    $self->timelog("Checked for: org = $org_unit; username = $username");
 
     my $args = {
         type => ($persist) ? 'persist' : 'opac',
@@ -576,45 +569,16 @@ sub load_login {
         $args->{username} = $username;
     }
 
-    my $response;
-    if (!$auth_proxy_enabled) {
+    $logger->info("FF TPAC login for $username @ $org_unit");
+    $args->{home} = $org_unit;
 
-        if (0) {
-            # leaving here for reference for now
-            # any chance of a setting that turns FF on?
-            my $seed = $U->simplereq(
-                'open-ils.auth',
-                'open-ils.auth.authenticate.init', $username);
-            $args->{password} = md5_hex($seed . md5_hex($password));
-            $response = $U->simplereq(
-                'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
+    # FF always uses the username field
+    $args->{username} = $args->{barcode} if $args->{barcode};
 
-        } else {
+    my $response = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.remote.authenticate.complete', $args);
 
-            $logger->info("FF TPAC login for $username @ $org_unit");
-            my $seed = $U->simplereq(
-                'open-ils.actor',
-                'open-ils.actor.remote.authenticate.init',
-                $username, $org_unit);
-
-            $args->{password} = $seed == -1 ? 
-                $password :   md5_hex($seed . md5_hex($password));
-
-            $args->{home} = $org_unit;
-            # FF always uses the username field
-            $args->{username} = $args->{barcode} if $args->{barcode};
-
-            $response = $U->simplereq(
-                'open-ils.actor',
-                'open-ils.actor.remote.authenticate.complete', $args);
-        }
-
-    } else {
-        $args->{password} = $password;
-        $response = $U->simplereq(
-            'open-ils.auth_proxy',
-            'open-ils.auth_proxy.login', $args);
-    }
     $self->timelog("Checked password");
 
     if($U->event_code($response)) { 

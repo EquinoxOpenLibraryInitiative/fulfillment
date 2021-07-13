@@ -309,7 +309,7 @@ CREATE TRIGGER actor_stat_cat_sip_update_trigger
 CREATE TABLE actor.card (
 	id	SERIAL	PRIMARY KEY,
 	usr	INT	NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
-	barcode	TEXT	NOT NULL UNIQUE,
+	barcode	TEXT	NOT NULL,
 	active	BOOL	NOT NULL DEFAULT TRUE
 );
 COMMENT ON TABLE actor.card IS $$

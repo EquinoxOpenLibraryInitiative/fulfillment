@@ -67,11 +67,21 @@ sub get_user {
     my $user_barcode = shift;
     my $user_password = shift;
 
-    my $resp = $self->gateway(
-        'open-ils.fulfillment',
-        'fulfillment.connector.verify_user_by_barcode',
-        $user_barcode, $user_password
-    );
+    my $resp;
+    if ($user_password) { # verify a user by password
+        $resp = $self->gateway(
+            'open-ils.fulfillment',
+            'fulfillment.connector.verify_user_by_barcode',
+            $user_barcode, $user_password
+        );
+    } else { # look up a user via proxy, for dummy user creation
+        my $auth = $self->login or return undef;
+        $resp = $self->gateway(
+            'open-ils.fulfillment',
+            'fulfillment.connector.lookup_user',
+            $auth, barcode => $user_barcode
+        );
+    }
 
     # TODO: we always assume barcode logins in FF, but it would be
     # nice if the EG connector could safey fall-through to username
@@ -87,6 +97,7 @@ sub get_user {
 
     $logger->info("Evergreen retreived user " . Dumper($data));
 
+    $data->{initials} = $data->{alias};
     $data->{surname} = $data->{family_name};
     $data->{user_id} = $data->{id};
     $data->{given_name} = $data->{first_given_name};
@@ -245,7 +256,7 @@ sub delete_borrower_hold {
 
     # NOTE: fulfillment.connector.cancel_oldest_hold only 
     # returns success or failure.  is that enough?
-    return $resp and @$resp and $$resp[0];
+    return ($resp and @$resp and $$resp[0]);
 }
 
 sub create_borrower_copy {

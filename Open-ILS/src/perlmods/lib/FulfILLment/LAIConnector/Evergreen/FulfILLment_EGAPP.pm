@@ -84,10 +84,21 @@ sub lookup_user {
     return undef unless $e->checkauth;
 
     for my $k ( @$keys ) {
-        my $users = $e->search_actor_user([
-            { $k => $value },
-            {flesh => 1, flesh_fields => {au => ['card']}}
-        ]);
+        my $users = [];
+        if ($k eq 'barcode') {
+            my $cards = $e->search_actor_card({ $k => $value });
+            if (@$cards) {
+                $users = $e->search_actor_user([
+                    { id => $$cards[0]->usr() },
+                    {flesh => 1, flesh_fields => {au => ['card']}}
+                ]);
+            }
+        } else {
+            $users = $e->search_actor_user([
+                { $k => $value },
+                {flesh => 1, flesh_fields => {au => ['card']}}
+            ]);
+        }
 
         if ($users->[0]) {
 
