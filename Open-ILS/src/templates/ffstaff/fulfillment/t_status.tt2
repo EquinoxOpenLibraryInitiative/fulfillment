@@ -87,6 +87,7 @@
         <tbody>
           <tr ng-show='item.circ'><td>Circulating Library:</td><td>{{item.circ_circ_lib}}</td></tr>
           <tr ng-show='item.circ'><td>Circulating Patron:</td><td>{{item.patron_name}}</td></tr>
+          <tr ng-show='item.circ'><td>Patron Barcode:</td><td>{{item.patron_card}}</td></tr>
           <tr ng-show='item.circ'><td>Checkout date:</td><td>{{item.circ_xact_start | date:'shortDate'}}</td></tr>
           <tr ng-show='item.circ'><td>Due Date:</td><td>{{item.due_date | date:'shortDate'}}</td></tr>
           <tr ng-show='item.circ_stop_fines'><td>Circ Status:</td>
@@ -94,6 +95,7 @@
           </tr>
           <tr ng-show='item.hold'><td>Requesting Patron:</td><td>{{item.patron_name}}</td></tr>
           <tr ng-show='item.hold'><td>Requesting Library:</td><td>{{item.hold_request_lib}}</td></tr>
+          <tr ng-show='item.hold'><td>Patron Barcode:</td><td>{{item.patron_card}}</td></tr>
           <tr ng-show='item.hold'><td>Pickup Library:</td><td>{{item.hold_pickup_lib}}</td></tr>
           <tr ng-show='item.hold'><td>Request Date:</td><td>{{item.hold_request_time | date:'shortDate'}}</td></tr>
           <tr ng-show='item.hold'><td>Capture Date:</td><td>{{item.hold_capture_time | date:'shortDate'}}</td></tr>
