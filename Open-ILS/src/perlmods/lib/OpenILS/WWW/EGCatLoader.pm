@@ -555,7 +555,8 @@ sub load_login {
     my $args = {
         type => ($persist) ? 'persist' : 'opac',
         org => $org_unit,
-        agent => 'opac'
+        agent => 'opac',
+        password => $password
     };
 
     my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
