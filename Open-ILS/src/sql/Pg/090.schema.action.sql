@@ -1796,12 +1796,12 @@ CREATE TABLE action.batch_hold_event_map (
     hold                INT     NOT NULL REFERENCES action.hold_request (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE FUNCTION action.hold_request_mediated () RETURNS TRIGGER AS $f$
+CREATE OR REPLACE FUNCTION action.hold_request_mediated () RETURNS TRIGGER AS $f$
 BEGIN
     SELECT COALESCE( (
         SELECT actor.org_unit_ancestor_setting(
             'ff.request.force_mediation',
-            NEW.request_lib)).value::BOOL, FALSE)
+            NEW.request_lib)).value::BOOL, NEW.frozen)
         INTO NEW.frozen;
     RETURN NEW;
 END;
