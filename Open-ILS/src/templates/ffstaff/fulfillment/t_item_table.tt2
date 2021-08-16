@@ -18,6 +18,7 @@ COLUMNS = [
     {name => 'request_time', label => l('Request Date'), tabs => 'tab_pending', extra => "| date:'shortDate'"},
     {name => 'expire_time', label => l('Expire Date'), tabs => 'tab_pending', extra => "| date:'shortDate'"},
     {name => 'frozen', label => l('Active'), tabs => 'tab_pending'},
+    {name => 'thaw_date', label => l('Active Date'), tabs => 'tab_pending', extra => "| date:'shortDate'"},
     {name => 'hold_request_lib', label => l('Requesting Library'), tabs => 'tab_pending'},
     {name => 'hold_pickup_lib', label => l('Pickup Library'), tabs => 'tab_pending'}
     {name => 'transit_time', label => l('Transit Date'), tabs => 'tab_inbound || tab_outbound', extra => "| date:'shortDate'"},
