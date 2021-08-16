@@ -1653,28 +1653,26 @@ sub new_hold_copy_targeter {
             $self->method_lookup('open-ils.storage.transaction.commit')->run;
 
             # FF-----------------
-	    if (!$U->is_true($U->ou_ancestor_setting_value($best->circ_lib.'', 'ff.remote.connector.disabled'))) 	{
-            my $skip_target = 0;
-			if ($old_current_copy && $best && ($best->id == $old_current_copy->id)) { # old copy and new copy are the same, leave it alone
-                $skip_target = 1;
-			} elsif ($old_current_copy) { # old copy to remotely untarget, since we have a new one
-				$U->simplereq(
-					"fulfillment.laicore",
-                    "fulfillment.laicore.hold.lender.delete_earliest",
-					'' . $old_current_copy->source_lib,
-					$old_current_copy->barcode
-				);
-			}
+            unless ($old_current_copy && $best && ($best->id == $old_current_copy->id)) { # old copy and new copy are the same, leave it alone
 
-			if ($best && !$skip_target) { # new copy to target
-				$U->simplereq(
-					"fulfillment.laicore",
-                    "fulfillment.laicore.hold.lender.place",
-					''. $best->source_lib,
-					$best->barcode
-				);
-			}
-	    }
+                if ($old_current_copy && !$U->is_true($U->ou_ancestor_setting_value($old_current_copy->circ_lib.'', 'ff.remote.connector.disabled')))   {
+                    $U->simplereq(
+                        "fulfillment.laicore",
+                        "fulfillment.laicore.hold.lender.delete_earliest",
+                        '' . $old_current_copy->source_lib,
+                        $old_current_copy->barcode
+                    );
+                }
+
+                if ($best && !$U->is_true($U->ou_ancestor_setting_value($best->circ_lib.'', 'ff.remote.connector.disabled')))   {
+                    $U->simplereq(
+                        "fulfillment.laicore",
+                         "fulfillment.laicore.hold.lender.place",
+                        ''. $best->source_lib,
+                        $best->barcode
+                    );
+                }
+            }
             # FF-----------------
 
 
