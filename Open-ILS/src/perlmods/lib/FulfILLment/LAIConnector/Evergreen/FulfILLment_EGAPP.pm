@@ -180,7 +180,7 @@ sub lookup_holds {
     return undef unless $e->checkauth;
     return undef unless $e->allowed('fulfillment.proxy_user');
 
-    $uid ||= $e->requestor;
+    $uid ||= $e->requestor->id;
 
     my $holds = $e->search_action_hold_request([
         { usr => $uid, capture_time => undef, cancel_time => undef },
