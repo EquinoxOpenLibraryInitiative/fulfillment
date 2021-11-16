@@ -1,0 +1,257 @@
+<div class="facet_box_wrapper">
+
+<div id="sidebar_search_options">
+    <form action="[% ctx.opac_root %]/results" method="get">
+        <div id="hidden_search_bar">
+            [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
+        </div>
+        <h3 class="sr-only">[% l('Additional search filters and navigation') %]</h3>
+        <h4>Search Result Options</h4>
+        <div class="almost-content-wrapper">
+        
+            [%# hide the header bar when displaying metarecord constituents
+            instead of skipping it altogether to allow the search form
+            variables to propagate %]
+            [% IF ctx.metarecord;
+            mr_attrs = {marc_xml => ctx.metarecord_master.marc_xml};
+            PROCESS get_marc_attrs args=mr_attrs %]
+            <div class="results_header_lbl">
+                [% l('Viewing Results for Grouped Record: [_1]',
+                    mr_attrs.title) | html %]
+            </div>
+            [% IF CGI.param('query') %]
+            <div>
+                <a href="[% mkurl(ctx.opac_root _ '/results', {}, ['metarecord','page']); %]">
+                [% l('&#9668; Return to Grouped Search Results') %]
+                </a>
+            </div>
+            <br/>
+            [% END %]
+            [% END %]
+            <div [%- IF ctx.metarecord %]class="hidden"[% END -%]>
+                <div>
+                    <div id="results_header_sort" class="results_header_btns">
+                        <label class="sr-only" for="opac.result.sort">[% l('Sort by') %]</label>
+                        [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 %]
+                    </div>
+                    <div id="results_another_search" class="results_header_btns">
+                        <a href="[% mkurl(ctx.opac_root _ '/home', {$loc_name => loc_value, 'detail_record_view' => show_detail_view}, 1) %]">[% l('Another Search') %]</a>
+                    </div>
+                    <div id="refine_hits" class="results_header_btns result_block_visible">
+                        <a onclick="getFacety();">[% l('Refine these results') %]</a>
+                    </div>
+                    <div id="return_to_hits" class="results_header_btns">
+                        <a onclick="getResulty();">[% l('Back to results') %]</a>
+                    </div>
+
+                    [% IF ctx.mylist.size %]
+                        <div class="results_header_btns">
+                            [%- IF ctx.user; %]
+                            <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]">[% l('View My List') %]</a>
+                            [%- ELSE %]
+                            <a href="[% mkurl(ctx.opac_root _ '/mylist') %]">[% l('View My List') %]</a>
+                            [%- END %]
+                        </div>
+
+                    [% END %]
+
+                    [%- IF show_more_details.default != 'hide' -%]
+                        <div class='results_header_sel' id='simple-detail-view-links'>
+                            [% IF show_detail_view %]
+                            <a href="[% mkurl('', {detail_record_view => 0}) %]">[% l('Show Fewer Details') %]</a> [% ELSE %]
+                            <a href="[% mkurl('', {detail_record_view => 1}) %]">[% l('Show More Details') %]</a>
+                            [% END %]
+                        </div>
+                    [%- END -%]
+
+                    <div id="results_check_options">
+                        <label id="results_limit_to_available" class="results_header_lbl" for="limit_to_available">
+                            <input type="checkbox" id="limit_to_available" name="modifier" value="available"
+                                onchange="search_modifier_onchange('available', this, true)"
+                                [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
+                            [% l('Limit to Available Items') %]
+                        </label>
+
+                        [% IF NOT metarecords.disabled %]
+                            <label id="results_metabib_search_modifier" class="results_header_lbl" for="metabib_search_modifier">
+                                <input type="checkbox" id="metabib_search_modifier"
+                                    name="modifier" value="metabib"
+                                    onchange="search_modifier_onchange('metabib', this, true)"
+                                    [% CGI.param('modifier').grep('metabib').size ? ' checked="checked"' : '' %] />
+                                [% l('Group Formats and Editions') %]
+                            </label>
+                        [% END %]
+
+                        [% IF ctx.depth_sel_checkbox %]
+                            <label id="results_depth_sel" class="results_header_lbl" for="depth_sel" title="[% ctx.depth_sel_tooltip | html %]">
+                                <input type="checkbox" id="depth_sel" name="depth" value="[% ctx.depth_sel_depth %]"
+                                    onchange="this.form.submit()"
+                                    [% CGI.param('depth') == ctx.depth_sel_depth ? ' checked="checked"' : '' %] />
+                                [% ctx.depth_sel_checkbox_label | html %]
+                            </label>
+                        [% END %]
+
+                        [% IF ctx.exclude_electronic_checkbox %]
+                            <label id="results_exclude_elec" class="results_header_lbl" for='opac.result.excludeelec'>
+                                <input type='checkbox' id='opac.result.excludeelec' name="fi:-search_format" value="electronic"
+                                    onchange="exclude_onchange(this)"
+                                    [%- CGI.param('fi:-search_format').grep('electronic').size ? ' checked="checked"' : '' %] />
+                                [% l("Exclude Electronic Resources") %]
+                            </label>
+                        [% END %]
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+[% 
+
+long_facets = CGI.param('long_facet') || [];
+selected_facets = CGI.param('facet') || [];
+
+# sorted list of search facets
+sorted_facets = [];
+
+# we'll clobber the facet. "namespace" later
+# Provide a default value if unset in config.tt2
+DEFAULT_DISPLAY_COUNT = facet.default_display_count || 5;
+
+IF facet.display;
+
+    # facet display configuration present.  Traverse the 
+    # configuration lists, find the matching facets from 
+    # search facet data, and append them to the sorted 
+    # list of facets.
+
+    FOR display_chunk IN facet.display;
+        FOR display_field IN display_chunk.facet_order;
+            # find the matching facet in the facet data
+            FOR facet IN ctx.search_facets.values;
+                IF facet.cmf.field_class == display_chunk.facet_class 
+                        AND facet.cmf.name == display_field;
+                    sorted_facets.push(facet);
+                END;
+            END;
+        END;
+    END;
+
+ELSE; 
+
+    # No facet display configuration is present.
+    # show all facets, sorted by name.
+
+    # collect facet type labels for easier sorting
+    labels = []; 
+    FOR facet IN ctx.search_facets.values;
+        labels.push(facet.cmf.label);
+    END;
+    
+    # We used to do a sort here, but now that's handled in EGCatLoader.
+    sorted_facets = ctx.search_facets.values;
+END;
+
+display_count_by_cmf = {};
+
+FOR facet IN sorted_facets;
+    fclass = facet.cmf.field_class;
+    fname = facet.cmf.name;
+    fid = facet.cmf.id;
+    long_key = fclass _ fname %]
+
+    <div class="facet_box_temp">
+        <div class="header">
+                [% IF long_facets.grep(long_key).0;
+                    new_long = [];
+                    FOR fct IN long_facets;
+                        IF fct != long_key;
+                            new_long.push(fct);
+                        END;
+                    END;
+                    expand_url = mkurl('', {long_facet => new_long});
+                    IF new_long.size == 0;
+                        expand_url  = mkurl('', {}, ['long_facet']);
+                    END;
+                %]
+                    <a class="button" href="[% expand_url %]"
+                      title="[% l('Show Fewer [_1] Entries', facet.cmf.label) %]" rel="nofollow" vocab="">
+                      [% l("Fewer") %]
+                    </a>
+                [% ELSIF facet.data.size > DEFAULT_DISPLAY_COUNT %]
+                    <a class="button" 
+                      title="[% l('Show More [_1] Entries', facet.cmf.label) %]"
+                      href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]" rel="nofollow" vocab="">
+                      [% l("More") %]
+                    </a>
+                [% END %]
+            <h4 class="title">[% facet.cmf.label %]</h4>
+        </div>
+        <div class="box_wrapper">
+            <div class="box">
+            [% FOR facet_data IN facet.data;
+                display_value = facet_data.value | html;
+                param_string = fclass _ '|' _ fname _ '[' _ facet_data.value _ ']';
+                new_facets = [];
+                this_selected = 0;
+                FOR selected IN selected_facets;
+                    IF selected == param_string; 
+                        this_selected = 1; 
+                    ELSE;
+                        new_facets.push(selected);
+                    END;
+                END;
+
+                display_count_by_cmf.$fid = display_count_by_cmf.$fid || 0;
+
+                NEXT UNLESS long_facets.grep(long_key).0 OR
+                    display_count_by_cmf.$fid < DEFAULT_DISPLAY_COUNT;
+
+                # fix syntax highlighting: >
+
+                display_count_by_cmf.$fid = display_count_by_cmf.$fid + 1;
+
+                IF this_selected;
+                    # This facet is already selected by the user. 
+                    # Link removes the facet from the set of selected facets.
+                %] 
+                    <div class="facet_template facet_template_selected">
+                        <div class="facet">
+                            [% IF new_facets.size == 0 %]
+                            <a
+                              title="[% l('Show all results, not just those matching this term') %]"
+                              href="[% mkurl('', {}, ['facet']) %]" rel="nofollow" vocab="">[% display_value %]</a>
+                            [% ELSE %]
+                            <a
+                              title="[% l('Expand to also show results not matching this term') %]"
+                              href="[% mkurl('', {facet => new_facets}) %]" rel="nofollow" vocab="">[% display_value %]</a>
+                            [% END %]
+                        </div>
+                        <div class="count">([% facet_data.count; IF facet_data.count == (ctx.superpage + 1) * ctx.superpage_size; '+'; END %])</div>
+                    </div>
+                [% 
+                    ELSE;
+                    # This facet is not currently selected.  If selected, 
+                    # append this facet to the list of currently active facets.
+                %]
+                    <div class="facet_template">
+                        <div class="facet">
+                            <a
+                              title="[% l('Limit to results matching this term') %]"
+                              href='[% mkurl('', {facet => selected_facets.merge([param_string])}, ['page']) %]' rel="nofollow" vocab="">
+                              [% display_value %]
+                            </a>
+                        </div>
+                        <div class="count">([% facet_data.count %])</div>
+                    </div>
+                [% END %]
+            [% END %]
+            </div>
+        </div> <!-- box_wrapper -->
+    </div> <!-- facet_box_temp -->
+[% END %]
+</div> <!-- facet_box_wrapper -->
+
