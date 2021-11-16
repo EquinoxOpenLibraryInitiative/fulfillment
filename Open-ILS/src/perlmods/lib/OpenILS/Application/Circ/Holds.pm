@@ -2394,6 +2394,15 @@ sub _reset_hold {
         }
     }
 
+    if ($copy) {
+        my $aufh_entry = Fieldmapper::action::unfulfilled_hold_list->new;
+        $aufh_entry->fail_time('now');
+        $aufh_entry->hold($hid);
+        $aufh_entry->current_copy($copy->id);
+        $aufh_entry->circ_lib($copy->circ_lib);
+        $e->create_action_unfulfilled_hold_list($aufh_entry) or return $e->die_event;
+    }
+
     $hold->clear_capture_time;
     $hold->clear_current_copy;
     $hold->clear_shelf_time;

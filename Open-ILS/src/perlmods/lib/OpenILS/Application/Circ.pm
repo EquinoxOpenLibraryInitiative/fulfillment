@@ -2365,6 +2365,15 @@ sub collect_copy_transactions {
 
     $resp{copy}->call_number->record->clear_marc;
 
+    $resp{hold_blocks} = $e->search_action_copy_block_hold([
+        { item => $resp{copy}->id },
+        { order_by => {acbh => 'block_time DESC'},
+          flesh => 2,
+          flesh_fields => { au => ['card'], acbh => ['staff', 'hold'] }
+        }
+    ]);
+
+
     my ($best_hold) = $holdcode->find_nearest_permitted_hold( $e, $resp{copy}, $e->requestor, 1 );
     my $hold = $e->search_action_hold_request([
         {   fulfillment_time => undef,
@@ -2378,6 +2387,14 @@ sub collect_copy_transactions {
     if ($hold) {
         $hold = $e->retrieve_action_hold_request([ $hold->id, $hold_flesh ]);
 	$hold->clear_transit if ($hold->transit and $hold->transit->cancel_time);
+
+        $resp{rejections} = $e->search_action_unfulfilled_hold_list([
+            { hold => $hold->id },
+            { order_by => { aufh => 'fail_time DESC' },
+              flesh => 1,
+              flesh_fields => { aufh => ['current_copy', 'circ_lib'] }
+            }
+        ]);
 
         if ($local) {
             $next_action = 'ill-home-capture' unless $hold->capture_time;
