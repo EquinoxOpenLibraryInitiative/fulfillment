@@ -124,6 +124,42 @@
       </table>
     </div>
   </div>
+
+
+  <div class="row">
+    <div class="col-lg-6">
+      <table class="table table-striped table-hover" ng-show="item.hold_blocks.length">
+        <thead>
+          <th colspan="4">Hold blocks for copy</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="b in item.hold_blocks">
+            <td title="{{b.block_time()}}">{{b.block_time() | date:'shortDate'}}</td>
+            <td>{{b.staff().usrname()}}</td>
+            <td>{{b.reason()}}</td>
+            <td ng-show="b.hold()">One hold ({{b.hold().id()}})</td>
+            <td ng-show="!b.hold()">All holds</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6">
+      <table class="table table-striped table-hover" ng-show="item.rejections.length">
+        <thead>
+          <th colspan="3">Capture Rejections</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="r in item.rejections">
+            <td>{{r.circ_lib().shortname()}}</td>
+            <td>{{r.current_copy().barcode()}}</td>
+            <td title="{{r.fail_time()}}">{{r.fail_time() | date:'shortDate'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <style>
     .item-status-actions { 
       padding-left: 5px; 

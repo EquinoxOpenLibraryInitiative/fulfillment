@@ -36,7 +36,7 @@
       <li><a href="javascript:;" ng-click="cancel()"
         ng-show="(tab_pending || tab_inbound) && orientation_borrower">[% l('Cancel Request') %]</a></li>
       <li><a href="javascript:;" ng-click="abort_transit()"
-        ng-show="tab_inbound || tab_outbound">[% l('Abort Transit') %]</a></li>
+        ng-show="tab_outbound && orientation_lender">[% l('Abort Transit') %]</a></li>
       <li><a href="javascript:;" ng-click="checkin()"
         ng-show="tab_inbound">[% l('Receive Item') %]</a></li>
       <li><a href="javascript:;" ng-click="checkin()"

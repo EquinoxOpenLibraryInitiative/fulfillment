@@ -851,6 +851,8 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
         }
 
         item.copy = item_data.copy;
+        item.rejections = item_data.rejections;
+        item.hold_blocks = item_data.hold_blocks;
         item.copy_id = item_data.copy.id();
         item.item_barcode = copy.barcode();
         item.item_barcode_enc = encodeURIComponent(copy.barcode());
@@ -1007,6 +1009,8 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
         }
 
         item.copy = item_data.copy;
+        item.rejections = item_data.rejections;
+        item.hold_blocks = item_data.hold_blocks;
         item.copy_id = item_data.copy.id();
         item.item_barcode = copy.barcode();
         item.item_barcode_enc = encodeURIComponent(copy.barcode());
@@ -1021,6 +1025,8 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
         item.next_action = item_data.next_action;
         item.can_cancel_hold = (item_data.can_cancel_hold == 1);
         item.can_retarget_hold = (item_data.can_retarget_hold == 1);
+
+        console.log('next action: ' + item.next_action);
 
         switch(item_data.next_action) {
             // capture lender copy for hold
@@ -1059,6 +1065,21 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
                 item.next_action_label = 'Checkout ILL';
                 item.needs_checkout = true;
                 break;
+            default:
+                if (!(transit || hold || circ) // nothing's happening
+                    && item.circ_lib_id == orgSelector.current().id() // at home
+                    && copy.status().is_available() == 'f' // wonky status
+                ) {
+                    item.next_action_function = 'checkin';
+                    item.next_action_label = 'Clear bad status';
+                    item.needs_receive = true;
+                } else if (!(transit || hold || circ) // nothing's happening
+                    && item.circ_lib_id != orgSelector.current().id() // NOT at home
+                ) {
+                    item.next_action_function = 'checkin';
+                    item.next_action_label = 'Send item home';
+                    item.needs_checkin = true;
+                }
         }
 
         item.status_str = copy.status().name();

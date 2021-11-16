@@ -58,7 +58,7 @@ COLUMNS = [
         [% IF col.tabs %]ng-show="[% col.tabs %]"[% END %]
         ng-init="addColumn({name : '[% col.name %]', label : '[% col.label %]'})">
         [% IF col.name == 'copy_barcode' %]
-        <a href="./fulfillment/status/{{item.copy_barcode_enc}}/{{item.copy_circ_lib_id}}">{{item.copy_barcode}}</a>
+        <a href="./fulfillment/status/{{item.copy_barcode_enc}}">{{item.copy_barcode}}</a>
         [% ELSIF col.name == 'hold_id' %]
             <a ng-if="item.hold_type == 'M'" target="_blank" href="/eg/opac/results?detail_record_view=1&query= &metarecord={{item.target}}">{{item.hold_id}}</a>
             <a ng-if="item.hold_type == 'T'" target="_blank" href="/eg/opac/record/{{item.target}}">{{item.hold_id}}</a>
