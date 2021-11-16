@@ -1,0 +1,1 @@
+    <div id="topnav_logo"> <a href="/"><img width="300" alt="[% l('Fulfillment Logo') %]" src="[% ctx.media_prefix %]/opac/images/EquinoxInitiative-logo.png[% ctx.cache_key %]" /></a></div>

@@ -1,0 +1,8 @@
+<div id="gold-links-holder">
+    <div id="gold-links">
+        <div id="header-links">
+            <a href="https://equinoxinitiative.org">[% l('Equinox Open Library Initiative') %]</a>
+            <a href="https://fulfillment-ill.org">[% l('Fulfillment Project') %]</a>
+        </div>
+    </div>
+</div>

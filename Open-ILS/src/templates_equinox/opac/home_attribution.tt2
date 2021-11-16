@@ -1,0 +1,37 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Image credits");
+    canon = ctx.proto _ '://' _ ctx.hostname _ mkurl('', {}, 1);
+    ctx.metalinks.push('<link rel="canonical" href="' _ canon  _ '" />');
+    ctx.metalinks.push('<meta property="og:url" content="' _ canon  _ '" />');
+    IF CGI.param("expand"); basic_search = "f"; END;    
+-%]
+    <div id="image-credits">
+        <h2>[% l('Image credits') %]</h2>
+        <p>Item format icons were originally created by or were adapted from works on <a href="https://thenounproject.com/">The Noun Project</a> under the <a href="https://creativecommons.org/licenses/by/3.0/us/">Creative Commons Attribution license</a></p>
+        <ul>
+            <li><a href="https://thenounproject.com/term/record/23527/"><strong>Record</strong> by Juan Pablo Bravo from the Noun Project</a> used in phonograph.png, phonomusic.png, phonospoken.png</li>
+            <li><a href="https://thenounproject.com/term/cassette/788275/"><strong>Cassette</strong> by Maxim Kulikov from the Noun Project</a> used in cassette.png, casmusic.png, casaudiobook.png</li>
+            <li><a href="https://thenounproject.com/term/music-album/807056/"><strong>Music</strong> <strong>album</strong> by Aldric Rodríguez from the Noun Project</a> used in cdmusic.png</li>
+            <li><a href="https://thenounproject.com/term/school-book/903290/"><strong>School</strong> <strong>book</strong> by sandra from the Noun Project</a> used in book.png, braille.png, casaudiobook.png, cdaudiobook.png, lpbook.png, phonospoken.png</li>
+            <li><a href="https://thenounproject.com/term/map/972136/"><strong>Map</strong> by Adrien Coquet from the Noun Project</a> used in map.png</li>
+            <li><a href="https://thenounproject.com/term/music/1007077/"><strong>Music</strong> by i cons from the Noun Project</a> used in score2.png</li>
+            <li><a href="https://thenounproject.com/term/music/1007081/"><strong>Music</strong> by i cons from the Noun Project</a> used in casmusic.png, emusic.png, music.png, score2.png, phonomusic.png</li>
+            <li><a href="https://thenounproject.com/term/map/1244476/"><strong>Map</strong> by Trident from the Noun Project</a> used in map2.png</li>
+            <li><a href="https://thenounproject.com/term/video-projector/1251581/"><strong>Video</strong> <strong>Projector</strong> by Kamal from the Noun Project</a> used in equipment.png</li>
+            <li><a href="https://thenounproject.com/term/treble-clef/1101873/"><strong>Treble</strong> <strong>Clef</strong> by AliWijaya from the Noun Project</a> used in score.png, score2.png</li>
+            <li><a href="https://thenounproject.com/term/picture/1128208/"><strong>Picture</strong> by asianson.design from the Noun Project</a> used in picture.png</li>
+            <li><a href="https://thenounproject.com/term/braille/11046/"><strong>Braille</strong> by Denis Klyuchnikov from the Noun Project</a> used in braille.png</li>
+            <li><a href="https://thenounproject.com/term/ebook/853992/"><strong>Ebook</strong> by Aneeque Ahmed from the Noun Project</a> used in eaudio.png, ebook.png, emusic.png, evideo.png</li>
+            <li><a href="https://thenounproject.com/term/vhs/1188951/"><strong>VHS</strong> by b farias from the Noun Project</a> used in vhs.png</li>
+            <li><a href="https://thenounproject.com/term/audio/1052418/"><strong>Audio</strong> by i cons from the Noun Project</a> used in eaudio.png</li>
+            <li><a href="https://thenounproject.com/term/toolbox/379973/"><strong>Toolbox</strong> by Ralf Schmitzer from the Noun Project</a> used in kit.png</li>
+            <li><a href="https://thenounproject.com/term/cd/13042/"><strong>CD</strong> by Andrew Fortnum from the Noun Project</a> used in cd.png</li>
+            <li><a href="https://thenounproject.com/term/video/1048494/"><strong>Video</strong> by Alfa Design from the Noun Project</a> used in evideo.png</li>
+            <li><a href="https://thenounproject.com/term/magnifying-glass/791299/"><strong>Magnifying</strong> <strong>Glass</strong> by Eric Miller from the Noun Project</a> used in lpbook.png</li>
+            <li><a href="https://thenounproject.com/term/program/1125190/"><strong>Program</strong> by Roman from the Noun Project</a> used in software.png</li>
+            <li><a href="https://thenounproject.com/term/film/1074908/"><strong>Film</strong> by Mello from the Noun Project</a> used in microform.png</li>
+            <li><a href="https://thenounproject.com/term/picture/37746/"><strong>Book</strong> by Antonis Makriyannis from the Noun Project</a> used in serial.png</li>
+    </div>
+[%- END %]

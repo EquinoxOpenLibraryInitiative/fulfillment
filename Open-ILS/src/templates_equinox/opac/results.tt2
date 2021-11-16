@@ -1,0 +1,40 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+
+    IF is_advanced || is_special;
+        ctx.page_title = l("Search Results");
+    ELSE;
+        ctx.page_title = l("Search Results: ") _ CGI.param('query') | html;
+    END;
+
+    page = CGI.param('page');
+    page = page.match('^\d+$') ? page : 0; # verify page is a sane value
+
+    page_count = (!ctx.page_size.defined || !ctx.hit_count.defined || ctx.page_size == 0) ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+
+    # We don't want search engines indexing search results
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
+
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS get_library;
+-%]
+    <h2 class="sr-only">[% l('Search Results') %]</h2>
+    <form action="[% ctx.opac_root %]/results" method="get">
+    [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
+    </form>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div id="results-page">
+                [%- IF (ctx.depth_sel_checkbox OR ctx.depth_sel_button) AND CGI.param('depth') == ctx.depth_sel_depth AND ctx.depth_sel_resultshint %]
+                <div id="results-page-depth-hint">[% ctx.depth_sel_resultshint | html %]</div>
+                [%- END %]
+                [% path = "opac/parts/result/" _
+                    (ctx.records.size ? "table.tt2" : "lowhits.tt2");
+                INCLUDE $path %]
+            </div>
+            <div class="common-full-pad"></div>
+        </div>
+        <br class="clear-both" />
+    </div>
+[%- END %]
