@@ -1,4 +1,4 @@
-<div id="record_basket">
+<div id="record_basket" class="hide_me">
   <div id="basket_actions">
     <select id="select_basket_action" aria-label="[% l('Select basket action') %]">
       <option value="">[% l('-- Basket Actions --') %]</option>

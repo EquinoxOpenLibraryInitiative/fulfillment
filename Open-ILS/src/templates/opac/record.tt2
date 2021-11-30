@@ -12,7 +12,7 @@
     <br class="clear-both" />
     <div id="content-wrapper" class="content-wrapper-record-page">
         [% IF ctx.staff_saved_search_size %]
-        <div id="results-side-bar">
+        <div id="results-side-bar" class="hide_me">
             <div id="staff-saved-search">
                 [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
             </div>
