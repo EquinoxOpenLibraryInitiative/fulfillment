@@ -40,7 +40,7 @@ sub load_record {
     $depth = $ctx->{get_aou}->($org)->ou_type->depth 
         unless defined $depth; # can be 0
 
-    my $copy_depth = $self->cgi->param('copy_depth');
+    my $copy_depth = $self->cgi->param('cp_depth');
     $copy_depth = $depth unless defined $copy_depth; # can be 0
     $self->ctx->{copy_depth} = $copy_depth;
 

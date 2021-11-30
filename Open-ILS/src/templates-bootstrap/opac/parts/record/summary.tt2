@@ -443,7 +443,7 @@ ctx.metalinks.push('
                 [%- END %]
                 [% IF !ctx.is_staff %]
                 
-                    <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]"
+                    <a href="[% mkurl('', {locg =>CGI.param('locg'), cp_depth =>CGI.param('cp_depth')}, 1) %]"
                         class="btn btn-action" role="button">
                         <i class="fas fa-link" aria-hidden="true"></i>
                         [% l('Permalink') %]

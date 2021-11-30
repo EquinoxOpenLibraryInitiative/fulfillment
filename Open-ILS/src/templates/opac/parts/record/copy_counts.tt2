@@ -22,8 +22,8 @@
     [% l('[_1] of [quant,_2,copy,copies] available at [_3].', ou_avail, ou_count, ou_name) | html %]
     [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
         IF ou_count > 0 && this_depth != ctx.copy_depth %]
-    <a href="[% mkurl('', {copy_depth => this_depth}, ['copy_offset']); %]"
-       title="[% l('Show copies at [_1]', ou_name) | html; %]">
+    <a href="[% mkurl('', {cp_depth => this_depth}, ['copy_offset']); %]"
+       title="[% l('Show copies at [_1]', ou_name); %]">
        [%- l('(Show)'); %]</a>
     [%- END; %]
     </li>

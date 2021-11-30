@@ -148,7 +148,7 @@
                 [%- END %]
             [% IF !ctx.is_staff %]
                 <div class="rdetail_aux_utils share_record">
-                    <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]" class="no-dec">
+                    <a href="[% mkurl('', {locg =>CGI.param('locg'), cp_depth =>CGI.param('cp_depth')}, 1) %]" class="no-dec">
                          <img src="[% ctx.media_prefix %]/images/link.png[% ctx.cache_key %]" alt="[% l('Permalink') %]" />
                          [% l('Permalink') %]
                     </a>
