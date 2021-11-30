@@ -27,7 +27,7 @@ END;
 -%]
 [%-
 IF has_copies or ctx.foreign_copies;
-  depth = CGI.param('copy_depth').defined ? CGI.param('copy_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
+  depth = CGI.param('cp_depth').defined ? CGI.param('cp_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
   total_copies = ctx.copy_summary.$depth.count;
 %]
 [% use_courses = (ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1) ? 1 : 0 %]
