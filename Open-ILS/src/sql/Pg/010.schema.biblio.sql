@@ -59,7 +59,6 @@ CREATE TABLE biblio.record_entry (
     merged_to   BIGINT REFERENCES biblio.record_entry(id),
     remote_id   TEXT
 );
-INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','<record xmlns="http://www.loc.gov/MARC21/slim"/>','FOO');
 
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );

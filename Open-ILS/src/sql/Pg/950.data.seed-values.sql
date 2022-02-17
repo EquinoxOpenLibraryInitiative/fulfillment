@@ -2916,6 +2916,11 @@ INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
 -- Set a work_ou for the Administrator user
 INSERT INTO permission.usr_work_ou_map (usr, work_ou) VALUES (1, 1);
 
+--010.schema.biblio.sql:
+ALTER TABLE biblio.record_entry DISABLE TRIGGER bre_load_item_tgr;
+INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','<record xmlns="http://www.loc.gov/MARC21/slim"/>','FOO');
+ALTER TABLE biblio.record_entry ENABLE TRIGGER bre_load_item_tgr;
+
 --040.schema.asset.sql:
 INSERT INTO asset.copy_location (id, name,owning_lib) VALUES (1, oils_i18n_gettext(1, 'Stacks', 'acpl', 'name'),1);
 SELECT SETVAL('asset.copy_location_id_seq'::TEXT, 100);
