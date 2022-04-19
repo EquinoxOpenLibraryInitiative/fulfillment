@@ -1,6 +1,7 @@
 package FulfILLment::LAIConnector::Evergreen;
 use base FulfILLment::LAIConnector;
 use strict; use warnings;
+use OpenILS::Event;
 use OpenSRF::Utils::Logger qw/$logger/;
 use Digest::MD5 qw(md5_hex);
 use LWP::UserAgent;
@@ -90,7 +91,7 @@ sub get_user {
 
     unless ($resp and $resp->[0]) {
         $logger->info("EG: unable to verify user $user_barcode");
-        return undef;
+        return OpenILS::Event->new("ACTOR_USER_NOT_FOUND", error => 1);
     }
 
     my $data = $resp->[0];
