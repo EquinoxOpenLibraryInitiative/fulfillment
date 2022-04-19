@@ -30,6 +30,7 @@ use base FulfILLment::LAIConnector;
 use strict; use warnings;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils::Cache;
+use OpenILS::Event;
 use Digest::MD5 qw(md5_hex);
 use LWP::UserAgent;
 use URI::Escape;
@@ -117,7 +118,7 @@ sub makeRequest {
     $content ||= '';
     $contentType ||= 'application/json';
 
-    my $api_path = $self->{extra}{apiPath} || 'iii/sierra';
+    my $api_path = $self->{extra}{apiPath} || 'iii/sierra-api';
     my $api_ver  = $self->{extra}{apiVersion} || 'v6';
     my $uri = sprintf(
         'https://%s/%s/%s/%s',
@@ -209,8 +210,9 @@ sub get_user {
 
         if ($resp->{status} == 200) {
             $resp = $resp->{content};
-            return undef unless (grep { lc($_) eq lc($user_password) } @{$$resp{names}});
+            return OpenILS::Event->new("ACTOR_USER_NOT_FOUND", error => 1) unless (grep { (my $x = $_) =~ s/\s//g; lc($x) eq lc($user_password) } @{$$resp{names}});
         }
+        return OpenILS::Event->new("ACTOR_USER_NOT_FOUND", error => 1) unless (grep { (my $x = $_) =~ s/\s//g; lc($x) eq lc($user_password) } @{$$resp{names}});
     } else {
         if ($user_password) { # verify a user by password
             my $ameth = $self->{extra}{patron_auth_method} || 'native';
@@ -222,7 +224,7 @@ sub get_user {
                     patronSecret => $user_password
                 }), 1
             );
-            return undef unless ($resp->{status} == 204);
+            return OpenILS::Event->new("ACTOR_USER_NOT_FOUND", error => 1) unless ($resp->{status} == 204);
 
             $self->{cache}->put_cache( $C.'pw:'.$user_barcode => $user_password );
 
@@ -239,6 +241,7 @@ sub get_user {
                     fields => join(',', @fields)
                 ]
             );
+            return OpenILS::Event->new("ACTOR_USER_NOT_FOUND", error => 1) unless ($resp->{id});
         }
     }
 
