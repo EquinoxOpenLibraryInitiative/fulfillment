@@ -190,7 +190,8 @@ sub remote_auth_complete {
         if (!ref($remote_user)); # XXX arg.... (what's this now?)
 
     if ($remote_user && !$$remote_user{error}) { # create or update a user ...
-        if (!$user and $e->checkauth and $e->allowed('STAFF_LOGIN')) {
+        $$args{barcode} = $$remote_user{user_barcode};
+        if (!$user) {
             my $evt = create_proxy_user($remote_user, $ugroup, $args, $e);
             return $evt if $evt;
         } else {
@@ -236,11 +237,16 @@ sub create_proxy_user_api {
 
     return undef unless $home;
 
-    my $user = $e->search_actor_user({
-        usrname => "$barcode:$home", 
-        home_ou => $home
+    my $card = $e->search_actor_card({
+        barcode => $barcode,
+        org => $home
     })->[0];
-    return $user if $user;
+
+    my $user;
+    if ($card) {
+        $user = $e->retrieve_actor_user($card->usr);
+        return $user if $user;
+    }
 
     my $ugroup = $U->ou_ancestor_setting_value(
         $home, 'ff.remote.user_cache.default_group'
@@ -312,6 +318,7 @@ sub create_proxy_user {
     $patron->suffix( $$u{suffix} );
     $patron->prefix( $$u{prefix} );
     $patron->alias( $$u{initials} );
+    $patron->email( $$u{email} );
     
     # Set up all of the virtual IDs, isnew, etc.
     $patron->isnew(1);
@@ -393,6 +400,7 @@ sub resurrect_user {
     $user->suffix($$u{suffix});
     $user->prefix($$u{prefix});
     $user->alias($$u{initials});
+    $user->email( $$u{email} );
     $card->org($$args{home});
     $card->barcode($$u{user_barcode} || $$u{user_id} || $$args{username});
 
