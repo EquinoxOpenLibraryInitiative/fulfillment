@@ -388,12 +388,14 @@ sub get_record_holds {
     my ($self, $record_id) = @_;
 }
 
-sub place_lender_hold {
-    my $self = shift;
-    return $self->place_borrower_hold(@_);
+sub place_borrower_hold {
+    my ($self, $copy_barcode, $user_barcode, $pickup_lib) = @_;
+    my $ILLbarcode = 'ILL'.$copy_barcode;
+
+    return $self->place_lender_hold($ILLbarcode, $user_barcode, $pickup_lib);
 }
 
-sub place_borrower_hold {
+sub place_lender_hold {
     my ($self, $copy_barcode, $user_barcode, $pickup_lib) = @_;
     my $usr = $self->get_user($user_barcode);
     my $pu_lib = $usr->{homeLibraryCode};
@@ -419,12 +421,14 @@ sub _get_user_holds {
     );
 }
 
-sub delete_lender_hold {
-    my $self = shift;
-    return $self->delete_borrower_hold(@_);
+sub delete_borrower_hold {
+    my ($self, $copy_barcode, $user_barcode) = @_;
+    my $ILLbarcode = 'ILL'.$copy_barcode;
+
+    return $self->delete_lender_hold($ILLbarcode, $user_barcode);
 }
 
-sub delete_borrower_hold {
+sub delete_lender_hold {
     my ($self, $copy_barcode, $user_barcode) = @_;
 
     my $item = $self->get_item($copy_barcode);
@@ -448,9 +452,36 @@ sub delete_borrower_hold {
 
 sub create_borrower_copy {
     my ($self, $ref_copy, $ou_code) = @_;
+    my $ILLbarcode = 'ILL'.$ref_copy->barcode;
 
+    my $copy = $self->get_item($ILLbarcode);
+    if ($copy && $$copy{barcode}) {
+        $logger->debug("FF found a preexisting Sierra borrower copy " . Dumper($copy));
+        return $copy;
+    }
+
+    my $bibPatch = {
+        authors      => [ $ref_copy->call_number->record->simple_record->author ],
+        titles       => [ $ref_copy->call_number->record->simple_record->title ],
+        standardNums => [ $ref_copy->call_number->record->simple_record->isbn ],
+    };
+
+    my $bib_link = $self->makeRequest(
+        POST => [ 'items' ], [], encode_json($bibPatch)
+    )->{'link'};
+
+    my $bib_id = [split '/', $bib_link]->[-1];
+
+    unless ($bib_id) {
+        $logger->error(
+            "FF unable to create Sierra borrower dummy bib for ".$ref_copy->barcode);
+        return;
+    }
+
+    my $owning_loc = $self->{extra}{ILLItemLocation} || $self->get_user($self->{user})->{homeLibraryCode};
     my $itemPatch = {
-            barcodes => [ $ref_copy->barcode ],
+            barcodes => [ $ILLbarcode ],
+            bibIds   => [ $bib_id ],
             messages => ['ILL: ' . join(
                 ' / ',
                 grep { defined($_) && $_ ne '' }
@@ -458,14 +489,8 @@ sub create_borrower_copy {
                     $ref_copy->call_number->record->simple_record->author,
                     $ref_copy->call_number->record->simple_record->isbn
             )],
-            owningLocations => [ $ou_code ]
+            owningLocations => [ $owning_loc ],
     };
-
-    my $copy = $self->get_item($ref_copy->barcode);
-    if ($copy && $$copy{barcode}) {
-        $logger->debug("FF found a preexisting Sierra borrower copy " . Dumper($copy));
-        return $copy;
-    }
 
     my $cp_link = $self->makeRequest(
         POST => [ 'items' ], [], encode_json($itemPatch)
@@ -491,27 +516,20 @@ sub create_borrower_copy {
 sub checkout_borrower {
     my ($self, $copy_barcode, $user_barcode) = @_;
 
-    my $copy = $self->create_borrower_copy($copy_barcode);
-    return $self->checkout_lender($copy_barcode, $user_barcode)
-        if ($copy);
+    my $ILLbarcode = 'ILL'.$copy_barcode;
+    return $self->checkout($ILLbarcode, $user_barcode);
 
     return undef;
 }
 
 # to date, lender checkout requires no special handling
-sub checkout_lender {
+sub checkout {
     my ($self, $copy_barcode, $user_barcode) = @_;
 
     my $args = {
         itemBarcode => $copy_barcode, 
         patronBarcode => $user_barcode
     };
-
-    return $self->_send_checkout($args);
-}
-
-sub _send_checkout {
-    my ($self, $args) = @_;
 
     my $resp = $self->makeRequest(
         PUT => [ patrons => 'checkout' ],
@@ -534,6 +552,26 @@ sub _get_proxy_checkouts {
     return $resp->{entries};
 }
 
+
+sub checkin_borrower {
+    my ($self, $copy_barcode) = @_;
+    my $ILLbarcode = 'ILL'.$copy_barcode;
+
+    # attempt checkin
+    $self->checkin($ILLbarcode);
+
+    if (my $cp = $self->get_item($ILLbarcode)) {
+        # attempt item removal
+        $self->makeRequest(
+            DELETE => [ items => $cp->{id} ]
+        );
+
+        # attempt bib removal
+        $self->makeRequest(
+            DELETE => [ bibs => $cp->{bib_id} ]
+        );
+    }
+}
 
 sub checkin {
     my ($self, $copy_barcode) = @_;
