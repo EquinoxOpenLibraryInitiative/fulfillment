@@ -467,7 +467,7 @@ sub create_borrower_copy {
     };
 
     my $bib_link = $self->makeRequest(
-        POST => [ 'items' ], [], encode_json($bibPatch)
+        POST => [ 'bibs' ], [], encode_json($bibPatch)
     )->{'link'};
 
     my $bib_id = [split '/', $bib_link]->[-1];
@@ -481,7 +481,7 @@ sub create_borrower_copy {
     my $owning_loc = $self->{extra}{ILLItemLocation} || $self->get_user($self->{user})->{homeLibraryCode};
     my $itemPatch = {
             barcodes => [ $ILLbarcode ],
-            bibIds   => [ $bib_id ],
+            bibIds   => [ int($bib_id) ],
             messages => ['ILL: ' . join(
                 ' / ',
                 grep { defined($_) && $_ ne '' }
