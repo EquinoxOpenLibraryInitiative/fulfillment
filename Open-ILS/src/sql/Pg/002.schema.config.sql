@@ -1451,4 +1451,20 @@ CREATE TABLE config.openathens_identity (
     release_barcode             BOOL    NOT NULL DEFAULT false
 );
 
+CREATE TABLE config.lai_holding_map (
+    id                  SERIAL,
+    name                TEXT NOT NULL,
+    holding_tag         TEXT NOT NULL CHECK( LENGTH(holding_tag) = 3 ),
+    copy_location       TEXT,
+    call_number_prefix  TEXT,
+    call_number         TEXT,
+    call_number_suffix  TEXT,
+    barcode             TEXT,
+    copy_lib            TEXT,
+    alt_cn_tag          TEXT,
+    alt_cn_prefix       TEXT,
+    alt_cn_label        TEXT,
+    alt_cn_suffix       TEXT
+);
+
 COMMIT;

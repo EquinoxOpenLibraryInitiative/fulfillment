@@ -6,6 +6,13 @@ package action;
 use base qw/OpenILS::Application::Storage::CDBI/;
 #-------------------------------------------------------------------------------
 
+package action::copy_block_hold;
+use base qw/action/;
+__PACKAGE__->table('action.copy_block_hold');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/item hold reason staff block_time/);
+#-------------------------------------------------------------------------------
+
 package action::in_house_use;
 use base qw/action/;
 __PACKAGE__->table('action_in_house_use');

@@ -80,8 +80,11 @@
                         <option id='myopac_holds_actions_none' value=''>
                         -- [% l("Actions for selected holds") %] --
                         </option>
+                        [%  req_lib = ctx.user.home_ou.id || ctx.user.home_ou;
+                            IF NOT ctx.get_org_setting(req_lib, 'ff.request.force_mediation') %]
                         <option value='suspend'>[% l("Suspend") %]</option>
                         <option value='activate'>[% l("Activate") %]</option>
+                        [% END %]
                         <!-- XXX maybe later <option value='thaw_date'>[% l("Set Active Date") %]</option> -->
                         <option value='cancel'>[% l("Cancel") %]</option>
                     </select>

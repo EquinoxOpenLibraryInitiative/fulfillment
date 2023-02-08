@@ -76,8 +76,8 @@
                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
                     {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]" 
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                    [% img_alt(l('Place Hold on [_1]', attrs.title)) | html %]/>
-                <span class="place_hold">[% l('Place Hold') %]</span></a>
+                    [% img_alt(l('Place ILL Request on [_1]', attrs.title)) %]/>
+                <span class="place_hold">[% l('Place ILL Request') %]</span></a>
             </div>
             [%- END -%]
 
@@ -93,8 +93,8 @@
                 <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                    [% img_alt(l('Place Hold on [_1]', attrs.title)) | html %]/>
-                <span class="place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                    [% img_alt(l('Place ILL Request on [_1]', attrs.title)) | html %]/>
+                <span class="place_hold">[% l('Place ILL Request on E-Item') %]</span></a>
             </div>
             [%- END -%]
 

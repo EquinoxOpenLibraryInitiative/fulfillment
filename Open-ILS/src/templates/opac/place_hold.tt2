@@ -4,8 +4,8 @@
     IF ctx.is_staff;
         basic_search = "f";
     END;
-    ctx.page_title = l("Place Hold") %]
-    <h2 class="sr-only">[% l('Hold Placement') %]</h2>
+    ctx.page_title = l("Place ILL Request") %]
+    <h2 class="sr-only">[% l('ILL Request Placement') %]</h2>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
         <div id="main-content">

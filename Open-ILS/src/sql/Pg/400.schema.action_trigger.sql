@@ -61,6 +61,10 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('bre.edit','
 INSERT INTO action_trigger.hook (key, core_type, description) VALUES ('au.email.test', 'au', 'A test email has been requested for this user');
 INSERT INTO action_trigger.hook (key, core_type, description) VALUES ('au.sms_text.test', 'au', 'A test SMS has been requested for this user');
 
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('refresh_timeout.bre','bre','Bib record needs to be refreshed',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('refresh_timeout.acp','acp','Item record needs to be refreshed',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('bre.created','bre','Bib record is created');
+
 -- and much more, I'm sure
 
 -- Specialized collection modules.  Given an FM object, gather some info and return a scalar or ref.
@@ -162,6 +166,36 @@ INSERT INTO action_trigger.reactor (module,description) VALUES
     oils_i18n_gettext(
         'ProcessTemplate',
         'Processes the configured template',
+        'atreact',
+        'description'
+    )
+);
+
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'FulfILLment::AT::Reactor::ItemRefresh::ByItem',
+    oils_i18n_gettext(
+        'FulfILLment::AT::Reactor::ItemRefresh::ByItem',
+        'Refreshes item data via FulfILLment APIs',
+        'atreact',
+        'description'
+    )
+);
+
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'FulfILLment::AT::Reactor::ItemLoad::ByBib',
+    oils_i18n_gettext(
+        'FulfILLment::AT::Reactor::ItemLoad::ByBib',
+        'Load initial item data via FulfILLment APIs',
+        'atreact',
+        'description'
+    )
+);
+
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'FulfILLment::AT::Reactor::BibRefresh',
+    oils_i18n_gettext(
+        'FulfILLment::AT::Reactor::BibRefresh',
+        'Refreshes bibliographic data via FulfILLment APIs',
         'atreact',
         'description'
     )
@@ -393,6 +427,22 @@ BEGIN
 
 END;
 $_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION biblio.item_load_trigger () RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM actor.org_unit_setting 
+        WHERE org_unit = NEW.owner AND name = 'ff.remote.connector.disabled' AND value = 'true' 
+    ) THEN 
+        INSERT INTO action_trigger.event (target, event_def, run_time)
+            VALUES (NEW.id, 92, NOW()); -- item load trigger, below
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER bre_load_item_tgr AFTER INSERT ON biblio.record_entry
+    FOR EACH ROW EXECUTE PROCEDURE biblio.item_load_trigger ();
 
 COMMIT;
 

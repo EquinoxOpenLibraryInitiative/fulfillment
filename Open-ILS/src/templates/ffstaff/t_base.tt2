@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="[% ctx.locale %]"
+    [%- IF ctx.page_app %] ng-app="[% ctx.page_app %]"[% END -%]
+    [%- IF ctx.page_ctrl %] ng-controller="[% ctx.page_ctrl %]"[% END %]>
+  <head>
+    <title>[% l('FulfILLment Staff [_1]', ctx.page_title) %]</title>
+    <base href="/eg/ffstaff/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TODO: remote hosted CSS should be hosted locally instead -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/ffstaff/base.css" />
+    [% 
+        # App-specific CSS imports
+        PROCESS APP_CSS;
+    %]
+  </head>
+  <body>
+    [%# INCLUDE "ffstaff/t_navbar.tt2" %]<!-- no navbar for ff; TODO: css, etc. -->
+    <div id="top-content-container" class="container">[% content %]</div>
+  </body>
+  [% 
+    INCLUDE "ffstaff/t_base_js.tt2";
+
+    # App-specific JS load commands go into an APP_JS block.
+    PROCESS APP_JS;
+  %]
+</html>

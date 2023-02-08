@@ -565,7 +565,8 @@ sub load_login {
     my $username = $cgi->param('username') || '';
     $username =~ s/\s//g;  # Remove blanks
     my $password = $cgi->param('password');
-    my $org_unit = $ctx->{physical_loc} || $ctx->{aou_tree}->()->id;
+    my $org_unit = $cgi->param('home_ou') ||
+        $ctx->{physical_loc} || $ctx->{aou_tree}->()->id;
     my $persist = $cgi->param('persist');
     my $client_tz = $cgi->param('client_tz');
 
@@ -632,21 +633,30 @@ sub load_login {
         }
 
         if (!$auth_proxy_enabled) {
+
+            $logger->info("FF TPAC login for $username @ $org_unit");
             my $seed = $U->simplereq(
-                'open-ils.auth',
-                'open-ils.auth.authenticate.init', $username);
-            $args->{password} = md5_hex($seed . md5_hex($password));
+                'open-ils.actor',
+                'open-ils.actor.remote.authenticate.init',
+                $username, $org_unit);
+
+            $args->{password} = $seed == -1 ? 
+                $password :   md5_hex($seed . md5_hex($password));
+
+            $args->{home} = $org_unit;
+            # FF always uses the username field
+            $args->{username} = $args->{barcode} if $args->{barcode};
+
             $response = $U->simplereq(
-                'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
+                'open-ils.actor',
+                'open-ils.actor.remote.authenticate.complete', $args);
+
         } else {
             $args->{password} = $password;
             $response = $U->simplereq(
                 'open-ils.auth_proxy',
                 'open-ils.auth_proxy.login', $args);
         }
-        $self->timelog("Checked password");
-    } else {
-        $response ||= OpenILS::Event->new( 'LOGIN_FAILED' ); # assume failure
     }
 
     if($U->event_code($response)) { 

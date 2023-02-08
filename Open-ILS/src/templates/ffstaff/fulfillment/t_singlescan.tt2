@@ -1,0 +1,217 @@
+
+<div ng-controller="SingleScanCtrl">
+  <br/>
+  <div class="row" style='padding-left: 5px; padding-right: 5px;'>
+    <div class="col-lg-3">
+      <form ng-submit="draw(barcode,1)">
+        <div class="input-group">
+          <input focus-me="focusBC" select-me="selectMe" ng-model="barcode" 
+            type="text" class="form-control" placeholder="Item Barcode">
+          <span class="input-group-btn">
+          <button class="btn btn-default" 
+            type="button" ng-click="draw(barcode,1)">Go!</button>
+          </span>
+        </div>
+        <br/>
+        <div>
+          <a ng-show="item.next_action_label" focus-me="focusAction" class="btn btn-default" href="javascript:;" ng-click="do[item.next_action_function](item)">{{item.next_action_label}}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <br/>
+
+[%
+# define the full set of columns here for ease of sharing
+# the data between the template and the JS env.
+COLUMNS = [
+    {name => 'index', label => l('#'), extra => ' + 1'},
+    #{name => 'hold_id', label => l('Request ID')},
+    #{name => 'transit_id', label => l('Transit ID')},
+    #{name => 'circ_id', label => l('Circ ID')},
+    {name => 'title', label => l('Title')},
+    {name => 'author', label => l('Author')},
+    {name => 'item_barcode_enc', label => l('Item Barcode')},
+    {name => 'circ_lib', label => l('Copy Library')},
+    {name => 'request_time', label => l('Request Date'), extra => "| date:'shortDate'"},
+    #{name => 'expire_time', label => l('Expire Date'), extra => "| date:'shortDate'"},
+    {name => 'frozen', label => l('Active')},
+    {name => 'hold_request_lib', label => l('Requesting Library')},
+    {name => 'hold_pickup_lib', label => l('Pickup Library')}
+    {name => 'transit_time', label => l('Transit Date'), extra => "| date:'shortDate'"},
+    {name => 'transit_source', label => l('Transit Source')},
+    {name => 'transit_dest', label => l('Transit Destination')},
+    {name => 'hold_shelf_time', label => l('Shelf Date'), extra => "| date:'shortDate'"},
+    #{name => 'hold_shelf_expire_time', label => l('Shelf Expire Date'), extra => "| date:'shortDate'"},
+    {name => 'patron_given_name', label => l('Patron First')},
+    {name => 'patron_family_name', label => l('Patron Last')},
+    {name => 'patron_barcode', label => l('Patron Barcode')},
+    {name => 'xact_start', label => l('Checkout Date'), extra => "| date:'shortDate'"},
+    {name => 'due_date',  label => l('Due Date'), extra => "| date:'shortDate'"},
+    {name => 'circ_circ_lib', label => l('Circulating Library')},
+    {name => 'routing_code', label => l('Routing Code')},
+    {name => 'next_action', label => l('Next Action')}
+];
+%]
+
+  <table class="table table-striped table-hover table-condensed" ng-show="itemList.count() > 1">
+    <thead>
+      <tr>
+        [% FOREACH col IN COLUMNS %]
+        <th>
+          [% IF col.name == 'index'; col.label; ELSE %]
+          <a href='javascript:;' ng-click="sort('[% col.name %]')">[% col.label %]</a>
+          [% END %]
+        </th>
+        [% END %]
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="i in itemList.items">
+        [% FOREACH col IN COLUMNS %]
+        <td ng-init="addColumn({name : '[% col.name %]', label : '[% col.label %]'})">
+          [% IF col.name == 'copy_barcode' %]
+          <a href="./fulfillment/status/{{i.copy_barcode_enc}}/{{i.circ_lib_id}}">{{i.copy_barcode}}</a>
+          [% ELSIF col.name == 'next_action' %]
+            <a href="javascript:;" ng-click="do[i.next_action_function](i)">{{i.next_action_label}}</a>
+          [% ELSIF col.name == 'frozen' %]
+              {{i.frozen == 'f'}}
+          [% ELSE %]
+            {{i.[% col.name %][% col.extra IF col.extra %]}}
+          [% END %]
+        </td>
+        [% END %]
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row" ng-show="item">
+    <div class="col-lg-6">
+      <table class="table table-striped table-hover">
+        <thead>
+          <th>Item Details</th>
+          <th>
+            <a target="_blank" ng-show="item.source_lib"
+              href="/eg/opac/record/{{item.bib_id}}">
+              View in Catalog
+            </a>
+            <span ng-show="item.not_found" 
+              class="label label-danger">Item Not Found</span>
+          </th>
+        </thead>
+        <tbody>
+          <tr><td>Barcode:</td><td>{{item.barcode}}</td></tr>
+          <tr>
+            <td>Status:</td>
+            <td>
+              <span 
+                ng-class="{label : item.copy_status_warning, 'label-warning' : item.copy_status_warning}">
+                {{item.status_str}}
+              </span>
+            </td>
+          </tr>
+          <tr><td>Owning Lib:</td><td>{{item.source_lib}}</td></tr>
+          <tr><td>Title:</td><td>{{item.title}}</td></tr>
+          <tr><td>Author:</td><td>{{item.author}}</td></tr>
+          <tr><td>Call Number:</td><td>{{item.call_number}}</td></tr>
+          <tr><td>FulfILLment Bib ID:</td><td>{{item.bib_id}}</td></tr>
+          <tr><td>Remote ILS Bib ID:</td><td>{{item.remote_bib_id}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6">
+      <table class="table table-striped table-hover">
+        <thead>
+          <th>Transaction Details</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr ng-show='item.circ'><td>Circulating Library:</td><td>{{item.circ_circ_lib}}</td></tr>
+          <tr ng-show='item.circ'><td>Circulating Patron:</td><td>{{item.patron_name}}</td></tr>
+          <tr ng-show='item.circ'><td>Checkout date:</td><td>{{item.circ_xact_start | date:'shortDate'}}</td></tr>
+          <tr ng-show='item.circ'><td>Due Date:</td><td>{{item.due_date | date:'shortDate'}}</td></tr>
+          <tr ng-show='item.circ_stop_fines'><td>Circ Status:</td>
+            <td><span class="label label-warning">{{item.circ_stop_fines}}</span></td>
+          </tr>
+          <tr ng-show='item.hold'><td>Requesting Patron:</td><td>{{item.patron_name}}</td></tr>
+          <tr ng-show='item.hold'><td>Requesting Library:</td><td>{{item.hold_request_lib}}</td></tr>
+          <tr ng-show='item.hold'><td>Pickup Library:</td><td>{{item.hold_pickup_lib}}</td></tr>
+          <tr ng-show='item.hold'><td>Request Date:</td><td>{{item.hold_request_time | date:'shortDate'}}</td></tr>
+          <tr ng-show='item.hold'><td>Capture Date:</td><td>{{item.hold_capture_time | date:'shortDate'}}</td></tr>
+          <tr ng-show='item.hold_cancel_time'>
+              <td>Hold Cancel Date:</td>
+              <td><span class="label label-warning">{{item.hold_cancel_time | date:'shortDate'}}</span></td>
+          </tr>
+          <tr ng-show='item.hold_cancel_cause'>
+              <td>Hold Cancel Reason:</td>
+              <td><span class="label label-warning">{{item.hold_cancel_cause}}</span></td>
+          </tr>
+          <tr ng-show='item.hold_shelf_time'>
+              <td>[% l('Hold Shelf Date:') %]</td>
+              <td>{{item.hold_shelf_time | date:'shortDate'}}</td>
+          </tr>
+          <tr ng-show='item.hold_shelf_expire_time'>
+              <td>[% l('Hold Shelf Expire Time:') %]</td>
+              <td>{{item.hold_shelf_expire_time | date:'shortDate'}}</td>
+          </tr>
+          <tr ng-show='item.transit'><td>Transit Source:</td><td>{{item.transit_source}}</td></tr>
+          <tr ng-show='item.transit'><td>Transit Destination:</td><td>{{item.transit_dest}}</td></tr>
+          <tr ng-show='item.transit'><td>Destination Routing Code:</td><td>{{item.transit_routing_code}}</td></tr>
+          <tr ng-show='item.transit'><td>Transit Send Date:</td><td>{{item.transit_time | date:'shortDate'}}</td></tr>
+          <tr ng-show='item.transit'><td>Transit Receive Date:</td><td>{{item.transit_recv_time | date:'shortDate'}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <style>
+    .item-status-actions { 
+      padding-left: 5px; 
+      padding-top: 5px; 
+      border-top:2px solid #8396d3;
+    }
+    .item-status-actions a { padding-right: 5px; }
+  </style>
+
+  <div class="row" style='padding-left: 5px; padding-right: 5px;'>
+    <div class="col-lg-3"></div>
+    <div class="col-lg-9 text-right">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="mark_lost()" ng-show="item.can_mark_lost">Mark Lost</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="abort_transit()" ng-show="item.open_transit">Abort Transit</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="cancel()" ng-show="item.can_cancel_hold">Cancel Request</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="checkout()" ng-show="item.needs_checkout">Check Out</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="checkin()" ng-show="item.needs_checkin">Check In</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="checkin()" ng-show="item.needs_receive">Receive Item</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="retarget()" ng-show="item.can_retarget_hold">Retarget Request</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="checkin()"  ng-show="item.needs_capture">Capture Item</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="actions.print(item)">Print Details</button>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <div class="row" ng-show="item.source_lib">
+    <div class="col-lg-10 col-lg-offset-1 item-status-actions">
+      <div class="btn-group">
+       <button type="button" class="btn btn-default">Print Details</button>
+       <button type="button" class="btn btn-default">Capture Item</button>
+      </div>
+      <a href="javascript:;" class='action-link' ng-click="actions.print(item)">Print Details</a>
+      <a href="javascript:;" class='action-link' ng-click="checkin()"  ng-show="item.needs_capture">Capture Item</a>
+      <a href="javascript:;" class='action-link' ng-click="checkout()" ng-show="item.needs_checkout">Check Out</a>
+      <a href="javascript:;" class='action-link' ng-click="checkin()"  ng-show="item.needs_checkin">Check In</a>
+      <a href="javascript:;" class='action-link' ng-click="checkin()"  ng-show="item.needs_receive">Receive Item</a>
+      <a href="javascript:;" class='action-link' ng-click="cancel()"   ng-show="item.can_cancel_hold">Cancel Request</a>
+    </div>
+  </div>
+  -->
+</div>

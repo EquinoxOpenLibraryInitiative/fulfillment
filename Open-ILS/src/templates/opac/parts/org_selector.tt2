@@ -2,7 +2,7 @@
 # Org Unit Selector Widget :
 #   INCLUDE build_org_selector id='selector-id' name='selector-name' 
 #       value=org_id show_loc_groups=1/0 can_have_vols_only=1/0
-#       can_have_users_only=1/0 valid_org_list=[1,2,3] show_lassos=1/0
+#       can_have_users_only=1/0 valid_org_list=[1,2,3] show_lassos=1/0 default_text='Select a library'
 #
 # NOTE: DO NOT USE PROCESS
 # Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
@@ -51,6 +51,9 @@ BLOCK build_org_selector;
             </optgroup>
             <optgroup label="[% l('Libraries') %]">
         [% END;
+        IF default_text;
+            -%]<option value="[%value%]" [% IF loc_value_is_default %]selected="selected" [% END %]disabled="disabled">[% default_text | html %]</option>[%-
+        END;
 
         WHILE node_stack.size > 0; 
             node = node_stack.pop();
@@ -122,6 +125,12 @@ BLOCK build_org_selector;
                     org_unit.id, 'opac.holds.org_unit_not_pickup_lib');
                 disabled = 'disabled="disabled"';
             END;
+
+            #IF !ctx.get_org_setting(
+            #        org_unit.id, 'ff.remote.enable_for_patron_login');
+            #    disabled = 'disabled="disabled"';
+            #    selected = '';
+            #END;
 
             # caller provided a list of valid org units.
             # all orgs not in the list are marked invalid.

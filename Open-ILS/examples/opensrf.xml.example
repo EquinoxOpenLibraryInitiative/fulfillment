@@ -213,57 +213,15 @@ vim:et:ts=4:sw=4:
             <!-- XML-RPC gateway.  Do NOT publish unprotected services here -->
             <allowed_services>
                 <!-- list of published services -->
-                <service>opensrf.math</service>
-                <service>opensrf.dbmath</service>
                 <service>open-ils.cat</service>
                 <service>open-ils.search</service>
                 <service>open-ils.circ</service>
                 <service>open-ils.actor</service>
                 <service>open-ils.auth</service>
                 <service>open-ils.auth_proxy</service>
-                <service>open-ils.collections</service>
                 <service>open-ils.justintime</service>
             </allowed_services>
         </xml-rpc>
-
-        <!--
-        Once upon a time, Z39.50 servers were defined here. As of Evergreen 2.2,
-        they are now defined in the database. See the Release Notes for
-        instructions on mapping the old XML entries to database tables.
-        -->
-
-        <http_client>
-            <!--
-            These settings are used by the OpenILS::Utils::HTTPClient module
-            when communicating with external services (e.g. third-party APIs)
-            over HTTP.  Values are passed along to LWP::UserAgent.
-            -->
-
-            <!-- custom useragent for HTTP requests
-            <useragent>Evergreen</useragent>
-            -->
-
-            <!-- default timeout value (in seconds) -->
-            <default_timeout>60</default_timeout>
-
-            <ssl_opts>
-                <!--
-                When using HTTPS, verify that the external server has a valid
-                SSL certificate matching the expected hostname.  (Set to 0 to
-                disable verification, 1 to enable it.)
-                -->
-                <verify_hostname>1</verify_hostname>
-
-                <!--
-                If verify_hostname is enabled, you may need to specify a path
-                for CA certificates installed on your system.  Use ONE of the
-                following settings.  See LWP::UserAgent docs for details.
-                <SSL_ca_path>/etc/ssl/certs</SSL_ca_path>
-                <SSL_ca_file>/etc/ssl/certs/ca-certificates.crt</SSL_ca_file>
-                -->
-            </ssl_opts>
-
-        </http_client>
 
         <added_content>
             <!-- load the OpenLibrary added content module -->
@@ -275,7 +233,7 @@ vim:et:ts=4:sw=4:
             a failure.
 
             Note that the pool of Apache processes used by the AddedContent
-            module is the same pool used by core Evergreen processes such as
+            module is the same pool used by core FulfILLment processes such as
             search, circulation, etc. Therefore, the higher you set this
             timeout value, the more likely you are to run out of available
             Apache processes resulting in an accidental (or purposeful) denial
@@ -558,7 +516,7 @@ vim:et:ts=4:sw=4:
                             <restrict_by_home_ou>false</restrict_by_home_ou>
                         </authenticator>
                         -->
-                        <!-- 'native' is a proxied version of Evergreen's standard authentication -->
+                        <!-- 'native' is a proxied version of FulfILLment's standard authentication -->
                         <authenticator>
                             <name>native</name>
                             <!-- you can add 'login_types' and 'org_units' limits to this authenticator as well, if needed -->
@@ -623,9 +581,9 @@ vim:et:ts=4:sw=4:
                     <estimation_strategy>inclusion</estimation_strategy>
 
                     <!--
-                        Evergreen uses a cover density algorithm for calculating relative ranking of matches.  There
+                        FulfILLment uses a cover density algorithm for calculating relative ranking of matches.  There
                         are several tuning parameters and options available.  By default, no document length normalization
-                        is applied.  From the Postgres documentation on ts_rank_cd() (the function used by Evergreen):
+                        is applied.  From the Postgres documentation on ts_rank_cd() (the function used by FulfILLment):
 
                             Since a longer document has a greater chance of containing a query term it is reasonable 
                             to take into account document size, e.g., a hundred-word document with five instances of 
@@ -655,7 +613,7 @@ vim:et:ts=4:sw=4:
                             option 32 (rank/(rank+1)) can be applied to scale all ranks into the range zero to one, but of 
                             course this is just a cosmetic change; it will not affect the ordering of the search results.
 
-                        In Evergreen, these options are set via search modifiers.  The modifiers are mapped in the
+                        In FulfILLment, these options are set via search modifiers.  The modifiers are mapped in the
                         following way:
 
                             * #CD_logDocumentLength  => 1  :: rank / (1 + LOG(total_word_count))   :: Longer documents slightly less relevant
@@ -936,43 +894,33 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                    <user_agent>Evergreen %s Link Checker</user_agent>
+                    <user_agent>FulfILLment %s Link Checker</user_agent>
                 </app_settings>
             </open-ils.url_verify>
 
-            <opensrf.math>
+            <open-ils.penalty>
                 <keepalive>3</keepalive>
                 <stateless>1</stateless>
-                <language>c</language>
-                <implementation>libosrf_math.so</implementation>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Penalty</implementation>
+                <max_requests>99</max_requests>
                 <unix_config>
-                    <unix_sock>opensrf.math_unix.sock</unix_sock>
-                    <unix_pid>opensrf.math_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>opensrf.math_unix.log</unix_log>
+                    <unix_log>open-ils.penalty_unix.log</unix_log>
+                    <unix_sock>open-ils.penalty_unix.sock</unix_sock>
+                    <unix_pid>open-ils.penalty_unix.pid</unix_pid>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
-            </opensrf.math>
-
-            <opensrf.dbmath> 
-                <keepalive>3</keepalive>
-                <stateless>1</stateless>
-                <language>c</language>
-                <implementation>libosrf_dbmath.so</implementation>
-                <unix_config>
-                    <max_requests>1000</max_requests>
-                    <unix_log>opensrf.dbmath_unix.log</unix_log>
-                    <unix_sock>opensrf.dbmath_unix.sock</unix_sock>
-                    <unix_pid>opensrf.dbmath_unix.pid</unix_pid>
-                    <min_children>1</min_children>
-                    <max_children>15</max_children>
-                    <min_spare_children>1</min_spare_children> 
-                    <max_spare_children>5</max_spare_children>
-                </unix_config>
-            </opensrf.dbmath>
+                <app_settings>
+                    <patron_penalty>penalty/patron_penalty.js</patron_penalty>
+                    <script_path>LIBDIR/javascript</script_path>
+                    <script_path>LOCALSTATEDIR</script_path>
+                    <script_path>LOCALSTATEDIR/catalog</script_path>
+                </app_settings>
+            </open-ils.penalty>
 
             <open-ils.justintime>
                 <keepalive>5</keepalive>
@@ -1165,28 +1113,6 @@ vim:et:ts=4:sw=4:
                 </unix_config>
             </opensrf.settings>
 
-            <open-ils.collections>
-                <keepalive>3</keepalive>
-                <stateless>1</stateless>
-                <language>perl</language>
-                <implementation>OpenILS::Application::Collections</implementation>
-                <max_requests>17</max_requests>
-                <unix_config>
-                    <unix_sock>open-ils.collections_unix.sock</unix_sock>
-                    <unix_pid>open-ils.collections_unix.pid</unix_pid>
-                    <max_requests>1000</max_requests>
-                    <unix_log>open-ils.collections_unix.log</unix_log>
-                    <min_children>1</min_children>
-                    <max_children>10</max_children>
-                    <min_spare_children>1</min_spare_children>
-                    <max_spare_children>5</max_spare_children>
-                </unix_config>
-                <app_settings>
-                    <!-- batch_file_dir must be a protected, web-accessible, shared directory -->
-                    <batch_file_dir>/openils/var/web/collections</batch_file_dir>
-                </app_settings>
-            </open-ils.collections>
-
             <open-ils.reporter>
                 <keepalive>3</keepalive>
                 <stateless>1</stateless>
@@ -1232,33 +1158,6 @@ vim:et:ts=4:sw=4:
                     </database>
                 </app_settings>
             </open-ils.reporter-store>
-
-<!-- resolver_type defaults to sfx but can also be cufts -->
-<!--
-           <open-ils.resolver>
-               <keepalive>3</keepalive>
-               <stateless>1</stateless>
-               <language>perl</language>
-               <implementation>OpenILS::Application::ResolverResolver</implementation>
-               <max_requests>93</max_requests>
-               <unix_config>
-                  <unix_sock>open-ils.resolver_unix.sock</unix_sock>
-                  <unix_pid>open-ils.resolver_unix.pid</unix_pid>
-                  <max_requests>1000</max_requests>
-                  <unix_log>open-ils.resolver_unix.log</unix_log>
-                  <min_children>5</min_children>
-                  <max_children>15</max_children>
-                  <min_spare_children>3</min_spare_children>
-                  <max_spare_children>5</max_spare_children>
-               </unix_config>
-               <app_settings>
-                  <cache_timeout>86400</cache_timeout>
-                  <request_timeout>10</request_timeout>
-                  <default_url_base>http://path/to/sfx_or_cufts</default_url_base>
-                  <resolver_type>sfx</resolver_type>
-               </app_settings>
-            </open-ils.resolver>
--->
 
             <open-ils.permacrud>
                <keepalive>3</keepalive>
@@ -1424,6 +1323,25 @@ vim:et:ts=4:sw=4:
                 <app_settings>
                 </app_settings>
             </open-ils.curbside>
+            <fulfillment.laicore>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>FulfILLment::Application::LAICore</implementation>
+                <max_requests>93</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.actor_unix.sock</unix_sock>
+                    <unix_pid>open-ils.actor_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.actor_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </fulfillment.laicore>
         </apps>
     </default>
 
@@ -1442,10 +1360,6 @@ vim:et:ts=4:sw=4:
             <activeapps>
                 <!-- services hosted on this machine -->
                 <appname>opensrf.settings</appname> 
-                <appname>opensrf.math</appname> 
-                <appname>opensrf.dbmath</appname> 
-                <appname>open-ils.acq</appname> 
-                <appname>open-ils.booking</appname>
                 <appname>open-ils.cat</appname> 
                 <appname>open-ils.supercat</appname> 
                 <appname>open-ils.search</appname> 
@@ -1457,11 +1371,9 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.storage</appname>  
                 <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  
-                <appname>open-ils.collections</appname>
                 <appname>open-ils.qstore</appname>
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
-                <!-- <appname>open-ils.resolver</appname> -->
                 <appname>open-ils.permacrud</appname>  
                 <appname>open-ils.pcrud</appname>  
                 <appname>open-ils.trigger</appname>  
@@ -1474,6 +1386,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.courses</appname>
                 <appname>open-ils.curbside</appname>
                 <appname>open-ils.geo</appname>
+                <appname>fulfillment.laicore</appname>
             </activeapps>
         </localhost>
     </hosts>

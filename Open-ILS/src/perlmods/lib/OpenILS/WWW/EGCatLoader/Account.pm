@@ -1585,7 +1585,8 @@ sub load_place_hold {
             for my $id (@targets) {
                 my ($mr) = grep {$_->id eq $id} @$mrecs;
 
-                my $ou_id = $cgi->param('pickup_lib') || $self->ctx->{search_ou};
+                # my $ou_id = $cgi->param('pickup_lib') || $self->ctx->{search_ou};
+                my $ou_id = 1; # XXX FulfILLment wants to look everywhere
                 my $filter_data = $U->simplereq(
                     'open-ils.circ',
                     'open-ils.circ.mmr.holds.filters.authoritative', $mr->id, $ou_id);

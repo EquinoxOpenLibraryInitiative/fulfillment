@@ -1448,7 +1448,7 @@ sub flatten {
 
     my $ot = $U->get_org_tree;
     my $site_org = $ot;
-    my $negate = 'FALSE';
+    my $negate = 'TRUE'; # NOTE: Inverted site negation for FF
 
     my @lasso_list;
     my ($lasso_filter) = grep { $_->name eq 'lasso' } @{$self->filters};
@@ -1470,7 +1470,7 @@ sub flatten {
     if (!@lasso_list) {
         my ($site_filter) = grep { $_->name eq 'site' } @{$self->filters};
         if ($site_filter and @{$site_filter->args} == 1) {
-           $negate = $site_filter->negate ? 'TRUE' : 'FALSE';
+           $negate = $site_filter->negate ? 'FALSE' : 'TRUE';
 
            my $sitename = $site_filter->args->[0];
            $site_org = $U->find_org_by_shortname($ot, $sitename) || $ot;
@@ -1488,6 +1488,7 @@ sub flatten {
     }
     unflesh_parents($ot);
 
+    $negate = $site_org->id == $ot->id ? 'FALSE' : $negate; # let a top-of-tree search succeed
     push @{$vis_filter{'c_attr'}},
         "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
 
@@ -1497,9 +1498,11 @@ sub flatten {
         my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
         push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));
 
-        $uses_bre = 1;
-        push @{$vis_filter{'b_attr'}},
-            "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+        if ($site_org->id != $ot->id) {
+            $uses_bre = 1;
+            push @{$vis_filter{'b_attr'}},
+                "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+        }
     }
 
     my @dlist = ();
@@ -1735,6 +1738,12 @@ sub flatten {
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
                     push @{$vis_filter{'b_attr'}},
                         "search.calculate_visibility_attribute_test('source','{".join(',', @{$filter->args})."}',$negate)";
+                }
+            } elsif ($filter->name eq 'from_metarecord') {
+                if (@{$filter->args} > 0) {
+                    my $key = 'm.metarecord';
+                    $where .= $joiner if $where ne '';
+                    $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                 }
             } elsif ($filter->name eq 'from_metarecord') {
                 if (@{$filter->args} > 0) {

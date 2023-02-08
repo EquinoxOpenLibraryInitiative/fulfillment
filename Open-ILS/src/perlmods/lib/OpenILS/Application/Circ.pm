@@ -2239,4 +2239,218 @@ sub get_offline_data {
 # {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}
 
 
+__PACKAGE__->register_method(
+	method	=> "item_transaction_disposition",
+	api_name	=> "open-ils.circ.item.transaction.disposition",
+	signature => {
+        desc => q/Given an item barcode, determines the disposition of the
+            copy with regard to open transactions.  The goal is to report 
+            on where the copy is going (if en route to or from a hold or 
+            transit) or whether the copy is circulating.  Since it's 
+            possible for more than one copy with the provided barcode may
+            have some relationship to the context org unit, some data is
+            returned as arrays, while other data is returned as a single
+            object.  
+
+            Lender transactions each are limited to one occurrence in total, 
+            because they refer to a specific copy, which lives within ctx_ou.  
+            All other actions may refer to multiple copies and thus have 
+            multiple transactions.
+
+            Lender transit is the transit back home of the loaned copy
+            Borrower transits are all transits to elsewhere by copies
+            owned elsewhere.
+            /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Context Org Unit ID', type => 'number'},
+            {desc => 'Copy Barcodde', type => 'string'},
+        ],
+        return => {desc => q/
+            Array of copies, sorted by locally owned copy first, followed
+            by copies owned by others. Each field in the response, minus
+            the 'copy' field, is optionally.
+            {   copy    : <copy>
+                circ    : <circ>
+                hold    : <hold>
+                transit : <transit>
+            }
+        /}
+    }
+);
+
+sub item_transaction_disposition {
+    my ($self, $client, $auth, $ctx_ou, $barcode) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # catchall
+
+    # context ou may be a parent or a child of the various transaction
+    # and item owning lib org units.
+    my $org_list = $U->get_org_full_path($ctx_ou);
+
+    my $local_copy = $e->search_asset_copy({
+        deleted  => 'f',
+        barcode  => $barcode,
+        circ_lib => $org_list
+    })->[0];
+    
+    my $remote_copies = $e->search_asset_copy({
+        deleted  => 'f',
+        barcode  => $barcode,
+        circ_lib => {'not in' => $org_list}
+    });
+
+    my @resp;
+
+    push(@resp, 
+        collect_copy_transactions(
+            $e, $local_copy->id, $ctx_ou, $org_list, 1)
+    ) if $local_copy;
+
+    push(@resp, 
+        collect_copy_transactions(
+            $e, $_->id, $ctx_ou, $org_list)
+    ) for @$remote_copies;
+
+    return \@resp;
+}
+
+sub collect_copy_transactions {
+    my ($e, $copy_id, $ctx_ou, $org_list, $local) = @_;
+    my $next_action = '';
+
+    my $transit_flesh = {
+        flesh => 4,
+        flesh_fields => {
+            atc  => ['source', 'dest', 'hold_transit_copy'],
+            ahtc => ['hold'],
+            ahr  => ['usr'],
+            au   => ['card'],
+            aou  => ['ill_address']
+        }
+    };
+
+    my $circ_flesh = {
+        flesh => 2,
+        flesh_fields => {
+            circ => ['usr'],
+            au   => ['card']
+        }
+    };
+
+    my $hold_flesh = {
+        flesh => 3, 
+        flesh_fields => {
+            ahr  => ['transit', 'usr', 'cancel_cause'],
+            au   => ['card'],
+            ahtc => ['source', 'dest']
+        }
+    };
+
+    my %resp = (
+        copy => $e->retrieve_asset_copy([
+            $copy_id, {
+                flesh => 3,
+                flesh_fields => { 
+                    acp => ['call_number', 'status'],
+                    acn => ['record'],
+                    # flesh simple_record for now as a hack to display title/author
+                    bre => ['simple_record']
+                }
+            }
+        ])
+    );
+
+    $resp{copy}->call_number->record->clear_marc;
+
+    my ($best_hold) = $holdcode->find_nearest_permitted_hold( $e, $resp{copy}, $e->requestor, 1 );
+    my $hold = $e->search_action_hold_request([
+        {   fulfillment_time => undef,
+            cancel_time => undef,
+            capture_time => { '!=' => undef },
+            frozen => 'f',
+            current_copy => $copy_id
+        }, $hold_flesh 
+    ])->[0] || $best_hold;
+
+    if ($hold) {
+        $hold = $e->retrieve_action_hold_request([ $hold->id, $hold_flesh ]);
+
+        if ($local) {
+            $next_action = 'ill-home-capture' unless $hold->capture_time;
+            $resp{can_retarget_hold} = 1;
+
+        } else {
+            # for non-local copies, only the borrower can cancel 
+            # or retarget the hold
+            if (grep {$hold->request_lib == $_} @$org_list) {
+                $resp{can_cancel_hold} = 1;
+                $resp{can_retarget_hold} = 1;
+            }
+
+            if ($hold->pickup_lib == $ctx_ou) {
+
+                # hold is en route to here, maybe there is work for us to do
+    
+                if ($hold->shelf_time) {
+                    $next_action = 'ill-foreign-checkout';
+                } elsif ($hold->capture_time) {
+                    $next_action = 'ill-foreign-receive';
+                }
+            }
+        }
+
+        $resp{hold} = $hold;
+    }
+
+    # non-local copies must be circulting "here" to be relevant
+    my %circ_filter = (circ_lib => $org_list) unless $local;
+
+    my $circ = $e->search_action_circulation([{
+        checkin_time => undef,
+        target_copy => $copy_id,
+        %circ_filter
+    }, $circ_flesh])->[0];
+
+    if ($circ) {
+        $next_action = 'ill-foreign-checkin' unless $local;
+        $resp{circ} = $circ;
+    }
+
+    my %transit_filter;
+
+    # non-local copies must be coming to / going from "here" to be relevant
+    $transit_filter{'-or'} = 
+        [{dest => $org_list}, {source => $org_list}]
+        unless $local;
+
+    # no need to re-fetch transits linked to holds
+    $transit_filter{id} = {'<>' => $hold->transit->id}
+        if $hold and $hold->transit;
+
+    my $transit = $e->search_action_transit_copy([{
+        target_copy => $copy_id,
+        dest_recv_time => undef,
+        %transit_filter
+    }, $transit_flesh])->[0];
+
+    if ($transit) {
+        if ($transit->dest->id == $ctx_ou) {
+            if ($local) {
+                $next_action = 'transit-home-receive' 
+            } else {
+                $next_action = 'transit-foreign-return';
+            }
+        }
+        $resp{transit} = $transit;
+    }
+
+    $resp{next_action} = $next_action;
+    return \%resp;
+}
+
+
+
 1;

@@ -1,0 +1,50 @@
+<!-- 
+  main navigation bar
+    
+  note the use of target="_self" for navigation links.
+  this tells angular to treat the href as a new page 
+  and not an intra-app route.  This is necessary when
+  moving between applications.
+-->
+
+<div class="navbar navbar-default navbar-static-top" ng-controller="NavCtrl">
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+
+      <!-- circulation -->
+      <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle" 
+          data-toggle="dropdown">[% l('Circulation') %]<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="./circ/patron/search" 
+            target="_self">[% l('Patron Search') %]</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">Sub Menu Test</li>
+          <li><a href="javascript:;">Test Item</a></li>
+        </ul>
+      </li>
+
+      <!-- cataloging -->
+      <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle" 
+          data-toggle="dropdown">[% l('Cataloging') %]<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="./cat/bucket/record/view" 
+            target="_self">[% l('Record Buckets') %]</a></li>
+       </ul>
+      </li>
+    </ul>
+
+    <!-- entries along the right side of the navbar -->
+    <ul class="nav navbar-nav navbar-right">
+      <li><a ng-cloak ng-show="username" href="./" target="_self" 
+        ng-init="workstation = '[% l('<none>') %]'">
+        [% l('{{username}} @ {{workstation}}') %]
+      </a></li>
+      <li><a href="./login" ng-click="logout()" 
+        target="_self">[% l('Log Out') %]</a></li>
+    </ul>
+  </div>
+</div>
+
+

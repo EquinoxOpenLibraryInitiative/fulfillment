@@ -81,7 +81,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Essential => qw/parent_ou ou_type mailing_address billing_address
+__PACKAGE__->columns( Essential => qw/parent_ou ou_type mailing_address billing_address routing_code
                 ill_address holds_address shortname name email phone opac_visible fiscal_calendar/);
 
 #-------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_card' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/usr barcode active/ );
+__PACKAGE__->columns( Essential => qw/usr barcode active org/ );
 
 #-------------------------------------------------------------------------------
 package actor::user_access_entry;

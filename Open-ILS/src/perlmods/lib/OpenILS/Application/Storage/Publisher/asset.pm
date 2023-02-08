@@ -751,7 +751,7 @@ sub cn_ranged_tree {
         actor::org_unit
             ->db_Main
             ->selectcol_arrayref(
-                'SELECT id FROM actor.org_unit_descendants(?,?)',
+                'SELECT id FROM actor.org_unit WHERE id NOT IN (SELECT id  FROM actor.org_unit_descendants(?,?))',
                 {},
                 $ou,
                 $depth
@@ -801,7 +801,7 @@ sub issuance_ranged_tree {
         actor::org_unit
             ->db_Main
             ->selectcol_arrayref(
-                'SELECT id FROM actor.org_unit_descendants(?,?)',
+                'SELECT id FROM actor.org_unit WHERE id NOT IN (SELECT id  FROM actor.org_unit_descendants(?,?))',
                 {},
                 $ou,
                 $depth

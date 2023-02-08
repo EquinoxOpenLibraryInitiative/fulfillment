@@ -335,6 +335,7 @@ CREATE TABLE actor.org_unit (
 	name		TEXT	NOT NULL UNIQUE,
 	email		TEXT,
 	phone		TEXT,
+	routing_code	TEXT,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
 	fiscal_calendar INT     NOT NULL DEFAULT 1   -- foreign key constraint to be added later
 );
@@ -384,6 +385,12 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER actor_org_unit_parent_protect_trigger
     BEFORE INSERT OR UPDATE ON actor.org_unit FOR EACH ROW
     EXECUTE PROCEDURE actor.org_unit_parent_protect ();
+
+ALTER TABLE actor.card
+    ADD COLUMN org INT NOT NULL DEFAULT 1
+        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
+
+CREATE UNIQUE INDEX actor_card_barcode_org_idx ON actor.card (barcode, org);
 
 CREATE TABLE actor.org_lasso (
     id      SERIAL  PRIMARY KEY,
@@ -1316,5 +1323,16 @@ CREATE TABLE actor.usr_privacy_waiver (
     checkout_items BOOL DEFAULT FALSE
 );
 CREATE INDEX actor_usr_privacy_waiver_usr_idx ON actor.usr_privacy_waiver (usr);
+
+CREATE TABLE actor.web_action_print_template (
+    id          SERIAL      PRIMARY KEY,
+    owner       INT         NOT NULL REFERENCES actor.usr (id)
+                            ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    focus       TEXT        NOT NULL CHECK (focus IN ('circ','hold','transit','copy')),
+    action      TEXT        CHECK (action IN ('Check In','Recall','Receive',
+                            'Check Out','Capture','Reject','Freeze','Thaw','Cancel')),
+    direction   TEXT        CHECK (direction IN ('Incoming','Outgoing')),
+    template    TEXT        NOT NULL
+);
 
 COMMIT;

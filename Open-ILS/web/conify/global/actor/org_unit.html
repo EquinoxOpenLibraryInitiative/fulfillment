@@ -172,7 +172,7 @@
 
 						dojo.byId('current_ou_name').innerHTML = this.store.getValue( current_ou, 'name' );
 
-						var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type' ];
+						var main_settings_fields = [ 'name', 'shortname', 'routing_code', 'email', 'phone', 'ou_type' ];
 						for ( var i in main_settings_fields ) {
 							var field = main_settings_fields[i];
 							var value = this.store.getValue( current_ou, field );
@@ -238,6 +238,16 @@
 									<span id="editor_pane_shortname" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_shortname" uppercase="true" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
 											if (current_ou) ou_list_store.setValue( current_ou, "shortname", this.getValue() );
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Routing Code</th>
+								<td>
+									<span id="editor_pane_routing_code" dojoType="dijit.form.TextBox" jsId="editor_pane_routing_code">
+										<script type="dojo/connect" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "routing_code", this.getValue() );
 										</script>
 									</span>
 								</td>
@@ -397,7 +407,7 @@
 												save_ou_button.disabled = true;
 												delete_ou_button.disabled = true;
 
-												var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type', 'parent_ou' ];
+												var main_settings_fields = [ 'name', 'shortname', 'routing_code', 'email', 'phone', 'ou_type', 'parent_ou' ];
 												for ( var i in main_settings_fields ) {
 													var field = main_settings_fields[i];
 													window["editor_pane_" + field].setValue( '' ); // unset the value
@@ -440,6 +450,7 @@
 									name			: aou_strings.LABEL_NEW_BRANCH + virgin_ou_id,
 									opac_visible	: 'f',
 									shortname		: ou_list_store.getValue( current_ou, 'shortname' ) + '-NEW' + virgin_ou_id--,
+									routing_code		: ou_list_store.getValue( current_ou, 'routing_code' ),
 									parent_ou		: ou_list_store.getValue( current_ou, 'id' ),
 									ou_type			: ou_list_store.getValue( current_ou, 'ou_type' )
 								});

@@ -123,8 +123,8 @@ sub record_ranged_tree {
     my $offset = shift || 0;
 
     my $ou_sql = defined($depth) ?
-            "SELECT id FROM actor.org_unit_descendants(?,?)":
-            "SELECT id FROM actor.org_unit_descendants(?)";
+        "SELECT id FROM actor.org_unit WHERE id NOT IN (SELECT id  FROM actor.org_unit_descendants(?,?))":
+        "SELECT id FROM actor.org_unit WHERE id NOT IN (SELECT id FROM actor.org_unit_descendants(?))";
 
     my $ou_list =
         actor::org_unit
@@ -175,7 +175,6 @@ sub record_ranged_tree {
 
         push @{ $rec->call_numbers }, $call_number if (@{ $call_number->copies });
     }
-
     return $rec;
 }
 __PACKAGE__->register_method(
@@ -237,6 +236,21 @@ __PACKAGE__->register_method(
     method      => 'record_by_barcode',
     api_level   => 1,
     cachable    => 1,
+);
+
+sub purge_bibs_by_owner {
+	my $self = shift;
+	my $client = shift;
+	my $owner = ''.shift;
+
+	return biblio::record_entry->db_Main->do( 'DELETE FROM biblio.record_entry WHERE owner = ?', {}, $owner );
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.purge_by_owner',
+	method		=> 'purge_bibs_by_owner',
+	api_level	=> 1,
+	argc		=> 1,
+	cachable	=> 1,
 );
 
 sub record_by_copy {

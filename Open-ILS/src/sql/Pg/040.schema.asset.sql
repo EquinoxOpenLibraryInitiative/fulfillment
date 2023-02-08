@@ -72,6 +72,7 @@ CREATE TABLE asset.copy_location_group_map (
 CREATE TABLE asset.copy (
 	id		BIGSERIAL			PRIMARY KEY,
 	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    source_lib  INT             NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	creator		BIGINT				NOT NULL,
 	call_number	BIGINT				NOT NULL,
 	editor		BIGINT				NOT NULL,
@@ -104,7 +105,7 @@ CREATE TABLE asset.copy (
 	mint_condition      BOOL        NOT NULL DEFAULT TRUE,
     cost    NUMERIC(8,2)
 );
-CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
+CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode, source_lib) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_creator_idx  ON asset.copy ( creator );

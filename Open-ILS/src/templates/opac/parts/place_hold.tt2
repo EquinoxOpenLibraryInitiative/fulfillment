@@ -48,7 +48,7 @@ function maybeToggleNumCopies(obj) {
 }
 </script>
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
-    <h1>[% l('Place Hold') %]</h1>
+    <h1>[% l('Place ILL Request') %]</h1>
 
     [% some_holds_allowed = -1 %]
 
@@ -205,20 +205,20 @@ function maybeToggleNumCopies(obj) {
                         <input type='hidden' name='part' value=''/>
                         [% END %]
                     [% END %]
-		    [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
+		            [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
                     [% IF NOT metarecords.disabled AND ctx.hold_data.size == 1 %]
                         [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord AND !hdata.part_required %]
                         <!-- Grab the bre_id so that we can restore it if user accidentally clicks advanced options -->
                            [% bre_id = hdata.target.id %]
                             <a  id='advanced_hold_link'
                                 href="[% mkurl('', {hold_type => 'M', hold_target => hdata.record.metarecord.id, bre_id => bre_id}) %]">
-                                [% l('Advanced Hold Options') %]</a>
+                                [% l('Advanced ILL Request Options') %]</a>
                         [% END %]
                         [% IF CGI.param('hold_type') == 'M' AND CGI.param('bre_id') %]
                             <input type="hidden" name="bre_id" value="[% CGI.param('bre_id') | html %]" />
                             <a id='basic_hold_link'
                                href="[% mkurl('', {hold_target => CGI.param('bre_id'), hold_type => 'T'}) %]">
-                                [% l('Basic Hold Options') %]</a>
+                                [% l('Basic ILL Request Options') %]</a>
                         [% END %]
                         [% IF hdata.metarecord_filters.formats.size OR # should this be size > 1
                             (hdata.metarecord_filters.langs.size && hdata.metarecord_filters.langs.size > 1);
@@ -292,7 +292,7 @@ function maybeToggleNumCopies(obj) {
 		   END %]
                 </label>
                 <img src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
-                     alt="[% l('Suspend Hold Help') %]"
+                     alt="[% l('Suspend ILL Request Help') %]"
                      title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" />
                 <br/>
                 <input type="checkbox" name="hold_suspend" id="hold_suspend" value="t"/> [% l('Yes') %]

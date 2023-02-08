@@ -20,7 +20,7 @@
     PROCESS get_library;
 -%]
     <h2 class="sr-only">[% l('Search Results') %]</h2>
-    <form action="[% ctx.opac_root %]/results" method="get">
+    <form action="[% ctx.opac_root %]/results" method="GET">
     [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
     <h3 class="sr-only">[% l('Additional search filters and navigation') %]</h3>
     <div class="almost-content-wrapper">

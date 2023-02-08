@@ -180,7 +180,7 @@ search.basic_config = {
 };
 
 # Make metarecord search the default.
-#search.metarecord_default = 1;
+search.metarecord_default = 1;
 
 # Disable search term highlighting
 #search.no_highlight = 1;
@@ -200,8 +200,8 @@ ctx.google_books_preview = 0;
 # Depth Button/Checkbox
 # Recommendation: Do not enable button for basic search without enabling the
 # checkbox for the results page
-ctx.depth_sel_checkbox = 1; # Results Page Checkbox Toggle
-ctx.depth_sel_button = 1; # Basic Search Submit Button
+ctx.depth_sel_checkbox = 0; # Results Page Checkbox Toggle
+ctx.depth_sel_button = 0; # Basic Search Submit Button
 ctx.depth_sel_depth = 0; # Depth to set to
 ctx.depth_sel_button_label = l('All Libraries');
 ctx.depth_sel_button_class = 'opac-button';

@@ -463,10 +463,10 @@ END;
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold',
                                                                     add_parms, del_parms) %]"
-                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
+                                                                [% html_text_attr('title', l('Place ILL Request on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                                                                alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
+                                                                alt=""/><span class="result_place_hold">[% l('Place ILL Request') %]</span></a>
                                                         </div>
 [%- END -%]
 
@@ -484,10 +484,10 @@ END;
                                                             <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
                                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
-                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
+                                                                [% html_text_attr('title', l('Place ILL Request on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                                                                alt=""/><span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                                                                alt=""/><span class="result_place_hold">[% l('Place ILL Request on E-Item') %]</span></a>
                                                         </div>
                                                         [%- END -%]
 

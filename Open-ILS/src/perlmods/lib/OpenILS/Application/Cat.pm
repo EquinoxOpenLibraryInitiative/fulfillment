@@ -125,6 +125,24 @@ sub create_record_xml {
     return $s;
 }
 
+__PACKAGE__->register_method(
+    method      => "purge_bibs_by_owner",
+    api_name    => "open-ils.cat.biblio.record.purge_by_owner",
+    signature   => q/ Inserts a new biblio with the given XML /
+);
+
+sub purge_bibs_by_owner {
+	my( $self, $client, $auth, $owner ) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_MARC', $owner);
+
+    return OpenSRF::AppSession
+        ->create("open-ils.storage")
+        ->request("open-ils.storage.biblio.record_entry.purge_by_owner", $owner )
+        ->gather(1);
+}
 
 
 __PACKAGE__->register_method(

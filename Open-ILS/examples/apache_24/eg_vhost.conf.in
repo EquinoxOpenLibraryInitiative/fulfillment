@@ -858,6 +858,36 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/staff/fr-CA.po"
 </LocationMatch>
 
+<LocationMatch /eg/ffstaff/>
+    Options -MultiViews
+    PerlSetVar OILSWebStopAtIndex "true"
+
+    # sample staff-specific translation files
+    #PerlAddVar OILSWebLocale "en_ca"                                           
+    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/en-CA.po"         
+    #PerlAddVar OILSWebLocale "fr_ca"                                           
+    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/fr-CA.po"   
+</LocationMatch>
+
+<Location /eg/ffstaff/fulfillment>
+    Options -MultiViews
+    # any reuest that does not map to a template file
+    # is redirected to the index.  This allows us to
+    # map multiple routes to the same application.
+    RewriteEngine On
+    RewriteCond %{PATH_INFO} !/ffstaff/fulfillment/index
+    RewriteCond %{PATH_INFO} !/ffstaff/fulfillment/t_*
+    RewriteRule .* /eg/ffstaff/fulfillment/index [L,DPI]
+</Location>
+
+<Location /ff/fast_import>
+    SetHandler perl-script
+    PerlResponseHandler FulfILLment::WWW::FastImport
+    Options +ExecCGI
+    PerlSendHeader On
+    allow from all
+</Location>
+
 <Location /js/>
     <IfModule mod_headers.c>
         Header append Cache-Control "public"

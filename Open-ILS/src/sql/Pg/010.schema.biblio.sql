@@ -56,13 +56,17 @@ CREATE TABLE biblio.record_entry (
     owner       INT,
     share_depth INT,
     merge_date  TIMESTAMP WITH TIME ZONE,
-    merged_to   BIGINT REFERENCES biblio.record_entry(id)
+    merged_to   BIGINT REFERENCES biblio.record_entry(id),
+    remote_id   TEXT
 );
+INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','<record xmlns="http://www.loc.gov/MARC21/slim"/>','FOO');
+
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );
 CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
 CREATE INDEX biblio_record_entry_edit_date_idx ON biblio.record_entry ( edit_date );
 CREATE INDEX biblio_record_entry_fp_idx ON biblio.record_entry ( fingerprint );
+CREATE INDEX biblio_record_entry_remote_id_owner_idx ON biblio.record_entry (remote_id, owner);
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_value) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
@@ -123,5 +127,59 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER norm_sort_label BEFORE INSERT OR UPDATE ON biblio.monograph_part FOR EACH ROW EXECUTE PROCEDURE biblio.normalize_biblio_monograph_part_sortkey();
+
+CREATE OR REPLACE FUNCTION biblio.fast_import (p_owner INT, p_marc TEXT) RETURNS BOOL AS $func$
+DECLARE
+    is_del          BOOL;
+    rid_value       TEXT;
+    existing_bib    biblio.record_entry%ROWTYPE;
+BEGIN
+
+    SELECT oils_xpath_string( REPLACE(BTRIM(value,'"'),E'\\"','"'), p_marc ) INTO rid_value
+        FROM actor.org_unit_ancestor_setting( 'ff.remote.bib_refresh.lai_id_field', p_owner ) LIMIT 1;
+
+    IF rid_value IS NULL THEN
+        RETURN FALSE;
+    END IF;
+
+    SELECT SUBSTR( oils_xpath_string( '//*[local-name()="leader"]', p_marc ), 6, 1) = 'd' INTO is_del;
+
+    SELECT * INTO existing_bib FROM biblio.record_entry WHERE remote_id = rid_value AND owner = p_owner;
+
+    IF existing_bib.id IS NULL AND NOT is_del THEN
+        -- RAISE NOTICE 'INSERTing for %', rid_value;
+        INSERT INTO biblio.record_entry (marc, owner, remote_id, last_xact_id)
+            VALUES (p_marc, p_owner, rid_value, EXTRACT(EPOCH FROM now()));
+    ELSE
+        IF NOT is_del THEN
+            -- RAISE NOTICE 'UPDATEing for %', existing_bib.id;
+            UPDATE  biblio.record_entry
+              SET   marc = p_marc,
+                    last_xact_id = EXTRACT(EPOCH FROM now())
+              WHERE id = existing_bib.id;
+        ELSE
+            DELETE FROM biblio.record_entry WHERE id = existing_bib.id;
+        END IF;
+    END IF;
+
+    IF FOUND THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TABLE biblio.bulk_loading_log (
+    id              SERIAL
+    ,filename       TEXT
+    ,batch          TEXT
+    ,hash           TEXT
+    ,owning_lib     INTEGER
+    ,asset_count    INTEGER
+    ,event_date     TIMESTAMP DEFAULT NOW()
+    ,event          TEXT
+);
 
 COMMIT;

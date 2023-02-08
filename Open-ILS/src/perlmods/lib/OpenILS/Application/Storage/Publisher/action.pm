@@ -15,6 +15,8 @@ use DateTime::Format::ISO8601;
 use OpenILS::Utils::Penalty;
 use OpenILS::Application::Circ::CircCommon;
 use OpenILS::Application::AppUtils;
+use FulfILLment::AT::Reactor::ItemLoad;
+use FulfILLment::AT::Reactor::ItemRefresh;
 my $U = "OpenILS::Application::AppUtils";
 
 # Used in build_hold_sort_clause().  See the hash %order_by_sprintf_args in
@@ -1060,6 +1062,8 @@ sub MR_records_matching_format {
     # include all visible copies, regardless of holdability
     my $opac_visible = shift;
 
+    my $top = actor::org_unit->search({parent_ou => undef})->next;
+
     # find filters for MR holds
     my $mr_filter;
     if (defined($filter)) {
@@ -1071,25 +1075,19 @@ sub MR_records_matching_format {
     }
 
     my $records = [metabib::metarecord->retrieve($MR)->source_records];
-
-    my $vis_q = 'asset.record_has_holdable_copy(?,?)';
-    if ($opac_visible) {
-        $vis_q = <<'        SQL';
-            EXISTS(
-                SELECT  1
-                  FROM  asset.patron_default_visibility_mask() mask,
-                        asset.copy_vis_attr_cache v
-                        JOIN asset.copy c ON (
-                            c.id = v.target_copy
-                            AND v.record = ?
-                            AND c.circ_lib IN (
-                                SELECT id FROM actor.org_unit_descendants(?)
-                            )
-                        )
-                  WHERE v.vis_attr_vector @@ mask.c_attrs::query_int
-            )
-        SQL
+    if ($org == $top->id) {
+        $client->respond($_->id) for (@$records);
+        return;
     }
+
+    my $vis_q = <<'    SQL';
+        EXISTS(
+            SELECT 1 FROM biblio.record_entry
+            WHERE id = ? AND owner NOT IN (
+                    SELECT id FROM actor.org_unit_descendants(?)
+            )
+        )
+    SQL
 
     my $q = "SELECT source FROM metabib.record_attr_vector_list WHERE source = ? AND vlist @@ ? AND $vis_q";
     my @args = ( $mr_filter, $org );
@@ -1156,7 +1154,7 @@ sub new_hold_copy_targeter {
                               frozen => 'f',
                               prev_check_time => { '<=' => $expire_threshold },
                             },
-                            { order_by => 'selection_depth DESC, request_time,prev_check_time' } ) ];
+                            { order_by => 'selection_depth, request_time,prev_check_time' } ) ];
 
             # find all the holds holds needing first time targeting
             push @$holds, action::hold_request->search(
@@ -1165,7 +1163,7 @@ sub new_hold_copy_targeter {
                             prev_check_time => undef,
                             frozen => 'f',
                             cancel_time => undef,
-                            { order_by => 'selection_depth DESC, request_time' } );
+                            { order_by => 'selection_depth, request_time' } );
         } else {
 
             # find all the holds holds needing first time targeting ONLY
@@ -1175,7 +1173,7 @@ sub new_hold_copy_targeter {
                             prev_check_time => undef,
                             cancel_time => undef,
                             frozen => 'f',
-                            { order_by => 'selection_depth DESC, request_time' } ) ];
+                            { order_by => 'selection_depth, request_time' } ) ];
         }
     } catch Error with {
         my $e = shift;
@@ -1223,6 +1221,8 @@ sub new_hold_copy_targeter {
 
     for my $hold (@$holds) {
         try {
+			my $old_current_copy = $hold->current_copy;
+
             #start a transaction if needed
             if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
                 $log->debug("Cleaning up after previous transaction\n");
@@ -1230,6 +1230,7 @@ sub new_hold_copy_targeter {
             }
             $self->method_lookup('open-ils.storage.transaction.begin')->run();
             $log->info("Processing hold ".$hold->id."...\n");
+
 
             #first, re-fetch the hold, to make sure it's not captured already
             $hold->remove_from_object_index();
@@ -1269,7 +1270,7 @@ sub new_hold_copy_targeter {
                 for my $r_id (
                     $self->method_lookup(
                         'open-ils.storage.metarecord.filtered_records'
-                    )->run( $hold->target, $hold->holdable_formats )
+                    )->run( $hold->target, $hold->holdable_formats, $hold->requestor->home_ou->id )
                 ) {
                     my ($rtree) = $self
                         ->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
@@ -1284,6 +1285,13 @@ sub new_hold_copy_targeter {
                     }
                 }
             } elsif ($hold->hold_type eq 'T') {
+		my $bib_owner = $editor->retrieve_biblio_record_entry($hold->target)->owner;
+		if (!$U->is_true($U->ou_ancestor_setting_value($bib_owner, 'ff.remote.connector.disabled'))) {
+                    FulfILLment::AT::Reactor::ItemLoad->ByBib(
+                        { target => biblio::record_entry->retrieve($hold->target)->to_fieldmapper }
+                    );
+		};
+
                 my ($rtree) = $self
                     ->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
                     ->run( $hold->target, $hold->selection_ou, $hold->selection_depth );
@@ -1301,6 +1309,12 @@ sub new_hold_copy_targeter {
                         ) if ($cn && @{ $cn->copies });
                 }
             } elsif ($hold->hold_type eq 'V') {
+		my $vol_owner = $editor->retrieve_asset_call_number($hold->target)->owning_lib;
+                if (!$U->is_true($U->ou_ancestor_setting_value($vol_owner, 'ff.remote.connector.disabled'))) {
+                    FulfILLment::AT::Reactor::ItemLoad->ByBib(
+                        { target => asset::call_number->retrieve($hold->target)->record->to_fieldmapper }
+                    );
+		};
                 my ($vtree) = $self
                     ->method_lookup( 'open-ils.storage.asset.call_number.ranged_tree')
                     ->run( $hold->target, $hold->selection_ou, $hold->selection_depth );
@@ -1332,6 +1346,12 @@ sub new_hold_copy_targeter {
                     ) if ($itree && @{ $itree->items });
                     
             } elsif  ($hold->hold_type eq 'C' || $hold->hold_type eq 'R' || $hold->hold_type eq 'F') {
+		my $copy_owner = $editor->retrieve_asset_copy($hold->target)->circ_lib;
+                if (!$U->is_true($U->ou_ancestor_setting_value($copy_owner, 'ff.remote.connector.disabled'))) {
+                    FulfILLment::AT::Reactor::ItemRefresh->ByItem(
+                        { target => asset::copy->retrieve($hold->target)->to_fieldmapper }
+                    );
+		};
                 my $_cp = asset::copy->retrieve($hold->target);
                 push @$all_copies, $_cp if $_cp;
             }
@@ -1351,7 +1371,13 @@ sub new_hold_copy_targeter {
 
             # let 'em know we're still working
             $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
-            
+
+            # Filter blocked copies
+            $all_copies = [ grep {
+                !action::copy_block_hold->search_where( { hold => undef, item => $_->id } ) &&
+                !action::copy_block_hold->search_where( { hold => $hold->id, item => $_->id } )
+            } @$all_copies ];
+           
             # if we have no copies ...
             if (!ref $all_copies || !@$all_copies) {
                 $log->info("\tNo copies available for targeting at all!\n");
@@ -1359,6 +1385,11 @@ sub new_hold_copy_targeter {
 
                 $hold->update( { prev_check_time => 'today', current_copy => undef } );
                 $self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+                my $fm_hold = $hold->to_fieldmapper; 
+                my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+                $ses->request('open-ils.trigger.event.autocreate', 
+                    'hold_request.no_copies', $fm_hold, $fm_hold->request_lib);
                 die "OK\n";
             }
 
@@ -1464,7 +1495,11 @@ sub new_hold_copy_targeter {
                 $hold, $hold_copy_map
             );
 
-            $all_copies = [ grep { ''.$_->circ_lib ne $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ];
+            #$all_copies = [ grep { ''.$_->circ_lib ne $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ];
+            $all_copies = [];
+            for my $prox (keys %$prox_list) {
+                push @$all_copies, @{$$prox_list{$prox}};
+            }
 
             my $min_prox = [ sort {$a<=>$b} keys %$prox_list ]->[0];
             my $best;
@@ -1597,6 +1632,7 @@ sub new_hold_copy_targeter {
                     ) &&
                 ( OpenILS::Utils::PermitHold::permit_copy_hold(
                     { title => $old_best->call_number->record->to_fieldmapper,
+                      title_descriptor => $old_best->call_number->record->record_descriptor->next->to_fieldmapper,
                       patron => $hold->usr->to_fieldmapper,
                       copy => $old_best->to_fieldmapper,
                       requestor => $hold->requestor->to_fieldmapper,
@@ -1615,6 +1651,33 @@ sub new_hold_copy_targeter {
             }
 
             $self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+            # FF-----------------
+	    if (!$U->is_true($U->ou_ancestor_setting_value($best->circ_lib.'', 'ff.remote.connector.disabled'))) 	{
+            my $skip_target = 0;
+			if ($old_current_copy && $best && ($best->id == $old_current_copy->id)) { # old copy and new copy are the same, leave it alone
+                $skip_target = 1;
+			} elsif ($old_current_copy) { # old copy to remotely untarget, since we have a new one
+				$U->simplereq(
+					"fulfillment.laicore",
+                    "fulfillment.laicore.hold.lender.delete_earliest",
+					'' . $old_current_copy->source_lib,
+					$old_current_copy->barcode
+				);
+			}
+
+			if ($best && !$skip_target) { # new copy to target
+				$U->simplereq(
+					"fulfillment.laicore",
+                    "fulfillment.laicore.hold.lender.place",
+					''. $best->source_lib,
+					$best->barcode
+				);
+			}
+	    }
+            # FF-----------------
+
+
             $log->info("\tProcessing of hold ".$hold->id." complete.");
 
             push @successes,
@@ -2042,6 +2105,7 @@ sub choose_nearest_copy {
         while (my ($c) = splice(@capturable, $rand, 1)) {
             return $c if !exists($seen{$c->id}) && ( OpenILS::Utils::PermitHold::permit_copy_hold(
                 { title => $c->call_number->record->to_fieldmapper,
+                  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
                   patron => $hold->usr->to_fieldmapper,
                   copy => $c->to_fieldmapper,
                   requestor => $hold->requestor->to_fieldmapper,

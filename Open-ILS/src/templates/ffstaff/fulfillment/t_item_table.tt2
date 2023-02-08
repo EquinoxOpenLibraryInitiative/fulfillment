@@ -1,0 +1,74 @@
+
+<div class="row" ng-show="lookupComplete && !itemList.count()">
+    <div class="col-lg-10 col-lg-offset-1">
+      <div class="alert alert-info">[% l('No Items To Display') %]</div>
+  </div>
+</div>
+
+[%
+# define the full set of columns here for ease of sharing 
+# the data between the template and the JS env.
+COLUMNS = [
+    {name => 'index', label => l('#'), extra => ' + 1'},
+    {name => 'hold_id', label => l('Request ID'), tabs => 'tab_pending || tab_onshelf'},
+    {name => 'transit_id', label => l('Transit ID'), tabs => 'tab_inbound || tab_outbound'},
+    {name => 'circ_id', label => l('Circ ID'), tabs => 'tab_circulating'},
+    {name => 'copy_barcode', label => l('Item Barcode')},
+    {name => 'copy_circ_lib', label => l('Copy Library')},
+    {name => 'request_time', label => l('Request Date'), tabs => 'tab_pending', extra => "| date:'shortDate'"},
+    {name => 'expire_time', label => l('Expire Date'), tabs => 'tab_pending', extra => "| date:'shortDate'"},
+    {name => 'frozen', label => l('Active'), tabs => 'tab_pending'},
+    {name => 'hold_request_lib', label => l('Requesting Library'), tabs => 'tab_pending'},
+    {name => 'hold_pickup_lib', label => l('Pickup Library'), tabs => 'tab_pending'}
+    {name => 'transit_time', label => l('Transit Date'), tabs => 'tab_inbound || tab_outbound', extra => "| date:'shortDate'"},
+    {name => 'transit_source', label => l('Transit Source'), tabs => 'tab_inbound || tab_outbound'},
+    {name => 'transit_dest', label => l('Transit Destination'), tabs => 'tab_inbound || tab_outbound'},
+    {name => 'hold_shelf_time', label => l('Shelf Date'), tabs => 'tab_onshelf', extra => "| date:'shortDate'"},
+    {name => 'hold_shelf_expire_time', label => l('Shelf Expire Date'), tabs => 'tab_onshelf', extra => "| date:'shortDate'"},
+    {name => 'patron_given_name', label => l('Patron First'), tabs => 'tab_circulating || tab_onshelf'},
+    {name => 'patron_family_name', label => l('Patron Last'), tabs => 'tab_circulating || tab_onshelf'},
+    {name => 'patron_barcode', label => l('Patron Barcode'), tabs => 'tab_circulating || tab_onshelf'},
+    {name => 'xact_start', label => l('Checkout Date'), tabs => 'tab_circulating', extra => "| date:'shortDate'"},
+    {name => 'due_date',  label => l('Due Date'), tabs => 'tab_circulating', extra => "| date:'shortDate'"},
+    {name => 'circ_circ_lib', label => l('Circulating Library'), tabs => 'tab_circulating'},
+    {name => 'title', label => l('Title')},
+    {name => 'routing_code', label => l('Routing Code'), tabs => 'tab_outbound && orientation_lender'}
+];
+%]
+
+<table class="table table-striped table-hover table-condensed" ng-show="itemList.count()">
+  <thead>
+    <tr>
+      <th><a href="javascript:;" ng-click="itemList.toggleSelectAll()">&#x2713;</a></th>
+      [% FOREACH col IN COLUMNS %]
+      <th [% IF col.tabs %]ng-show="[% col.tabs %]"[% END %]>
+        [% IF col.name == 'index'; col.label; ELSE %]
+        <a href='javascript:;' ng-click="sort('[% col.name %]')">[% col.label %]</a>
+        [% END %]
+      </th>
+      [% END %]
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in itemList.items">
+      <td><input type='checkbox' ng-model="itemList.selected[item.index]"/></td>
+      [% FOREACH col IN COLUMNS %]
+      <td 
+        [% IF col.tabs %]ng-show="[% col.tabs %]"[% END %]
+        ng-init="addColumn({name : '[% col.name %]', label : '[% col.label %]'})">
+        [% IF col.name == 'copy_barcode' %]
+        <a href="./fulfillment/status/{{item.copy_barcode_enc}}/{{item.copy_circ_lib_id}}">{{item.copy_barcode}}</a>
+        [% ELSIF col.name == 'hold_id' %]
+            <a ng-if="item.hold_type == 'M'" target="_blank" href="/eg/opac/results?detail_record_view=1&query= &metarecord={{item.target}}">{{item.hold_id}}</a>
+            <a ng-if="item.hold_type == 'T'" target="_blank" href="/eg/opac/record/{{item.target}}">{{item.hold_id}}</a>
+            <span ng-if="item.hold_type != 'T' && item.hold_type != 'M'">{{item.hold_id}}</span>
+        [% ELSIF col.name == 'frozen' %]
+            {{item.frozen == 'f'}}
+        [% ELSE %]
+          {{item.[% col.name %][% col.extra IF col.extra %]}}
+        [% END %]
+      </td>
+      [% END %]
+    </tr>
+  </tbody>
+</table>

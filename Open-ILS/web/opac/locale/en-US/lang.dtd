@@ -126,7 +126,7 @@
 <!ENTITY staff.ahr_fulfillment_time_label "Fulfillment Time">
 <!ENTITY staff.ahr_hold_type_label "Type">
 <!ENTITY staff.ahr_holdable_formats_label "Holdable Formats">
-<!ENTITY staff.ahr_id_label "Hold ID">
+<!ENTITY staff.ahr_id_label "ILL Request ID">
 <!ENTITY staff.ahr_ischanged_label "Is changed">
 <!ENTITY staff.ahr_isdeleted_label "Is deleted">
 <!ENTITY staff.ahr_isnew_label "Is new">
@@ -156,7 +156,7 @@
 <!ENTITY staff.au_expire_date_label "Expire Date">
 <!ENTITY staff.au_family_name_label "Family Name">
 <!ENTITY staff.au_first_given_name_label "First Given Name">
-<!ENTITY staff.au_hold_requests_label "Hold Requests">
+<!ENTITY staff.au_hold_requests_label "ILL Requests">
 <!-- "OU" is an organization unit - typically a library -->
 <!ENTITY staff.au_home_ou_label "Home OU">
 <!ENTITY staff.au_id_label "User ID">
@@ -252,11 +252,11 @@
 <!ENTITY staff.auth.password_prompt "Password:">
 <!ENTITY staff.auth.password_prompt.accesskey "P">
 <!ENTITY staff.auth.password_prompt.key "P">
-<!ENTITY staff.auth.quit_prompt "Exit Evergreen">
+<!ENTITY staff.auth.quit_prompt "Exit FulfILLment">
 <!ENTITY staff.auth.quit_prompt.accesskey "x">
 <!ENTITY staff.auth.submit_prompt "Submit">
 <!ENTITY staff.auth.submit_prompt.key "S">
-<!ENTITY staff.auth.title "Evergreen Staff Client">
+<!ENTITY staff.auth.title "FulfILLment Staff Client">
 <!ENTITY staff.auth.about_btn.label "About this client...">
 <!ENTITY staff.auth.about_btn.accesskey "b">
 <!ENTITY staff.auth.new_window_btn.label "Open New Window">
@@ -355,9 +355,9 @@
 <!ENTITY staff.cat.opac.mark_for_overlay.accesskey "M">
 <!ENTITY staff.cat.opac.mark_for_overlay.label "Mark for Overlay">
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.accesskey "">
-<!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title Hold Transfer Destination">
+<!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title ILL Request Transfer Destination">
 <!ENTITY staff.cat.opac.transfer_title_holds.accesskey "">
-<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer All Title Holds">
+<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer All Title ILL Requests">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
@@ -381,7 +381,7 @@
 <!ENTITY staff.cat.opac.refresh_me.label "Reset Display">
 <!ENTITY staff.cat.opac.remove_me.label "Remove this Frame">
 <!ENTITY staff.cat.opac.view_holds.accesskey "s">
-<!ENTITY staff.cat.opac.view_holds.label "View Holds">
+<!ENTITY staff.cat.opac.view_holds.label "View ILL Requests">
 <!ENTITY staff.cat.opac.view_orders.accesskey "r">
 <!ENTITY staff.cat.opac.view_orders.label "View/Place Orders">
 <!ENTITY staff.cat.opac.alt_serial.accesskey "a">
@@ -469,7 +469,7 @@
 <!ENTITY staff.checkin_patron.retrieve 'Retrieve Patron'>
 <!ENTITY staff.checkin_patron.retrieve.accesskey 'R'>
 <!ENTITY staff.checkout_interface_label "Check Out">
-<!ENTITY staff.circ.offline.main.label 'Evergreen Offline'>
+<!ENTITY staff.circ.offline.main.label 'FulfILLment Offline'>
 <!ENTITY staff.circ.offline.server_time.tooltiptext 'Estimated Server Time - Click to adjust'>
 <!ENTITY staff.circ.offline.cmd_checkout.accesskey 'C'>
 <!ENTITY staff.circ.offline.cmd_checkout.label 'Check Out'>
@@ -541,14 +541,14 @@
 <!ENTITY staff.circ.renew.submit.label 'Submit'>
 <!ENTITY staff.circ.renew.submit.accesskey 'S'>
 
-<!ENTITY staff.circ.context_cancel_hold "Cancel Hold">
+<!ENTITY staff.circ.context_cancel_hold "Cancel ILL Request">
 <!ENTITY staff.circ.context_checkin "Check In">
 <!ENTITY staff.circ.context_edit "Edit Copy">
 <!ENTITY staff.circ.context_lost "Mark as Lost">
 <!ENTITY staff.circ.context_missing "Mark as Missing">
 <!ENTITY staff.circ.context_opac "Show Title in OPAC">
 <!ENTITY staff.circ.context_renew "Renew">
-<!ENTITY staff.circ.hold_capture.caption 'Capture Hold'>
+<!ENTITY staff.circ.hold_capture.caption 'Capture ILL Request'>
 <!ENTITY staff.circ.hold_capture.scan_label 'Enter Barcode:'>
 <!ENTITY staff.circ.hold_capture.scan_label.accesskey 'a'>
 <!ENTITY staff.circ.hold_capture.submit_label 'Submit'>
@@ -680,7 +680,7 @@
 <!ENTITY staff.hold_capture.print_receipt.accesskey ''>
 <!ENTITY staff.hold_capture.reprint_receipt_label 'Re-Print Last List'>
 <!ENTITY staff.hold_capture.reprint_receipt_label.accesskey 'L'>
-<!ENTITY staff.hold_capture_interface_label "Hold capture">
+<!ENTITY staff.hold_capture_interface_label "ILL Request capture">
 <!ENTITY staff.hold_capture_patron.name.label 'Patron Name'>
 <!ENTITY staff.hold_capture_patron.retrieve 'Retrieve Patron'>
 <!ENTITY staff.hold_capture_patron.retrieve.accesskey 'R'>
@@ -763,7 +763,7 @@
 <!ENTITY staff.main.menu.admin.local_admin.conify.copy_location_order.label "Copy Location Order">
 <!ENTITY staff.main.menu.admin.local_admin.barcode_completion.label "Barcode Completion">
 <!ENTITY staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label "Circulation Policies">
-<!ENTITY staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label "Hold Policies">
+<!ENTITY staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label "ILL Request Policies">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.label "Work Log">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.accesskey "W">
 <!ENTITY staff.main.menu.admin.local_admin.copy_template.label "Copy Template Editor">
@@ -808,7 +808,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_max_fine "Circulation Max Fine Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect "Age Hold Protect Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_circ_weights "Circulation Matchpoint Weights">
-<!ENTITY staff.main.menu.admin.server_admin.conify.config_hold_weights "Hold Matchpoint Weights">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_hold_weights "ILL Request Matchpoint Weights">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_weight_assoc "Weights Association">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_actor_sip_fields "Actor Stat Cat Sip Fields">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_asset_sip_fields "Asset Stat Cat Sip Fields">
@@ -1066,13 +1066,13 @@
 <!ENTITY staff.main.menu.circ.found.key "F">
 <!ENTITY staff.main.menu.circ.found.label "Mark Found">
 <!ENTITY staff.main.menu.circ.hold_browse.accesskey "B">
-<!ENTITY staff.main.menu.circ.hold_browse.label "Browse Holds Shelf">
+<!ENTITY staff.main.menu.circ.hold_browse.label "Browse ILL Requests Shelf">
 <!ENTITY staff.main.menu.circ.hold_clear.accesskey "">
-<!ENTITY staff.main.menu.circ.hold_clear.label "Clear Holds Shelf">
+<!ENTITY staff.main.menu.circ.hold_clear.label "Clear ILL Requests Shelf">
 <!ENTITY staff.main.menu.circ.hold_capture.accesskey "H">
-<!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds">
+<!ENTITY staff.main.menu.circ.hold_capture.label "Capture ILL Requests">
 <!ENTITY staff.main.menu.circ.hold_pull.accesskey "S">
-<!ENTITY staff.main.menu.circ.hold_pull.label "Pull List for Hold Requests">
+<!ENTITY staff.main.menu.circ.hold_pull.label "Pull List for ILL Request Requests">
 <!ENTITY staff.main.menu.circ.in_house.accesskey "I">
 <!ENTITY staff.main.menu.circ.in_house.label "Record In-House Use">
 <!ENTITY staff.main.menu.circ.scan_item_as_missing_pieces.accesskey "M">
@@ -1097,7 +1097,7 @@
 <!ENTITY staff.main.menu.circ.patron_status.label "Display Patron">
 <!ENTITY staff.main.menu.circ.place_hold.accesskey "H">
 <!ENTITY staff.main.menu.circ.place_hold.key "H">
-<!ENTITY staff.main.menu.circ.place_hold.label "Place Hold">
+<!ENTITY staff.main.menu.circ.place_hold.label "Place ILL Request">
 <!ENTITY staff.main.menu.circ.quick_add.key "Q">
 <!ENTITY staff.main.menu.circ.quick_add.label "Quick Add">
 <!ENTITY staff.main.menu.circ.reprint.accesskey "L">
@@ -1196,7 +1196,7 @@
 <!ENTITY staff.main.menu.serials.label "Serials">
 <!ENTITY staff.main.menu.tabs.close "Close All Tabs">
 <!ENTITY staff.main.menu.tabs.close.accesskey "A">
-<!ENTITY staff.main.menu.title "Evergreen Staff Client">
+<!ENTITY staff.main.menu.title "FulfILLment Staff Client">
 <!ENTITY staff.main.simple_auth.authorization.label "Authorization">
 <!ENTITY staff.main.simple_auth.authorize.accesskey "A">
 <!ENTITY staff.main.simple_auth.authorize.label "Authorization">
@@ -1535,7 +1535,7 @@
 <!ENTITY staff.patron_display.evening_phone.label 'Evening Phone:'>
 <!ENTITY staff.patron_display.family_name.label 'Last Name:'>
 <!ENTITY staff.patron_display.first_given_name.label 'First Name:'>
-<!ENTITY staff.patron_display.holds.label 'Holds:'>
+<!ENTITY staff.patron_display.holds.label 'ILL Requests:'>
 <!ENTITY staff.patron_display.holds_available.label 'Available:'>
 <!ENTITY staff.patron_display.holds_available_behind_desk.label 'Behind Desk:'>
 <!ENTITY staff.patron_display.home_ou.label 'Home Library:'>
@@ -1647,7 +1647,7 @@
 <!ENTITY staff.patron_display.trigger_event.menu.actions.reset.accesskey "R">
 <!ENTITY staff.patron_display.trigger_event.radio_button.circ_events.label "Circ Events">
 <!ENTITY staff.patron_display.trigger_event.radio_button.circ_events.accesskey "C">
-<!ENTITY staff.patron_display.trigger_event.radio_button.hold_events.label "Hold Events">
+<!ENTITY staff.patron_display.trigger_event.radio_button.hold_events.label "ILL Request Events">
 <!ENTITY staff.patron_display.trigger_event.radio_button.hold_events.accesskey "H">
 <!ENTITY staff.patron_display.trigger_event.checkbox_filter.pending.label "Pending">
 <!ENTITY staff.patron_display.trigger_event.checkbox_filter.pending.accesskey "P">
@@ -1663,7 +1663,7 @@
 <!ENTITY staff.patron_navbar.checkout.accesskey 'C'>
 <!ENTITY staff.patron_navbar.edit 'Edit'>
 <!ENTITY staff.patron_navbar.edit.accesskey 'E'>
-<!ENTITY staff.patron_navbar.holds 'Holds'>
+<!ENTITY staff.patron_navbar.holds 'ILL Requests'>
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
 <!ENTITY staff.patron_navbar.alert 'Display Alert and Messages'>
 <!ENTITY staff.patron_navbar.alert.accesskey 'A'>
@@ -2019,9 +2019,9 @@
 <!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.library_selector.prompt "For this library and descendants:">
 <!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.checkout "Checkout Receipt">
 <!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.bill_pay "Bill Pay Receipt">
-<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_slip "Hold Slip">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_slip "ILL Request Slip">
 <!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.transit_slip "Transit Slip">
-<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_transit_slip "Hold/Transit Slip">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_transit_slip "ILL Request/Transit Slip">
 <!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
 <!ENTITY staff.server.admin.org_unit_settings.context_loc "Context Location">
 <!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent org unit at run time">
@@ -2141,7 +2141,7 @@
 <!ENTITY staff.server.admin.transit.list.edit.accesskey "E">
 <!ENTITY staff.server.admin.transit.list.abort.label "Cancel Transits">
 <!ENTITY staff.server.admin.transit.list.save.label "Save Columns">
-<!ENTITY staff.server.admin.cash.title "Evergreen: Cash Reports">
+<!ENTITY staff.server.admin.cash.title "FulfILLment: Cash Reports">
 <!ENTITY staff.server.admin.cash.welcome "Welcome ">
 <!ENTITY staff.server.admin.cash.start_date "Start Date:">
 <!ENTITY staff.server.admin.cash.date.select "Date selector">
@@ -2151,7 +2151,7 @@
 <!ENTITY staff.server.admin.cash.submit "Submit">
 <!ENTITY staff.server.admin.cash.desk "Desk Payments">
 <!ENTITY staff.server.admin.cash.user "User Payments">
-<!ENTITY staff.server.admin.closed_dates.title "Evergreen: Library Closed Dates Editor">
+<!ENTITY staff.server.admin.closed_dates.title "FulfILLment: Library Closed Dates Editor">
 <!ENTITY staff.server.admin.closed_dates.welcome "Welcome ">
 <!ENTITY staff.server.admin.closed_dates.editor.title " Closed Dates Editor ">
 <!ENTITY staff.server.admin.closed_dates.editor.for "Edit Closed Dates for: ">
@@ -2178,9 +2178,9 @@
 <!ENTITY staff.server.admin.closed_dates.time.invalid "Invalid time format">
 <!ENTITY staff.server.admin.closed_dates.date_span.invalid "Ending date is earlier than starting date">
 <!ENTITY staff.server.admin.closed_dates.success "Closed date successfully updated">
-<!ENTITY staff.server.admin.copy_locations.title "Evergreen: Copy Locations Editor">
 <!ENTITY staff.server.admin.copy_locations.editor " Shelving Locations Editor ">
 <!ENTITY staff.server.admin.copy_locations.editor.create "Create a new shelving location">
+<!ENTITY staff.server.admin.copy_locations.title "FulfILLment: Copy Locations Editor">
 <!ENTITY staff.server.admin.copy_locations.editor.name "Name: ">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable.label "Holdable: ">
 <!ENTITY staff.server.admin.copy_locations.editor.hold_verify.label "Hold Verify: ">
@@ -2212,9 +2212,9 @@
 <!ENTITY staff.server.admin.copy_locations.submit "Submit">
 <!ENTITY staff.server.admin.copy_locations.cancel "Cancel">
 <!ENTITY staff.server.admin.copy_locations.update_success "Update Succeeded">
-<!ENTITY staff.server.admin.hold_pull.title "Evergreen Holds Pull List">
+<!ENTITY staff.server.admin.hold_pull.title "FulfILLment ILL Requests Pull List">
 <!-- This will be followed by the org_unit name -->
-<!ENTITY staff.server.admin.hold_pull.header "Evergreen Holds Pull List : ">
+<!ENTITY staff.server.admin.hold_pull.header "FulfILLment ILL Requests Pull List : ">
 <!-- This will be followed by the user's name -->
 <!ENTITY staff.server.admin.hold_pull.greeting "Welcome ">
 <!ENTITY staff.server.admin.hold_pull.sort.note "Note: Click on a column header to sort the column">
@@ -2226,19 +2226,19 @@
 <!ENTITY staff.server.admin.hold_pull.copy "Copy Number">
 <!ENTITY staff.server.admin.hold_pull.format "Format">
 <!ENTITY staff.server.admin.hold_pull.patron_barcode "Patron Barcode">
-<!ENTITY staff.server.admin.hold_pull.hold_date "Hold Placement Date">
-<!ENTITY staff.server.admin.hold_pull.hold_type "Hold Type">
+<!ENTITY staff.server.admin.hold_pull.hold_date "ILL Request Placement Date">
+<!ENTITY staff.server.admin.hold_pull.hold_type "ILL Request Type">
 <!ENTITY staff.server.admin.hold_pull.book "Book">
 <!ENTITY staff.server.admin.hold_pull.large_book "Large Print Book">
 <!ENTITY staff.server.admin.hold_pull.audiobook "Audiobook">
 <!ENTITY staff.server.admin.hold_pull.video "Video Recording">
 <!ENTITY staff.server.admin.hold_pull.music "Music">
 <!ENTITY staff.server.admin.hold_pull.eresource "Electronic Resource">
-<!ENTITY staff.server.admin.hold_pull.copy_hold "Copy Hold">
-<!ENTITY staff.server.admin.hold_pull.volume_hold "Volume Hold">
-<!ENTITY staff.server.admin.hold_pull.title_hold "Title Hold">
-<!ENTITY staff.server.admin.hold_pull.metarecord_hold "Metarecord Hold">
-<!ENTITY staff.server.admin.non_cat_types.title "Evergreen: Non Cataloged Types Editor">
+<!ENTITY staff.server.admin.hold_pull.copy_hold "Copy ILL Request">
+<!ENTITY staff.server.admin.hold_pull.volume_hold "Volume ILL Request">
+<!ENTITY staff.server.admin.hold_pull.title_hold "Title ILL Request">
+<!ENTITY staff.server.admin.hold_pull.metarecord_hold "Metarecord ILL Request">
+<!ENTITY staff.server.admin.non_cat_types.title "FulfILLment: Non Cataloged Types Editor">
 <!-- This will be followed by the user's name -->
 <!ENTITY staff.server.admin.non_cat_types.greeting "Welcome ">
 <!ENTITY staff.server.admin.non_cat_types.editor.title " Non Cataloged Types Editor ">
@@ -2275,10 +2275,10 @@
 <!ENTITY staff.server.admin.index.library_settings "Library Settings Editor">
 <!ENTITY staff.server.admin.index.non_cataloged_types "Non-cataloged Types Editor">
 <!ENTITY staff.server.admin.index.statistical_categories "Statistical Categories Editor">
-<!ENTITY staff.server.admin.index.expired_holds_shelf "Expired Holds Shelf Printable Listing">
-<!ENTITY staff.server.admin.index.hold_pull_list "Pull List for Hold Requests">
+<!ENTITY staff.server.admin.index.expired_holds_shelf "Expired ILL Requests Shelf Printable Listing">
+<!ENTITY staff.server.admin.index.hold_pull_list "Pull List for ILL Requests">
 <!ENTITY staff.server.admin.index.testing "(Testing)">
-<!ENTITY staff.server.admin.index.hold_pull_list_classic "Pull List for Hold Requests (Classic)">
+<!ENTITY staff.server.admin.index.hold_pull_list_classic "Pull List for ILL Requests (Classic)">
 <!ENTITY staff.server.admin.index.reports "Reports">
 <!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.label "Age Overdue Circs to Lost">
 <!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.accesskey "">
@@ -2294,7 +2294,7 @@
 <!ENTITY staff.server.admin.index.external_text_editor.label "External Text Editor Command">
 <!ENTITY staff.server.admin.index.external_text_editor.accesskey "x">
 
-<!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
+<!ENTITY staff.server.admin.org_settings.title "FulfILLment: Library Settings Editor">
 <!-- This will be followed by the user's name -->
 <!ENTITY staff.server.admin.org_settings.greeting "Welcome ">
 <!ENTITY staff.server.admin.org_settings.header " Library Settings Editor ">
@@ -2314,27 +2314,27 @@
 <!ENTITY staff.server.admin.org_settings.update_success "Update succeeded.">
 <!ENTITY staff.server.admin.org_settings.apply_all.confirm "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?">
 
-<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval "Holds: Expire Alert Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval "ILL Requests: Expire Alert Interval">
 <!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc "Amount of time before a hold expires at which point the patron should be alerted">
-<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval "Holds: Expire Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval "ILL Requests: Expire Interval">
 <!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval.desc 'Amount of time after a hold is placed before the hold expires.  Example "100 days"'>
 <!ENTITY staff.server.admin.org_settings.global.credit.allow "Allow Credit Card Payments">
 <!ENTITY staff.server.admin.org_settings.global.credit.allow.desc "If enabled, patrons will be able to pay fines accrued at this location via credit card">
 <!ENTITY staff.server.admin.org_settings.global.default_locale "Default Locale">
 <!ENTITY staff.server.admin.org_settings.circ.void_overdue_on_lost "Void overdue fines when items are marked lost">
-<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft 'Holds: Soft stalling interval'>
+<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft 'ILL Requests: Soft stalling interval'>
 <!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft.desc 'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"'>
-<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.hard "Holds: Hard boundary">
-<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "Holds: Soft boundary">
+<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.hard "ILL Requests: Hard boundary">
+<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "ILL Requests: Soft boundary">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex "Patron barcode format">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex.desc 'Regular expression defining the patron barcode format'>
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max "Maximum previous checkouts displayed">
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc "This is maximum number of previous circulations the staff client will display when investigating item details">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
-<!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval "Holds: Estimated Wait (Days)">
+<!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval "ILL Requests: Estimated Wait (Days)">
 <!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval.desc "When predicting the amount of time a patron will be waiting for a hold to be fulfilled,this is the default/average number of days to assume an item will be checked out.">
-<!ENTITY staff.server.admin.org_settings.circ.block_renews_for_holds "Holds: Block Renewal of Items Needed for Holds">
+<!ENTITY staff.server.admin.org_settings.circ.block_renews_for_holds "ILL Requests: Block Renewal of Items Needed for ILL Requests">
 <!ENTITY staff.server.admin.org_settings.circ.block_renews_for_holds.desc "When an item could fulfill a hold, do not allow the current patron to renew">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout "Selfcheck: Patron Login Timeout (in seconds)">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc "Number of seconds of inactivity before the patron is logged out of the selfcheck interface">
@@ -2378,7 +2378,7 @@
 <!ENTITY staff.server.admin.org_settings.ui.circ.patron_display_timeout_interval.desc "Set this if you would like patron displays in the staff client to be closed after a certain interval of inactivity.  Example \'5 minutes\'">
 
 
-<!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
+<!ENTITY staff.server.admin.stat_cat.title "FulfILLment: Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
 <!ENTITY staff.server.admin.stat_cat.heading " Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.create "Create a new statistical category">
@@ -2441,7 +2441,7 @@
 <!ENTITY staff.circ.checkin_overlay.sel_bucket.accesskey "A">
 <!ENTITY staff.circ.checkin_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.checkin_overlay.sel_opac.accesskey "S">
-<!ENTITY staff.circ.checkin_overlay.sel_opac_holds.label "Show Holds on Bib">
+<!ENTITY staff.circ.checkin_overlay.sel_opac_holds.label "Show ILL Requests on Bib">
 <!ENTITY staff.circ.checkin_overlay.sel_opac_holds.accesskey "H">
 <!ENTITY staff.circ.checkin_overlay.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.circ.checkin_overlay.sel_copy_details.accesskey "I">
@@ -2473,22 +2473,22 @@
 <!ENTITY staff.circ.checkin_overlay.strict_barcode.label "Strict Barcode">
 <!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.label "Ignore Pre-cataloged Items">
 <!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.accesskey "I">
-<!ENTITY staff.circ.checkin_overlay.suppress_holds_and_transits.label "Suppress Holds and Transits">
+<!ENTITY staff.circ.checkin_overlay.suppress_holds_and_transits.label "Suppress ILL Requests and Transits">
 <!ENTITY staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey "S">
 <!ENTITY staff.circ.checkin_overlay.amnesty_mode.label "Amnesty Mode / Forgive Fines">
 <!ENTITY staff.circ.checkin_overlay.amnesty_mode.accesskey "A">
-<!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.label "Auto-Print Hold and Transit Slips">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.label "Auto-Print ILL Request and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.label "Checkin Modifiers">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey "M">
-<!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.label "Clear Holds Shelf">
+<!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.label "Clear ILL Requests Shelf">
 <!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey "C">
-<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.label "Retarget Local Holds">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.label "Retarget Local ILL Requests">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.accesskey "R">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all.label "Retarget All Statuses">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all.accesskey "e">
-<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label "Always Retarget Local Holds">
-<!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.label "Capture Local Holds as Transits">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label "Always Retarget Local ILL Requests">
+<!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.label "Capture Local ILL Requests as Transits">
 <!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.accesskey "L">
 <!ENTITY staff.circ.checkin_overlay.checkin_manual_float.label "Manual Floating Active">
 <!ENTITY staff.circ.checkin_overlay.checkin_manual_float.accesskey "F">
@@ -2499,7 +2499,7 @@
 <!ENTITY staff.circ.renew_overlay.sel_bucket.accesskey "A">
 <!ENTITY staff.circ.renew_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.renew_overlay.sel_opac.accesskey "S">
-<!ENTITY staff.circ.renew_overlay.sel_opac_holds.label "Show Holds on Bib">
+<!ENTITY staff.circ.renew_overlay.sel_opac_holds.label "Show ILL Requests on Bib">
 <!ENTITY staff.circ.renew_overlay.sel_opac_holds.accesskey "H">
 <!ENTITY staff.circ.renew_overlay.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.circ.renew_overlay.sel_copy_details.accesskey "I">
@@ -2547,12 +2547,12 @@
 <!ENTITY staff.circ.circ_summary.retrieve_all.accesskey "A">
 <!ENTITY staff.circ.circ_summary.done.label "Done">
 <!ENTITY staff.circ.circ_summary.done.accesskey "D">
-<!ENTITY staff.circ.copy_details.hold_caption "Captured for Hold">
+<!ENTITY staff.circ.copy_details.hold_caption "Captured for ILL Request">
 <!ENTITY staff.circ.copy_details.transit_caption "In Transit">
 <!ENTITY staff.circ.copy_details.circ_caption "Last or Current Circulation">
 <!ENTITY staff.circ.copy_details.r_last.label "Retrieve Last Patron">
 <!ENTITY staff.circ.copy_details.r_last.accesskey "L">
-<!ENTITY staff.circ.copy_details.r_hold.label "Retrieve Hold Patron">
+<!ENTITY staff.circ.copy_details.r_hold.label "Retrieve ILL Request Patron">
 <!ENTITY staff.circ.copy_details.r_hold.accesskey "H">
 <!ENTITY staff.circ.copy_details.done.label "Done">
 <!ENTITY staff.circ.copy_details.done.accesskey "D">
@@ -2566,7 +2566,7 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_record_bucket.accesskey "">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac.accesskey "S">
-<!ENTITY staff.circ.copy_status_overlay.sel_opac_holds.label "Show Holds on Bib">
+<!ENTITY staff.circ.copy_status_overlay.sel_opac_holds.label "Show ILL Requests on Bib">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac_holds.accesskey "H">
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.accesskey "I">
@@ -2745,7 +2745,7 @@
 <!ENTITY staff.circ.holds.copy_to_clipboard.accesskey "C">
 <!ENTITY staff.circ.holds.show_in_catalog "Show in Catalog">
 <!ENTITY staff.circ.holds.show_in_catalog.accesskey "S">
-<!ENTITY staff.circ.holds.show_in_catalog_holds "Show Holds on Bib">
+<!ENTITY staff.circ.holds.show_in_catalog_holds "Show ILL Requests on Bib">
 <!ENTITY staff.circ.holds.show_in_catalog_holds.accesskey "H">
 <!ENTITY staff.circ.holds.show_item_details "Show Item Details">
 <!ENTITY staff.circ.holds.show_item_details.accesskey "I">
@@ -2771,13 +2771,13 @@
 <!ENTITY staff.circ.holds.edit_expire_time.accesskey "E">
 <!ENTITY staff.circ.holds.edit_shelf_expire_time "Edit Shelf Expire Time">
 <!ENTITY staff.circ.holds.edit_shelf_expire_time.accesskey "X">
-<!ENTITY staff.circ.holds.activate_hold "Activate Hold">
+<!ENTITY staff.circ.holds.activate_hold "Activate ILL Request">
 <!ENTITY staff.circ.holds.activate_hold.accesskey "A">
-<!ENTITY staff.circ.holds.suspend_hold "Suspend Hold">
+<!ENTITY staff.circ.holds.suspend_hold "Suspend ILL Request">
 <!ENTITY staff.circ.holds.suspend_hold.accesskey "S">
-<!ENTITY staff.circ.holds.edit_hold_range "Edit Hold Range">
+<!ENTITY staff.circ.holds.edit_hold_range "Edit ILL Request Range">
 <!ENTITY staff.circ.holds.edit_hold_range.accesskey "R">
-<!ENTITY staff.circ.holds.edit_hold_focus "Edit Hold Focus">
+<!ENTITY staff.circ.holds.edit_hold_focus "Edit ILL Request Focus">
 <!ENTITY staff.circ.holds.edit_hold_focus.accesskey "F">
 <!ENTITY staff.circ.holds.edit_desire_mint_condition "Set Desired Copy Quality">
 <!ENTITY staff.circ.holds.edit_desire_mint_condition.accesskey "Q">
@@ -2785,9 +2785,9 @@
 <!ENTITY staff.circ.holds.set_top_of_queue.accesskey "Q">
 <!ENTITY staff.circ.holds.title_transfer.label "Transfer to Marked Title">
 <!ENTITY staff.circ.holds.title_transfer.accesskey "">
-<!ENTITY staff.circ.holds.view_expired_onshelf_holds.label "View Clearable Holds">
+<!ENTITY staff.circ.holds.view_expired_onshelf_holds.label "View Clearable ILL Requests">
 <!ENTITY staff.circ.holds.view_expired_onshelf_holds.accesskey "x">
-<!ENTITY staff.circ.holds.clear_expired_onshelf_holds.label "Clear these Holds">
+<!ENTITY staff.circ.holds.clear_expired_onshelf_holds.label "Clear these ILL Requests">
 <!ENTITY staff.circ.holds.clear_expired_onshelf_holds.accesskey "">
 <!ENTITY staff.circ.holds.mark_item_damaged "Mark Item Damaged">
 <!ENTITY staff.circ.holds.mark_item_damaged.accesskey "D">
@@ -2795,14 +2795,14 @@
 <!ENTITY staff.circ.holds.mark_item_missing.accesskey "M">
 <!ENTITY staff.circ.holds.retarget "Find Another Target">
 <!ENTITY staff.circ.holds.retarget.accesskey "T">
-<!ENTITY staff.circ.holds.cancel "Cancel Hold">
+<!ENTITY staff.circ.holds.cancel "Cancel ILL Request">
 <!ENTITY staff.circ.holds.cancel.accesskey "C">
-<!ENTITY staff.circ.holds.uncancel "Un-cancel Hold">
+<!ENTITY staff.circ.holds.uncancel "Un-cancel ILL Request">
 <!ENTITY staff.circ.holds.uncancel.accesskey "U">
 <!ENTITY staff.circ.holds.save_columns "Save Columns">
 <!ENTITY staff.circ.holds.save_columns.accesskey "">
-<!ENTITY staff.hold_list.cancel_hold_dialog.title "Cancel Hold">
-<!ENTITY staff.hold_list.cancel_hold_dialog.header "Cancel Hold">
+<!ENTITY staff.hold_list.cancel_hold_dialog.title "Cancel ILL Request">
+<!ENTITY staff.hold_list.cancel_hold_dialog.header "Cancel ILL Request">
 <!ENTITY staff.hold_list.cancel_hold_dialog.description "Reason and Notes">
 <!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.label "No">
 <!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "N">
@@ -3048,7 +3048,7 @@
 <!ENTITY staff.cat.opac.menuitem.marcedit.accesskey "E">
 <!ENTITY staff.cat.opac.menuitem.holding.label "Holdings Maintenance">
 <!ENTITY staff.cat.opac.menuitem.holding.accesskey "H">
-<!ENTITY staff.cat.opac.menuitem.viewholds.label "View Holds">
+<!ENTITY staff.cat.opac.menuitem.viewholds.label "View ILL Requests">
 <!ENTITY staff.cat.opac.menuitem.viewholds.accesskey "s">
 <!ENTITY staff.cat.opac.menuitem.addtobucket.label "Add to Bucket">
 <!ENTITY staff.cat.opac.menuitem.addtobucket.accesskey "B">
@@ -3104,7 +3104,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns2.label "Save List Configuration">
 <!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
 <!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
-<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.label "Transfer Title Holds">
+<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.label "Transfer Title ILL Requests">
 <!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.accesskey "T">
 <!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.label "MARC Batch Edit">
 <!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.accesskey "">
@@ -3114,7 +3114,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.export_usmarc.label "MARC21">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.export_unimarc.label "UNIMARC">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.export_xml.label "XML">
-<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label "Evergreen BRE">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label "FulfILLment BRE">
 <!ENTITY staff.cat.select_unit.title "Select Serial Unit">
 <!ENTITY staff.cat.record_buckets_quick.select.label "Select a Serial Unit">
 <!ENTITY staff.cat.record_buckets_quick.select.desc "Please select a Serial Unit">
@@ -3194,7 +3194,7 @@
 <!ENTITY staff.cat.z3950.username.label "Username">
 <!ENTITY staff.cat.z3950.password.label "Password">
 <!ENTITY staff.cat.z3950.catalog_service.label "Local Catalog">
-<!ENTITY staff.cat.z3950.catalog_service.tooltiptext "Evergreen Native Catalog">
+<!ENTITY staff.cat.z3950.catalog_service.tooltiptext "FulfILLment Native Catalog">
 <!ENTITY staff.cat.z3950.save_creds.label "Save as Default">
 <!ENTITY staff.cat.z3950.save_creds.accesskey "D">
 <!ENTITY staff.cat.z3950.query.label "Query">
@@ -3238,7 +3238,7 @@
 <!ENTITY staff.pat.barcode_entry.retrieving.label "Retrieving...">
 <!ENTITY staff.patron.bill_cc_info.title "Credit Card Information">
 <!ENTITY staff.patron.bill_cc_info.where_process.label "Process where?">
-<!ENTITY staff.patron.bill_cc_info.process_int.label "Process payment through Evergreen">
+<!ENTITY staff.patron.bill_cc_info.process_int.label "Process payment through FulfILLment">
 <!ENTITY staff.patron.bill_cc_info.process_ext.label "Record externally processed payment">
 <!ENTITY staff.patron.bill_cc_info.visa.label "Visa">
 <!ENTITY staff.patron.bill_cc_info.mastercard.label "Mastercard">
@@ -3451,7 +3451,7 @@
 <!ENTITY staff.patron.bills_overlay.unselected.value "Un-Selected:">
 <!ENTITY staff.patron.bills_overlay.voided.value "Voided:">
 <!ENTITY staff.patron.bills_overlay.auto_print.label "Auto-Print">
-<!ENTITY staff.patron.hold_details.title "Hold Details">
+<!ENTITY staff.patron.hold_details.title "ILL Request Details">
 <!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
 <!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
 <!ENTITY staff.patron.hold_notices.method.label "Method:">
@@ -3467,10 +3467,10 @@
 <!ENTITY staff.patron.holds_overlay.circ_lib.label "Item Circulating Library">
 <!ENTITY staff.patron.holds_overlay.owning_lib.label "Volume Owning Library">
 <!ENTITY staff.patron.holds_overlay.home_lib.label "Patron Home Library foo">
-<!ENTITY staff.patron.holds_overlay.fetch_more.label "Fetch More Holds">
+<!ENTITY staff.patron.holds_overlay.fetch_more.label "Fetch More ILL Requests">
 <!ENTITY staff.patron.holds_overlay.fetch_more.accesskey "M">
 <!ENTITY staff.patron.holds_overlay.lib_filter_checkbox.label "Filter:">
-<!ENTITY staff.patron.holds_overlay.actions_for_holds.label "Actions for Selected Holds">
+<!ENTITY staff.patron.holds_overlay.actions_for_holds.label "Actions for Selected ILL Requests">
 <!ENTITY staff.patron.holds_overlay.actions_for_holds.accesskey "S">
 <!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
 <!ENTITY staff.patron.holds_overlay.print.label "Print">
@@ -3481,11 +3481,11 @@
 <!ENTITY staff.patron.holds_overlay.print_alt_pull_list.accesskey "y">
 <!ENTITY staff.patron.holds_overlay.simplified_pull_list.label "Simplified Pull List Interface">
 <!ENTITY staff.patron.holds_overlay.simplified_pull_list.accesskey "i">
-<!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
+<!ENTITY staff.patron.holds_overlay.place_hold.label "Place ILL Request">
 <!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
-<!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled Holds">
+<!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled ILL Requests">
 <!ENTITY staff.patron.holds_overlay.show_cancelled_holds.accesskey "">
-<!ENTITY staff.patron.holds_overlay.show_uncancelled_holds.label "Show Un-Cancelled Holds">
+<!ENTITY staff.patron.holds_overlay.show_uncancelled_holds.label "Show Un-Cancelled ILL Requests">
 <!ENTITY staff.patron.holds_overlay.show_uncancelled_holds.accesskey "">
 <!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
 <!ENTITY staff.patron.info_group.clone.accesskey "N">
@@ -3536,7 +3536,7 @@
 <!ENTITY staff.patron.summary_overlay.group_tab.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey "">
 <!ENTITY staff.patron.user_buckets.stub_not_implemented "Just a stub, Not Yet Implemented">
-<!ENTITY staff.patron.user_edit.title "Evergreen User Editor">
+<!ENTITY staff.patron.user_edit.title "FulfILLment User Editor">
 <!ENTITY staff.patron.user_edit.user_info.label "User Information">
 <!ENTITY staff.patron.user_edit.user_name.label "User Name:">
 <!ENTITY staff.patron.user_edit.barcode.label "Barcode:">
@@ -3754,8 +3754,8 @@
 <!ENTITY staff.circ.alternate_copy_summary.Floating.label "Floating">
 <!ENTITY staff.circ.alternate_copy_summary.Holdable.label "Holdable">
 <!ENTITY staff.circ.alternate_copy_summary.Age_Protect.label "Age-based Hold Protection">
-<!ENTITY staff.circ.alternate_copy_summary.Hold_Shelf_Location.label "Hold Shelf Location">
-<!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.label "Holds/Transit">
+<!ENTITY staff.circ.alternate_copy_summary.Hold_Shelf_Location.label "ILL Request Shelf Location">
+<!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.label "ILL Request/Transit">
 <!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.accesskey "">
 <!ENTITY staff.circ.alternate_copy_summary.ISBN.label "ISBN">
 <!ENTITY staff.circ.alternate_copy_summary.Loan_Duration.label "Loan Duration">
@@ -3818,9 +3818,9 @@
 <!ENTITY staff.printing.advanced.custom_print.warning.text "This print strategy will ignore the printer settings in the &quot;Normal Settings&quot; section. Advanced templates using Javascript may not work, even if the external tool can take the receipt.html file.">
 <!ENTITY staff.printing.advanced.html_templates.warning.header "Also...">
 <!ENTITY staff.printing.advanced.html_templates.warning.text "If using Receipt Templates with either the DOS LPT1 Print strategy or the Custom/External Print strategy (with &quot;receipt.txt&quot;), the client will try to translate any HTML markup to text, but this process may be imperfect, and for the best fidelity you should consider reworking your templates to be plain text if you are using a plain text print strategy.  However, if using a plain text print strategy with HTML markup, you may include special character codes in 2-digit hexadecimal in a &quot;hex&quot; attribute for any given element.  Such codes will be converted to actual characters and inserted at the place of the tag.  For example, &lt;p hex=&quot;0C&quot;&gt;Hello World&lt;/p&gt; will translate to form feed control character + Hello World. &lt;p&gt;Hello World&lt;/p hex=&quot;0C&quot;&gt; will translate to Hello World + form feed control character.">
-<!ENTITY staff.client.portal.title "Evergreen Staff Client Portal">
+<!ENTITY staff.client.portal.title "FulfILLment Staff Client Portal">
 <!ENTITY staff.client.portal.tab_name "Portal">
-<!ENTITY staff.client.portal.welcome "Welcome to Evergreen">
+<!ENTITY staff.client.portal.welcome "Welcome to FulfILLment">
 <!ENTITY staff.client.portal.circpatron "Circulation and Patrons">
 <!ENTITY staff.client.portal.checkout "Check Out Items">
 <!ENTITY staff.client.portal.checkout.description "Check Out Items">
@@ -3833,8 +3833,8 @@
 <!ENTITY staff.client.portal.patronreg_edit.tab_name "Editing Related Patron">
 <!ENTITY staff.client.portal.patronsearch "Search For Patron By Name">
 <!ENTITY staff.client.portal.patronsearch.description "Search For Patron By Name">
-<!ENTITY staff.client.portal.holdlist "Pull List for Hold Requests">
-<!ENTITY staff.client.portal.holdlist.description "Pull List for Hold Requests">
+<!ENTITY staff.client.portal.holdlist "Pull List for ILL Request Requests">
+<!ENTITY staff.client.portal.holdlist.description "Pull List for ILL Request Requests">
 <!ENTITY staff.client.portal.itemcataloging "Item Search and Cataloging">
 <!ENTITY staff.client.portal.advsearch "Advanced Search">
 <!ENTITY staff.client.portal.advsearch.description "Advanced Search">
@@ -3851,7 +3851,7 @@
 <!ENTITY staff.client.portal.recordbuckets.description "Record Buckets">
 <!ENTITY staff.client.portal.recordbuckets.tab_name "Record Buckets">
 <!ENTITY staff.client.portal.admin "Administration">
-<!ENTITY staff.client.portal.helpdesk "Get Help with Evergreen">
+<!ENTITY staff.client.portal.helpdesk "Get Help with FulfILLment">
 <!ENTITY staff.client.portal.helpdesk.description "Submit A Helpdesk Ticket">
 <!ENTITY staff.client.portal.reports "Reports">
 <!ENTITY staff.client.portal.reports.description "Reports">
@@ -3868,14 +3868,14 @@
 <!ENTITY staff.client.portal.catalog.tab_name "Catalog">
 <!ENTITY staff.client.portal.copybuckets.tab_name "Copy Buckets">
 <!ENTITY staff.item.batch.hold.groupbox_caption "Request Details">
-<!ENTITY staff.item.batch.hold.hold_type_menu.label "Hold Type">
+<!ENTITY staff.item.batch.hold.hold_type_menu.label "ILL Request Type">
 <!ENTITY staff.item.batch.hold.hold_type_menu.accesskey "T">
-<!ENTITY staff.item.batch.hold.hold_type_menuentry.copy_hold "Copy Hold">
-<!ENTITY staff.item.batch.hold.hold_type_menuentry.recall_hold "Recall Hold">
-<!ENTITY staff.item.batch.hold.hold_type_menuentry.force_hold "Force Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.copy_hold "Copy ILL Request">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.recall_hold "Recall ILL Request">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.force_hold "Force ILL Request">
 <!ENTITY staff.item.batch.hold.pick_up_lib_menu.label "Pickup Library">
 <!ENTITY staff.item.batch.hold.pick_up_lib_menu.accesskey "P">
-<!ENTITY staff.item.batch.hold.hold_usr.label "Hold User Barcode">
+<!ENTITY staff.item.batch.hold.hold_usr.label "ILL Request User Barcode">
 <!ENTITY staff.item.batch.hold.hold_usr.accesskey "U">
 <!ENTITY staff.item.batch.hold.request_btn.label "Make Request">
 <!ENTITY staff.item.batch.hold.request_btn.accesskey "M">

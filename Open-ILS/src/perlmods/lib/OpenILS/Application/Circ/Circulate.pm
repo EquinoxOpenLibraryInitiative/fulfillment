@@ -279,6 +279,7 @@ sub run_method {
         $circulator->do_renew($api);
     }
 
+    my $remote = 0;
     if( $circulator->bail_out ) {
 
         my @ee;
@@ -306,9 +307,83 @@ sub run_method {
         }
 
         $circulator->editor->commit;
+        $remote = 1;
+
     }
     
     $conn->respond_complete(circ_events($circulator));
+
+    if ($remote) {
+        my $ff_action = $circulator->ff_action || '';
+        my $cl = $circulator->circ_lib;
+        $cl = $cl->id if (ref $cl);
+    
+        # user_barcode is not fleshed (or needed) in all contexts
+        my $user_barcode = $circulator->patron->card->barcode
+            if $circulator->patron and $circulator->patron->card;
+
+        $logger->info("circulator: performing FF action '$ff_action'");
+
+        my $FF = OpenSRF::AppSession->create('fulfillment.laicore');
+
+        if ($ff_action eq 'ill-home-capture') {
+            $FF->request( 'fulfillment.laicore.circ.lender.checkout', 
+                $cl, $circulator->copy->barcode )->gather(1);
+
+        } elsif ($ff_action eq 'ill-foreign-receive') {
+
+            # create the temporary copy for the borrower
+            my $tmp_copy = $FF->request( 
+                'fulfillment.laicore.item.create_for_borrower',
+                $cl, $circulator->copy->id)->gather(1);
+
+            if ($tmp_copy) {
+                my $bc = $tmp_copy->{barcode};
+
+                $logger->info("circulator: created tmp copy for ".
+                    "borrower, attempting hold placement for $bc at $cl");
+            
+                # place a hold on the temp copy for the borrower
+                # at the borrowing library
+
+                # ensure the borrower hold is placed against the same
+                # patron for which the FF hold was captured and transited.
+                $user_barcode = $circulator->editor->retrieve_actor_user([
+                    $circulator->hold->usr, 
+                    {flesh => 1, flesh_fields => {au => ['card']}}
+                ])->card->barcode;
+
+                $FF->request( 
+                    'fulfillment.laicore.hold.borrower.place', 
+                    $cl, $bc, $user_barcode)->gather(1);
+
+                # check the temp copy in at the borrowing library
+                # to capture the hold for the patron.
+
+                $FF->request( 
+                    'fulfillment.laicore.circ.borrower.checkin', 
+                    $cl, $bc, $user_barcode)->gather(1);
+
+            } else {
+
+                # some connectors may not allow us to create borrower copies.
+                $logger->info("FF no borrower copy created for copy ". 
+                    $circulator->copy->barcode.", skipping borrower library hold");
+            }
+
+        } elsif ($ff_action eq 'ill-foreign-checkout') {
+            $FF->request( 'fulfillment.laicore.circ.borrower.checkout', 
+                $cl, $circulator->copy->barcode, $user_barcode)->gather(1);
+
+        } elsif ($ff_action eq 'ill-foreign-checkin') {
+            $FF->request( 'fulfillment.laicore.circ.borrower.checkin', 
+                $cl, $circulator->copy->barcode )->gather(1);
+
+        } elsif ($ff_action eq 'transit-home-receive') {
+            $FF->request( 'fulfillment.laicore.circ.lender.checkin', 
+                $cl, $circulator->copy->barcode )->gather(1);
+        }
+    }
 
     return undef if $circulator->bail_out;
 
@@ -491,6 +566,7 @@ my @AUTOLOAD_FIELDS = qw/
     skip_permit_key
     skip_deposit_fee
     skip_rental_fee
+    ff_action
     use_booking
     clear_expired
     retarget_mode
@@ -2980,7 +3056,10 @@ sub do_checkin {
                         $self->attempt_checkin_reservation_capture;
                 }
             } else {
-                $needed_for_something = $self->attempt_checkin_hold_capture;
+                my $circ_lib = (ref $self->copy->circ_lib) ? 
+                    $self->copy->circ_lib->id : $self->copy->circ_lib;
+                $needed_for_something = $self->attempt_checkin_hold_capture
+                    if !$U->ou_ancestor_setting_value($circ_lib, 'ff.ill.return.go_home') || $circ_lib == $self->circ_lib;
             }
         }
         return if $self->bail_out;
@@ -3026,6 +3105,7 @@ sub do_checkin {
                     my $bc = $self->copy->barcode;
                     $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
                     $self->checkin_build_copy_transit($circ_lib);
+                    $needed_for_something = 1; # don't set to reshelving!
                     return if $self->bail_out;
                     $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
                 }

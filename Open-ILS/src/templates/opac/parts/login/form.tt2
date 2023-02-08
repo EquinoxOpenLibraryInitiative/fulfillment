@@ -46,9 +46,21 @@
     [% END %]
     [% IF !sso_enabled || sso_native %]
     [% l('Please enter the following information:') %]
+    <br/>
+    <br/>
     <form method='post'>
-        <div class='login-form-left'>
-            <label for='username_field' class="lbl1" >[% l('Library Card Number or Username') %]</label>
+        <div style="float: left; padding-bottom: 10px; margin-right: 40px;">
+            <label for='home_ou_field' class="lbl1" >[% l('Please choose your home library') %]</label>
+            <div class="input_bg">
+                [%- org_select_id = 'home_ou_field'; -%]
+                [% PROCESS "opac/parts/org_selector.tt2";
+                   INCLUDE build_org_selector name='home_ou' default_text='Select your Library'
+                    id=org_select_id can_have_users_only=1 can_have_vols_only=1 %]
+            </div>
+        </div>
+        <br/>
+        <div style="float: left; clear:both;">
+            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]</label>
             <div class="input_bg">
                 <input type='text' id="username_field" name="username" autofocus />
             </div>

@@ -1979,6 +1979,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
+INSERT INTO permission.perm_list (code, description)
+VALUES ( 'FULFILLMENT_ADMIN', 'Allows administration of fulfillment transactions' );
+
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, oils_i18n_gettext(1, 'Users', 'pgt', 'name'), NULL, NULL, '3 years', FALSE, 'group_application.user');
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
@@ -2912,9 +2915,6 @@ INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
 
 -- Set a work_ou for the Administrator user
 INSERT INTO permission.usr_work_ou_map (usr, work_ou) VALUES (1, 1);
-
---010.schema.biblio.sql:
-INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','<record xmlns="http://www.loc.gov/MARC21/slim"/>','FOO');
 
 --040.schema.asset.sql:
 INSERT INTO asset.copy_location (id, name,owning_lib) VALUES (1, oils_i18n_gettext(1, 'Stacks', 'acpl', 'name'),1);
@@ -16940,6 +16940,911 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
 -- End new patron welcome message notice -----------
 
+INSERT INTO action_trigger.event_definition
+    (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field)
+    VALUES (90, 'f', 1, 'Weekly item refresh', 'refresh_timeout.acp', 'NOOP_True',
+        'FulfILLment::AT::Reactor::ItemRefresh::ByItem', '1 week', 'cache_time', 'source_lib');
+
+INSERT INTO action_trigger.event_definition
+    (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field)
+    VALUES (91, 'f', 1, 'Monthly bib refresh', 'refresh_timeout.bre', 'NOOP_True',
+        'FulfILLment::AT::Reactor::BibRefresh', '1 month', 'edit_date', 'owner');
+
+INSERT INTO action_trigger.event_definition
+    (id, active, owner, name, hook, validator, reactor)
+    VALUES (92, 'f', 1, 'Initial item load',
+        'bre.created', 'NOOP_True', 'FulfILLment::AT::Reactor::ItemLoad::ByBib');
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.bib_refresh.interval',
+    oils_i18n_gettext( 'ff.remote.bib_refresh.interval', 'LAI: Remote Bibliograph Record refresh interval', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.bib_refresh.interval', 'How often should FufILLment attempt to refresh bibliographic records for this remote ILS', 'coust', 'description'),
+    'interval'
+), (
+    'ff.remote.bib_refresh.lai_id_field',
+    oils_i18n_gettext( 'ff.remote.bib_refresh.lai_id_field', 'LAI: Remote ILS record ID field and subfield', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.bib_refresh.lai_id_field', 'Where, within bibliographic records, the remote ILS stores the local unique identifier', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.bib_refresh.previous',
+    oils_i18n_gettext( 'ff.remote.bib_refresh.previous', 'LAI: Previous Remote Bibliograph Record refresh', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.bib_refresh.previous', 'Timestamp of the previous attempt to refresh bibliographic records for this remote ILS', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.bib_refresh.chunk_size',
+    oils_i18n_gettext( 'ff.remote.bib_refresh.chunk_size', 'LAI: Remote Bibliograph Record refresh chunk size', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.bib_refresh.chunk_size', 'How many bibliographic records should be requested at a time', 'coust', 'description'),
+    'integer'
+), (
+    'ff.remote.connector.extra.agency',
+    oils_i18n_gettext( 'ff.remote.connector.extra.agency', 'LAI: NCIP Agency', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.extra.agency', 'NCIP Agency to be used for this remote ILS', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.location',
+    oils_i18n_gettext( 'ff.remote.connector.location', 'LAI: ILS-defined Location', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.location', 'ILS-defined Location to be used for this remote ILS', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.type',
+    oils_i18n_gettext( 'ff.remote.connector.type', 'LAI: Connector Type', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.type', 'Connector to be used for this remote ILS', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.host',
+    oils_i18n_gettext( 'ff.remote.connector.host', 'LAI: Default Connector Host', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.host', 'Default host to be used with the owning site''s Connector', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.port',
+    oils_i18n_gettext( 'ff.remote.connector.port', 'LAI: Default Connector Port', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.port', 'Default port to be used with the the owning site''sConnector', 'coust', 'description'),
+    'integer'
+), (
+    'ff.remote.connector.user',
+    oils_i18n_gettext( 'ff.remote.connector.user', 'LAI: Default Connector User', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.user', 'Default user to be used with the owing site''s Connector', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.passwd',
+    oils_i18n_gettext( 'ff.remote.connector.passwd', 'LAI: Default Connector Password', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.passwd', 'Default password to be used with the owning site''s Connector', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.user.actor',
+    oils_i18n_gettext( 'ff.remote.connector.user.actor', 'LAI: Connector Actor Data User', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.user.actor', 'Actor data override user', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.passwd.actor',
+    oils_i18n_gettext( 'ff.remote.connector.passwd.actor', 'LAI: Connector Actor Data Password', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.passwd.actor', 'Actor data override password', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.user.resource',
+    oils_i18n_gettext( 'ff.remote.connector.user.resource', 'LAI: Connector Resource Data User', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.user.resource', 'Resource data override user', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.passwd.resource',
+    oils_i18n_gettext( 'ff.remote.connector.passwd.resource', 'LAI: Connector Resource Data Password', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.passwd.resource', 'Resource data override password', 'coust', 'description'),
+    'string'
+),(
+    'ff.remote.connector.user.hold',
+    oils_i18n_gettext( 'ff.remote.connector.user.hold', 'LAI: Connector Hold Data User', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.user.hold', 'Hold data override user', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.host.resource',
+    oils_i18n_gettext( 'ff.remote.connector.host.resource', 'LAI: Connector Resource Data Host', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.host.resource', 'Resource data override host', 'coust', 'description'),
+    'string'
+), (
+    'ff.remote.connector.passwd.hold',
+    oils_i18n_gettext( 'ff.remote.connector.passwd.hold', 'LAI: Connector Hold Data Password', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.passwd.hold', 'Hold data override password', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.extra.pickup_location',
+    oils_i18n_gettext( 'ff.remote.connector.extra.pickup_location', 'LAI: Central Shipping Location for outgoing ILL Requests', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.extra.pickup_location', 'If outgoing ILLs are handled centrally, the code of the lender intra-system hold pickup location', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.extra.location',
+    oils_i18n_gettext( 'ff.remote.connector.extra.location', 'LAI: Location code/prefix for bibs', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.extra.location', 'Needed by Aleph, Symphony and Polaris for bib requests', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.extra.z3950.port',
+    oils_i18n_gettext( 'ff.remote.connector.extra.z3950.port', 'LAI: Z39.50 port for bibs', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.extra.z3950.port', 'Z39.50 port for bibs', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.extra.z3950.database',
+    oils_i18n_gettext( 'ff.remote.connector.extra.z3950.database', 'LAI: Z39.50 database name for bibs', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.extra.z3950.database', 'Z39.50 database name for bibs', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.extra.z3950.search_attr',
+    oils_i18n_gettext( 'ff.remote.connector.extra.z3950.search_attr', 'LAI: Z39.50 search attribute for bibs', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.extra.z3950.search_attr', 'Z39.50 search attribute for bibs', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.port.hold',
+    oils_i18n_gettext( 'ff.remote.connector.port.hold', 'LAI: Connector Hold Data Port', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.port.hold', 'Host to be used with the owning site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.port.resource',
+    oils_i18n_gettext( 'ff.remote.connector.port.resource', 'LAI: Connector Resource Data Port', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.port.resource', 'Host to be used with the owning site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.port.actor',
+    oils_i18n_gettext( 'ff.remote.connector.port.actor', 'LAI: Connector Actor Data Port', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.port.actor', 'Host to be used with the owning site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.port.item',
+    oils_i18n_gettext( 'ff.remote.connector.port.item', 'LAI: Connector Item Data Port', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.port.item', 'Host to be used with the owning site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.host.actor',
+    oils_i18n_gettext( 'ff.remote.connector.host.actor', 'LAI: Connector Actor Data Host', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.host.actor', 'Host to be used with the owing site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.host.hold',
+    oils_i18n_gettext( 'ff.remote.connector.host.hold', 'LAI: Connector Hold Data Host', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.host.hold', 'Host to be used with the owing site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.host.item',
+    oils_i18n_gettext( 'ff.remote.connector.host.item', 'LAI: Connector Item Data Host', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.host.item', 'Host to be used with the owing site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.user.item',
+    oils_i18n_gettext( 'ff.remote.connector.user.item', 'LAI: Connector Item Data User', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.user.item', 'User to be used with the owing site''s Connector', 'coust', 'description'),
+    'string'),
+(   'ff.remote.connector.passwd.item',
+    oils_i18n_gettext( 'ff.remote.connector.passwd.item', 'LAI: Connector Item Data Password', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.connector.passwd.item', 'Password to be used with the owing site''s Connector', 'coust', 'description'),
+    'string');
+
+-- item auto-ingest related settings
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.purge.interval',
+    oils_i18n_gettext(
+        'ff.remote.item_cache.purge.interval',
+        'LAI: Item Cache Purge interval',
+        'coust',
+        'label'),
+    oils_i18n_gettext(
+        'ff.remote.item_cache.purge.interval',
+        'How often should FufILLment purge unused item record cache entries for this remote ILS',
+        'coust',
+        'description'),
+    'interval'
+), (
+    'ff.remote.item_cache.purge.previous',
+    oils_i18n_gettext(
+        'ff.remote.item_cache.purge.previous',
+        'LAI: Previous Remote Item Cache purge',
+        'coust',
+        'label'),
+    oils_i18n_gettext(
+        'ff.remote.item_cache.purge.previous',
+        'Timestamp of the previous item cache purge for this remote ILS',
+        'coust',
+        'description'),
+    'string'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.ill.return.go_home',
+    oils_i18n_gettext(
+        'ff.ill.return.go_home',
+        'LAI: ILLs always go home',
+        'coust',
+        'label'),
+    oils_i18n_gettext(
+        'ff.ill.return.go_home',
+        'ILLs of items owned by this endpoint always go home before being captured for another hold',
+        'coust',
+        'description'),
+    'bool'
+);
+
+-- default user group for participating institutions
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class )
+    VALUES (
+        'ff.remote.user_cache.default_group',
+        oils_i18n_gettext('ff.remote.user_cache.default_group', 'LAI: Default user group for autocollected patrons', 'coust', 'label'),
+        oils_i18n_gettext('ff.remote.user_cache.default_group', 'When fetching a user from the remote ILS, what user group should users be dropped into?', 'coust', 'description'),
+        'link',
+        'pgt'
+    );
+
+
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+VALUES (
+    'ff.remote.connector.version',
+    oils_i18n_gettext(
+        'ff.remote.connector.version',
+        'LAI: Connector Version',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.version',
+        'Optional connector version string; used for loading version-specific behavior',
+        'coust', 'description'
+    ),
+    'string'
+);
+
+-- force staff mediated ILL requests
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
+    VALUES (
+        'ff.request.force_mediation',
+        oils_i18n_gettext('ff.request.force_mediation', 'ILL: Force initial staff-mediation for all requests', 'coust', 'label'),
+        oils_i18n_gettext('ff.request.force_mediation', 'When patrons belonging to this org unit place an ILL request, it starts frozen to force staff mediation', 'coust', 'description'),
+        'bool'
+    );
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+VALUES (
+    'ff.remote.connector.extra.sip2.host',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.host',
+        'LAI: SIP2 Hostname',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.host',
+        'SIP2 hostname, if different from the default connector host',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.sip2.port',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.port',
+        'LAI: SIP2 Port',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.port',
+        'SIP2 port number',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.sip2.institution',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.institution',
+        'LAI: SIP2 Institution (agency)',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.institution',
+        'SIP2 Institution (agency)',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.sip2.username',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.username',
+        'LAI: SIP2 login username',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.username',
+        'LAI: SIP2 login username',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.sip2.password',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.password',
+        'LAI: SIP2 login password',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.sip2.password',
+        'LAI: SIP2 login password',
+        'coust', 'description'
+    ),
+    'string'
+);
+
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+VALUES (
+    'ff.remote.connector.extra.z3950.host',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.z3950.host',
+        'LAI: Z39.50 Server Hostname',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.z3950.host',
+        'Z39.50 Server Hostname, if different from the default connector host',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.z3950.username',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.z3950.username',
+        'LAI: Z39.50 Server Username',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.z3950.username',
+        'Z39.50 Server Username',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.z3950.password',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.z3950.password',
+        'LAI: Z39.50 Server Password',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.z3950.password',
+        'Z39.50 Server Password',
+        'coust', 'description'
+    ),
+    'string'
+);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, direction, template)
+    VALUES (1, 'hold', 'Outgoing', $$
+<html>
+ <head>
+  <style>
+   th { font-weight: bold; }
+  </style>
+ </head>
+ <body>
+ <h1>Outgoing ILL Request</h1>
+ <p>
+    This item has been captured for an ILL request at the
+    lending library and is en route to the borrowing library.
+ </p>
+ <table>
+  <tr>
+   <th>Action</th>
+   <td>${action}</td>
+  </tr>
+  <tr>
+   <th>Copy Barcode</th>
+   <td>${copy.barcode}</td>
+  </tr>
+  <tr>
+   <th>Borrower Patron Barcode</th>
+   <td>${card.barcode}</td>
+  </tr>
+  <tr>
+   <th>Borrowing Library (Destination)</th>
+   <td>${transit.dest.name}</td>
+  </tr>
+  <tr>
+   <th>Routing Code</th>
+   <td>${transit.dest.routing_code}</td>
+  </tr>
+  <tr>
+   <th>Transit Date</th>
+   <td>${transit.source_send_time:truncate_date}</td>
+  </tr>
+ </table>
+</body>
+$$);
+
+-- TODO borrower copy barcode
+INSERT INTO actor.web_action_print_template
+    (owner, focus, direction, action, template)
+    VALUES (1, 'hold', 'Incoming', 'Check In', $$
+<html>
+ <head>
+  <style>
+   th { font-weight: bold; }
+  </style>
+ </head>
+ <body>
+ <h1>ILL Item Received</h1>
+ <p>ILL request item has arrived at the borrowing library.</p>
+ <table>
+  <tr>
+   <th>Action</th>
+   <td>Check In</td>
+  </tr>
+  <tr>
+   <th>ILL Copy Barcode</th>
+   <td>${copy.barcode}</td>
+  </tr>
+  <tr>
+   <th>Borrower Patron Barcode</th>
+   <td>${card.barcode}</td>
+  </tr>
+ </table>
+</body>
+$$);
+
+-- TODO borrower copy barcode
+INSERT INTO actor.web_action_print_template
+    (owner, focus, direction, action, template)
+    VALUES (1, 'circ', 'Incoming', 'Check Out', $$
+<html>
+ <head>
+  <style>
+   th { font-weight: bold; }
+  </style>
+ </head>
+ <body>
+ <h1>ILL Item Checked Out</h1>
+ <p>ILL request item has been checked out to the borrowing user.</p>
+ <table>
+  <tr>
+   <th>Action</th>
+   <td>Check Out</td>
+  </tr>
+  <tr>
+   <th>ILL Copy Barcode</th>
+   <td>${copy.barcode}</td>
+  </tr>
+  <tr>
+   <th>Borrower Patron Barcode</th>
+   <td>${card.barcode}</td>
+  </tr>
+  <tr>
+   <th>Due Date</th>
+   <td>${circ.due_date:truncate_date}</td>
+  </tr>
+  <tr>
+   <th>Transit Date</th>
+   <td>${transit.source_send_time:truncate_date}</td>
+  </tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, direction, action, template)
+    VALUES (1, 'circ', 'Outgoing', 'Check In', $$
+<html>
+ <head>
+  <style>
+   th { font-weight: bold; }
+  </style>
+ </head>
+ <body>
+ <h1>ILL Item Checked In</h1>
+ <p>
+    ILL request circulation is complete.
+    The item is now in transit back to the lending library.
+ </p>
+ <table>
+  <tr>
+   <th>Action</th>
+   <td>Check In</td>
+  </tr>
+  <tr>
+   <th>ILL Copy Barcode</th>
+   <td>${copy.barcode}</td>
+  </tr>
+  <tr>
+   <th>Borrower Patron Barcode</th>
+   <td>${card.barcode}</td>
+  </tr>
+  <tr>
+   <th>Due Date</th>
+   <td>${circ.due_date:truncate_date}</td>
+  </tr>
+  <tr>
+   <th>Lending Library (Destination)</th>
+   <td>${transit.dest.name}</td>
+  </tr>
+  <tr>
+   <th>Routing Code</th>
+   <td>${transit.dest.routing_code}</td>
+  </tr>
+  <tr>
+   <th>Transit Date</th>
+   <td>${transit.source_send_time:truncate_date}</td>
+  </tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, direction, action, template)
+    VALUES (1, 'transit', 'Incoming', 'Check In', $$
+<html>
+ <head>
+  <style>
+   th { font-weight: bold; }
+  </style>
+ </head>
+ <body>
+ <h1>ILL Item Returned Home</h1>
+ <p>
+    ILL item has transited back to the home/lending library.
+ </p>
+ <table>
+  <tr>
+   <th>Action</th>
+   <td>Check In</td>
+  </tr>
+  <tr>
+   <th>ILL Copy Barcode</th>
+   <td>${copy.barcode}</td>
+  </tr>
+  <tr>
+   <th>Transit Source</th>
+   <td>${transit.source.name}</td>
+  </tr>
+  <tr>
+   <th>Transit Date</th>
+   <td>${transit.source_send_time:truncate_date}</td>
+  </tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+VALUES (
+    'ff.remote.connector.disabled',
+    oils_i18n_gettext(
+        'ff.remote.connector.disabled',
+        'LAI: Disable Connector',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.disabled',
+        'If true, do not use this connector for any remote communication',
+        'coust', 'description'
+    ),
+    'bool'
+);
+
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+VALUES (
+    'ff.remote.connector.extra.ncip.host',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.host',
+        'LAI: NCIP Server',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.host',
+        'NCIP Server hostname or IP address',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.ncip.port',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.port',
+        'LAI: NCIP Port',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.port',
+        'NCIP Server port number',
+        'coust', 'description'
+    ),
+    'integer'
+), (
+    'ff.remote.connector.extra.ncip.protocol',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.protocol',
+        'LAI: NCIP Connection Protocol',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.protocol',
+        'NCIP Connection Protocol. https, http, or tcp',
+        'coust', 'description'
+    ),
+    'integer'
+), (
+    'ff.remote.connector.extra.ncip.path',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.path',
+        'LAI: NCIP URL path.  HTTP(S) only',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.path',
+        'NCIP URL path.  HTTP(S) only.  E.g. "/ncip/message"',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.ncip.ils_agency.name',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.ils_agency.name',
+        'LAI: NCIP ILS Agency Name',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.ils_agency.name',
+        'LAI: NCIP ILS Agency Name',
+        'coust', 'description'
+    ),
+    'string'
+), (
+    'ff.remote.connector.extra.ncip.ils_agency.uri',
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.ils_agency.uri',
+        'LAI: NCIP ILS Agency URI',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ff.remote.connector.extra.ncip.ils_agency.uri',
+        'LAI: NCIP ILS Agency URI',
+        'coust', 'description'
+    ),
+    'string'
+);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, template) VALUES (1, 'copy', $$
+<html>
+ <head>
+  <style>
+   th {font-weight:bold; text-align:left}
+   td {text-align:left}
+  </style>
+ </head>
+ <body>
+ <table>
+  <tr><th>Copy Barcode</th><td>${barcode}</td></tr>
+  <tr><th>Status:</th><td>${status}</td></tr>
+  <tr><th>Owning Lib:</th><td>${item_circ_lib}</td></tr>
+  <tr><th>Title:</th><td>${title}</td></tr>
+  <tr><th>Author:</th><td>${author}</td></tr>
+  <tr><th>Call Number:</th><td>${call_number}</td></tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, template) VALUES (1, 'hold', $$
+<html>
+ <head>
+  <style>
+   th {font-weight:bold; text-align:left}
+   td {text-align:left}
+  </style>
+ </head>
+ <body>
+ <table>
+  <tr><th>Copy Barcode</th><td>${barcode}</td></tr>
+  <tr><th>Status:</th><td>${status}</td></tr>
+  <tr><th>Owning Lib:</th><td>${item_circ_lib}</td></tr>
+  <tr><th>Title:</th><td>${title}</td></tr>
+  <tr><th>Author:</th><td>${author}</td></tr>
+  <tr><th>Call Number:</th><td>${call_number}</td></tr>
+  <tr><th>Hold Requesting Patron:</th><td>${hold_request_usr}</td></tr>
+  <tr><th>Hold Requesting Library:</th><td>${hold_request_lib}</td></tr>
+  <tr><th>Hold Pickup Library:</th><td>${hold_pickup_lib}</td></tr>
+  <tr><th>Hold Request Date:</th><td>${hold_request_time}</td></tr>
+  <tr><th>Hold Capture Date:</th><td>${hold_capture_time}</td></tr>
+  <tr><th>Hold Cancel Date:</th><td>${hold_cancel_time}</td></tr>
+  <tr><th>Hold Cancel Date:</th><td>${hold_cancel_cause}</td></tr>
+  <tr><th>Transit Source:</th><td>${transit_source}</td></tr>
+  <tr><th>Transit Destination:</th><td>${transit_dest}</td></tr>
+  <tr><th>Transit Send Date:</th><td>${transit_time}</td></tr>
+  <tr><th>Transit Receive Date:</th><td>${transit_recv_time}</td></tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, template) VALUES (1, 'circ', $$
+<html>
+ <head>
+  <style>
+   th {font-weight:bold; text-align:left}
+   td {text-align:left}
+  </style>
+ </head>
+ <body>
+ <table>
+  <tr><th>Copy Barcode</th><td>${barcode}</td></tr>
+  <tr><th>Status:</th><td>${status}</td></tr>
+  <tr><th>Owning Lib:</th><td>${item_circ_lib}</td></tr>
+  <tr><th>Title:</th><td>${title}</td></tr>
+  <tr><th>Author:</th><td>${author}</td></tr>
+  <tr><th>Call Number:</th><td>${call_number}</td></tr>
+  <tr><th>Circulating Library:</th><td>${circ_circ_lib}</td></tr>
+  <tr><th>Circulating Patron:</th><td>${circ_usr}</td></tr>
+  <tr><th>Checkout date:</th><td>${xact_start}</td></tr>
+  <tr><th>Due Date:</th><td>${due_date}</td></tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO actor.web_action_print_template
+    (owner, focus, template) VALUES (1, 'transit', $$
+<html>
+ <head>
+  <style>
+   th {font-weight:bold; text-align:left}
+   td {text-align:left}
+  </style>
+ </head>
+ <body>
+ <table>
+  <tr><th>Copy Barcode</th><td>${barcode}</td></tr>
+  <tr><th>Status:</th><td>${status}</td></tr>
+  <tr><th>Owning Lib:</th><td>${item_circ_lib}</td></tr>
+  <tr><th>Title:</th><td>${title}</td></tr>
+  <tr><th>Author:</th><td>${author}</td></tr>
+  <tr><th>Call Number:</th><td>${call_number}</td></tr>
+  <tr><th>Transit Source:</th><td>${transit_source}</td></tr>
+  <tr><th>Transit Destination:</th><td>${transit_dest}</td></tr>
+  <tr><th>Transit Send Date:</th><td>${transit_time}</td></tr>
+  <tr><th>Transit Receive Date:</th><td>${transit_recv_time}</td></tr>
+ </table>
+</body>
+$$);
+
+INSERT INTO actor.org_unit_setting (org_unit, name, value)
+    VALUES (1, 'circ.hold_boundary.hard', '1');
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.threshold',
+    oils_i18n_gettext( 'ff.remote.item_cache.threshold', 'LAI: minimum percentage of bibs to match profile for import', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.threshold', 'LAI: minimum percentage of bibs to match porfile for import', 'coust', 'description'),
+    'string'
+);
+
+-- new
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.embedded.item_tag',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.item_tag', 'LAI: tag to override one in holdings profile', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.item_tag', 'LAI: tag to override one in holdings profile', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.alt_call_number_tag',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number_tag', 'LAI: tag outside of holdings for call number', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number_tag', 'LAI: tag outside of holdings for call number', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.alt_call_number_prefix',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number_prefix', 'LAI: field in alt tag for a call number label prefix', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number_prefix', 'LAI: field in alt tag for a call number label prefix', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.alt_call_number',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number', 'LAI: field in alt tag for a call number label', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number', 'LAI: field in alt tag for a call number label', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.alt_call_number_suffix',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number_suffix', 'LAI: field in alt tag for a call number label suffix', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.alt_call_number_suffix', 'LAI: field in alt tag for a call number label suffix', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.call_number_prefix',
+    oils_i18n_gettext( 'ff.remote.item_cache.default.call_number_prefix', 'LAI: default for a call number label prefix', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.default.call_number_prefix', 'LAI: default for a call number label prefix if none is in embedded holdings', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.call_number',
+    oils_i18n_gettext( 'ff.remote.item_cache.default.call_number', 'LAI: default for a call number label', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.default.call_number', 'LAI: default for a call number label if none is in embedded holdings', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.call_number_suffix',
+    oils_i18n_gettext( 'ff.remote.item_cache.default.call_number_suffix', 'LAI: default for a call number label suffix', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.default.call_number_suffix', 'LAI: default for a call number label suffix if none is in embedded holdings', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.copy_lib',
+    oils_i18n_gettext( 'ff.remote.item_cache.default.copy_lib', 'LAI: default for copy library', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.default.copy_lib', 'LAI: default for copy owning library if none is in embedded holdings', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.default.copy_location',
+    oils_i18n_gettext( 'ff.remote.item_cache.default.copy_location', 'LAI: default for a copy location', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.default.copy_location', 'LAI: default for a copy location name  if none is in embedded holdings', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.embedded.asset.copy_lib',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.copy_lib', 'LAI: holdings subfield for copy lib', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.copy_lib', 'LAI: holdings subfield for copy lib', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.embedded.asset.barcode',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.barcode', 'LAI: holdings subfield for barcode', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.barcode', 'LAI: holdings subfield for barcode', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ff.remote.item_cache.embedded.asset.copy_location',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.copy_location', 'LAI: holdings subfield for shelving location', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.copy_location', 'LAI: holdings subfield for shelving location', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type (name,label,description,datatype) VALUES (
+    'ff.remote.item_cache.embedded.asset.call_number_prefix',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.call_number_prefix', 'LAI: holdings subfield for call number prefix', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.call_number_prefix', 'LAI: holdings subfield for call number prefix', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type (name,label,description,datatype) VALUES (
+    'ff.remote.item_cache.embedded.asset.call_number',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.call_number', 'LAI: holdings subfield for call number', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.call_number', 'LAI: holdings subfield for call number', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type (name,label,description,datatype) VALUES (
+    'ff.remote.item_cache.embedded.asset.call_number_suffix',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.call_number_suffix', 'LAI: holdings subfield for call number suffix', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.call_number_suffix', 'LAI: holdings subfield for call number suffix', 'coust', 'description'),
+    'string'
+);
+
+insert into config.org_unit_setting_type (name,label,description,datatype) VALUES (
+    'ff.remote.item_cache.embedded.asset.location_prefix',
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.location_prefix', 'LAI: prefix to identify copy lib', 'coust', 'label'),
+    oils_i18n_gettext( 'ff.remote.item_cache.embedded.asset.location_prefix', 'LAI: prefix to isolate copy lib from copy location for III', 'coust', 'description'),
+    'string'
+);
+
+INSERT INTO actor.org_unit_setting (org_unit,name,value) VALUES
+    (1,'ff.remote.item_cache.default.call_number','"Ask Staff"')
+    ,(1,'ff.remote.item_cache.default.copy_location','"Stacks"')
+;
+
+INSERT INTO config.lai_holding_map (name,holding_tag,copy_location,call_number_prefix,call_number,call_number_suffix,barcode,copy_lib) VALUES
+    ('Evergreen','852','c',NULL,'j',NULL,'p','b')
+    ,('Koha','952','c',NULL,'o',NULL,'p','b')
+    ,('Symphony','999','l',NULL,'a',NULL,'i','m')
+    ,('Polaris','852','k','h','i',NULL,'p','o')
+    ,('Follett','852','b',NULL,'h',NULL,'p','a')
+    ,('Alma','852','c','h','i',NULL,'8','b')
+    ,('TLC','949','a',NULL,'c',NULL,'g',NULL)
+    ,('Insignia','852',NULL,NULL,'h',NULL,'p','b')
+    ,('EOS949','949',NULL,NULL,'h',NULL,'b','d')
+    ,('EOS852','852',NULL,NULL,NULL,NULL,'8',NULL)
+    ,('Horizon','949','c',NULL,'d',NULL,'b','m')
+    ,('Alexandria','852','c',NULL,'h',NULL,'p','a')
+    ,('AutoGraphics','952','c',NULL,'o',NULL,'p','a')
+    ,('AutoGraphics852','852','b','h','i',NULL,'p','a')
+    ,('AutoGraphics059','059','a',NULL,'l',NULL,'i',NULL)
+    ,('AutoGraphics999','999','a',NULL,'l',NULL,'i',NULL)
+;
+
+INSERT INTO config.lai_holding_map (name,holding_tag,copy_location,call_number_prefix,call_number,call_number_suffix,barcode,copy_lib,
+    alt_cn_tag,alt_cn_label,alt_cn_suffix) VALUES ('III','945','l','a','b',NULL,'i',NULL,'092','a','b');
+
+    
 -- OUS's for patron self-reg
 INSERT INTO config.org_unit_setting_type
     (name, grp, datatype, label, description)

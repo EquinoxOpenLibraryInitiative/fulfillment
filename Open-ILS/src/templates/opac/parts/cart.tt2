@@ -3,7 +3,7 @@
     <select id="select_basket_action" aria-label="[% l('Select basket action') %]">
       <option value="">[% l('-- Basket Actions --') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist', {}) %]">[% l('View Basket') %]</option>
-      <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]">[% l('Place Holds') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]">[% l('Place ILL Requests') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'print', entire_list => 1}) %]">[% l('Print Title Details') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'email', entire_list => 1}) %]">[% l('Email Title Details') %]</option>
       [% IF !ctx.is_browser_staff %]

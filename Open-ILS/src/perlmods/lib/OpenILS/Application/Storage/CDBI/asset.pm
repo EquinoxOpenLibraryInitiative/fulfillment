@@ -80,7 +80,7 @@ __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date ed
                    fine_level circulate deposit price ref opac_visible
                    circ_as_type circ_modifier deposit_amount location mint_condition
                    holdable dummy_title dummy_author deleted alert_message
-                   age_protect floating cost status_changed_time active_date/ );
+                   age_protect floating cost status_changed_time active_date source_lib/ );
 
 #-------------------------------------------------------------------------------
 package asset::copy_part_map;

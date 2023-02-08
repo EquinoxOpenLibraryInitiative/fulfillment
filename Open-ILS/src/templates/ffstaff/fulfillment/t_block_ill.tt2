@@ -1,0 +1,31 @@
+<!-- block ILL modal-->
+<form class="form-validated" novalidate name="form">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Disallow item for ILL') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="block-reason">[% l('Reason of ILL block') %]</label>
+        <select ng-model="block_reason" class="btn btn-default" style="height:32px; width:100px">
+            <option value="policy">Policy</option>
+            <option value="not found">Targeted Copy or Equivalent Not Found</option>
+            <option value="incorrect target">Incorrectly Targeted or Incorrect Copy</option>
+            <option value="other">Other Reasons</option>
+        </select>
+      </div>
+       <div class="checkbox">
+        <label>
+          <input ng-model="block_all" type="checkbox" ng-disabled="!item.hold"> 
+          [% l('Block item for all requests') %]
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="ok()">[% l('Block item') %]</button>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>

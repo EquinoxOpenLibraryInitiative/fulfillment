@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <img src="/xul/server/skin/media/images/portal/logo.png"/>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+
+    <div class="col-lg-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Circulation and Patrons') %]</div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <img src="/xul/server/skin/media/images/portal/forward.png"/>
+            <a target="_self" href="./circ/patron/search">[% l('Check Out') %]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Item Search and Cataloging') %]</div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <img src="/xul/server/skin/media/images/portal/bucket.png"/>
+            <a target="_self" href="./cat/bucket/record/">[% l('Record Buckets') %]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Administration') %]</div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <img src="/xul/server/skin/media/images/portal/helpdesk.png"/>
+            <a target="_self" href="./">All the Things</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

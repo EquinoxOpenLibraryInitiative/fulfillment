@@ -1796,5 +1796,19 @@ CREATE TABLE action.batch_hold_event_map (
     hold                INT     NOT NULL REFERENCES action.hold_request (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE FUNCTION action.hold_request_mediated () RETURNS TRIGGER AS $f$
+BEGIN
+    SELECT COALESCE( (
+        SELECT actor.org_unit_ancestor_setting(
+            'ff.request.force_mediation',
+            NEW.request_lib)).value::BOOL, FALSE)
+        INTO NEW.frozen;
+    RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER ahr_mediation_tgr BEFORE INSERT ON action.hold_request
+    FOR EACH ROW EXECUTE PROCEDURE action.hold_request_mediated ();
+
 COMMIT;
 
