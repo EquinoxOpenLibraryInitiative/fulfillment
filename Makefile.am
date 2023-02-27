@@ -16,6 +16,8 @@ export WEBDIR=@localstatedir@/web
 export CGIDIR=@localstatedir@/cgi-bin
 export TEMPLATEDIR=@localstatedir@/templates
 export BOOTSTRAPTEMPLATEDIR=@localstatedir@/templates-bootstrap
+export EOLITEMPLATEDIR=@localstatedir@/templates_equinox
+export STAFFONLYTEMPLATEDIR=@localstatedir@/templates_staff_only
 export UPDATESDIR=@localstatedir@/updates
 
 export datadir=@localstatedir@/data

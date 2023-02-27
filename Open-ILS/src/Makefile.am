@@ -179,6 +179,8 @@ install-data-hook: $(OILSCORE_INST) $(OILSWEB_INST) $(OILSUPDATES_INST) $(OILSRE
 uninstall-hook:
 	rm -R $(TEMPLATEDIR)
 	rm -R $(BOOTSTRAPTEMPLATEDIR)
+	rm -R $(EOLITEMPLATEDIR)
+	rm -R $(STAFFONLYTEMPLATEDIR)
 	rm -R $(XSLDIR)
 	rm -R $(CGIDIR)
 
@@ -249,6 +251,12 @@ ilscore-install:
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
 	@echo "Installing templates to $(DESTDIR)$(TEMPLATEDIR)"
 	cp -r @srcdir@/templates/* $(DESTDIR)$(TEMPLATEDIR)
+	$(MKDIR_P) $(DESTDIR)$(EOLITEMPLATEDIR)
+	@echo "Installing Equinox templates to $(DESTDIR)$(EOLITEMPLATEDIR)"
+	cp -r @srcdir@/templates_equinox/* $(DESTDIR)$(EOLITEMPLATEDIR)
+	$(MKDIR_P) $(DESTDIR)$(STAFFONLYTEMPLATEDIR)
+	@echo "Installing forced-mediation templates to $(DESTDIR)$(STAFFONLYTEMPLATEDIR)"
+	cp -r @srcdir@/templates_staff_only/* $(DESTDIR)$(STAFFONLYTEMPLATEDIR)
 	$(MKDIR_P) $(DESTDIR)$(BOOTSTRAPTEMPLATEDIR)
 	@echo "Installing Bootstrap templates to $(DESTDIR)$(BOOTSTRAPTEMPLATEDIR)"
 	cp -r @srcdir@/templates-bootstrap/* $(DESTDIR)$(BOOTSTRAPTEMPLATEDIR)
