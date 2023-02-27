@@ -62,7 +62,7 @@ angular.module('ffMain',
 
     // Default to ILL management tabs
     $routeProvider.otherwise({
-        redirectTo : '/fulfillment/borrower/pending'
+        redirectTo : '/fulfillment/singlescan'
     });
 })
 
