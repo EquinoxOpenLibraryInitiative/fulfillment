@@ -133,18 +133,18 @@ fi
 # Release Preamble
 # For adding into README for release builds
 # The head is used to check if we have it already (no need to add it twice)
-RELEASE_PREAMBLE_HEAD="Preamble: Getting an Evergreen official release tarball"
+RELEASE_PREAMBLE_HEAD="Preamble: Getting an Fulfillment official release tarball"
 RELEASE_PREAMBLE=$( cat <<PREAMBLE
 $RELEASE_PREAMBLE_HEAD
 -------------------------------------------------------
 
-To download and extract the source for the current release of Evergreen, issue
+To download and extract the source for the current release of Fulfillment, issue
 the following commands as the *user* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-wget -c http://evergreen-ils.org/downloads/${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz
-tar xzf Evergreen-ILS-$VERSION.tar.gz
+wget -c http://evergreen-ils.org/downloads/${PREVIEW_TEXT}Fulfillment-$VERSION.tar.gz
+tar xzf Fulfillment-$VERSION.tar.gz
 ------------------------------------------------------------------------------
 
 PREAMBLE
@@ -203,8 +203,8 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     if [ "$PREV_BRANCH" != "TAG" ]; then
         if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README )" ]; then
             echo "Updating old download links"
-            sed -i -e "s|\(previews/\)\?Evergreen-ILS-.*\.tar\.gz|${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
-            sed -i -e "s| Evergreen-ILS-.*\.tar\.gz| Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
+            sed -i -e "s|\(previews/\)\?Fulfillment-.*\.tar\.gz|${PREVIEW_TEXT}Fulfillment-$VERSION.tar.gz|" $GIT_ABS/README
+            sed -i -e "s| Fulfillment-.*\.tar\.gz| Fulfillment-$VERSION.tar.gz|" $GIT_ABS/README
         else
             echo "Adding Download Preamble"
             perl -pi -e "s|^|$RELEASE_PREAMBLE\n\n| if /$RELEASE_PREAMBLE_BEFORE/" $GIT_ABS/README
@@ -301,8 +301,8 @@ fi
 echo "Building release dump"
 cd $GIT_ABS
 mkdir -p ../release
-git archive --prefix=Evergreen-ILS-$VERSION/ HEAD | (cd ../release && tar xf -)
-cd ../release/Evergreen-ILS-$VERSION
+git archive --prefix=Fulfillment-$VERSION/ HEAD | (cd ../release && tar xf -)
+cd ../release/Fulfillment-$VERSION
 if [ -f ./autogen.sh ]; then
     echo "Running autogen"
     ./autogen.sh
@@ -365,15 +365,15 @@ else
     cd ../../../../
 fi
 
-tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
-md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
+tar czf Fulfillment-$VERSION.tar.gz Fulfillment-$VERSION/
+md5sum Fulfillment-$VERSION.tar.gz > Fulfillment-$VERSION.tar.gz.md5
 if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
-    cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
+    cp Fulfillment-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
 fi
 
 if [ "$SKIP_XUL" = "NO" ]; then
     echo "Running enough of configure to build staff client"
-    cd Evergreen-ILS-$VERSION/
+    cd Fulfillment-$VERSION/
     ./configure --disable-core --disable-web --disable-updates --disable-apache-modules --disable-reporter
 
     echo "Building Release Staff Clients"
@@ -401,7 +401,7 @@ else
 fi
 
 echo "Removing build directory"
-rm -rf Evergreen-ILS-$VERSION/
+rm -rf Fulfillment-$VERSION/
 
 echo ""
 echo "FOR YOU TODO:"
