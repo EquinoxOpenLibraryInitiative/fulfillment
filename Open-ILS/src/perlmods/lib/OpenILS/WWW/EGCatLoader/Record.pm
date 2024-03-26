@@ -125,6 +125,11 @@ sub load_record {
 
     $ctx->{copies} = $copy_rec->gather(1);
 
+    $ctx->{record_is_holdable} = $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.record.has_holdable_copy',
+        $ctx->{bre_id}
+    );
     $ctx->{course_module_opt_in} = 0;
     if ($ctx->{get_org_setting}->($org, "circ.course_materials_opt_in")) {
         $ctx->{course_module_opt_in} = 1;
@@ -388,7 +393,7 @@ sub mk_copy_query {
             field => 'id',
             filter => {
                 id => {
-                    in => {
+                    'not in' => {
                         select => {aou => [{
                             column => 'id', 
                             transform => 'actor.org_unit_descendants',

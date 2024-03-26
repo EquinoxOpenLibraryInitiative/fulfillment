@@ -2920,7 +2920,7 @@ sub mk_copy_query {
             field => 'id',
             filter => {
                 id => {
-                    in => {
+                    'not in' => {
                         select => {aou => [{
                             column => 'id', 
                             transform => 'actor.org_unit_descendants',
@@ -2934,7 +2934,7 @@ sub mk_copy_query {
             }
         }};
 
-        if ($pref_ou) {
+        if (0 and $pref_ou) {
             # Make sure the pref OU is included in the results
             my $in = $query->{from}->{acp}->[1]->{aou}->{filter}->{id}->{in};
             delete $query->{from}->{acp}->[1]->{aou}->{filter}->{id};

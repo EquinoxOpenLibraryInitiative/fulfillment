@@ -507,10 +507,10 @@ sub load_rresults {
         $fetch_recs, $results->{facet_key}, 
         {
             flesh => '{holdings_xml,mra,acp,acnp,acns,bmp,cbs}',
-            site => $site,
+	    #site => $site,
             metarecord => $is_meta,
-            depth => $depth,
-            pref_lib => $ctx->{pref_ou},
+	    #depth => $depth,
+	    #pref_lib => $ctx->{pref_ou},
         }
     );
     $self->timelog("Returned from get_records_and_facets()");
@@ -580,8 +580,10 @@ sub load_rresults {
         $course_module_opt_in = 1;
     }
 
+    my $holdable_method = 'open-ils.search.biblio.'.($is_meta ? 'meta' : '').'record.has_holdable_copy';
     for my $rec (@{$ctx->{records}}) {
         my ($res_rec) = grep { $_->[0] == $rec->{$id_key} } @{$results->{ids}};
+        $rec->{holdable} = $U->simplereq('open-ils.search', $holdable_method, $res_rec->[0]);
         $rec->{badges} = [split(',', $res_rec->[1])] if $res_rec->[1];
         $rec->{popularity} = $res_rec->[2];
         if ($course_module_opt_in) {
@@ -820,7 +822,7 @@ sub marc_expert_search {
     my ($facets, @data) = $self->get_records_and_facets(
         $self->ctx->{ids}, undef, {
             flesh => "{holdings_xml,mra,acnp,acns,cbs}",
-            pref_lib => $self->ctx->{pref_ou},
+	    #pref_lib => $self->ctx->{pref_ou},
         }
     );
     $self->timelog("Returned from calling get_records_and_facets() for MARC expert");

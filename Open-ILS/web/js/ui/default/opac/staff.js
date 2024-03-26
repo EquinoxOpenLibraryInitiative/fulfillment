@@ -8,6 +8,8 @@
 
 function debug(msg){dump(msg+'\n')}
 var eventCache={};
+window.xulG={};
+
 function attachEvt(scope, name, action) {
     if(!eventCache[scope]) eventCache[scope] = {};
     if(!eventCache[scope][name]) eventCache[scope][name] = [];
