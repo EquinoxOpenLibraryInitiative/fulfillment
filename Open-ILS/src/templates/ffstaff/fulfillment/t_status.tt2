@@ -17,6 +17,8 @@
     <div class="col-lg-9 text-right">
       <div class="btn-group">
         <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
+          ng-click="round_trip()" ng-show="item.can_round_trip">{{item.next_action_label}}</button>
+        <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
           ng-click="mark_lost()" ng-show="item.can_mark_lost">Mark Lost</button>
         <button type="button" class="btn btn-default" ng-class="{disabled : action_pending}"
           ng-click="abort_transit()" ng-show="item.open_transit">Abort Transit</button>

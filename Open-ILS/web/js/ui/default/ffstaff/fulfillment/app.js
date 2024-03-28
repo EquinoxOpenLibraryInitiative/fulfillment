@@ -322,13 +322,40 @@ function ($scope,  $q,  $compile,  $timeout,  $rootScope, $location, $modal,
     // Performed on flattened items
     $scope.actions = {};
 
-    $scope.actions.checkin = function(item) {
+    $scope.actions.round_trip = function(item, s) {
+        var remote_circ_lib = egOrg.get(item.transit ? item.transit.dest() : null)
+            || egOrg.get(item.hold ? item.hold.pickup_lib() : null)
+            || egOrg.get(item.circ ? item.circ.circ_lib() : null);
+
+        if (!remote_circ_lib) {
+            console.debug("actions.round_trip: no transaction-related remote org unit found on transit, hold, or circ");
+            return $q.when();
+        }
+
+        return $scope.actions.checkin( item, s, 'transit', remote_circ_lib.id() ) // this completes the transit
+            .then(function(){ return $scope.actions.checkout(item, s, 'hold', remote_circ_lib.id()) }) // this completes the hold and checks out to the patron
+            .then(function(){ return $scope.actions.checkin(item, s, null, remote_circ_lib.id()) }); // this completes the circ and transits back to lender
+    }
+
+    $scope.actions.checkin = function(item, s, only_if_thing, circ_lib_override) {
+        if (only_if_thing == 'circ'
+            && (!item.circ || item.circ.checkin_time())
+        ) return $q.when(); // if optional thing is 'circ', skip unless there is an open circ
+
+        if (only_if_thing == 'hold'
+            && (!item.hold || item.hold.fulfillment_time() || item.hold.cancel_time())
+        ) return $q.when(); // if optional thing is 'hold', skip unless there is an open hold
+
+        if (only_if_thing == 'transit'
+            && (!item.transit || item.transit.dest_recv_time() || item.transit.cancel_time())
+        ) return $q.when(); // if optional thing is 'transit', skip unless there is an open transit
+
         $scope.action_pending = true;
         var deferred = $q.defer();
         egNet.request('open-ils.circ', 
             'open-ils.circ.checkin.override',
             egAuth.token(), {
-                circ_lib : orgSelector.current().id(),
+                circ_lib : circ_lib_override || orgSelector.current().id(),
                 copy_id: item.copy_id, ff_action: item.next_action
             }
         ).then(function(response) {
@@ -348,13 +375,25 @@ function ($scope,  $q,  $compile,  $timeout,  $rootScope, $location, $modal,
         return deferred.promise;
     }
 
-    $scope.actions.checkout = function(item) {
+    $scope.actions.checkout = function(item, s, only_if_thing, circ_lib_override) {
+        if (only_if_thing == 'circ'
+            && (!item.circ || item.circ.checkin_time())
+        ) return $q.when(); // if optional thing is 'circ', skip unless there is an open circ
+
+        if (only_if_thing == 'hold'
+            && (!item.hold || item.hold.fulfillment_time() || item.hold.cancel_time())
+        ) return $q.when(); // if optional thing is 'hold', skip unless there is an open hold
+
+        if (only_if_thing == 'transit'
+            && (!item.transit || item.transit.dest_recv_time() || item.transit.cancel_time())
+        ) return $q.when(); // if optional thing is 'transit', skip unless there is an open transit
+
         $scope.action_pending = true;
         var deferred = $q.defer();
         egNet.request('open-ils.circ', 
             'open-ils.circ.checkout.full.override',
             egAuth.token(), {
-                circ_lib : orgSelector.current().id(),
+                circ_lib : circ_lib_override || orgSelector.current().id(),
                 patron_id : item.patron_id,
                 copy_id: item.copy_id,
                 ff_action: item.next_action
@@ -895,6 +934,27 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
                 break;
         }
 
+        if ( transit // it's moving ...
+             && orgSelector.relatedOrgs().includes(egOrg.get(transit.source()).id()) // ... away from us (relatedOrgs is full-path) ...
+             && !(transit.dest_recv_time() || transit.cancel_time()) // ... and the transit hasn't arrived or been canceled yet
+             && Date.parse(transit.source_send_time()) < Date.parse((new Date()).toISOString().substr(0,10)) // and it was sent before today
+        ) {
+            item.next_action_label = 'Perform full Borrower Round-trip';
+            item.can_round_trip = true;
+        } else if ( copy && hold && !circ // it's captured for a patron ...
+                    && orgSelector.relatedOrgs().includes(egOrg.get(copy.circ_lib()).id()) // ... and we own it (relatedOrgs is full-path) ...
+                    && !(hold.fulfillment_time() || hold.cancel_time()) // ... and the hold hasn't been fulfilled or canceled yet
+                    && (!transit || Date.parse(transit.source_send_time()) < Date.parse((new Date()).toISOString().substr(0,10))) // and it was sent before today
+        ) {
+            item.next_action_label = 'Perform ILL for Borrower';
+            item.can_round_trip = true;
+        } else if ( copy && circ // it's out to a patron ...
+                    && orgSelector.relatedOrgs().includes(egOrg.get(copy.circ_lib()).id()) // ... and we own it (relatedOrgs is full-path) ...
+        ) {
+            item.next_action_label = 'Complete ILL for Borrower';
+            item.can_round_trip = true;
+        }
+
         item.status_str = copy.status().name();
         item.copy_status_warning = (copy.status().holdable() == 'f');
 
@@ -972,7 +1032,7 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
     // handlers unadorned then reload the route.
     // TODO: set selected == item; no more need for custom action handers??
     angular.forEach(['checkin', 'checkout', 'block_one', 'block_all', 'unblock_all', 'popup_abort_block_ill', 
-            'cancel', 'abort_transit', 'retarget', 'mark_lost', 'popup_block_ill'],
+            'cancel', 'abort_transit', 'retarget', 'mark_lost', 'popup_block_ill', 'round_trip'],
         function(action) {
             $scope[action] = function() {
                 $scope.actions[action]($scope.item, $scope)
@@ -1079,6 +1139,28 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
                     item.next_action_function = 'checkin';
                     item.next_action_label = 'Send item home';
                     item.needs_checkin = true;
+                } else if ( transit // it's moving ...
+                            && orgSelector.relatedOrgs().includes(egOrg.get(transit.source()).id()) // ... away from us (relatedOrgs is full-path) ...
+                            && !(transit.dest_recv_time() || transit.cancel_time()) // ... and the transit hasn't arrived or been canceled yet
+                            && Date.parse(transit.source_send_time()) < Date.parse((new Date()).toISOString().substr(0,10)) // and it was sent before today
+                ) {
+                    item.next_action_function = 'round_trip';
+                    item.next_action_label = 'Perform full Borrower Round-trip';
+                    item.can_round_trip = true;
+                } else if ( copy && hold && !circ // it's captured for a patron ...
+                            && orgSelector.relatedOrgs().includes(egOrg.get(copy.circ_lib()).id()) // ... and we own it (relatedOrgs is full-path) ...
+                            && !(hold.fulfillment_time() || hold.cancel_time()) // ... and the hold hasn't been fulfilled or canceled yet
+                            && (!transit || Date.parse(transit.source_send_time()) < Date.parse((new Date()).toISOString().substr(0,10))) // and it was sent before today
+                ) {
+                    item.next_action_function = 'round_trip';
+                    item.next_action_label = 'Perform ILL for Borrower';
+                    item.can_round_trip = true;
+                } else if ( copy && circ // it's out to a patron ...
+                            && orgSelector.relatedOrgs().includes(egOrg.get(copy.circ_lib()).id()) // ... and we own it (relatedOrgs is full-path) ...
+                ) {
+                    item.next_action_function = 'round_trip';
+                    item.next_action_label = 'Complete ILL for Borrower';
+                    item.can_round_trip = true;
                 }
         }
 
@@ -1171,7 +1253,7 @@ function ($scope,  $q,  $route,  $location,  egPCRUD,  orgSelector,  egNet,  egA
     // handlers unadorned then reload the route.
     // TODO: set selected == item; no more need for custom action handers??
     angular.forEach(['checkin', 'checkout', 'block_one', 'block_all', 'popup_abort_block_ill', 
-            'cancel', 'abort_transit', 'retarget', 'mark_lost', 'popup_block_ill'],
+            'cancel', 'abort_transit', 'retarget', 'mark_lost', 'popup_block_ill', 'round_trip'],
         function(action) {
             $scope[action] = function() {
                 $scope.actions[action]($scope.item, $scope)
